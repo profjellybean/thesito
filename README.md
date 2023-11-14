@@ -1,4 +1,4 @@
-# code-with-quarkus
+# ASE
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -8,7 +8,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
-./mvnw compile quarkus:dev
+quarkus dev
 ```
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
@@ -38,19 +38,14 @@ You can create a native executable using:
 ./mvnw package -Dnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+
+# DB setup
 ```
-
-You can then execute your native executable with: `./target/code-with-quarkus-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+docker pull postgres
+```
+```
+docker network create ase
+```
+```
+docker run --name ase -e POSTGRES_PASSWORD=ase -e POSTGRES_DB=ase_db -p 5432:5432 --network=ase -d postgres
+```
