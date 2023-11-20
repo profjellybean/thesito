@@ -43,3 +43,4 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 .mvn
 .mvn
+frontend/node_modules
