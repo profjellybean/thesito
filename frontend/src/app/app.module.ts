@@ -5,15 +5,17 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 
-import {HttpClientModule} from "@angular/common/http";
-import {APOLLO_OPTIONS, ApolloModule} from "apollo-angular";
-import {HttpLink} from 'apollo-angular/http';
-import {InMemoryCache} from '@apollo/client/core';
+import { HttpClientModule } from "@angular/common/http";
+import { APOLLO_OPTIONS, ApolloModule } from "apollo-angular";
+import { HttpLink } from 'apollo-angular/http';
+import { InMemoryCache } from '@apollo/client/core';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

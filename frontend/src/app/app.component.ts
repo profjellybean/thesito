@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Apollo} from "apollo-angular";
-import {gql} from "@apollo/client";
+import {gql} from "@apollo/client/core";
 
 
 
@@ -28,7 +28,7 @@ interface GetAllUsers {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  title = 'thesito';
+  title = 'Thesito';
   users:User[] = []
   constructor(private apollo: Apollo) {}
 
