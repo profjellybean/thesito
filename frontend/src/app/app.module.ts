@@ -10,6 +10,7 @@ import { APOLLO_OPTIONS, ApolloModule } from "apollo-angular";
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { LoginComponent } from './login/login.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { LoginComponent } from './login/login.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ApolloModule
+    ApolloModule,
+    ReactiveFormsModule
   ],
   providers: [
     {
