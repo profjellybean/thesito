@@ -44,12 +44,6 @@ export class LoginComponent {
     //TODO
   }
 
-  incrementClick(): void {
-    if (this.clickCounter < 10) {
-      this.clickCounter++;
-    }
-  }
-
   vanishError() {
     this.error = false;
   }
@@ -70,8 +64,8 @@ export class LoginComponent {
     this.pwVisible = !this.pwVisible;
   }
 
-  goToSignUp(): void {
-    this.router.navigate(['./signup']);
+  goToRegistration(): void {
+    this.router.navigate(['./register']);
   }
 
 }
