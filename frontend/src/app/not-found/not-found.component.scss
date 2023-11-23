@@ -1,0 +1,32 @@
+.background {
+  position: absolute;
+  background-color: #F7F6F2;
+  height: 100vh;
+  width: 100vw;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+  font-size: 8em;
+}
+
+.wrapper {
+  margin-top: 8em;
+}
+
+.btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.back-button {
+  font-weight: 500;
+  opacity: 80%;
+}
+
+.back-button:hover {
+  opacity: 100%;
+}
