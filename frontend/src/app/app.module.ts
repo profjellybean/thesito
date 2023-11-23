@@ -15,6 +15,8 @@ import {RouterModule} from "@angular/router";
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import {UserService} from "./services/UserService";
+import { LoginComponent } from './login/login.component';
+
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import {UserService} from "./services/UserService";
     RegisterUserComponent,
     HeaderComponent,
     HomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
