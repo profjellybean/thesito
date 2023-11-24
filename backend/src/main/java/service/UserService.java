@@ -3,7 +3,6 @@ package service;
 import com.password4j.Hash;
 import com.password4j.Password;
 import entity.User;
-import enums.UserType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
