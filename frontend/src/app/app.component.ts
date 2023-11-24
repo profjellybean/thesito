@@ -19,30 +19,6 @@ export class AppComponent implements OnInit {
     console.log("Route to register")
     this.router.navigate(['register']);
   }
-  /*
-  title = 'thesito';
-  users:User[] = []
-  constructor(private apollo: Apollo) {}
 
-  ngOnInit() {
-    this.apollo.watchQuery<GetAllUsers>({
-      query: 	gql`{
-        getAllUsers{
-          name
-          id
-          email
-        }
-      }`
-    })
-      .valueChanges
-      .subscribe(({ data, loading }) => {
-        // @ts-ignore
-        this.users = data.getAllUsers;
-        console.log(data)
-        console.log(this.users)
-      });
-  }
-
-   */
   protected readonly RegisterUserComponent = RegisterUserComponent;
 }
