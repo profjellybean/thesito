@@ -1,24 +1,34 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
+import {AppRoutingModule, routes} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 
-import { HttpClientModule } from "@angular/common/http";
-import { APOLLO_OPTIONS, ApolloModule } from "apollo-angular";
+
 import {MatIconModule} from "@angular/material/icon";
-import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
-import { LoginComponent } from './components/login/login.component';
-import {ReactiveFormsModule} from "@angular/forms";
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {HttpClientModule} from "@angular/common/http";
+import {APOLLO_OPTIONS, ApolloModule} from "apollo-angular";
+import {HttpLink} from 'apollo-angular/http';
+import {InMemoryCache} from '@apollo/client/core';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {RouterModule} from "@angular/router";
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
+import {UserService} from "./services/UserService";
+import { LoginComponent } from './components/login/login.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    RegisterUserComponent,
+    HeaderComponent,
+    HomeComponent,
     LoginComponent,
     NotFoundComponent
   ],
@@ -29,7 +39,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ApolloModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatIconModule
+    MatIconModule,
+    ApolloModule,
+    FormsModule,
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule
   ],
   providers: [
     {
