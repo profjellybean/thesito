@@ -20,6 +20,8 @@ import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
 import {MatRadioModule} from "@angular/material/radio";
+import { LanguageToggleComponent } from './components/language-toggle/language-toggle.component';
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -33,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     HeaderComponent,
     HomeComponent,
     LoginComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LanguageToggleComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
       defaultLanguage: 'en'
-    })
+    }),
+    MatSlideToggleModule
   ],
   providers: [
     {

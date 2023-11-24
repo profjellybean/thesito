@@ -16,8 +16,6 @@ export class LoginComponent {
   error = false;
   errorMessage = '';
 
-  clickCounter = 0;
-
   constructor(
     private fb: FormBuilder,
     private router: Router

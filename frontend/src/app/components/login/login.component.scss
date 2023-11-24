@@ -18,6 +18,13 @@
   //height: 100%;
 }
 
+.language-toggle{
+  z-index: 1;
+  display: flex;
+  justify-content: right;
+  padding-bottom: 10px;
+}
+
 .subtitle {
   color: white;
   padding-left: 1%;
@@ -67,7 +74,7 @@
   font-weight: 600;
   font-size: 48px;
   padding-top: 5%;
-  padding-bottom: 43px;
+  padding-bottom: 10px;
   text-align: center;
 }
 

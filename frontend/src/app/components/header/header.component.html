@@ -6,10 +6,12 @@
         <img src="../../../assets/logo.PNG" alt="Logo" class="mr-2" style="width: 40px;">
         <span class="h4">THESITO</span>
       </div>
+      <app-language-toggle></app-language-toggle>
       <nav>
         <ul class="list-unstyled d-flex">
-          <li class="mx-3"><a routerLink="/" class="text-light">Home</a></li>
-          <li class="mx-3"><a routerLink="/register" class="text-light">Register</a></li>
+          <li class="mx-3"><a routerLink="/" class="text-light">{{"home" | translate}}</a></li>
+          <li class="mx-3"><a routerLink="/register" class="text-light">{{"register" | translate}}</a></li>
+          <li class="mx-3"><a routerLink="/login" class="text-light">{{"login" | translate}}</a></li>
           <!-- Add more navigation links as needed -->
         </ul>
       </nav>

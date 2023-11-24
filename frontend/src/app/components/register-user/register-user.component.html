@@ -10,6 +10,7 @@
       </div>
     </div>
 
+
     <!-- Background Graphic -->
     <div class="d-none d-xl-block">
       <svg class="overlay" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 974">
@@ -35,12 +36,18 @@
   </div>
 </div>
 
+
+
+
 <!-- Login Area -->
 <div class="mask">
   <div class="login-wrapper">
     <div class="login-area">
       <form *ngIf="registerForm" [formGroup]="registerForm" class="text-center">
         <h2 class="unselectable eerie login-title">{{"register" | translate}}</h2>
+        <div class="language-toggle">
+          <app-language-toggle></app-language-toggle>
+        </div>
         <div class="form-group">
           <input class="eerie" type="text" formControlName="name" placeholder="Name">
         </div>

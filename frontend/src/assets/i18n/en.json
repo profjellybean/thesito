@@ -2,5 +2,7 @@
   "thesito": "Thesito © 2023. All Rights Reserved.",
   "register": "Register",
   "consumer": "Listing Consumer",
-  "provider": "Listing Provider"
+  "provider": "Listing Provider",
+  "login": "Login",
+  "home": "Home"
 }

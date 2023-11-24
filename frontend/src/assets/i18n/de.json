@@ -2,5 +2,7 @@
   "thesito": "Thesito © 2023. Alle Rechte vorbehalten.",
   "register": "Registrieren",
   "consumer": "Ausschreibungs Konsument",
-  "provider": "Aussschreibungs Bereitsteller"
+  "provider": "Aussschreibungs Bereitsteller",
+  "login": "Login",
+  "home": "Start"
 }

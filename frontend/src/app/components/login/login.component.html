@@ -38,6 +38,9 @@
     <div class="login-area">
       <form *ngIf="loginForm" [formGroup]="loginForm" class="text-center">
         <h2 class="unselectable eerie login-title">Login</h2>
+        <div class="language-toggle">
+          <app-language-toggle></app-language-toggle>
+        </div>
         <div class="form-group">
           <input class="eerie" type="text" formControlName="emailOrName" placeholder="Email / Username">
         </div>
