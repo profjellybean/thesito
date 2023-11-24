@@ -11,6 +11,9 @@ public class UserValidator {
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
             throw new ValidationException("Invalid email");
         }
+        if (email.length() > 255) {
+            throw new ValidationException("Email cannot be longer than 255 characters");
+        }
     }
 
     /**
@@ -23,14 +26,20 @@ public class UserValidator {
         if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
             throw new ValidationException("Invalid password. Password must contain at least eight characters, at least one letter and one number");
         }
+        if (password.length() > 255) {
+            throw new ValidationException("Password cannot be longer than 255 characters");
+        }
     }
 
     private void validateName(String name) throws ValidationException {
         if (name == null || name.isBlank()) {
             throw new ValidationException("Name cannot be null or empty");
         }
-        if (!name.matches("^[A-Za-z]+$")) {
-            throw new ValidationException("Invalid name. Name must contain only letters");
+        if(name.matches(".*\\d.*")) {
+            throw new ValidationException("Name cannot contain numbers");
+        }
+        if (name.length() > 255) {
+            throw new ValidationException("Name cannot be longer than 255 characters");
         }
     }
 
