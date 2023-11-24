@@ -1,55 +1,89 @@
-<div>
-  <h2>Register</h2>
-  <form (ngSubmit)="registerUser()" #registrationForm="ngForm">
-    <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" [(ngModel)]="user.name" required>
-    </div>
+<div class="container-fluid background">
+  <div class="row">
 
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" [(ngModel)]="user.email" required>
-    </div>
-
-    <div class="form-group">
-      <label for="confirmMail">Confirm Email:</label>
-      <input type="email" id="confirmMail" name="confirmMail" [(ngModel)]="confirm_email" required
-             [ngClass]="{'is-invalid': registrationForm.submitted && registrationForm.controls['confirmMail']?.errors}">
-      <div *ngIf="registrationForm.submitted && registrationForm.controls['confirmMail']?.errors" class="invalid-feedback">
-        Emails do not match.
+    <div class="logo-wrapper">
+      <div class="unselectable logo">
+        Thesito
+      </div>
+      <div class="unselectable subtitle">
+        A research management solution
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" [(ngModel)]="user.password" required>
+    <!-- Background Graphic -->
+    <div class="d-none d-xl-block">
+      <svg class="overlay" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 974">
+        <g filter="url(#filter0_d)">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M8.6052 970C214.02 830.724 349 595.375 349 328.5c0-115.871-25.445-225.798-71.052-324.5H1120v966H8.6052z"
+                fill="#EAE7DC"/>
+        </g>
+        <defs>
+          <filter id="filter0_d" x=".6052" y="0" width="1119.39" height="974" filterUnits="userSpaceOnUse"
+                  color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dx="-4"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+          </filter>
+        </defs>
+      </svg>
     </div>
-
-    <div class="form-group">
-      <label for="confirmPassword">Confirm Password:</label>
-      <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirm_password" required
-             [ngClass]="{'is-invalid': registrationForm.submitted && registrationForm.controls['confirmPassword']?.errors}">
-      <div *ngIf="registrationForm.submitted && registrationForm.controls['confirmPassword']?.errors" class="invalid-feedback">
-        Passwords do not match.
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Choose an Option:</label>
-      <div>
-        <div class="form-check">
-          <input type="radio" id="consumer" name="userType" value="{{UserType[UserType.ListingConsumer]}}"
-                 [(ngModel)]="user.userType" required>
-          <label class="form-check-label" for="consumer">{{UserType[UserType.ListingConsumer]}}</label>
-        </div>
-        <div class="form-check">
-          <input type="radio" id="provider" name="userType" value="{{UserType[UserType.ListingProvider]}}"
-                 [(ngModel)]="user.userType" required>
-          <label class="form-check-label" for="provider">{{UserType[UserType.ListingProvider]}}</label>
-        </div>
-      </div>
-    </div>
-
-    <button type="submit" [disabled]="registrationForm.invalid">Register</button>
-  </form>
+  </div>
 </div>
+
+<!-- Login Area -->
+<div class="mask">
+  <div class="login-wrapper">
+    <div class="login-area">
+      <form *ngIf="registerForm" [formGroup]="registerForm" class="text-center">
+        <h2 class="unselectable eerie login-title">Login</h2>
+        <div class="form-group">
+          <input class="eerie" type="text" formControlName="name" placeholder="Name">
+        </div>
+        <div class="form-group">
+          <input class="eerie" type="text" formControlName="email" placeholder="E-Mail">
+        </div>
+        <div class="form-group">
+          <input class="eerie" type="text" formControlName="confirmEmail" placeholder="Confirm E-Mail">
+        </div>
+        <div class="form-group visibility">
+          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
+                 placeholder="Password">
+          <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
+          <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
+        </div>
+        <div class="form-group visibility">
+          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="confirmPassword"
+                 placeholder="Confirm Password">
+          <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
+          <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
+        </div>
+        <div class="form-group">
+          <mat-radio-group formControlName="userType">
+            <mat-radio-button class="eerie" id="consumer" value="ListingConsumer">{{"consumer" | translate}}</mat-radio-button>
+            <mat-radio-button class="eerie" id="producer" value="ListingProvider">{{"provider" | translate}}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+        <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
+        <div class="text-center button-wrapper">
+          <button type="button" class="btn login-button" (click)="register()">{{"register" | translate}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-large d-none d-xl-block">
+  <p> {{"thesito" | translate}}</p>
+</div>
+
+
+
+
+
+

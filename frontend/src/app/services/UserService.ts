@@ -9,7 +9,7 @@ export class UserService {
   constructor(private apollo: Apollo) {}
 
   registerUser(user: User): Observable<any> {
-    console.log(user.userType)
+    console.log(user)
     return this.apollo.mutate<any>({
       mutation: registerUserQuery,
       variables: {

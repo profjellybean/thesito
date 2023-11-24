@@ -42,6 +42,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #DA3E52;
 }
 
+.thesito-green {
+  color: #46a55c;
+}
+
 .thesito-background-warm {
   color: #EAE7DC;
 }
