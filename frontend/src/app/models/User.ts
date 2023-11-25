@@ -1,5 +1,6 @@
 import {gql} from "@apollo/client/core";
 export interface User {
+  id: string
   email: string
   name: string
   password: string

@@ -22,6 +22,7 @@ import {LoginComponent} from './components/login/login.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { LanguageToggleComponent } from './components/language-toggle/language-toggle.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -36,7 +37,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent,
     LoginComponent,
     NotFoundComponent,
-    LanguageToggleComponent
+    LanguageToggleComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,

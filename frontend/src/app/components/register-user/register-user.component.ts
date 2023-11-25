@@ -34,6 +34,7 @@ export class RegisterUserComponent {
     });
     this.userService = userService;
     this.user = {
+      id: "",
       email: "",
       name: "",
       password: "",

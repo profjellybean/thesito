@@ -1,0 +1,12 @@
+<div class="background">
+  <div *ngIf="!error">
+
+    <p>ID: {{id}}</p>
+    <p>Name: {{name}}</p>
+    <p>Email: {{email}}</p>
+    <p>Role: {{role}}</p>
+  </div>
+    <div *ngIf="error" class="alert alert-warning alert-dismissible fade show">
+      {{ errorMessage }}
+    </div>
+</div>
