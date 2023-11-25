@@ -24,6 +24,7 @@ import { LanguageToggleComponent } from './components/language-toggle/language-t
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { LanguageService } from './services/language.service';
 import {MatButtonModule} from "@angular/material/button";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -62,7 +63,8 @@ export function HttpLoaderFactory(http: HttpClient) {
       defaultLanguage: 'en'
     }),
     MatSlideToggleModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule
   ],
   providers: [
     LanguageService,

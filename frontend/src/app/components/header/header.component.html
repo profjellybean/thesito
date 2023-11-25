@@ -1,21 +1,23 @@
 <!-- src/app/header/header.component.html -->
 <nav *ngIf="headerNeeded()">
-  <header class="bg-dark text-light p-3">
-    <div class="container d-flex justify-content-between align-items-center">
-      <div class="logo">
-        <img src="../../../assets/logo.PNG" alt="Logo" class="mr-2" style="width: 40px;">
-        <span class="h4">THESITO</span>
-      </div>
+  <mat-toolbar class="mat-toolbar bg-dark text-light justify-content-between">
+    <div class="logo mr-3 d-flex justify-content-center">
+      <img src="../../../assets/logo.PNG" alt="Logo" class="mr-2" style="width: 60px;">
       <app-language-toggle></app-language-toggle>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="h1">THESITO</span>
+    </div>
+    <div class="d-flex ">
       <nav>
         <ul class="list-unstyled d-flex">
-          <li class="mx-3"><a routerLink="/" class="text-light">{{"home" | translate}}</a></li>
-          <li class="mx-3"><a routerLink="/register" class="text-light">{{"register" | translate}}</a></li>
-          <li class="mx-3"><a routerLink="/login" class="text-light">{{"login" | translate}}</a></li>
-          <!-- Add more navigation links as needed -->
+          <li class="mx-3"><a routerLink="/" class="text-decoration-none text-light">{{"home" | translate}}</a></li>
+          <li class="mx-3"><a routerLink="/register"
+                              class="text-decoration-none text-light">{{"register" | translate}}</a></li>
+          <li class="mx-3"><a routerLink="/login" class="text-decoration-none text-light">{{"login" | translate}}</a>
+          </li>
         </ul>
       </nav>
     </div>
-  </header>
+  </mat-toolbar>
 </nav>
-
