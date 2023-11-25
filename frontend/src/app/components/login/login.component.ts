@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../services/user.service";
+import {AuthService} from "../../services/auth.service";
 import { Router } from '@angular/router';
 
 
@@ -13,24 +15,35 @@ export class LoginComponent {
   loginForm: FormGroup;
   pwVisible = false;
   submitted = false;
+  authService: AuthService;
+  clickCounter = 0;
+  mail: "";
+  password: "";
   error = false;
+  success = false;
   errorMessage = '';
+  successMessage = '';
 
   constructor(
+    authService: AuthService,
     private fb: FormBuilder,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
       emailOrName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required]]
     })
+    this.password = "";
+    this.mail = "";
+    this.authService = authService;
   }
 
   ngOnInit(){}
 
   login(){
     this.submitted = true;
-    if (this.loginForm.valid){
+    if (true){
+
       this.authenticateUser()
     }else{
       this.error = true;
@@ -39,7 +52,27 @@ export class LoginComponent {
   }
 
   authenticateUser() {
-    //TODO
+    this.mail = this.loginForm.get("emailOrName")?.value
+    this.password = this.loginForm.get("password")?.value
+    console.log(this.mail);
+    console.log(this.password);
+
+    this.authService.authenticateUser(this.mail, this.password).subscribe(
+      res => {
+        if (res == true) {
+          this.success = true;
+          this.successMessage = 'User logged in';
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 4000);
+        }
+      }, error => {
+        console.log(error.message)
+        if (error != null) {
+          this.error = true;
+          this.formatErrorMessage(error.message)
+        }
+      })
   }
 
   vanishError() {

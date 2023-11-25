@@ -1,15 +1,46 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {Router} from "@angular/router";
+import {Apollo} from "apollo-angular";
+import {User, registerUserQuery, loginUserQuery} from "../models/User";
+import { catchError, map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  //TODO connect to GraphQL
+  constructor(private router: Router, private apollo: Apollo) { }
 
-  constructor(private router: Router) { }
+  loginUser(email: String, password: String): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: loginUserQuery,
+      variables: {
+        email: email,
+        password: password,
+      },
+    });
+  }
+
+
+authenticateUser(email: string, password: string): Observable<boolean> {
+  return this.loginUser(email, password).pipe(
+    map((res: any) => { // Consider replacing 'any' with the actual expected type of the response
+      if (res.data != null) {
+        this.setToken(res.data.loginUser);
+        return true;
+      } else {
+        return false;
+      }
+    }),
+    catchError((error: any) => { // Consider replacing 'any' with the actual expected type of the error
+      // Here you can handle the error, log it, or do something else
+      // Then, return an Observable with a false value
+      return of(false);
+    })
+  );
+}
 
   /*loginUser(authRequest: AuthRequest): Observable<string> {
 
