@@ -6,7 +6,7 @@
         Thesito
       </div>
       <div class="unselectable subtitle">
-        A research management solution
+        {{"thesitoDescription" | translate}}
       </div>
     </div>
 
@@ -37,8 +37,6 @@
 </div>
 
 
-
-
 <!-- Login Area -->
 <div class="mask">
   <div class="login-wrapper">
@@ -49,30 +47,32 @@
           <app-language-toggle></app-language-toggle>
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="name" placeholder="Name">
+          <input class="eerie" type="text" formControlName="name" placeholder='{{"name"| translate}}'>
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="email" placeholder="E-Mail">
+          <input class="eerie" type="text" formControlName="email" placeholder='{{"email" | translate}}'>
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="confirmEmail" placeholder="Confirm E-Mail">
+          <input class="eerie" type="text" formControlName="confirmEmail" placeholder='{{"confirmEmail" | translate}}'>
         </div>
         <div class="form-group visibility">
           <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
-                 placeholder="Password">
+                 placeholder='{{"password" | translate}}'>
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>
         <div class="form-group visibility">
           <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="confirmPassword"
-                 placeholder="Confirm Password">
+                 placeholder='{{"confirmPassword" | translate}}'>
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>
         <div class="form-group">
           <mat-radio-group formControlName="userType">
-            <mat-radio-button class="eerie" id="consumer" value="ListingConsumer">{{"consumer" | translate}}</mat-radio-button>
-            <mat-radio-button class="eerie" id="producer" value="ListingProvider">{{"provider" | translate}}</mat-radio-button>
+            <mat-radio-button class="eerie" id="consumer"
+                              value="ListingConsumer">{{"consumer" | translate}}</mat-radio-button>
+            <mat-radio-button class="eerie" id="producer"
+                              value="ListingProvider">{{"provider" | translate}}</mat-radio-button>
           </mat-radio-group>
         </div>
         <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>

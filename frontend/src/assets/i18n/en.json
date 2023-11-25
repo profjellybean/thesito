@@ -1,8 +1,15 @@
 {
   "thesito": "Thesito © 2023. All Rights Reserved.",
+  "thesitoDescription": "A research management solution",
   "register": "Register",
   "consumer": "Listing Consumer",
   "provider": "Listing Provider",
   "login": "Login",
-  "home": "Home"
+  "home": "Home",
+  "confirmEmail": "Confirm Email",
+  "confirmPassword": "Confirm Password",
+  "email": "Email",
+  "password": "Password",
+  "forgotPassword": "Forgot Password?",
+  "name": "Name"
 }

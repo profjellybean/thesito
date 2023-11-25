@@ -1,8 +1,15 @@
 {
   "thesito": "Thesito © 2023. Alle Rechte vorbehalten.",
+  "thesitoDescription": "Eine Lösung für das Forschungsmanagement",
   "register": "Registrieren",
   "consumer": "Ausschreibungs Konsument",
   "provider": "Aussschreibungs Bereitsteller",
   "login": "Login",
-  "home": "Start"
+  "home": "Start",
+  "confirmEmail": "Email bestätigen",
+  "confirmPassword": "Passwort bestätigen",
+  "email": "Email",
+  "password": "Password",
+  "forgotPassword": "Passwort vergessen?",
+  "name": "Name"
 }
