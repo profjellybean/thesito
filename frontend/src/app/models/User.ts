@@ -1,9 +1,9 @@
 import {gql} from "@apollo/client/core";
 export interface User {
-  id: string
+  id?: string
   email: string
   name: string
-  password: string
+  password?: string
   userType: UserType
 }
 
@@ -37,6 +37,18 @@ export const registerUserQuery = gql`
     }
 `;
 
+export const getUserByIdQuery = gql`
+  query GetUserById($id: ID!) {
+    getById(id: $id) {
+      id
+      email
+      name
+      password
+      userType
+    }
+  }
+`;
+
 export const loginUserQuery = gql`
 
     mutation LoginUser($email: String!, $password: String!) {
@@ -44,5 +56,25 @@ export const loginUserQuery = gql`
             email: $email
             password: $password
         )
+    }
+`;
+
+export const updateUserQuery = gql`
+
+    mutation UpdateUser($email: String!, $name: String!, $password: String!, $userType: UserType!) {
+        updateUser(
+            user: {
+                email: $email
+                name: $name
+                password: $password
+                userType: $userType
+            }
+        )
+        {
+            email
+            name
+            password
+            userType
+        }
     }
 `;

@@ -91,4 +91,14 @@ public class UserController {
     }
   }
 
+  @Mutation
+  @Description("Updates a user in the database")
+  public User updateUser(User user) throws GraphQLException {
+    try {
+      return userService.updateUser(user);
+    } catch (ValidationException | ServiceException e) {
+      throw new GraphQLException(e.getMessage());
+    }
+  }
+
 }

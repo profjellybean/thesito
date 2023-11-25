@@ -19,8 +19,6 @@ public class User extends PanacheEntity {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "user_type")
-    @ColumnTransformer(read = "user_type::text", write = "?::user_type")
     private UserType userType;
 
     @Override

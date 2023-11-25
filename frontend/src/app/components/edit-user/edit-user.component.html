@@ -1,0 +1,34 @@
+<div class="mask">
+  <div class="edit-user-wrapper">
+    <div class="edit-user-area">
+      <form [formGroup]="userForm" (ngSubmit)="submitForm()" class="text-center">
+        <h2 class="unselectable eerie login-title">{{"Edit user" | translate}}</h2>
+        <div class="language-toggle">
+          <app-language-toggle></app-language-toggle>
+        </div>
+        <div class="form-group">
+          <input class="eerie" type="text" formControlName="name" placeholder='{{"name"| translate}}'>
+        </div>
+        <div class="form-group">
+          <input class="eerie" type="text" formControlName="email" placeholder='{{"email" | translate}}'>
+        </div>
+        <div class="form-group visibility">
+          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
+                 placeholder='{{"password" | translate}}'>
+          <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
+          <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
+        </div>
+        <div class="form-group">
+          <mat-radio-group formControlName="userType">
+            <mat-radio-button class="eerie" id="consumer" value="ListingConsumer">{{"consumer" | translate}}</mat-radio-button>
+            <mat-radio-button class="eerie" id="producer" value="ListingProvider">{{"provider" | translate}}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+        <div class="text-center button-wrapper">
+          <button type="button" class="btn login-button" (click)="submitForm()">{{"save" | translate}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

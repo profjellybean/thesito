@@ -83,4 +83,30 @@ public class UserService {
     return foundUser;
   }
 
+  @Transactional
+  public User updateUser(User user) throws ServiceException, ValidationException {
+    userValidator.validateUser(user);
+
+    // Retrieve the existing user from the database
+    User existingUser = userRepository.find("email", user.getEmail()).firstResult();
+
+    // Update the fields of the existing user with the new values
+    existingUser.setName(user.getName());
+    existingUser.setEmail(user.getEmail());
+    existingUser.setUserType(user.getUserType());
+    // Add more fields to update as needed
+
+    // If the password is provided, update it
+    if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+      Hash hashedPassword = Password.hash(user.getPassword()).addRandomSalt().withScrypt();
+      existingUser.setPassword(hashedPassword.getResult());
+    }
+
+    // Persist the changes
+    userRepository.persist(existingUser);
+
+    return existingUser;
+
+  }
+
 }

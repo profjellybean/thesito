@@ -26,6 +26,7 @@ import { UserDetailsComponent } from './components/user-details/user-details.com
 import { LanguageService } from './services/language.service';
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {EditUserComponent} from "./components/edit-user/edit-user.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -41,7 +42,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     NotFoundComponent,
     LanguageToggleComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,
