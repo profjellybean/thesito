@@ -77,4 +77,23 @@ class UserServiceTest {
         user1.setUserType(UserType.ListingConsumer);
         assertThrows(ServiceException.class, () -> userService.registerUser(user1));
     }
+
+    @Test
+    void getUserByValidIdShouldReturnUser() throws ServiceException, ValidationException {
+        User user = new User();
+        user.setName("Test");
+        user.setEmail("test@test.com");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingConsumer);
+        User insertedUser = userService.registerUser(user);
+        // Retrieve the user by ID and assert equality
+        User retrievedUser = userService.getUserById(String.valueOf(insertedUser.id));
+
+        assertEquals(insertedUser, retrievedUser);
+    }
+
+    @Test
+    void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, ValidationException {
+        assertThrows(ServiceException.class, () -> userService.getUserById("1"));
+    }
 }
