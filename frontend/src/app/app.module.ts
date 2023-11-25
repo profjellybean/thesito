@@ -25,6 +25,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { LanguageService } from './services/language.service';
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {AllComponent} from "./components/all/all.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -37,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RegisterUserComponent,
     HeaderComponent,
     HomeComponent,
+    AllComponent,
     LoginComponent,
     NotFoundComponent,
     LanguageToggleComponent

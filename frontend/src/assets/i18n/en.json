@@ -11,5 +11,9 @@
   "email": "Email",
   "password": "Password",
   "forgotPassword": "Forgot Password?",
-  "name": "Name"
+  "name": "Name",
+  "qualificationNone": "None",
+  "bachelors": "Bachelors",
+  "masters": "Masters",
+  "phd": "PhD"
 }

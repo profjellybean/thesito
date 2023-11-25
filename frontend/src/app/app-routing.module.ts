@@ -4,6 +4,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import {RegisterUserComponent} from "./components/register-user/register-user.component";
 import {HomeComponent} from "./components/home/home.component";
+import {AllComponent} from "./components/all/all.component";
 import {authGuard} from "./guards/auth.guard";
 import {LanguageToggleComponent} from "./components/language-toggle/language-toggle.component";
 
@@ -11,6 +12,7 @@ import {LanguageToggleComponent} from "./components/language-toggle/language-tog
 export const routes: Routes = [
   {path: '', pathMatch: 'full'/*, canActivate: [authGuard]*/, component: HomeComponent},
   {path: 'home'/*, canActivate: [authGuard]*/, component: HomeComponent},
+  {path: 'all'/*, canActivate: [authGuard]*/, component: AllComponent},
   {path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterUserComponent },
   { path: 'lang', component: LanguageToggleComponent },
