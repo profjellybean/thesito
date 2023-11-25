@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {registerUserQuery, User, UserType} from '../../models/User';
-import {UserService} from "../../services/UserService";
+import {UserService} from "../../services/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
