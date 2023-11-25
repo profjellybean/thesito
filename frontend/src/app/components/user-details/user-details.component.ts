@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder} from "@angular/forms";
-import {UserService} from "../../services/UserService";
 import {UserType} from "../../models/User";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {constructorParametersDownlevelTransform} from "@angular/compiler-cli";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-user-details',
