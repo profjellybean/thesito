@@ -26,6 +26,16 @@ public class UserService {
     }
 
     @Transactional
+    public User getUserById(String id) throws ServiceException {
+        User foundUser = userRepository.find("id", id).firstResult();
+        if ( foundUser == null){
+            throw new ServiceException("User with this id does not exist");
+        }
+        //foundUser.setPassword(null);
+        return foundUser;
+    }
+
+    @Transactional
     public User registerUser(User user) throws ValidationException, ServiceException {
         userValidator.validateUser(user);
         if(userRepository.find("email", user.getEmail()).count() > 0) {

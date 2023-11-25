@@ -24,6 +24,16 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @Query("getUserById")
+    @Description("Fetches the user corresponding to the given ID from the database")
+    public User getUserById(String id) throws GraphQLException {
+        try{
+            return userService.getUserById(id);
+        }catch (ServiceException e){
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
     @Mutation
     @Description("Registers a user in the database")
     public User registerUser(User user) throws GraphQLException {
