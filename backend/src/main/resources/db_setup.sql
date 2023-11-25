@@ -32,3 +32,9 @@ CREATE TABLE listing_topictags
     topic_tag_id INTEGER REFERENCES topic_tags(id),
     PRIMARY KEY (listing_id, topic_tag_id)
 );
+CREATE TABLE tags
+(
+    id    INTEGER PRIMARY KEY,
+    layer INTEGER NOT NULL,
+    title VARCHAR NOT NULL
+);

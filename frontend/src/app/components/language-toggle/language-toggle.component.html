@@ -1,4 +1,4 @@
-<div>
-  ENG <mat-slide-toggle [(ngModel)]="isGerman" (click)="toggleLanguage()">DE</mat-slide-toggle>
-</div>
-
+<button mat-button (click)="toggleLanguage()">
+  <mat-icon>{{ currentLanguage === 'en' ? 'language' : 'g_translate' }}</mat-icon>
+  {{ currentLanguage === 'en' ? 'English' : 'Deutsch' }}
+</button>

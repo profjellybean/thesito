@@ -23,6 +23,9 @@ import {MatRadioModule} from "@angular/material/radio";
 import { LanguageToggleComponent } from './components/language-toggle/language-toggle.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { LanguageService } from './services/language.service';
+import {MatButtonModule} from "@angular/material/button";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -61,9 +64,12 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
       defaultLanguage: 'en'
     }),
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatToolbarModule
   ],
   providers: [
+    LanguageService,
     {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {

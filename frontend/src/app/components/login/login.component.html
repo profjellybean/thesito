@@ -51,13 +51,14 @@
         </div>
         <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
         <div class="text-center button-wrapper">
-          <button type="button" class="btn login-button" (click)="login()">Login</button>
+          <button type="button" class="btn login-button" (click)="login()">{{"Login" | translate}}</button>
         </div>
       </form>
     </div>
     <div class="sign-up text-center">
       <p class="unselectable eerie">Don't have an account yet?</p>
-      <span><span class="thesito-red suggestion" (click)="goToRegistration()">Create one now</span> | <span class="thesito-red suggestion">Forgot password?</span></span>
+      <span><span class="thesito-red suggestion"
+                  (click)="goToRegistration()">Create one now</span> | <span class="thesito-red suggestion">{{"forgotPassword" | translate}}</span></span>
     </div>
   </div>
 </div>

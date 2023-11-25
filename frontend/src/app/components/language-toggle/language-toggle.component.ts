@@ -1,25 +1,22 @@
-import { Component } from '@angular/core';
-import {FormBuilder} from "@angular/forms";
-import {TranslateService} from "@ngx-translate/core";
+import {Component} from '@angular/core';
+import {LanguageService} from "../../services/language.service";
 
 @Component({
   selector: 'app-language-toggle',
   templateUrl: './language-toggle.component.html',
   styleUrl: './language-toggle.component.css',
-
 })
 export class LanguageToggleComponent {
-  isGerman = false;
+  currentLanguage: string | undefined;
 
-  constructor(private _formBuilder: FormBuilder, private translate: TranslateService) {
+  constructor(private languageService: LanguageService) {
+    this.languageService.currentLanguage$.subscribe((language) => {
+      this.currentLanguage = language;
+    });
   }
 
-  toggleLanguage(){
-    if (this.isGerman) {
-      this.translate.use('de');
-    }else{
-      this.translate.use('en');
-    }
+  toggleLanguage() {
+    this.languageService.toggleLanguage();
   }
 
 }
