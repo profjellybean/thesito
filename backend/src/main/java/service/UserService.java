@@ -64,8 +64,8 @@ public class UserService {
 
   private String generateJWT(User user) {
     //System.out.println(user.getEmail());
-    String token = Jwt.issuer("https://thesito.org")
-        .upn(user.getEmail())
+    String token = Jwt.issuer("https://thesitooo.org")
+        .upn(user.id.toString())
         // TODO
         .groups(new HashSet<>(Arrays.asList("ListingProvider", "ListingConsumer", "Administrator")))
         .claim(Claims.birthdate.name(), "2001-07-13")
@@ -85,16 +85,12 @@ public class UserService {
 
   @Transactional
   public User updateUser(User user) throws ServiceException, ValidationException {
-    userValidator.validateUser(user);
+    userValidator.validateUpdate(user);
+    User existingUser = userRepository.findById(user.id);
 
-    // Retrieve the existing user from the database
-    User existingUser = userRepository.find("email", user.getEmail()).firstResult();
-
-    // Update the fields of the existing user with the new values
     existingUser.setName(user.getName());
     existingUser.setEmail(user.getEmail());
     existingUser.setUserType(user.getUserType());
-    // Add more fields to update as needed
 
     // If the password is provided, update it
     if (user.getPassword() != null && !user.getPassword().isEmpty()) {
@@ -102,7 +98,6 @@ public class UserService {
       existingUser.setPassword(hashedPassword.getResult());
     }
 
-    // Persist the changes
     userRepository.persist(existingUser);
 
     return existingUser;

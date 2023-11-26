@@ -83,6 +83,7 @@ export class EditUserComponent implements OnInit {
         password: this.userForm.get('password')?.value,
         userType: this.userForm.get('role')?.value
       };
+      console.log(updatedUser);
       // Call the service method to update the user
       this.userService.updateUser(updatedUser).subscribe(
         (response) => {

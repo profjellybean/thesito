@@ -61,9 +61,10 @@ export const loginUserQuery = gql`
 
 export const updateUserQuery = gql`
 
-    mutation UpdateUser($email: String!, $name: String!, $password: String!, $userType: UserType!) {
+    mutation UpdateUser($id: BigInteger!, $email: String!, $name: String!, $password: String!, $userType: UserType!) {
         updateUser(
             user: {
+                id: $id
                 email: $email
                 name: $name
                 password: $password
@@ -71,6 +72,7 @@ export const updateUserQuery = gql`
             }
         )
         {
+            id
             email
             name
             password

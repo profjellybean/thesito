@@ -27,6 +27,7 @@ export class UserService {
     return this.apollo.mutate<any>({
       mutation: updateUserQuery,
       variables: {
+        id:Number(user.id),
         email: user.email,
         name: user.name,
         password: user.password,
