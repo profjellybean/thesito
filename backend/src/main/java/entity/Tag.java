@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "tags")
 public class Tag extends PanacheEntity {
-    private long id;
     private long layer;
     private String title_en;
     private String title_de;

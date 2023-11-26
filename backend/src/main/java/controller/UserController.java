@@ -73,7 +73,7 @@ public class UserController {
 
   @Query("getUserById")
   @Description("Fetches the user corresponding to the given ID from the database")
-  public User getUserById(String id) throws GraphQLException {
+  public User getUserById(Long id) throws GraphQLException {
       try{
           return userService.getUserById(id);
       }catch (ServiceException e){
