@@ -1,9 +1,11 @@
 package entity;
 
 import enums.Qualification;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.util.Collection;
 
@@ -11,21 +13,32 @@ import java.util.Collection;
 @Getter
 @Setter
 @Table(name = "listings")
-public class Listing {
-    @Id
-    private Long id;
+public class Listing extends PanacheEntity {
 
     private String title;
 
     private String details;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "qualification_type")
+    @ColumnTransformer(read = "qualification_type::text", write = "?::qualification_type")
     private Qualification requirement;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "listing_topic_tags",
             joinColumns = @JoinColumn(name = "listing_id"),
-            inverseJoinColumns = @JoinColumn(name = "topic_tag_id"))
-    private Collection<TopicTag> topicTags;
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Collection<Tag> topicTags;
+
+    @Override
+    public String toString() {
+        return "Listing{" +
+                "title='" + title + '\'' +
+                ", details='" + details + '\'' +
+                ", requirement=" + requirement +
+                ", topicTags=" + topicTags +
+                ", id=" + id +
+                '}';
+    }
 }
