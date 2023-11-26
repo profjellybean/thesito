@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserType, User } from '../../models/User';
 import { UserService } from '../../services/user.service';
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-edit-user',
@@ -15,6 +16,10 @@ export class EditUserComponent implements OnInit {
   user: User | undefined;
   pwVisible = false;
 
+  authToken: string = '';
+  loggedUserId: number = -1;
+
+
   owner: boolean = false;
 
   info = false;
@@ -26,7 +31,9 @@ export class EditUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+  private router: Router,
+  private authService: AuthService
   ) {
     this.id = '';
     this.userForm = this.fb.group({
@@ -42,22 +49,37 @@ export class EditUserComponent implements OnInit {
       this.id = params['id'];
     });
 
-    let user = this.userService.getUserById(this.id);
-    user.subscribe({
-      next: (userData) => {
-        this.user = userData;
-        this.userForm.patchValue({
-          name: userData.name,
-          email: userData.email,
-          password: '',  // Set the password field as empty in the form
-          role: userData.userType
-        });
-      },
-      error: (error2) => {
-        this.error = true;
-        this.errorMessage = error2.message;
-      }
-    });
+    if (this.authService.isLoggedIn()){
+      // @ts-ignore
+      this.authToken = this.authService.getToken();
+      // @ts-ignore
+
+      const token = this.authService.decodeToken(this.authToken);
+      this.loggedUserId = Number(token.upn)
+    }
+
+    if (Number(this.id) != this.loggedUserId){
+      setTimeout(() => {
+        this.router.navigate(['/404']);
+      }, 100);
+    } else {
+      let user = this.userService.getUserById(this.id);
+      user.subscribe({
+        next: (userData) => {
+          this.user = userData;
+          this.userForm.patchValue({
+            name: userData.name,
+            email: userData.email,
+            password: '',  // Set the password field as empty in the form
+            role: userData.userType
+          });
+        },
+        error: (error2) => {
+          this.error = true;
+          this.errorMessage = error2.message;
+        }
+      });
+    }
   }
 
   vanishInfo(): void {
