@@ -74,12 +74,11 @@ public class UserService {
   }
 
   @Transactional
-  public User getUserById(String id) throws ServiceException {
-    User foundUser = userRepository.find("id", id).firstResult();
+  public User getUserById(Long id) throws ServiceException {
+    User foundUser = userRepository.findById(id);
     if ( foundUser == null){
       throw new ServiceException("User with this id does not exist");
     }
-    //foundUser.setPassword(null);
     return foundUser;
   }
 
