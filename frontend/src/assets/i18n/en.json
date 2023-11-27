@@ -11,5 +11,12 @@
   "email": "Email",
   "password": "Password",
   "forgotPassword": "Forgot Password?",
-  "name": "Name"
+  "name": "Name",
+  "createListing": "Create Listing",
+  "title": "Title",
+  "description": "Description",
+  "preconditions": "Preconditions",
+  "save": "Save",
+  "tags": "Tags",
+  "newTag": "New Tag"
 }

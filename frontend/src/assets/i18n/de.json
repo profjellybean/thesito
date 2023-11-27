@@ -11,5 +11,12 @@
   "email": "Email",
   "password": "Password",
   "forgotPassword": "Passwort vergessen?",
-  "name": "Name"
+  "name": "Name",
+  "createListing": "Abschlussarbeit erstellen",
+  "title": "Titel",
+  "description": "Beschreibung",
+  "preconditions": "Voraussetzungen",
+  "save": "Speichern",
+  "tags": "Tags_de",
+  "newTag": "Neues Tag"
 }

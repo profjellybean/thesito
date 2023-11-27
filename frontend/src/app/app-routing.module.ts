@@ -7,6 +7,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {authGuard} from "./guards/auth.guard";
 import {LanguageToggleComponent} from "./components/language-toggle/language-toggle.component";
 import {UserDetailsComponent} from "./components/user-details/user-details.component";
+import {CreateListingComponent} from "./components/create-listing/create-listing.component";
 
 
 export const routes: Routes = [
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterUserComponent },
   { path: 'user', component: UserDetailsComponent },
   { path: 'user/:id', component: UserDetailsComponent },
+  {path: 'create-listing', component: CreateListingComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];
