@@ -64,7 +64,7 @@ public class UserService {
 
   private String generateJWT(User user) {
     //System.out.println(user.getEmail());
-    String token = Jwt.issuer("https://thesitooo.org")
+    String token = Jwt.issuer("https://thesito.org")
         .upn(user.id.toString())
         // TODO
         .groups(new HashSet<>(Arrays.asList("ListingProvider", "ListingConsumer", "Administrator")))
@@ -86,6 +86,7 @@ public class UserService {
   public User updateUser(User user) throws ServiceException, ValidationException {
     userValidator.validateUpdate(user);
     User existingUser = userRepository.findById(user.id);
+    // TODO: ensure logged user can only change own profile data
 
     existingUser.setName(user.getName());
     existingUser.setEmail(user.getEmail());

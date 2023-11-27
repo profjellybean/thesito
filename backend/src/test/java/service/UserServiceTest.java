@@ -113,6 +113,31 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
     userService.loginUser(user.getEmail(), password);
   }
 
+
+  @Test
+  @Transactional
+  void updateExistingUser() throws ValidationException, ServiceException {
+    User user = new User();
+    user.setName("Created User");
+    user.setEmail("test@create.com");
+    user.setPassword("1234Test");
+    user.setUserType(UserType.ListingConsumer);
+
+    User createdUser = userService.registerUser(user);
+
+    assertEquals(user.getName(), createdUser.getName());
+    assertEquals(user.getEmail(), createdUser.getEmail());
+
+    createdUser.setName("Updated User");
+    createdUser.setEmail("test@update.com");
+    createdUser.setUserType(UserType.ListingConsumer);
+    createdUser.setPassword("");
+    User updatedUser = userService.updateUser(createdUser);
+
+    assertEquals("test@update.com", updatedUser.getEmail());
+    assertEquals("Updated User", updatedUser.getName());
+  }
+
   @Test
   @Transactional
   void graphQLAuthenticationTests() throws ValidationException, ServiceException {

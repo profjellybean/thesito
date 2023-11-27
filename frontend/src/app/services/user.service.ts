@@ -36,11 +36,11 @@ export class UserService {
     });
   }
 
-  getUserById(id: string): Observable<User> {
+  getUserById(id: number): Observable<User> {
     return this.apollo
       .query<{ getUserById: User }>({
         query: gql`
-          query GetUserById($id: String!) {
+          query GetUserById($id: BigInteger!) {
             getUserById(id: $id) {
               id
               email

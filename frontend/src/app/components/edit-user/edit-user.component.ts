@@ -63,7 +63,7 @@ export class EditUserComponent implements OnInit {
         this.router.navigate(['/404']);
       }, 100);
     } else {
-      let user = this.userService.getUserById(this.id);
+      let user = this.userService.getUserById(Number(this.id));
       user.subscribe({
         next: (userData) => {
           this.user = userData;
@@ -108,7 +108,7 @@ export class EditUserComponent implements OnInit {
       console.log(updatedUser);
       // Call the service method to update the user
       this.userService.updateUser(updatedUser).subscribe(
-        (response) => {
+        () => {
           this.info = true;
           this.infoMessage = 'User updated successfully';
         },
