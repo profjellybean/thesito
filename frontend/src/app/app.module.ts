@@ -33,6 +33,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatChipsModule} from "@angular/material/chips";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
+import {AllComponent} from "./components/all/all.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -45,6 +46,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RegisterUserComponent,
     HeaderComponent,
     HomeComponent,
+    AllComponent,
     LoginComponent,
     NotFoundComponent,
     LanguageToggleComponent,

@@ -5,6 +5,7 @@ export enum QualificationType {
   Bachelors = 1,
   Masters = 2,
   PhD = 3,
+
 }
 export interface Listing {
   title: string;
