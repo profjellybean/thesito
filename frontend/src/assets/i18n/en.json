@@ -25,5 +25,10 @@
   "newTag": "New Tag",
   "listings": "Listings",
   "logout": "Logout",
-  "profile": "Profile"
+  "profile": "Profile",
+  "yourProfile": "Your Profile",
+  "role": "Role",
+  "chooseInterests": "Choose at least 3 interests",
+  "edit": "Edit",
+  "notEnoughTagsError": "Not enough tags selected!"
 }

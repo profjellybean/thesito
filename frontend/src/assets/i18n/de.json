@@ -2,8 +2,8 @@
   "thesito": "Thesito © 2023. Alle Rechte vorbehalten.",
   "thesitoDescription": "Eine Lösung für das Forschungsmanagement",
   "register": "Registrieren",
-  "consumer": "Ausschreibungs Konsument",
-  "provider": "Aussschreibungs Bereitsteller",
+  "consumer": "Ausschreibungskonsument",
+  "provider": "Aussschreibungsbereitsteller",
   "login": "Login",
   "home": "Start",
   "confirmEmail": "Email bestätigen",
@@ -16,7 +16,7 @@
   "bachelors": "Bachelor",
   "masters": "Master",
   "phd": "PhD",
-  "createListing": "Abschlussarbeit erstellen",
+  "createListing": "Aussschreibung erstellen",
   "title": "Titel",
   "description": "Beschreibung",
   "preconditions": "Voraussetzungen",
@@ -25,5 +25,10 @@
   "newTag": "Neuer Tag",
   "listings": "Einträge",
   "logout": "Logout",
-  "profile": "Profil"
+  "profile": "Profil",
+  "yourProfile": "Dein Profil",
+  "role": "Rolle",
+  "chooseInterests": "Wähle mindestens 3 Interessen aus",
+  "edit": "Bearbeiten",
+  "notEnoughTagsError": "Zu wenige Tags ausgewählt!"
 }
