@@ -18,6 +18,7 @@ export class UserService {
         name: user.name,
         password: user.password,
         userType: user.userType,
+        tags: user.tags
       },
     });
   }

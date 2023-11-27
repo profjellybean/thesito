@@ -47,7 +47,7 @@ public class ListingServiceTest {
         tag1.setTitle_de("Tag 2");
         tags.add(tag1);
         tags.add(tag2);
-        listing.setTopicTags(tags);
+        listing.setTags(tags);
 
         assertThrows(ValidationException.class, () -> listingService.createListing(listing));
     }
@@ -73,7 +73,7 @@ public class ListingServiceTest {
 
         tags.add(tag1);
         tags.add(tag2);
-        listing.setTopicTags(tags);
+        listing.setTags(tags);
 
         assertThrows(ValidationException.class, () -> listingService.createListing(listing));
     }
@@ -96,7 +96,7 @@ public class ListingServiceTest {
         tag1.setTitle_de("Tag 2");
         tags.add(tag1);
         tags.add(tag2);
-        listing.setTopicTags(tags);
+        listing.setTags(tags);
 
         assertThrows(ValidationException.class, () -> listingService.createListing(listing));
     }
@@ -119,7 +119,7 @@ public class ListingServiceTest {
         tag2.setTitle_de("Tag 2");
         tags.add(tag1);
         tags.add(tag2);
-        listing.setTopicTags(tags);
+        listing.setTags(tags);
 
         assertThrows(ValidationException.class, () -> listingService.createListing(listing));
     }
@@ -137,7 +137,7 @@ public class ListingServiceTest {
         tag1.setTitle_en("Tag 1");
         tag1.setTitle_de("Tag 1");
         tags.add(tag1);
-        listing.setTopicTags(tags);
+        listing.setTags(tags);
 
         assertThrows(ValidationException.class, () -> listingService.createListing(listing));
     }
@@ -166,7 +166,7 @@ public class ListingServiceTest {
         List<Tag> tags = new ArrayList<>();
         tags.add(tag1);
         tags.add(tag2);
-        listing.setTopicTags(tags);
+        listing.setTags(tags);
 
         Listing retListing = listingService.createListing(listing);
         assertEquals(listing,retListing);

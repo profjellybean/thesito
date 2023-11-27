@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +22,12 @@ public class User extends PanacheEntity {
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::user_type")
     private UserType userType;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_tags",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Collection<Tag> userTags;
 
     @Override
     public boolean equals(Object o) {

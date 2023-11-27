@@ -44,7 +44,6 @@ public class ListingValidator {
                 if (tag == null) {
                     throw new ValidationException("Tag ID cannot be null");
                 }
-
                 // Check if the tag with the given ID exists
                 try {
                     tagService.getTagById(String.valueOf(tag.id));
@@ -56,10 +55,9 @@ public class ListingValidator {
     }
 
     public void validateListing(Listing listing) throws ValidationException {
-
         validateTitle(listing.getTitle());
         validateDetails(listing.getDetails());
         validateRequirement(listing.getRequirement());
-        validateTags(listing.getTopicTags());
+        validateTags(listing.getTags());
     }
 }

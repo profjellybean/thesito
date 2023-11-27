@@ -44,7 +44,8 @@ export class ListingService {
       variables: {
         title: listing.title,
         details: listing.details,
-        requirement: listing.requirement
+        requirement: listing.requirement,
+        tags: listing.tags
       },
     });
   }

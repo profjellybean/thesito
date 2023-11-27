@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
-import {registerUserQuery, User, UserType} from '../../models/User';
+import {User, UserType} from '../../models/User';
 import {UserService} from "../../services/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Observable} from "rxjs";
 import {Router} from "@angular/router";
+import {Tag} from "../../models/Tag";
 
 @Component({
   selector: 'app-register-user',
@@ -22,6 +22,7 @@ export class RegisterUserComponent {
   success = false;
   successMessage = '';
   router: Router;
+  isConsumerUser = true;
 
   constructor(userService: UserService, formBuilder: FormBuilder, router: Router) {
     this.registerForm = formBuilder.group({
@@ -39,6 +40,7 @@ export class RegisterUserComponent {
       name: "",
       password: "",
       userType: UserType.ListingConsumer,
+      tags: []
     };
     this.confirm_email = "";
     this.confirm_password = "";
@@ -71,6 +73,10 @@ export class RegisterUserComponent {
         })
       }
     }
+  }
+
+  addTagToUser(tag: Tag[]): void {
+    this.user.tags = tag;
   }
 
   authenticateUser() {
@@ -116,5 +122,11 @@ export class RegisterUserComponent {
       default:
         this.errorMessage = error;
     }
+  }
+
+  protected readonly UserType = UserType;
+
+  isConsumer() {
+    this.isConsumerUser = this.registerForm.value.userType === "ListingConsumer";
   }
 }

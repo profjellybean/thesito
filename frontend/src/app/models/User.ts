@@ -1,10 +1,12 @@
 import {gql} from "@apollo/client/core";
+import {Tag} from "./Tag";
 export interface User {
   id?: string
   email: string
   name: string
   password?: string
   userType: UserType
+  tags?: Tag[]
 }
 
 export enum UserType {
@@ -18,14 +20,14 @@ export interface GetAllUsers {
 }
 
 export const registerUserQuery = gql`
-
-    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!) {
+    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!, $tags: [TagInput]) {
         registerUser(
             user: {
                 email: $email
                 name: $name
                 password: $password
                 userType: $userType
+                userTags: $tags
             }
         )
         {
@@ -33,6 +35,12 @@ export const registerUserQuery = gql`
             name
             password
             userType
+            userTags {
+                id
+                layer
+                title_de
+                title_en
+            }
         }
     }
 `;

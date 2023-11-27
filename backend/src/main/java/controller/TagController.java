@@ -25,10 +25,21 @@ public class TagController {
     @Query("getTagById")
     @Description("Fetches the tag corresponding to the given ID from the database")
     public Tag getTagById(String id) throws GraphQLException {
-        try{
+        try {
             return tagService.getTagById(id);
-        }catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new GraphQLException(e.getMessage());
         }
     }
+
+    @Query("getAllTagsShallow")
+    @Description("Fetches a list of all tags from layer 1 and 2 from the database")
+    public List<Tag> getAllTagsShallow() throws GraphQLException {
+        try {
+            return tagService.getAllTagsShallow();
+        } catch (ServiceException e) {
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
 }
