@@ -130,7 +130,6 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
 
     createdUser.setName("Updated User");
     createdUser.setEmail("test@update.com");
-    createdUser.setUserType(UserType.ListingConsumer);
     createdUser.setPassword("");
     User updatedUser = userService.updateUser(createdUser);
 

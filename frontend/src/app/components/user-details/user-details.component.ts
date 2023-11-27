@@ -5,6 +5,7 @@ import {UserType} from "../../models/User";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {constructorParametersDownlevelTransform} from "@angular/compiler-cli";
 import {UserService} from "../../services/user.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-user-details',
@@ -13,7 +14,7 @@ import {UserService} from "../../services/user.service";
 })
 export class UserDetailsComponent implements OnInit{
 
-  id: string;
+  id: number;
   name: string;
   role: UserType;
   email: string;
@@ -30,17 +31,22 @@ export class UserDetailsComponent implements OnInit{
   constructor(private router: Router,
               private fb: FormBuilder,
               private userService: UserService,
-              private route: ActivatedRoute) {
-    this.id = "";
+              private route: ActivatedRoute,
+              private authService: AuthService) {
+    this.id = -1;
     this.name = "";
     this.email = "";
     this.role = UserType.ListingConsumer;
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(async params =>{
-      this.id = params['id'];
-    });
+    if(this.authService.isLoggedIn()){
+      this.id = this.authService.getUserId();
+    } else {
+      setTimeout(() => {
+        this.router.navigate(['/404']);
+      }, 100);
+    }
 
     let user = this.userService.getUserById(Number(this.id))
     user.subscribe({

@@ -23,15 +23,16 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<any> {
-    console.log('User to update: ' + user)
+    console.log('User to update: ')
+    console.log(user)
     return this.apollo.mutate<any>({
       mutation: updateUserQuery,
       variables: {
-        id:Number(user.id),
+        id: Number(user.id),
         email: user.email,
         name: user.name,
         password: user.password,
-        userType: user.userType
+        userType: user.userType,
       },
     });
   }

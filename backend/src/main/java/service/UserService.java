@@ -90,7 +90,6 @@ public class UserService {
 
     existingUser.setName(user.getName());
     existingUser.setEmail(user.getEmail());
-    existingUser.setUserType(user.getUserType());
 
     // If the password is provided, update it
     if (user.getPassword() != null && !user.getPassword().isEmpty()) {

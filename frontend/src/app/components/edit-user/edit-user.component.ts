@@ -11,13 +11,12 @@ import {AuthService} from "../../services/auth.service";
   styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit {
-  id: string;
+  id: number;
   userForm: FormGroup;
   user: User | undefined;
   pwVisible = false;
 
   authToken: string = '';
-  loggedUserId: number = -1;
 
 
   owner: boolean = false;
@@ -31,34 +30,23 @@ export class EditUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private route: ActivatedRoute,
   private router: Router,
   private authService: AuthService
   ) {
-    this.id = '';
+    this.id = -1;
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: [''],  // Initialize as empty
-      role: [UserType.ListingConsumer, Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(async (params) => {
-      this.id = params['id'];
-    });
-
     if (this.authService.isLoggedIn()){
-      // @ts-ignore
-      this.authToken = this.authService.getToken();
-      // @ts-ignore
-
-      const token = this.authService.decodeToken(this.authToken);
-      this.loggedUserId = Number(token.upn)
+      this.id = this.authService.getUserId();
     }
 
-    if (Number(this.id) != this.loggedUserId){
+    if (Number(this.id) == -1){
       setTimeout(() => {
         this.router.navigate(['/404']);
       }, 100);
@@ -71,7 +59,7 @@ export class EditUserComponent implements OnInit {
             name: userData.name,
             email: userData.email,
             password: '',  // Set the password field as empty in the form
-            role: userData.userType
+            userType: userData.userType,
           });
         },
         error: (error2) => {
@@ -103,9 +91,8 @@ export class EditUserComponent implements OnInit {
         name: this.userForm.get('name')?.value,
         email: this.userForm.get('email')?.value,
         password: this.userForm.get('password')?.value,
-        userType: this.userForm.get('role')?.value
+        userType: this.user.userType,
       };
-      console.log(updatedUser);
       // Call the service method to update the user
       this.userService.updateUser(updatedUser).subscribe(
         () => {
