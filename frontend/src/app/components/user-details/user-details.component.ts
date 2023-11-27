@@ -42,7 +42,7 @@ export class UserDetailsComponent implements OnInit{
       this.id = params['id'];
     });
 
-    let user = this.userService.getUserById(this.id)
+    let user = this.userService.getUserById(Number(this.id))
     user.subscribe({
       next: user =>{
         this.name = user.name;

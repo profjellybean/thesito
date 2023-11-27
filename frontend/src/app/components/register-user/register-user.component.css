@@ -10,13 +10,12 @@
   display: flex !important;
   align-items: center;
   color: white;
-
   font-style: normal;
   font-weight: bold;
   font-size: 120px;
   line-height: 100px;
-//height: 100%;
 }
+
 
 .subtitle {
   color: white;
@@ -40,13 +39,12 @@
   top: 0;
   right: 0;
   height: 100%;
-//background-color: #93B7BE;
 }
 
 .logo-wrapper {
   z-index: 1;
   height: 100%;
-//padding-left: 15%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,9 +125,9 @@ input::-moz-placeholder {
   padding-right: 15px;
   margin-left: 7.5%;
   padding-left: 15px;
-  top: 35%;
+  top: 10%;
   right: 7.5%;
-
+  z-index: 2;
 }
 
 .login-button {

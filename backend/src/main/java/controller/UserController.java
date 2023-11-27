@@ -73,7 +73,7 @@ public class UserController {
 
   @Query("getUserById")
   @Description("Fetches the user corresponding to the given ID from the database")
-  public User getUserById(String id) throws GraphQLException {
+  public User getUserById(Long id) throws GraphQLException {
       try{
           return userService.getUserById(id);
       }catch (ServiceException e){
@@ -87,6 +87,17 @@ public class UserController {
     try {
       return userService.loginUser(email, password);
     } catch (ServiceException e) {
+      throw new GraphQLException(e.getMessage());
+    }
+  }
+
+  @Mutation
+  @Description("Updates a user in the database")
+  public User updateUser(User user) throws GraphQLException {
+    System.out.println("User is: " + user);
+    try {
+      return userService.updateUser(user);
+    } catch (ValidationException | ServiceException e) {
       throw new GraphQLException(e.getMessage());
     }
   }

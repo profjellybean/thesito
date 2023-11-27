@@ -65,7 +65,7 @@ public class UserService {
   private String generateJWT(User user) {
     //System.out.println(user.getEmail());
     String token = Jwt.issuer("https://thesito.org")
-        .upn(user.getEmail())
+        .upn(user.id.toString())
         // TODO
         .groups(new HashSet<>(Arrays.asList("ListingProvider", "ListingConsumer", "Administrator")))
         .claim(Claims.birthdate.name(), "2001-07-13")
@@ -74,13 +74,34 @@ public class UserService {
   }
 
   @Transactional
-  public User getUserById(String id) throws ServiceException {
-    User foundUser = userRepository.find("id", id).firstResult();
+  public User getUserById(Long id) throws ServiceException {
+    User foundUser = userRepository.findById(id);
     if ( foundUser == null){
       throw new ServiceException("User with this id does not exist");
     }
-    //foundUser.setPassword(null);
     return foundUser;
+  }
+
+  @Transactional
+  public User updateUser(User user) throws ServiceException, ValidationException {
+    userValidator.validateUpdate(user);
+    User existingUser = userRepository.findById(user.id);
+    // TODO: ensure logged user can only change own profile data
+
+    existingUser.setName(user.getName());
+    existingUser.setEmail(user.getEmail());
+    existingUser.setUserType(user.getUserType());
+
+    // If the password is provided, update it
+    if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+      Hash hashedPassword = Password.hash(user.getPassword()).addRandomSalt().withScrypt();
+      existingUser.setPassword(hashedPassword.getResult());
+    }
+
+    userRepository.persist(existingUser);
+
+    return existingUser;
+
   }
 
 }

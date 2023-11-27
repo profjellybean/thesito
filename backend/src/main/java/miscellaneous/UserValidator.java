@@ -58,4 +58,23 @@ public class UserValidator {
         validateName(user.getName());
         validateUserType(user.getUserType());
     }
+
+    public void validateUpdate(User user) throws ValidationException {
+        validateEmail(user.getEmail());
+        validateName(user.getName());
+        validateUserType(user.getUserType());
+        validateUpdatePassword(user.getPassword());
+    }
+
+    private void validateUpdatePassword(String password) throws ValidationException {
+        if (password == null || password.isBlank()) {
+            return;
+        }
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+            throw new ValidationException("Invalid password. Password must contain at least eight characters, at least one letter and one number");
+        }
+        if (password.length() > 255) {
+            throw new ValidationException("Password cannot be longer than 255 characters");
+        }
+    }
 }

@@ -89,14 +89,15 @@ void getUserByValidIdShouldReturnUser() throws ServiceException, ValidationExcep
   user.setUserType(UserType.ListingConsumer);
   User insertedUser = userService.registerUser(user);
   // Retrieve the user by ID and assert equality
-  User retrievedUser = userService.getUserById(String.valueOf(insertedUser.id));
+  userService.getUserById(insertedUser.id);
+  User retrievedUser = userService.getUserById(insertedUser.id);
 
   assertEquals(insertedUser, retrievedUser);
 }
 
 @Test
 void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, ValidationException {
-  assertThrows(ServiceException.class, () -> userService.getUserById("1"));
+  assertThrows(ServiceException.class, () -> userService.getUserById(-999999L));
 }
 
   @Test
@@ -110,6 +111,31 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
     user.setUserType(UserType.ListingConsumer);
     userService.registerUser(user);
     userService.loginUser(user.getEmail(), password);
+  }
+
+
+  @Test
+  @Transactional
+  void updateExistingUser() throws ValidationException, ServiceException {
+    User user = new User();
+    user.setName("Created User");
+    user.setEmail("test@create.com");
+    user.setPassword("1234Test");
+    user.setUserType(UserType.ListingConsumer);
+
+    User createdUser = userService.registerUser(user);
+
+    assertEquals(user.getName(), createdUser.getName());
+    assertEquals(user.getEmail(), createdUser.getEmail());
+
+    createdUser.setName("Updated User");
+    createdUser.setEmail("test@update.com");
+    createdUser.setUserType(UserType.ListingConsumer);
+    createdUser.setPassword("");
+    User updatedUser = userService.updateUser(createdUser);
+
+    assertEquals("test@update.com", updatedUser.getEmail());
+    assertEquals("Updated User", updatedUser.getName());
   }
 
   @Test

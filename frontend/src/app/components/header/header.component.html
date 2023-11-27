@@ -16,6 +16,17 @@
                               class="text-decoration-none text-light">{{"register" | translate}}</a></li>
           <li class="mx-3"><a routerLink="/login" class="text-decoration-none text-light">{{"login" | translate}}</a>
           </li>
+          <li class="mx-3">
+            <div class="dropdown">
+              <a class="text-light" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Profile
+              </a>
+              <div class="dropdown-menu bg-dark" aria-labelledby="profileDropdown">
+                <a class="text-light dropdown-item" [routerLink]="['/user/edit', loggedUserId]">Edit</a>
+                <a class="text-light dropdown-item" [routerLink]="['/user/', loggedUserId]">Details</a>
+              </div>
+            </div>
+          </li>
         </ul>
       </nav>
     </div>
