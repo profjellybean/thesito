@@ -23,5 +23,7 @@
   "save": "Save",
   "tags": "Tags",
   "newTag": "New Tag",
-  "listings": "Listings"
+  "listings": "Listings",
+  "logout": "Logout",
+  "profile": "Profile"
 }

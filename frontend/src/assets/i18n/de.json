@@ -23,5 +23,7 @@
   "save": "Speichern",
   "tags": "Tags_de",
   "newTag": "Neuer Tag",
-  "listings": "Einträge"
+  "listings": "Einträge",
+  "logout": "Logout",
+  "profile": "Profil"
 }

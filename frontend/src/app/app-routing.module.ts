@@ -10,6 +10,7 @@ import {LanguageToggleComponent} from "./components/language-toggle/language-tog
 import {UserDetailsComponent} from "./components/user-details/user-details.component";
 import {CreateListingComponent} from "./components/create-listing/create-listing.component";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
+import {AuthService} from "./services/auth.service";
 
 
 export const routes: Routes = [

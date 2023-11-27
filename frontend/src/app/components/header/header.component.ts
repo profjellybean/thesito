@@ -34,5 +34,11 @@ export class HeaderComponent implements OnInit{
     return !this.router.url.includes('login') && !this.router.url.includes('register') && !this.router.url.includes('404')
   }
 
+  isLoggedIn(): boolean{
+    return this.authService.isLoggedIn();
+  }
 
+  logoutUser(): void {
+    this.authService.logoutUser();
+  }
 }
