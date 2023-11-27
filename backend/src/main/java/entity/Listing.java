@@ -20,7 +20,7 @@ public class Listing extends PanacheEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "qualification_type")
-    @ColumnTransformer(read = "qualification_type::text", write = "?::qualification_type")
+    @ColumnTransformer(write = "?::qualification_type")
     private Qualification requirement;
 
     @ManyToMany(fetch = FetchType.EAGER)
