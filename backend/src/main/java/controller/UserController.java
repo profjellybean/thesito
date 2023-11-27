@@ -1,23 +1,18 @@
 package controller;
 
 import entity.User;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import io.smallrye.jwt.auth.principal.JWTParser;
+import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.WebApplicationException;
 import miscellaneous.ServiceException;
+import miscellaneous.Session;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.graphql.*;
 import service.UserService;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.core.SecurityContext;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.Produces;
 import jakarta.annotation.security.PermitAll;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import jakarta.ws.rs.InternalServerErrorException;
 
 import java.util.List;
 
@@ -25,6 +20,7 @@ import java.util.List;
 public class UserController {
   @Inject
   JsonWebToken jwt;
+
 
   @Inject
   UserService userService;
@@ -81,11 +77,27 @@ public class UserController {
       }
   }
 
+  // return
+  //    acceess token (15 min) and 
+  //    refresh token (valid for 3 days, can be used once)
   @Mutation
-  @Description("Login a user")
-  public String loginUser(String email, String password) throws GraphQLException {
+  @Description("Get access and refresh token by using username and password")
+  public Session getSession(String email, String password) throws GraphQLException {
     try {
-      return userService.loginUser(email, password);
+      return userService.getSession(email, password);
+    } catch (ServiceException e) {
+      throw new GraphQLException(e.getMessage());
+    }
+  }
+
+  // when a refresh token is used to get an access token 
+  // the claim number of that refresh token is saved in a DB for (3 days)
+  // -> refresh token can only be used once
+  @Mutation
+  @Description("Get new access and refresh token by using the one-time use refresh token")
+  public Session refreshSession(String token) throws GraphQLException {
+    try {
+      return userService.refreshSession(token);
     } catch (ServiceException e) {
       throw new GraphQLException(e.getMessage());
     }

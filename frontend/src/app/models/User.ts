@@ -60,10 +60,25 @@ export const getUserByIdQuery = gql`
 export const loginUserQuery = gql`
 
     mutation LoginUser($email: String!, $password: String!) {
-        loginUser(
+        getSession(
             email: $email
             password: $password
-        )
+        ) {
+            refreshToken
+            accessToken
+            }
+    }
+`;
+
+export const refreshSessionQuery = gql`
+
+    mutation refreshSessionQuery($token: String!) {
+        refreshSession(
+            token: $token
+        ) {
+            refreshToken
+            accessToken
+            }
     }
 `;
 

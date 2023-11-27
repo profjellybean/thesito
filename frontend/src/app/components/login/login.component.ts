@@ -49,7 +49,7 @@ export class LoginComponent {
     console.log(this.mail);
     console.log(this.password);
 
-    this.authService.authenticateUser(this.mail, this.password).subscribe(
+    this.authService.getSession(this.mail, this.password).subscribe(
       res => {
         if (res) {
           this.success = true;
