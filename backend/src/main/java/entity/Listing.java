@@ -14,7 +14,6 @@ import java.util.Collection;
 @Setter
 @Table(name = "listings")
 public class Listing extends PanacheEntity {
-
     private String title;
 
     private String details;
@@ -26,7 +25,7 @@ public class Listing extends PanacheEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "listing_topic_tags",
+            name = "listing_tags",
             joinColumns = @JoinColumn(name = "listing_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tag> topicTags;

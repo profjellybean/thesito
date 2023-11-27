@@ -15,7 +15,7 @@ CREATE TABLE listings
     id   SERIAL PRIMARY KEY,
     title VARCHAR NOT NULL,
     details VARCHAR NOT NULL,
-    requirement qualification_type NOT NULL
+    qualification_type qualification_type NOT NULL
 
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE tags
     title_de VARCHAR NOT NULL
 );
 
-CREATE TABLE listing_topic_tags
+CREATE TABLE listing_tags
 (
     listing_id INTEGER REFERENCES listings(id),
     tag_id INTEGER REFERENCES tags(id),

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Listing} from "../../models/Listing";
+import {Listing, QualificationType} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 
 @Component({
@@ -21,6 +21,19 @@ export class AllComponent {
     this.listingService.getAllListings().subscribe((listings) => {
       this.listings = listings;
     });
+  }
+
+  qualificationToString(q: QualificationType): string {
+    switch (q) {
+      case QualificationType.None:
+        return 'qualificationNone';
+      case QualificationType.Bachelors:
+        return 'bachelors';
+      case QualificationType.Masters:
+        return 'masters';
+      case QualificationType.PhD:
+        return 'phd';
+    }
   }
 
 }

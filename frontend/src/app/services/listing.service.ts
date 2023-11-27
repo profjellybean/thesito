@@ -13,7 +13,9 @@ const getAllListingsQuery = gql`
       requirement
       topicTags {
         id
-        name
+        title_de
+        title_en
+        layer
       }
     }
   }
