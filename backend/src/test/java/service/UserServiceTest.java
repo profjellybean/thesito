@@ -97,7 +97,7 @@ void getUserByValidIdShouldReturnUser() throws ServiceException, ValidationExcep
 
 @Test
 void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, ValidationException {
-  assertThrows(ServiceException.class, () -> userService.getUserById(1L));
+  assertThrows(ServiceException.class, () -> userService.getUserById(-999999L));
 }
 
   @Test
