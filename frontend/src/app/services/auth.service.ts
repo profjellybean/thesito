@@ -64,14 +64,10 @@ export class AuthService {
 
   removeToken(): void {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    localStorage.removeItem('profile');
   }
 
   logoutUser() {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    localStorage.removeItem('profile');
     this.router.navigate(['/login']);
   }
 
@@ -86,7 +82,6 @@ export class AuthService {
     }
     return null;
   }
-
    */
   decodeToken(token: string) {
     const _decodeToken = (token: string) => {

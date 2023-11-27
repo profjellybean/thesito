@@ -7,7 +7,7 @@ CREATE TABLE users
     name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
-    user_type user_type
+    userType user_type
 );
 
 CREATE TABLE listings
