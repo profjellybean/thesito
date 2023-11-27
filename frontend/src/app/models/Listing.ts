@@ -13,6 +13,24 @@ export interface Listing {
   requirement: QualificationType;
   tags?: Tag[];
 }
+
+export const getAllListingsQuery = gql`
+  query {
+    getAllListings {
+      id
+      title
+      details
+      requirement
+      tags {
+        id
+        title_de
+        title_en
+        layer
+      }
+    }
+  }
+`;
+
 export const createListingQuery = gql`
 mutation CreateListing($title: String!, $details: String!, $requirement: Qualification!, $tags: [TagInput]) {
   createListing(
