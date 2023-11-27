@@ -1,0 +1,47 @@
+.create-listing-container {
+  background-color: #EAE7DC;
+  height: 100vh;
+}
+
+.card {
+  margin-top: 5px;
+}
+
+.h1{
+  font-size: 22px;
+  margin-bottom: -5px;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #5AB779;
+  color: #F7F6F2;
+}
+
+.visually-hidden {
+  color: rgba(128, 128, 128, 0.5); /* Adjust the alpha (last value) for opacity */
+}
+
+.btn-primary:hover {
+  background-color: #131314;
+}
+
+.checkbox-group {
+  display: flex;
+}
+
+.form-check {
+  margin-right: 15px; /* Adjust the spacing between checkboxes as needed */
+}
+
+.form-check-input {
+  border-radius: 50%; /* Make the checkboxes round */
+  margin-right: 10px; /* Adjust the spacing between checkboxes as needed */
+}
+
+.example-chip-list {
+  width: 100%;
+}

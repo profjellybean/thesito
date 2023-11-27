@@ -15,5 +15,12 @@
   "qualificationNone": "None",
   "bachelors": "Bachelors",
   "masters": "Masters",
-  "phd": "PhD"
+  "phd": "PhD",
+  "createListing": "Create Listing",
+  "title": "Title",
+  "description": "Description",
+  "preconditions": "Preconditions",
+  "save": "Save",
+  "tags": "Tags",
+  "newTag": "New Tag"
 }

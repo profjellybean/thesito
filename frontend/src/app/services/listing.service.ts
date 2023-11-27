@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Apollo} from "apollo-angular";
 import {gql} from "@apollo/client/core";
 import {map, Observable} from "rxjs";
-import {Listing} from "../models/Listing";
+import {createListingQuery, Listing} from "../models/Listing";
 
 const getAllListingsQuery = gql`
   query {
@@ -33,5 +33,17 @@ export class ListingService {
       .pipe(
         map((result) => result.data.getAllListings)
       );
+  }
+
+  createListing(listing: Listing): Observable<any> {
+    console.log(listing)
+    return this.apollo.mutate<any>({
+      mutation: createListingQuery,
+      variables: {
+        title: listing.title,
+        details: listing.details,
+        requirement: listing.requirement
+      },
+    });
   }
 }

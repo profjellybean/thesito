@@ -19,12 +19,20 @@ import {RouterModule} from "@angular/router";
 import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
+import {CreateListingComponent} from './components/create-listing/create-listing.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { LanguageToggleComponent } from './components/language-toggle/language-toggle.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { LanguageService } from './services/language.service';
 import {MatButtonModule} from "@angular/material/button";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatOptionModule} from "@angular/material/core";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatChipsModule} from "@angular/material/chips";
+import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {AllComponent} from "./components/all/all.component";
 
 
@@ -41,7 +49,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AllComponent,
     LoginComponent,
     NotFoundComponent,
-    LanguageToggleComponent
+    LanguageToggleComponent,
+    UserDetailsComponent,
+    CreateListingComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +77,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     MatSlideToggleModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatOptionModule,
+    MatInputModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatChipsModule
   ],
   providers: [
     LanguageService,

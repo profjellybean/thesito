@@ -15,5 +15,12 @@
   "qualificationNone": "Keine",
   "bachelors": "Bachelor",
   "masters": "Master",
-  "phd": "PhD"
+  "phd": "PhD",
+  "createListing": "Abschlussarbeit erstellen",
+  "title": "Titel",
+  "description": "Beschreibung",
+  "preconditions": "Voraussetzungen",
+  "save": "Speichern",
+  "tags": "Tags_de",
+  "newTag": "Neues Tag"
 }
