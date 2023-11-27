@@ -61,7 +61,7 @@ export class RegisterUserComponent {
             this.successMessage = 'User registered successfully';
             setTimeout(() => {
               this.router.navigate(['/login']);
-            }, 4000);
+            }, 2000);
           }
         }, error => {
           if (error != null) {

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -38,17 +38,9 @@ export class LoginComponent {
     this.authService = authService;
   }
 
-  ngOnInit(){}
-
-  login(){
+  login() {
     this.submitted = true;
-    if (true){
-
-      this.authenticateUser()
-    }else{
-      this.error = true;
-      this.formatErrorMessage('Invalid input')
-    }
+    this.authenticateUser()
   }
 
   authenticateUser() {
@@ -59,25 +51,24 @@ export class LoginComponent {
 
     this.authService.authenticateUser(this.mail, this.password).subscribe(
       res => {
-        if (res == true) {
+        if (res) {
           this.success = true;
           this.successMessage = 'User logged in';
           setTimeout(() => {
             this.router.navigate(['/home']);
-          }, 4000);
+          }, 500);
         }
       }, error => {
         console.log(error.message)
-        if (error != null) {
-          this.error = true;
-          this.formatErrorMessage(error.message)
-        }
+        this.error = true;
+        this.formatErrorMessage(error.message)
       })
   }
 
   vanishError() {
     this.error = false;
   }
+
   private formatErrorMessage(error: string): void {
     switch (error) {
       case 'Invalid input':
