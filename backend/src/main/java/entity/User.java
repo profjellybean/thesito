@@ -1,6 +1,7 @@
 package entity;
 
 
+import enums.Qualification;
 import enums.UserType;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
@@ -20,8 +21,14 @@ public class User extends PanacheEntity {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
+    @ColumnTransformer(write = "?::qualification_type")
+    private Qualification qualification;
+    @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::user_type")
     private UserType userType;
+    @Enumerated(EnumType.STRING)
+    @ColumnTransformer(write = "?::user_type")
+    private UserType academicCareer;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_tags",
