@@ -28,7 +28,7 @@ public class Listing extends PanacheEntity {
             name = "listing_tags",
             joinColumns = @JoinColumn(name = "listing_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private Collection<Tag> topicTags;
+    private Collection<Tag> tags;
 
     @Override
     public String toString() {
@@ -36,7 +36,7 @@ public class Listing extends PanacheEntity {
                 "title='" + title + '\'' +
                 ", details='" + details + '\'' +
                 ", requirement=" + requirement +
-                ", topicTags=" + topicTags +
+                ", topicTags=" + tags +
                 ", id=" + id +
                 '}';
     }

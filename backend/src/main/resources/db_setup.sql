@@ -33,3 +33,10 @@ CREATE TABLE listing_tags
     tag_id INTEGER REFERENCES tags(id),
     PRIMARY KEY (listing_id, tag_id)
 );
+
+CREATE TABLE refreshtokens
+(
+    id    SERIAL PRIMARY KEY,
+    userid INTEGER NOT NULL,
+    uuid VARCHAR NOT NULL
+);

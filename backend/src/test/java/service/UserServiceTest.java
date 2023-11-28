@@ -1,25 +1,39 @@
 package service;
 
+import entity.RefreshToken;
 import entity.User;
 import enums.UserType;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import io.smallrye.jwt.build.Jwt;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
+import miscellaneous.Session;
 import miscellaneous.ValidationException;
 import org.junit.jupiter.api.Test;
 import persistence.DatabaseContainerMock;
+import persistence.RefreshTokenRepository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.security.KeyPairGenerator;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.NoSuchAlgorithmException;
 
 @QuarkusTest
 @QuarkusTestResource(DatabaseContainerMock.class)
 class UserServiceTest {
   @Inject
   UserService userService;
+
+  @Inject
+  RefreshTokenRepository refreshTokenRepository;
 
   @Test
   void insertUserWithInvalidMailShouldThrowValidationException() {
@@ -110,7 +124,7 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
     user.setPassword(password);
     user.setUserType(UserType.ListingConsumer);
     userService.registerUser(user);
-    userService.loginUser(user.getEmail(), password);
+    userService.getSession(user.getEmail(), password);
   }
 
 
@@ -139,6 +153,77 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
 
   @Test
   @Transactional
+  void loginAndRefreshSession() throws ServiceException, ValidationException{
+    String password = "123456789Test";
+    User user = new User();
+    user.setName("Test");
+    user.setEmail("test5@test.com");
+    user.setPassword(password);
+    user.setUserType(UserType.ListingConsumer);
+    userService.registerUser(user);
+    Session session = userService.getSession(user.getEmail(), password);
+    RefreshToken refreshToken_old = refreshTokenRepository.find("userid", user.id).firstResult();
+    Long count = refreshTokenRepository.find("userid", user.id).count();
+    userService.refreshSession(session.refreshToken);
+    RefreshToken refreshToken_new = refreshTokenRepository.find("userid", user.id).firstResult();
+    // old refresh token uuid does not match the new one
+    assertFalse(refreshToken_new.equals(refreshToken_old));
+    // refresh tokens are single-use
+    assertEquals(count,1);
+  }
+
+  @Test
+  @Transactional
+  void unauthorizedAccessTest1() throws ValidationException, ServiceException {
+    String password = "123456789Test";
+    User user = new User();
+    user.setName("Test");
+    user.setEmail("test6@test.com");
+    user.setPassword(password);
+    user.setUserType(UserType.ListingConsumer);
+    userService.registerUser(user);
+    Session session = userService.getSession(user.getEmail(), password);
+    RefreshToken refreshToken= refreshTokenRepository.find("userid", user.id).firstResult();
+    String expired_refresh_token = Jwt.issuer("https://thesito.org")
+            .upn(user.id.toString())
+            .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+            .expiresAt(1695881286)
+            .claim("usage", "refresh_token")
+            .claim("uuid", refreshToken.getUuid())
+            .claim("userid", user.id.toString())
+            .sign();
+    assertThrows(ServiceException.class, () -> userService.refreshSession(expired_refresh_token));
+  }
+
+  @Test
+  @Transactional
+  void unauthorizedAccessTest2() throws ValidationException, ServiceException, NoSuchAlgorithmException {
+    String password = "123456789Test";
+    User user = new User();
+    user.setName("Test");
+    user.setEmail("test7@test.com");
+    user.setPassword(password);
+    user.setUserType(UserType.ListingConsumer);
+    userService.registerUser(user);
+    Session session = userService.getSession(user.getEmail(), password);
+    RefreshToken refreshToken= refreshTokenRepository.find("userid", user.id).firstResult();
+    KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+    keyGen.initialize(2048);
+    KeyPair pair = keyGen.generateKeyPair();
+    PrivateKey privateKey = pair.getPrivate();
+    String wrong_signature_refresh_token = Jwt.issuer("https://thesito.org")
+            .upn(user.id.toString())
+            .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+            .expiresIn(900)
+            .claim("usage", "refresh_token")
+            .claim("uuid", refreshToken.getUuid())
+            .claim("userid", user.id.toString())
+            .sign(privateKey);
+    assertThrows(ServiceException.class, () -> userService.refreshSession(wrong_signature_refresh_token));
+  }
+
+  @Test
+  @Transactional
   void graphQLAuthenticationTests() throws ValidationException, ServiceException {
     String password = "123456789Test";
     User consumer = new User();
@@ -147,7 +232,8 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
     consumer.setPassword(password);
     consumer.setUserType(UserType.ListingConsumer);
     userService.registerUser(consumer);
-    String consumer_jwt = userService.loginUser(consumer.getEmail(), password);
+    Session consumer_session = userService.getSession(consumer.getEmail(), password);
+    String consumer_jwt = consumer_session.accessToken;
 
     User provider = new User();
     provider.setName("Provider");
@@ -155,7 +241,8 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
     provider.setPassword(password);
     provider.setUserType(UserType.ListingProvider);
     userService.registerUser(provider);
-    String provider_jwt = userService.loginUser(provider.getEmail(), password);
+    Session provider_session = userService.getSession(provider.getEmail(), password);
+    String provider_jwt = provider_session.accessToken;
 
     User admin = new User();
     admin.setName("Admin");
@@ -163,7 +250,9 @@ void getUserByInvalidIdShouldThrowServiceException() throws ServiceException, Va
     admin.setPassword(password);
     admin.setUserType(UserType.Administrator);
     userService.registerUser(admin);
-    String admin_jwt = userService.loginUser(admin.getEmail(), password);
+    Session admin_session = userService.getSession(admin.getEmail(), password);
+    String admin_jwt = admin_session.accessToken;
+
 
     String query = "{\"query\":\"query Consumer {\n  getAllUsersListingConsumer {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
     RestAssured.given().when().header("Authorization", "Bearer " + consumer_jwt).body(query).post("/graphql").then()

@@ -11,7 +11,7 @@ const getAllListingsQuery = gql`
       title
       details
       requirement
-      topicTags {
+      tags {
         id
         title_de
         title_en
@@ -44,7 +44,8 @@ export class ListingService {
       variables: {
         title: listing.title,
         details: listing.details,
-        requirement: listing.requirement
+        requirement: listing.requirement,
+        tags: listing.tags
       },
     });
   }

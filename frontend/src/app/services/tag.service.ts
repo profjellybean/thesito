@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
 import {gql} from "@apollo/client/core";
 import {LanguageService} from "./language.service";
@@ -8,34 +8,22 @@ import {LanguageService} from "./language.service";
 })
 export class TagService {
 
-  constructor(private apollo: Apollo, private translate: LanguageService) { }
+  constructor(private apollo: Apollo, private translate: LanguageService) {
+  }
 
   getAllTags() {
     let language = this.translate.getLanguage();
-    if (language == 'de') {
-      return this.apollo.query({
-        query: gql`
-          query {
-            getAllTags {
-              id
-              layer
-              title_de
-            }
+    return this.apollo.query({
+      query: gql`
+        query {
+          getAllTags {
+            id
+            layer
+            title_de
+            title_en
           }
-        `
-      })
-    } else {
-      return this.apollo.query({
-        query: gql`
-          query {
-            getAllTags {
-              id
-              layer
-              title_en
-            }
-          }
-        `
-      })
-    }
+        }
+      `
+    })
   }
 }

@@ -34,6 +34,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatChipsModule} from "@angular/material/chips";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {AllComponent} from "./components/all/all.component";
+import { TagComponent } from './components/tag/tag.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -52,7 +53,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LanguageToggleComponent,
     UserDetailsComponent,
     CreateListingComponent,
-    EditUserComponent
+    EditUserComponent,
+    TagComponent
   ],
   imports: [
     BrowserModule,

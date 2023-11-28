@@ -36,4 +36,13 @@ public class TagService {
     public void createTag(Tag tag) {
         tagRepository.persist(tag);
     }
+
+    @Transactional
+    public List<Tag> getAllTagsShallow() throws ServiceException {
+        try {
+            return tagRepository.find("layer < 3").list();
+        } catch (NoResultException e) {
+            throw new ServiceException("Error while fetching tags");
+        }
+    }
 }
