@@ -11,7 +11,7 @@ const getAllListingsQuery = gql`
       title
       details
       requirement
-      topicTags {
+      tags {
         id
         title_de
         title_en
