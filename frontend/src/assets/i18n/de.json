@@ -13,9 +13,9 @@
   "forgotPassword": "Passwort vergessen?",
   "name": "Name",
   "qualificationNone": "Keine",
-  "bachelors": "Bachelor",
-  "masters": "Master",
-  "phd": "PhD",
+  "Bachelors": "Bachelor",
+  "Masters": "Master",
+  "PhD": "PhD",
   "createListing": "Abschlussarbeit erstellen",
   "title": "Titel",
   "description": "Beschreibung",
@@ -25,5 +25,6 @@
   "newTag": "Neuer Tag",
   "listings": "Einträge",
   "logout": "Logout",
-  "profile": "Profil"
+  "profile": "Profil",
+  "allListings": "Alle Einträge"
 }

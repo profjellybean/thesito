@@ -13,9 +13,9 @@
   "forgotPassword": "Forgot Password?",
   "name": "Name",
   "qualificationNone": "None",
-  "bachelors": "Bachelors",
-  "masters": "Masters",
-  "phd": "PhD",
+  "Bachelors": "Bachelors",
+  "Masters": "Masters",
+  "PhD": "PhD",
   "createListing": "Create Listing",
   "title": "Title",
   "description": "Description",
@@ -25,5 +25,6 @@
   "newTag": "New Tag",
   "listings": "Listings",
   "logout": "Logout",
-  "profile": "Profile"
+  "profile": "Profile",
+  "allListings": "All Listings"
 }

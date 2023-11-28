@@ -1,7 +1,7 @@
 <div class="background">
 
   <div class="container">
-    <h2>All</h2>
+    <h2>{{ "allListings" | translate }}</h2>
   </div>
   <div class="container results-container">
     <!-- search -->
@@ -19,7 +19,7 @@
 <!--&lt;!&ndash;        <h4>{{ qualificationToString(listing.requirement) | translate }}</h4>&ndash;&gt;-->
 <!--        <h4 class="my-auto">{{ listing.requirement }}</h4>-->
         <div class="row-fluid">
-          <div><h4 class="my-auto text-center">{{ listing.requirement }}</h4></div>
+          <div><h4 class="my-auto text-center">{{ listing.requirement.toString() | translate }}</h4></div>
           <div><h5 class="my-auto text-center">{{ listing.createdAt | date }}</h5></div>
         </div>
       </div>
