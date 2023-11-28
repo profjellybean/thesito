@@ -54,9 +54,7 @@ export class LoginComponent {
         if (res) {
           this.success = true;
           this.successMessage = 'User logged in';
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 500);
+          this.router.navigate(['/home']);
         }
       }, error => {
         console.log(error.message)
