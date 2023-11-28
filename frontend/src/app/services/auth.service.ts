@@ -1,18 +1,81 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from "rxjs";
+import {Observable, of, BehaviorSubject, filter, take, switchMap, from} from "rxjs";
 import {Router} from "@angular/router";
 import {Apollo} from "apollo-angular";
-import {User, registerUserQuery, loginUserQuery} from "../models/User";
-import {catchError, map} from 'rxjs/operators';
-import jwt_decode from 'jwt-decode';
+import {User, registerUserQuery, loginUserQuery, refreshSessionQuery} from "../models/User";
+import { catchError, map } from 'rxjs/operators';
+import { jwtDecode } from "jwt-decode";
+import {subscribe} from "graphql/execution";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private isRefreshing = false;
+
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(private router: Router, private apollo: Apollo) {
+  }
+
+  // checks if there is a valid access token
+  // if not it uses the refresh token to get a new access token
+   public isLoggedIn(): boolean {
+     if (this.isTokenValid(this.getToken())){
+       return true;
+     }
+     if (this.isTokenValid(this.getRefreshToken())){
+       if (this.isRefreshing){
+         return true;
+       }
+       this.refreshTokenIfNeeded();
+       return true;
+     }
+     this.logoutUser();
+     return false;
+   }
+
+   private isTokenValid(token: string | null): boolean{
+     try {
+       if (token){
+         const decodedToken: any = jwtDecode(token);
+         const currentTime = Date.now() / 1000; // Convert to seconds since epoch.
+         if (decodedToken.exp >= currentTime) {
+           return true;
+         }
+       }
+       return false;
+     } catch {
+       return false;
+     }
+   }
+
+   public refreshTokenIfNeeded(): void {
+      if (!this.isTokenValid(this.getToken()) && !this.isRefreshing){
+        this.isRefreshing = true;
+        this.refreshSessionQueryGraphQl().subscribe(
+          (res) => {
+            console.log("Refreshing access token");
+            //console.log(res);
+            this.setSessionToken(res.data.refreshSession.accessToken);
+            this.setRefreshToken(res.data.refreshSession.refreshToken);
+            this.isRefreshing = false;
+          },
+          (error) => {
+            this.isRefreshing = false;
+          }
+        )
+      }
+   }
+
+  public refreshSessionQueryGraphQl(): Observable<any> {
+    return this.apollo.mutate<{ refreshSession: boolean }>({
+      mutation: refreshSessionQuery,
+      variables: {
+        token: this.getRefreshToken(),
+      },
+    });
   }
 
   loginUser(email: String, password: String): Observable<any> {
@@ -25,6 +88,24 @@ export class AuthService {
     });
   }
 
+  getSession(email: string, password: string): Observable<boolean> {
+    return this.loginUser(email, password).pipe(
+      map((res: any) => {
+        if (res.data != null) {
+          //console.log("User " + email + " has a new session")
+          this.setSessionToken(res.data.getSession.accessToken);
+          this.setRefreshToken(res.data.getSession.refreshToken);
+          return true;
+        } else {
+          return false;
+        }
+      }),
+      catchError((error: any) => {
+        return of(false);
+      })
+    );
+  }
+
   getUserId(): number {
     let token = this.getToken();
     if (token != null) {
@@ -34,55 +115,29 @@ export class AuthService {
     }
     return -1;
   }
-
-
-  authenticateUser(email: string, password: string): Observable<boolean> {
-    return this.loginUser(email, password).pipe(
-      map((res: any) => { // Consider replacing 'any' with the actual expected type of the response
-        if (res.data != null) {
-          this.setToken(res.data.loginUser);
-          return true;
-        } else {
-          return false;
-        }
-      }),
-      catchError((error: any) => { // Consider replacing 'any' with the actual expected type of the error
-        // Here you can handle the error, log it, or do something else
-        // Then, return an Observable with a false value
-        return of(false);
-      })
-    );
+  removeTokens(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   }
 
-
-  /**
-   * Check if a valid JWT token is saved in the localStorage
-   */
-  isLoggedIn() {
-    return !!this.getToken() //&& (this.getTokenExpirationDate(this.getToken()).valueOf() > new Date().valueOf());
-  }
-
-  removeToken(): void {
-    localStorage.removeItem('authToken');
+  removeAccessToken(): void {
+    localStorage.removeItem('accessToken');
   }
 
   logoutUser() {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     this.router.navigate(['/login']);
   }
 
   getToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('accessToken');
   }
 
-  /*getTokenSub(): string {
-    if (this.getToken() != null) {
-      const decoded: any = jwt_decode(this.getToken());
-      return decoded.sub;
-    }
-    return null;
+  getRefreshToken() {
+    return localStorage.getItem('refreshToken');
   }
-   */
+
   decodeToken(token: string) {
     const _decodeToken = (token: string) => {
       try {
@@ -103,23 +158,22 @@ export class AuthService {
       }, {} as any); // Adjust the type as needed
   }
 
+  private setSessionToken(authResponse: string) {
+    localStorage.setItem('accessToken', authResponse);
+  }
 
-  private setToken(authResponse: string) {
-    localStorage.setItem('authToken', authResponse);
+  private setRefreshToken(authResponse: string) {
+    localStorage.setItem('refreshToken', authResponse);
   }
 
   private getTokenExpirationDate(token: string): Date | null {
-    /*const decoded: any = jwt_decode(token);
+    const decoded: any = jwtDecode(token);
     if (decoded.exp === undefined) {
       return null;
     }
-
     const date = new Date(0);
     date.setUTCSeconds(decoded.exp);
     return date;
-  */
-    return null
+    //return null
   }
-
-
 }

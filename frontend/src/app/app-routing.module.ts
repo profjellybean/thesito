@@ -14,15 +14,15 @@ import {AuthService} from "./services/auth.service";
 
 
 export const routes: Routes = [
-  {path: '', pathMatch: 'full'/*, canActivate: [authGuard]*/, component: HomeComponent},
-  {path: 'home'/*, canActivate: [authGuard]*/, component: HomeComponent},
-  {path: 'all'/*, canActivate: [authGuard]*/, component: AllComponent},
+  {path: '', pathMatch: 'full', canActivate: [authGuard], component: HomeComponent},
+  {path: 'home', canActivate: [authGuard], component: HomeComponent},
+  {path: 'all', canActivate: [authGuard], component: AllComponent},
   {path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterUserComponent },
-  { path: 'user', component: UserDetailsComponent },
-  { path: 'user/:id', component: UserDetailsComponent },
-  {path: 'create-listing', component: CreateListingComponent},
-  {path: 'user/edit/:id', component: EditUserComponent},
+  { path: 'user', canActivate: [authGuard], component: UserDetailsComponent },
+  { path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
+  {path: 'create-listing',canActivate: [authGuard], component: CreateListingComponent},
+  {path: 'user/edit/:id', canActivate: [authGuard], component: EditUserComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
+
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -29,6 +31,9 @@ public class Listing extends PanacheEntity {
             joinColumns = @JoinColumn(name = "listing_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tag> tags;
+
+    @Column(name = "created_at")
+    private Date createdAt;
 
     @Override
     public String toString() {

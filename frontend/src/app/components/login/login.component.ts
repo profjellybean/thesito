@@ -49,14 +49,12 @@ export class LoginComponent {
     console.log(this.mail);
     console.log(this.password);
 
-    this.authService.authenticateUser(this.mail, this.password).subscribe(
+    this.authService.getSession(this.mail, this.password).subscribe(
       res => {
         if (res) {
           this.success = true;
           this.successMessage = 'User logged in';
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 500);
+          this.router.navigate(['/home']);
         }
       }, error => {
         console.log(error.message)
