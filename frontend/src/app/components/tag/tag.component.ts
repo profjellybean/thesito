@@ -8,7 +8,6 @@ import {LanguageService} from "../../services/language.service";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {assertValidExecutionArguments} from "graphql/execution/execute";
 
 @Component({
   selector: 'app-tag',
@@ -41,9 +40,12 @@ export class TagComponent implements  OnInit {
   getAllTags(): void {
     this.tagService.getAllTags(this.shallow).subscribe(
       (result: any) => {
-        console.log(result); // Log the result to see what data is being returned
-        if (result.data?.getAllTags && Array.isArray(result.data.getAllTags)) {
-          this.allTags = result.data.getAllTags//.map((tag: Tag) => this.getTagTitles(tag));
+        if (result.data) {
+          if(this.shallow) {
+            this.allTags = result.data.getAllTagsShallow
+          } else {
+            this.allTags = result.data.getAllTags
+          }
         } else {
           console.error('Invalid data structure for tags:', result);
         }

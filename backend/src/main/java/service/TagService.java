@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
+import org.jetbrains.annotations.TestOnly;
 import persistence.TagRepository;
 
 import java.util.List;
@@ -16,8 +17,12 @@ public class TagService {
     @Inject
     TagRepository tagRepository;
 
-    public List<Tag> getAllTags() {
-        return tagRepository.listAll();
+    public List<Tag> getAllTags() throws ServiceException {
+        try {
+            return tagRepository.listAll();
+        } catch (NoResultException e) {
+            throw new ServiceException("Error while fetching tags");
+        }
     }
 
     public Tag getTagById(String tagId) throws ServiceException {
@@ -33,8 +38,13 @@ public class TagService {
     }
 
     @Transactional
-    public void createTag(Tag tag) {
-        tagRepository.persist(tag);
+    @TestOnly
+    public void createTag(Tag tag) throws ServiceException {
+        try {
+            tagRepository.persist(tag);
+        } catch (IllegalArgumentException e) {
+            throw new ServiceException("Error while creating tag");
+        }
     }
 
     @Transactional
