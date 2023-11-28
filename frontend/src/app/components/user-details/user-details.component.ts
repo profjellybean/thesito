@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl} from "@angular/forms";
-import {UserType} from "../../models/User";
+import {User, UserType} from "../../models/User";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {constructorParametersDownlevelTransform} from "@angular/compiler-cli";
 import {UserService} from "../../services/user.service";
@@ -20,22 +20,13 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
   styleUrl: './user-details.component.scss'
 })
 export class UserDetailsComponent implements OnInit{
-
-  id: number;
-  name: string;
-  role: UserType;
-  email: string;
   owner: boolean = false;
-
+  user: User;
   info = false;
   infoMessage = '';
-
   error = false;
   errorMessage = '';
-
-  selectedTags: string[] = [];
   allTags: string[] = []; // Initialize to an empty array
-  filteredTags: Observable<string[]>;
   tagCtrl = new FormControl();
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -49,32 +40,29 @@ export class UserDetailsComponent implements OnInit{
               private tagService: TagService,
               private languageService: LanguageService) {
 
-    this.filteredTags = this.tagCtrl.valueChanges.pipe(
-      startWith(null),
-      map((tag: string | null) => (tag !== null ? this._filter(tag) : this.allTags.slice())),
-    );
-
-    this.id = -1;
-    this.name = "";
-    this.email = "";
-    this.role = UserType.ListingConsumer;
+    this.user = {
+      id: -1,
+      email: "",
+      name: "",
+      password: "",
+      userType: UserType.ListingConsumer,
+      tags: []
+    };
   }
 
   ngOnInit(): void {
     if(this.authService.isLoggedIn()){
-      this.id = this.authService.getUserId();
+      this.user.id = this.authService.getUserId();
     } else {
       setTimeout(() => {
         this.router.navigate(['/404']);
       }, 100);
     }
 
-    let user = this.userService.getUserById(Number(this.id))
+    let user = this.userService.getUserById(Number(this.user.id))
     user.subscribe({
       next: user =>{
-        this.name = user.name;
-        this.role = user.userType;
-        this.email = user.email;
+        this.user = user;
       },
       error: error2 =>{
         this.error = true;
@@ -82,56 +70,10 @@ export class UserDetailsComponent implements OnInit{
       }
     });
 
-    this.tagService.getAllTags().subscribe({
-      next: (result:any) =>{
-        if (result.data && result.data.getAllTags && Array.isArray(result.data.getAllTags)) {
-          this.allTags = result.data.getAllTags.map((tag: Tag) => this.getTagTitles(tag));
-        } else {
-          console.error('Invalid data structure for tags:', result);
-        }
-        // Notify the filteredTags observable about the changes
-        this.filteredTags = this.tagCtrl.valueChanges.pipe(
-          startWith(null),
-          map((tag: string | null) => (tag !== null ? this._filter(tag) : this.allTags.slice())),
-        );
-      },
-      error: error => {
-        console.error('Error fetching tags:', error);
-      }
-    })
-
   }
 
   getTagTitles(tag: Tag): string {
     return this.languageService.loadLanguage() === 'en' ? tag.title_en : tag.title_de;
-  }
-
-  remove(tag: string): void {
-    const index = this.selectedTags.indexOf(tag);
-
-    if (index >= 0) {
-      this.selectedTags.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.viewValue;
-
-    if (value && !this.selectedTags.includes(value)) {
-      this.selectedTags.push(value);
-    }
-
-    // Clear the input value
-    this.tagInput!.nativeElement.value = '';
-    this.tagCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value ? value.toLowerCase() : '';
-
-    return this.allTags.filter(
-      (tag) => tag && tag.toLowerCase().includes(filterValue) && !this.selectedTags.includes(tag)
-    );
   }
 
   vanishInfo(): void {
@@ -145,7 +87,8 @@ export class UserDetailsComponent implements OnInit{
   }
 
   save():void{
-    if(this.selectedTags.length < 3){
+    console.log(this.user.tags)
+    if(this.user.tags.length < 3){
       this.error = true
       this.errorMessage = "notEnoughTagsError"
       return;
@@ -154,7 +97,11 @@ export class UserDetailsComponent implements OnInit{
   }
 
   goToEditProfile(){
-    this.router.navigate(['/user/edit/' + this.id]);
+    this.router.navigate(['/user/edit/' + this.user.id]);
+  }
+
+  addTagToUser(tag: Tag[]): void {
+    this.user.tags = tag;
   }
 
 }

@@ -23,6 +23,7 @@ export class TagComponent implements  OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
   @Input() shallow = false;
+  @Input() title: string = 'interests';
   @Output() updateTag = new EventEmitter<Tag[]>();
 
   constructor(private translate: TranslateService, private tagService: TagService, public languageService: LanguageService) {
@@ -36,6 +37,8 @@ export class TagComponent implements  OnInit {
       this.getAllTags()
     });
     this.getAllTags();
+
+
   }
 
   getAllTags(): void {

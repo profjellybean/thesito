@@ -1,12 +1,12 @@
 import {gql} from "@apollo/client/core";
 import {Tag} from "./Tag";
 export interface User {
-  id?: string
+  id?: number
   email: string
   name: string
   password?: string
   userType: UserType
-  tags?: Tag[]
+  tags: Tag[]
 }
 
 export enum UserType {

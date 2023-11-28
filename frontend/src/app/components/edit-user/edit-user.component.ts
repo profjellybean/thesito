@@ -92,6 +92,7 @@ export class EditUserComponent implements OnInit {
         email: this.userForm.get('email')?.value,
         password: this.userForm.get('password')?.value,
         userType: this.user.userType,
+        tags: []
       };
       // Call the service method to update the user
       this.userService.updateUser(updatedUser).subscribe(

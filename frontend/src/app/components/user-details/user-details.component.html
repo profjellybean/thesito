@@ -1,10 +1,3 @@
-
-
-<!-- Import necessary Angular Material modules -->
-<!-- Make sure these imports are present in your module file -->
-<!-- If you haven't installed Angular Material, you can install it using: ng add @angular/material -->
-<!-- Make sure to include 'MatAutocompleteModule' and 'MatChipsModule' in the imports array -->
-
 <div class="user-details-container background">
   <div class="container">
     <div class="center-card">
@@ -14,15 +7,11 @@
           <div class="card">
             <div class="card-body">
               <div class="info-wrapper">
-                <span class="fw-bold">{{ 'name' | translate }}:</span> {{name}}<br>
-                <span class="fw-bold">{{ 'email' | translate }}:</span> {{email}} <br>
-                <span class="fw-bold">{{ 'role' | translate }}:</span> {{role}}<br>
+                <span class="fw-bold">{{ 'name' | translate }}:</span> {{user.name}}<br>
+                <span class="fw-bold">{{ 'email' | translate }}:</span> {{user.email}} <br>
+                <span class="fw-bold">{{ 'role' | translate }}:</span> {{user.userType}}<br>
                 <button type="button" class="btn btn-primary2 " (click)="goToEditProfile()">{{ 'edit' | translate }}</button>
               </div>
-
-
-
-
               <div class="career-wrapper">
                 Completed Academic Career
                 <div class="radios">
@@ -32,44 +21,16 @@
                     <mat-radio-button>{{ 'masters' | translate }}</mat-radio-button>
                     <mat-radio-button>{{ 'phd' | translate }}</mat-radio-button>
                   </mat-radio-group>
-
                 </div>
               </div>
-
-              <div class="mb-3">
-                <div class="col-md-12">
-                  <mat-form-field class="example-chip-list">
-                    <mat-label class="tagfield-title">{{ 'chooseInterests' | translate }}</mat-label>
-                    <mat-chip-grid #chipGrid aria-label="Tag selection">
-                      <mat-chip-row (removed)="remove(tag)" *ngFor="let tag of selectedTags">
-                        <div>{{ tag }}</div>
-                        <button matChipRemove [attr.aria-label]="'remove ' + tag">
-                          <mat-icon>cancel</mat-icon>
-                        </button>
-                      </mat-chip-row>
-                      <input matInput placeholder="{{ 'newTag' | translate }}" #tagInput [formControl]="tagCtrl"
-                             [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
-                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes "/>
-                    </mat-chip-grid>
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                      <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-                        {{ tag }}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field>
-                </div>
-              </div>
+              <app-tag [title]="'chooseInterests'" (updateTag)="addTagToUser($event)"></app-tag>
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
               <div class="save-button">
                 <button type="button" class="btn btn-primary" (click)="save()">{{ 'save' | translate }}</button>
               </div>
-
-
             </div>
           </div>
-
         </div>
-
       </div>
     </div>
   </div>
