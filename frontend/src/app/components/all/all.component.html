@@ -7,17 +7,21 @@
     <!-- search -->
 
     <!-- listings -->
-    <div class="row" *ngFor="let listing of listings">
+    <div class="row listing" *ngFor="let listing of listings" (click)="goToListing(listing.id)">
       <div class="col col-md-1 d-flex align-items-center justify-content-center">
         <i class="bi bi-star"></i>
         <mat-icon>star_border</mat-icon>
       </div>
       <div class="col col-md-9 d-flex align-items-center justify-content-center">
-        <h3>{{listing.title}}</h3>
+        <h3 class="my-auto">{{listing.title}}</h3>
       </div>
       <div class="col col-md-2 d-flex align-items-center justify-content-center">
-<!--        <h4>{{ qualificationToString(listing.requirement) | translate }}</h4>-->
-        <h4>{{ listing.requirement }}</h4>
+<!--&lt;!&ndash;        <h4>{{ qualificationToString(listing.requirement) | translate }}</h4>&ndash;&gt;-->
+<!--        <h4 class="my-auto">{{ listing.requirement }}</h4>-->
+        <div class="row-fluid">
+          <div><h4 class="my-auto text-center">{{ listing.requirement }}</h4></div>
+          <div><h5 class="my-auto text-center">{{ listing.createdAt | date }}</h5></div>
+        </div>
       </div>
     </div>
   </div>

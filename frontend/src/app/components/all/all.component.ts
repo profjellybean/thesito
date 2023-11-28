@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Listing, QualificationType} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-all',
@@ -13,7 +14,7 @@ export class AllComponent {
   listingService: ListingService;
   listings: Listing[] = [];
 
-  constructor(listingService: ListingService) {
+  constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;
   }
 
@@ -21,6 +22,10 @@ export class AllComponent {
     this.listingService.getAllListings().subscribe((listings) => {
       this.listings = listings;
     });
+  }
+
+  goToListing(id: string | undefined) {
+    this.router.navigate(['/listing', id]);
   }
 
   qualificationToString(q: QualificationType): string {

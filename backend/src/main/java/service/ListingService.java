@@ -1,9 +1,6 @@
 package service;
 
-import com.password4j.Hash;
-import com.password4j.Password;
 import entity.Listing;
-import entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -12,6 +9,7 @@ import miscellaneous.ServiceException;
 import miscellaneous.ValidationException;
 import persistence.ListingRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @ApplicationScoped
@@ -29,6 +27,7 @@ public class ListingService {
 
     @Transactional
     public Listing createListing(Listing listing) throws ValidationException, ServiceException {
+        listing.setCreatedAt(new Date());
         listingValidator.validateListing(listing);
         listingRepository.persist(listing);
         return listing;

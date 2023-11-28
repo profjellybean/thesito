@@ -8,10 +8,12 @@ export enum QualificationType {
 
 }
 export interface Listing {
+  id?: string;
   title: string;
   details: string;
   requirement: QualificationType;
   tags?: Tag[];
+  createdAt?: Date;
 }
 
 export const getAllListingsQuery = gql`
@@ -21,6 +23,7 @@ export const getAllListingsQuery = gql`
       title
       details
       requirement
+      createdAt
       tags {
         id
         title_de
