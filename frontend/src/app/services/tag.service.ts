@@ -11,8 +11,21 @@ export class TagService {
   constructor(private apollo: Apollo, private translate: LanguageService) {
   }
 
-  getAllTags() {
-    let language = this.translate.getLanguage();
+  getAllTags(shallow: boolean) {
+    if (shallow) {
+      return this.apollo.query({
+        query: gql`
+          query {
+            getAllTagsShallow {
+              id
+              layer
+              title_de
+              title_en
+            }
+          }
+        `
+      })
+    }
     return this.apollo.query({
       query: gql`
         query {
