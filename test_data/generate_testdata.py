@@ -83,23 +83,23 @@ def generate_random_date():
 
 
 def run():
-    tag_names = []
-    tag_ids = []
-    for _ in range(count):
-        random_tag = get_random_tag()
-        tag_names.append(random_tag[0])
-        tag_ids.append(random_tag[1])
-
-    titles = generate_titles(tag_names)
-    descriptions = generate_descriptions(titles)
-    advisors = generate_advisors()
-
-    header = ['Title', 'Details', 'Qualification_Type', 'Date', 'University', 'Advisor', 'tag_id', 'tag_name']
-
-    with open('generated_test_data.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    with open('generated_test_data.csv', 'a', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(header)
+        #header = ['Title', 'Details', 'Qualification_Type', 'Date', 'University', 'Advisor', 'tag_id', 'tag_name']
+        #writer.writerow(header)
+
         for _ in range(times):
+            tag_names = []
+            tag_ids = []
+            for _ in range(count):
+                random_tag = get_random_tag()
+                tag_names.append(random_tag[0])
+                tag_ids.append(random_tag[1])
+
+            titles = generate_titles(tag_names)
+            descriptions = generate_descriptions(titles)
+            advisors = generate_advisors()
+
             for i in range(count):
                 university = random.choice(universities)
                 qualification_type = random.choice(qualification)
