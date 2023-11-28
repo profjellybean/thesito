@@ -4,6 +4,7 @@ import {UserService} from "../../services/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
+import {QualificationType} from "../../models/Listing";
 
 @Component({
   selector: 'app-register-user',
@@ -40,7 +41,8 @@ export class RegisterUserComponent {
       name: "",
       password: "",
       userType: UserType.ListingConsumer,
-      tags: []
+      userTags: [],
+      qualification: QualificationType.None
     };
     this.confirm_email = "";
     this.confirm_password = "";
@@ -76,7 +78,7 @@ export class RegisterUserComponent {
   }
 
   addTagToUser(tag: Tag[]): void {
-    this.user.tags = tag;
+    this.user.userTags = tag;
   }
 
   authenticateUser() {

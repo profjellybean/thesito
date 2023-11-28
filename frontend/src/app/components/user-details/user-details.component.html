@@ -15,15 +15,15 @@
               <div class="career-wrapper">
                 Completed Academic Career
                 <div class="radios">
-                  <mat-radio-group>
-                    <mat-radio-button>{{ 'qualificationNone' | translate }}</mat-radio-button>
-                    <mat-radio-button>{{ 'bachelors' | translate }}</mat-radio-button>
-                    <mat-radio-button>{{ 'masters' | translate }}</mat-radio-button>
-                    <mat-radio-button>{{ 'phd' | translate }}</mat-radio-button>
+                  <mat-radio-group [(ngModel)]="academicCareer">
+                    <mat-radio-button [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.Bachelors">{{ 'bachelors' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.Masters">{{ 'masters' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.PhD">{{ 'phd' | translate }}</mat-radio-button>
                   </mat-radio-group>
                 </div>
               </div>
-              <app-tag [title]="'chooseInterests'" (updateTag)="addTagToUser($event)"></app-tag>
+              <app-tag *ngIf="tagsLoaded" [title]="'chooseInterests'" [selectedTagsFromParent]="user.userTags" (updateTag)="addTagToUser($event)"></app-tag>
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
               <div class="save-button">
                 <button type="button" class="btn btn-primary" (click)="save()">{{ 'save' | translate }}</button>

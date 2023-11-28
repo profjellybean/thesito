@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Listing, QualificationType} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 
@@ -23,7 +23,7 @@ export class AllComponent {
     });
   }
 
-  qualificationToString(q: QualificationType): string {
+ qualificationToString(q: QualificationType): string {
     switch (q) {
       case QualificationType.None:
         return 'qualificationNone';
@@ -35,5 +35,4 @@ export class AllComponent {
         return 'phd';
     }
   }
-
 }

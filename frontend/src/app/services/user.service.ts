@@ -18,14 +18,13 @@ export class UserService {
         name: user.name,
         password: user.password,
         userType: user.userType,
-        tags: user.tags
+        tags: user.userTags
       },
     });
   }
 
   updateUser(user: User): Observable<any> {
-    console.log('User to update: ')
-    console.log(user)
+    console.log('User to update: ', user)
     return this.apollo.mutate<any>({
       mutation: updateUserQuery,
       variables: {
@@ -34,6 +33,7 @@ export class UserService {
         name: user.name,
         password: user.password,
         userType: user.userType,
+        userTags: user.userTags
       },
     });
   }
@@ -44,10 +44,16 @@ export class UserService {
         query: gql`
           query GetUserById($id: BigInteger!) {
             getUserById(id: $id) {
-              id
               email
               name
               userType
+              id
+              userTags {
+                id
+                title_en
+                title_de
+                layer
+              }
             }
           }
         `,

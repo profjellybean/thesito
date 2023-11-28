@@ -1,11 +1,10 @@
 import { gql } from "@apollo/client/core";
 import { Tag } from "./Tag";
 export enum QualificationType {
-  None = 0,
-  Bachelors = 1,
-  Masters = 2,
-  PhD = 3,
-
+  "None",
+  "Bachelors",
+  "Masters",
+  "PhD"
 }
 export interface Listing {
   title: string;

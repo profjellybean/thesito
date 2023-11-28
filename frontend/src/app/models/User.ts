@@ -1,12 +1,14 @@
 import {gql} from "@apollo/client/core";
 import {Tag} from "./Tag";
+import {QualificationType} from "./Listing";
 export interface User {
   id?: number
   email: string
   name: string
   password?: string
   userType: UserType
-  tags: Tag[]
+  userTags: Tag[]
+  qualification: QualificationType
 }
 
 export enum UserType {
@@ -53,6 +55,7 @@ export const getUserByIdQuery = gql`
       name
       password
       userType
+      qualification
     }
   }
 `;

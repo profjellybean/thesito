@@ -2,17 +2,13 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {User, UserType} from "../../models/User";
-import {error} from "@angular/compiler-cli/src/transformers/util";
-import {constructorParametersDownlevelTransform} from "@angular/compiler-cli";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
-import {Observable, startWith} from "rxjs";
 import {LanguageService} from "../../services/language.service";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {TagService} from "../../services/tag.service";
-import {map} from "rxjs/operators";
 import {Tag} from "../../models/Tag";
-import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
+import {QualificationType} from "../../models/Listing";
 
 @Component({
   selector: 'app-user-details',
@@ -26,6 +22,9 @@ export class UserDetailsComponent implements OnInit{
   infoMessage = '';
   error = false;
   errorMessage = '';
+  selectedTags: Tag[] = []
+  tagsLoaded = false;
+  academicCareer: QualificationType = QualificationType.None
   allTags: string[] = []; // Initialize to an empty array
   tagCtrl = new FormControl();
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -46,7 +45,8 @@ export class UserDetailsComponent implements OnInit{
       name: "",
       password: "",
       userType: UserType.ListingConsumer,
-      tags: []
+      userTags: [],
+      qualification: QualificationType.None
     };
   }
 
@@ -58,22 +58,18 @@ export class UserDetailsComponent implements OnInit{
         this.router.navigate(['/404']);
       }, 100);
     }
-
     let user = this.userService.getUserById(Number(this.user.id))
     user.subscribe({
       next: user =>{
         this.user = user;
+        this.tagsLoaded = true;
+        console.log(this.user.userTags)
       },
       error: error2 =>{
         this.error = true;
         this.errorMessage = error2.message;
       }
     });
-
-  }
-
-  getTagTitles(tag: Tag): string {
-    return this.languageService.loadLanguage() === 'en' ? tag.title_en : tag.title_de;
   }
 
   vanishInfo(): void {
@@ -87,21 +83,42 @@ export class UserDetailsComponent implements OnInit{
   }
 
   save():void{
-    console.log(this.user.tags)
-    if(this.user.tags.length < 3){
+    console.log(this.user.userTags)
+    if(this.user.userTags && this.selectedTags.length < 3){
       this.error = true
       this.errorMessage = "notEnoughTagsError"
       return;
     }
     this.vanishError()
+    this.user.qualification = this.academicCareer;
+    this.user = {
+      ...this.user,  // Copy existing properties
+      userTags: [...this.selectedTags],  // Update userTags property
+      qualification: this.academicCareer, // Update qualification property
+    };
+    console.log('New User Tags:', this.user.userTags);
+
+    this.userService.updateUser(this.user).subscribe({
+      next: result => {
+        this.info = true;
+        this.infoMessage = 'User updated successfully';
+      },
+      error: error => {
+        this.error = true;
+        this.errorMessage = error.message;
+      }
+    });
   }
 
   goToEditProfile(){
     this.router.navigate(['/user/edit/' + this.user.id]);
   }
 
-  addTagToUser(tag: Tag[]): void {
-    this.user.tags = tag;
+  addTagToUser(tags: Tag[]): void {
+    this.selectedTags = tags;
+    console.log('Current Tags: ', this.selectedTags)
   }
 
+  protected readonly QualificationType = QualificationType;
+  protected readonly console = console;
 }
