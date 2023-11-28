@@ -4,6 +4,7 @@ import {UserService} from "../../services/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-register-user',
@@ -24,13 +25,13 @@ export class RegisterUserComponent {
   router: Router;
   isConsumerUser = true;
 
-  constructor(userService: UserService, formBuilder: FormBuilder, router: Router) {
+  constructor(private translateService: TranslateService, userService: UserService, formBuilder: FormBuilder, router: Router) {
     this.registerForm = formBuilder.group({
       email: ['', Validators.required],
       confirmEmail: ['', Validators.required],
       name: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
       userType: ['', Validators.required]
     });
     this.userService = userService;
@@ -72,6 +73,9 @@ export class RegisterUserComponent {
           }
         })
       }
+    } else {
+      this.error = true;
+      this.formatErrorMessage('invalidInput');
     }
   }
 
@@ -82,17 +86,22 @@ export class RegisterUserComponent {
   authenticateUser() {
     if (this.user.email !== this.confirm_email) {
       this.error = true;
-      this.formatErrorMessage('Not matching emails');
+      this.formatErrorMessage('emailMatchError');
       return false;
     }
     if (this.user.password !== this.confirm_password) {
       this.error = true;
-      this.formatErrorMessage('Not matching passwords');
+      this.formatErrorMessage('pwMatchError');
       return false;
     }
-    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.exec(this.user.password)) {
+    if (!/^(?=.*[A-Za-z])(?=.*\d)[\s\S]{8,}$/.exec(this.user.password)) {
       this.error = true;
-      this.formatErrorMessage('Invalid password');
+      this.formatErrorMessage('pwError');
+      return false;
+    }
+    if(this.user.userType.toString() === "ListingConsumer" &&  (this.user.tags === undefined || this.user.tags.length === 0)) {
+      this.error = true;
+      this.formatErrorMessage('tagError');
       return false;
     }
     return true;
@@ -103,29 +112,12 @@ export class RegisterUserComponent {
   }
 
   private formatErrorMessage(error: string): void {
-    switch (error) {
-      case 'Invalid input':
-        this.errorMessage = 'Missing username or password.';
-        break;
-      case 'Bad credentials':
-        this.errorMessage = 'Login failed. Invalid username or password.';
-        break;
-      case 'Not matching emails':
-        this.errorMessage = 'Emails do not match.';
-        break;
-      case 'Not matching passwords':
-        this.errorMessage = 'Passwords do not match.';
-        break;
-      case 'Invalid password':
-        this.errorMessage = 'Password must be at least 8 characters long and contain at least one letter and one number.';
-        break;
-      default:
-        this.errorMessage = error;
-    }
+    this.translateService.get(error).subscribe((res: string) => {
+      this.errorMessage = res;
+    }, e => {
+      this.errorMessage = error;
+    });
   }
-
-  protected readonly UserType = UserType;
-
   isConsumer() {
     this.isConsumerUser = this.registerForm.value.userType === "ListingConsumer";
   }
