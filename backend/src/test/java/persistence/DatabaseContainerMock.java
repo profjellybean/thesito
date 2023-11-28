@@ -11,7 +11,7 @@ public class DatabaseContainerMock implements QuarkusTestResourceLifecycleManage
             .withDatabaseName("ase_db")
             .withUsername("postgres")
             .withPassword("ase")
-            .withInitScript("db_setup.sql");
+            .withInitScript("enum.sql");
 
     @Override
     public Map<String, String> start() {

@@ -13,6 +13,7 @@ import miscellaneous.ValidationException;
 import persistence.DatabaseContainerMock;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @QuarkusTest
 @QuarkusTestResource(DatabaseContainerMock.class)
-public class ListingServiceTest {
+class ListingServiceTest {
 
     @Inject
     ListingService listingService;
@@ -143,7 +144,6 @@ public class ListingServiceTest {
     }
 
     @Test
-    @Transactional
     void validateListingWithValidDataShouldNotThrowException() throws ValidationException, ServiceException {
         // Create the Tags
         Tag tag1 = new Tag();
@@ -162,6 +162,7 @@ public class ListingServiceTest {
         listing.setTitle("Listing title");
         listing.setDetails("Listing details");
         listing.setRequirement(Qualification.Bachelors);
+        listing.setCreatedAt(Date.from(java.time.Instant.now()));
 
         List<Tag> tags = new ArrayList<>();
         tags.add(tag1);
@@ -169,9 +170,6 @@ public class ListingServiceTest {
         listing.setTags(tags);
 
         Listing retListing = listingService.createListing(listing);
-        assertEquals(listing,retListing);
-
+        assertEquals(listing, retListing);
     }
-
-
 }
