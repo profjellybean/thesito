@@ -42,7 +42,7 @@ export class TagComponent implements  OnInit {
   }
 
   getAllTags(): void {
-    this.tagService.getAllTags().subscribe(
+    this.tagService.getAllTags(this.shallow).subscribe(
       (result: any) => {
         console.log(result); // Log the result to see what data is being returned
         if (result.data?.getAllTags && Array.isArray(result.data.getAllTags)) {
