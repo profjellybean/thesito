@@ -23,7 +23,7 @@ public class UserValidator {
         if (password == null || password.isBlank()) {
             throw new ValidationException("Password cannot be null or empty");
         }
-        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
+        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[\\s\\S]{8,}$")) {
             throw new ValidationException("Invalid password. Password must contain at least eight characters, at least one letter and one number");
         }
         if (password.length() > 255) {

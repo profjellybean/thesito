@@ -42,10 +42,10 @@
           <app-language-toggle></app-language-toggle>
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="emailOrName" placeholder="Email">
+          <input class="eerie" type="text" formControlName="emailOrName" placeholder="Email" autocomplete="on">
         </div>
         <div class="form-group visibility">
-          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password" placeholder="Password">
+          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password" placeholder="Password" autocomplete="on">
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>

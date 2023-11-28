@@ -47,23 +47,23 @@
           <app-language-toggle></app-language-toggle>
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="name" placeholder='{{"name"| translate}}'>
+          <input class="eerie" type="text" formControlName="name" placeholder='{{"name"| translate}}' autocomplete="on">
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="email" placeholder='{{"email" | translate}}'>
+          <input (paste)="false" class="eerie" type="text" formControlName="email" placeholder='{{"email" | translate}}' autocomplete="on">
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="confirmEmail" placeholder='{{"confirmEmail" | translate}}'>
+          <input (paste)="false" class="eerie" type="text" formControlName="confirmEmail" placeholder='{{"confirmEmail" | translate}}' autocomplete="on">
         </div>
         <div class="form-group visibility">
-          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
-                 placeholder='{{"password" | translate}}'>
+          <input (paste)="false" class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
+                 placeholder='{{"password" | translate}}' autocomplete="on">
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>
         <div class="form-group visibility">
           <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="confirmPassword"
-                 placeholder='{{"confirmPassword" | translate}}'>
+                 placeholder='{{"confirmPassword" | translate}}' autocomplete="on">
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>

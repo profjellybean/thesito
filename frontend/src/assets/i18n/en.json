@@ -25,5 +25,11 @@
   "newTag": "New Tag",
   "listings": "Listings",
   "logout": "Logout",
-  "profile": "Profile"
+  "profile": "Profile",
+  "tagError": "Select at least one tag",
+  "pwError": "Password must be at least 8 characters long and contain at least one letter and one number",
+  "emailMatchError": "Emails do not match",
+  "pwMatchError": "Passwords do not match",
+  "badCredentials": "Invalid email or password",
+  "invalidInput": "Missing fields: You must provide a name, email, password, type and tags"
 }
