@@ -34,7 +34,7 @@
                   <div class="checkbox-group d-flex">
                     <div class="form-check" *ngFor="let qualification of getQualificationTypes()">
                       <input class="form-check-input" type="radio" [value]="qualification" formControlName="requirement">
-                      <label class="form-check-label" [for]="qualification">{{ qualification }}</label>
+                      <label class="form-check-label" [for]="qualification">{{ qualification | translate }}</label>
                     </div>
                   </div>
                 </div>

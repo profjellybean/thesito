@@ -5,14 +5,34 @@ export enum QualificationType {
   Bachelors = 1,
   Masters = 2,
   PhD = 3,
-
 }
 export interface Listing {
+  id?: string;
   title: string;
   details: string;
   requirement: QualificationType;
   tags?: Tag[];
+  createdAt?: Date;
 }
+
+export const getAllListingsQuery = gql`
+  query {
+    getAllListings {
+      id
+      title
+      details
+      requirement
+      createdAt
+      tags {
+        id
+        title_de
+        title_en
+        layer
+      }
+    }
+  }
+`;
+
 export const createListingQuery = gql`
 mutation CreateListing($title: String!, $details: String!, $requirement: Qualification!, $tags: [TagInput]) {
   createListing(

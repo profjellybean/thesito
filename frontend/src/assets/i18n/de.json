@@ -13,9 +13,9 @@
   "forgotPassword": "Passwort vergessen?",
   "name": "Name",
   "qualificationNone": "Keine",
-  "bachelors": "Bachelor",
-  "masters": "Master",
-  "phd": "PhD",
+  "Bachelors": "Bachelor",
+  "Masters": "Master",
+  "PhD": "PhD",
   "createListing": "Abschlussarbeit erstellen",
   "title": "Titel",
   "description": "Beschreibung",
@@ -25,11 +25,12 @@
   "newTag": "Neuer Tag",
   "listings": "Einträge",
   "logout": "Logout",
-  "profile": "Profil",
   "tagError": "Wählen Sie mindestens ein Tag aus",
   "pwError": "Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Buchstaben und eine Zahl enthalten",
   "emailMatchError": "Die E-Mails stimmen nicht überein",
   "pwMatchError": "Die Passwörter stimmen nicht überein",
   "badCredentials": "Ungültige E-Mail oder Passwort",
-  "invalidInput": "Ungültige Eingabe: Sie müssen einen Namen, eine E-Mail, ein Passwort, einen Typ und Tags angeben"
+  "invalidInput": "Ungültige Eingabe: Sie müssen einen Namen, eine E-Mail, ein Passwort, einen Typ und Tags angeben",
+  "profile": "Profil",
+  "allListings": "Alle Einträge"
 }

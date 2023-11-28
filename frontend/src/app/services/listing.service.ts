@@ -1,26 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Apollo} from "apollo-angular";
-import {gql} from "@apollo/client/core";
 import {map, Observable} from "rxjs";
-import {createListingQuery, Listing} from "../models/Listing";
-
-const getAllListingsQuery = gql`
-  query {
-    getAllListings {
-      id
-      title
-      details
-      requirement
-      tags {
-        id
-        title_de
-        title_en
-        layer
-      }
-    }
-  }
-`;
-
+import {getAllListingsQuery, createListingQuery, Listing} from "../models/Listing";
 @Injectable({
   providedIn: 'root',
 })
