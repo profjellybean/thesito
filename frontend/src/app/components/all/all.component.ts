@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
+import {QualificationType} from "../../models/Enums";
 import {Router} from "@angular/router";
 
 @Component({
@@ -41,6 +42,20 @@ export class AllComponent {
         this.listings = listings;
       });
   }
+
+ qualificationToString(q: QualificationType): string {
+   switch (q) {
+     case QualificationType.None:
+       return 'qualificationNone';
+     case QualificationType.Bachelors:
+       return 'bachelors';
+     case QualificationType.Masters:
+       return 'masters';
+     case QualificationType.PhD:
+       return 'phd';
+   }
+ }
+
   fetchTotalListingsCount(): void {
     this.listingService.simpleSearchTitleOnlyCount(this.searchTitle)
       .subscribe((count) => {

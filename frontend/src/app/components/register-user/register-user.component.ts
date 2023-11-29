@@ -1,10 +1,12 @@
 import {Component} from '@angular/core';
-import {User, UserType} from '../../models/User';
+import {User} from '../../models/User';
 import {UserService} from "../../services/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
 import {TranslateService} from "@ngx-translate/core";
+
+import {QualificationType, UserType} from "../../models/Enums";
 
 @Component({
   selector: 'app-register-user',
@@ -36,12 +38,13 @@ export class RegisterUserComponent {
     });
     this.userService = userService;
     this.user = {
-      id: "",
+      id: -1,
       email: "",
       name: "",
       password: "",
       userType: UserType.ListingConsumer,
-      tags: []
+      userTags: [],
+      qualification: QualificationType.None
     };
     this.confirm_email = "";
     this.confirm_password = "";
@@ -80,7 +83,7 @@ export class RegisterUserComponent {
   }
 
   addTagToUser(tag: Tag[]): void {
-    this.user.tags = tag;
+    this.user.userTags = tag;
   }
 
   authenticateUser() {

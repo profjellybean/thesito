@@ -9,7 +9,8 @@ import {ListingService} from '../../services/listing.service';
 import { LanguageService } from '../../services/language.service';
 import {Tag} from "../../models/Tag";
 import {Router} from "@angular/router";
-import {Listing, QualificationType} from "../../models/Listing";
+import {Listing} from "../../models/Listing";
+import {QualificationType} from "../../models/Enums";
 
 @Component({
   selector: 'app-create-listing',

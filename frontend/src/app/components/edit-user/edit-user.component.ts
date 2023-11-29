@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserType, User } from '../../models/User';
-import { UserService } from '../../services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {User} from '../../models/User';
+import {UserService} from '../../services/user.service';
 import {AuthService} from "../../services/auth.service";
+
+import {QualificationType} from "../../models/Enums";
 
 @Component({
   selector: 'app-edit-user',
@@ -92,6 +94,8 @@ export class EditUserComponent implements OnInit {
         email: this.userForm.get('email')?.value,
         password: this.userForm.get('password')?.value,
         userType: this.user.userType,
+        userTags: [],
+        qualification: QualificationType.None
       };
       // Call the service method to update the user
       this.userService.updateUser(updatedUser).subscribe(

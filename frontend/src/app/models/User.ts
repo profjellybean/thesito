@@ -1,18 +1,16 @@
 import {gql} from "@apollo/client/core";
 import {Tag} from "./Tag";
+
+import {QualificationType, UserType} from "./Enums";
+
 export interface User {
-  id?: string
+  id?: number
   email: string
   name: string
   password?: string
   userType: UserType
-  tags?: Tag[]
-}
-
-export enum UserType {
-  "Administrator",
-  "ListingConsumer",
-  "ListingProvider"
+  userTags: Tag[]
+  qualification: QualificationType
 }
 
 export interface GetAllUsers {
@@ -51,14 +49,14 @@ export const getUserByIdQuery = gql`
       id
       email
       name
-      password
       userType
+      qualification
+      password
     }
   }
 `;
 
 export const loginUserQuery = gql`
-
     mutation LoginUser($email: String!, $password: String!) {
         getSession(
             email: $email
@@ -71,7 +69,6 @@ export const loginUserQuery = gql`
 `;
 
 export const refreshSessionQuery = gql`
-
     mutation refreshSessionQuery($token: String!) {
         refreshSession(
             token: $token
@@ -83,15 +80,24 @@ export const refreshSessionQuery = gql`
 `;
 
 export const updateUserQuery = gql`
-
-    mutation UpdateUser($id: BigInteger!, $email: String!, $name: String!, $password: String!, $userType: UserType!) {
+    mutation UpdateUser(
+    $id: BigInteger!,
+    $email: String!,
+    $name: String!,
+    $password: String!,
+    $userType: UserType!,
+    $userTags: [TagInput],
+    $qualification: Qualification!)
+    {
         updateUser(
             user: {
                 id: $id
                 email: $email
                 name: $name
-                password: $password
                 userType: $userType
+                userTags: $userTags
+                password: $password
+                qualification: $qualification
             }
         )
         {
@@ -100,6 +106,13 @@ export const updateUserQuery = gql`
             name
             password
             userType
+            userTags {
+                id
+                title_en
+                title_de
+                layer
+              }
+            qualification
         }
     }
 `;

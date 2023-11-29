@@ -32,6 +32,7 @@ public class UserService {
   @Inject
   RefreshTokenRepository refreshTokenRepository;
 
+
   UserValidator userValidator = new UserValidator();
 
   @Transactional
@@ -142,7 +143,8 @@ public class UserService {
 
     existingUser.setName(user.getName());
     existingUser.setEmail(user.getEmail());
-
+    existingUser.setUserTags(user.getUserTags());
+    existingUser.setQualification(user.getQualification());
     // If the password is provided, update it
     if (user.getPassword() != null && !user.getPassword().isEmpty()) {
       Hash hashedPassword = Password.hash(user.getPassword()).addRandomSalt().withScrypt();
