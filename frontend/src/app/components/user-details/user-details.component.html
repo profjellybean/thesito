@@ -25,6 +25,7 @@
               </div>
               <app-tag *ngIf="tagsLoaded" [title]="'chooseInterests'" [selectedTagsFromParent]="user.userTags" (updateTag)="addTagToUser($event)"></app-tag>
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
+              <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
               <div class="save-button">
                 <button type="button" class="btn btn-primary" (click)="save()">{{ 'save' | translate }}</button>
               </div>

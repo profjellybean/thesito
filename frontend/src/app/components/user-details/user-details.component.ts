@@ -94,25 +94,22 @@ export class UserDetailsComponent implements OnInit{
   }
 
   save():void{
-    console.log(this.user.userTags)
     if(this.selectedTags.length < 3){
       this.error = true
-      this.errorMessage = "notEnoughTagsError"
+      this.errorMessage = 'notEnoughTagsError'
       return;
     }
     this.vanishError()
-    //this.user.qualification = this.academicCareer;
+    this.vanishInfo()
     this.user = {
       ...this.user,  // Copy existing properties
       userTags: [...this.selectedTags],  // Update userTags property
       qualification: this.academicCareer, // Update qualification property
     };
-    console.log('New User Tags:', this.user.userTags);
-
     this.userService.updateUser(this.user).subscribe({
       next: result => {
         this.info = true;
-        this.infoMessage = 'User updated successfully';
+        this.infoMessage = 'userUpdateSuccess';
       },
       error: error => {
         this.error = true;
@@ -129,7 +126,5 @@ export class UserDetailsComponent implements OnInit{
     this.selectedTags = tags;
     console.log('Current Tags: ', this.selectedTags)
   }
-
   protected readonly QualificationType = QualificationType;
-  protected readonly console = console;
 }

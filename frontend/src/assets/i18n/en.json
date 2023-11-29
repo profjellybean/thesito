@@ -31,5 +31,6 @@
   "chooseInterests": "Choose at least 3 interests",
   "edit": "Edit",
   "notEnoughTagsError": "Not enough tags selected!",
-  "interests": "Interests"
+  "interests": "Interests",
+  "userUpdateSuccess": "User updated successfully!"
 }
