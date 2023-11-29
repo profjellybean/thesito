@@ -32,7 +32,7 @@
   "edit": "Edit",
   "notEnoughTagsError": "Not enough tags selected!",
   "interests": "Interests",
-  "userUpdateSuccess": "User updated successfully!"
+  "userUpdateSuccess": "User updated successfully!",
   "tagError": "Select at least one tag",
   "pwError": "Password must be at least 8 characters long and contain at least one letter and one number",
   "emailMatchError": "Emails do not match",
