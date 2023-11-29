@@ -82,21 +82,7 @@ public class UserValidator {
         validateEmail(user.getEmail());
         validateName(user.getName());
         validateUserType(user.getUserType());
-        validateUpdatePassword(user.getPassword());
         validateQualification(user.getQualification());
-    }
-
-
-    private void validateUpdatePassword(String password) throws ValidationException {
-        if (password == null || password.isBlank()) {
-            return;
-        }
-        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
-            throw new ValidationException("Invalid password. Password must contain at least eight characters, at least one letter and one number");
-        }
-        if (password.length() > 255) {
-            throw new ValidationException("Password cannot be longer than 255 characters");
-        }
     }
 
     public void validatePasswordChange(String oldPassword, String newPassword) throws ValidationException {

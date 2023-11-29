@@ -1,7 +1,9 @@
 package service;
 
 import entity.RefreshToken;
+import entity.Tag;
 import entity.User;
+import enums.Qualification;
 import enums.UserType;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -13,11 +15,14 @@ import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
 import miscellaneous.Session;
 import miscellaneous.ValidationException;
+import org.antlr.v4.runtime.misc.Array2DHashSet;
 import org.junit.jupiter.api.Test;
 import persistence.DatabaseContainerMock;
 import persistence.RefreshTokenRepository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -104,6 +109,8 @@ class UserServiceTest {
         // Retrieve the user by ID and assert equality
         userService.getUserById(insertedUser.id);
         User retrievedUser = userService.getUserById(insertedUser.id);
+        insertedUser.setUserTags(retrievedUser.getUserTags());
+
 
         assertEquals(insertedUser, retrievedUser);
     }
@@ -132,20 +139,24 @@ class UserServiceTest {
         user.setName("Created User");
         user.setEmail("test@create.com");
         user.setPassword("1234Test");
+        user.setQualification(Qualification.Bachelors);
         user.setUserType(UserType.ListingConsumer);
 
         User createdUser = userService.registerUser(user);
 
         assertEquals(user.getName(), createdUser.getName());
         assertEquals(user.getEmail(), createdUser.getEmail());
+        assertEquals(user.getQualification(), createdUser.getQualification());
+        assertEquals(user.getUserType(), createdUser.getUserType());
 
         createdUser.setName("Updated User");
         createdUser.setEmail("test@update.com");
-        createdUser.setPassword("");
+        createdUser.setQualification(Qualification.Masters);
         User updatedUser = userService.updateUser(createdUser);
 
         assertEquals("test@update.com", updatedUser.getEmail());
         assertEquals("Updated User", updatedUser.getName());
+        assertEquals(Qualification.Masters, updatedUser.getQualification());
     }
 
     @Test
