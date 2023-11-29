@@ -41,8 +41,8 @@
                 </div>
               </div>
 
-              <!-- Error message -->
-              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage }}</span>
+              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
+              <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
 
             </form>
           </div>

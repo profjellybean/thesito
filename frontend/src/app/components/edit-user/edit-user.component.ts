@@ -9,6 +9,7 @@ import { PasswordChangeDialogComponent } from '../password-change-dialog/passwor
 
 
 import {QualificationType} from "../../models/Enums";
+import {Tag} from "../../models/Tag";
 
 @Component({
   selector: 'app-edit-user',
@@ -21,10 +22,10 @@ export class EditUserComponent implements OnInit {
   user: User | undefined;
   pwVisible = false;
 
-  authToken: string = '';
+  name: string = '';
+  email: string = '';
 
-
-  owner: boolean = false;
+  selectedTags: Tag[] = [];
 
   info = false;
   infoMessage = '';
@@ -44,6 +45,10 @@ export class EditUserComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
     });
+    this.info = false;
+    this.infoMessage = '';
+    this.error = false;
+    this.errorMessage = '';
   }
 
 
@@ -79,10 +84,24 @@ export class EditUserComponent implements OnInit {
       user.subscribe({
         next: (userData) => {
           this.user = userData;
+          this.user = {
+            ...this.user,  // Copy existing properties
+            password: ''
+          };
+
+          this.user.userTags.forEach(tag =>{
+            let t = {
+              id: tag.id,
+              layer: tag.layer,
+              title_de: tag.title_de,
+              title_en: tag.title_en
+            }
+            this.selectedTags.push(t)
+          });
+
           this.userForm.patchValue({
             name: userData.name,
             email: userData.email,
-            password: '',  // Set the password field as empty in the form
             userType: userData.userType,
           });
         },
@@ -91,6 +110,7 @@ export class EditUserComponent implements OnInit {
           this.errorMessage = error2.message;
         }
       });
+
     }
   }
 
@@ -110,27 +130,31 @@ export class EditUserComponent implements OnInit {
 
   submitForm(): void {
     if (this.userForm.valid && this.user) {
-      const updatedUser: User = {
-        id: this.user.id,
-        name: this.userForm.get('name')?.value,
-        email: this.userForm.get('email')?.value,
-        password: this.userForm.get('password')?.value,
-        userType: this.user.userType,
-        userTags: [],
-        qualification: QualificationType.None
+      this.name = this.userForm.get('name')?.value;
+      this.email = this.userForm.get('email')?.value;
+
+      this.user = {
+        ...this.user,
+        name: this.name,
+        email: this.email,
+        userTags: this.selectedTags
       };
-      // Call the service method to update the user
-      this.userService.updateUser(updatedUser).subscribe(
-        () => {
+
+      this.vanishError(); // Clear any previous errors
+      this.vanishInfo();  // Clear any previous info messages
+
+      this.userService.updateUser(this.user).subscribe({
+        next: result => {
           this.info = true;
-          this.infoMessage = 'User updated successfully';
+          this.infoMessage = 'userUpdateSuccess';
         },
-        (error) => {
+        error: error => {
           this.error = true;
           this.errorMessage = error.message;
         }
-      );
+      });
     }
   }
+
 
 }
