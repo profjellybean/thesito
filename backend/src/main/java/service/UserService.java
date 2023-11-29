@@ -32,6 +32,7 @@ public class UserService {
   @Inject
   RefreshTokenRepository refreshTokenRepository;
 
+
   UserValidator userValidator = new UserValidator();
 
   @Transactional
