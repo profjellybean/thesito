@@ -1,11 +1,7 @@
+import {QualificationType} from "./Enums";
 import { gql } from "@apollo/client/core";
 import { Tag } from "./Tag";
-export enum QualificationType {
-  None = 0,
-  Bachelors = 1,
-  Masters = 2,
-  PhD = 3,
-}
+
 export interface Listing {
   id?: string;
   title: string;
@@ -59,16 +55,18 @@ export const getTotalListingsCountQuery = gql`
     getTotalListingsCount
   }
 `;
-export const simpleSearchTitleOnlyCountQuery = gql`
+export const simpleSearchCountQuery = gql`
   query c ($title: String!) {
     simpleSearchCount (title: $title)
   }
 `;
 
 export const simpleSearchTitleOnlyQuery = gql`
-  query ($title: String!, $offset: Int!, $limit: Int!) {
+  query ($title: String!, $qualificationType: Qualification, $details: String!, $offset: Int!, $limit: Int!) {
     simpleSearch (
       title: $title
+      details: $details
+      qualificationType: $qualificationType
       offset: $offset
       limit: $limit
     ){

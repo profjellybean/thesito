@@ -22,6 +22,8 @@ export class TagComponent implements  OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
   @Input() shallow = false;
+  @Input() title: string = 'interests';
+  @Input() selectedTagsFromParent: Tag[] = []
   @Output() updateTag = new EventEmitter<Tag[]>();
 
   constructor(private translate: TranslateService, private tagService: TagService, public languageService: LanguageService) {
@@ -35,6 +37,13 @@ export class TagComponent implements  OnInit {
       this.getAllTags()
     });
     this.getAllTags();
+
+    if(this.selectedTagsFromParent.length > 0){
+      this.selectedTagsFromParent.forEach(tag =>{
+        this.selectedTags.push(tag)
+      })
+    }
+    console.log('Received Tags from Parent: ', this.selectedTagsFromParent)
   }
 
   getAllTags(): void {
@@ -102,4 +111,6 @@ export class TagComponent implements  OnInit {
     this.tagInput!.nativeElement.value = '';
     this.tagCtrl.setValue(null);
   }
+
+
 }

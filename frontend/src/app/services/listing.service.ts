@@ -1,13 +1,22 @@
 import {Injectable} from "@angular/core";
 import {Apollo} from "apollo-angular";
-import {map, Observable, of} from "rxjs";
+import {map, Observable} from "rxjs";
+import {QualificationType} from "../models/Enums";
 import {
-  getAllListingsQuery,
   createListingQuery,
-  Listing,
+  getAllListingsQuery,
   getAllListingsQueryPaginated,
-  getTotalListingsCountQuery, simpleSearchTitleOnlyQuery, simpleSearchTitleOnlyCountQuery
+  getTotalListingsCountQuery,
+  Listing,
+  simpleSearchCountQuery,
+  simpleSearchTitleOnlyQuery
 } from "../models/Listing";
+
+
+const Qualification = {
+  None: "None",
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -48,12 +57,14 @@ export class ListingService {
       );
   }
 
-  simpleSearchTitleOnlyCount(title: String): Observable<number> {
+  simpleSearchCount(title: String, qualification: QualificationType | null, details: String): Observable<number> {
     return this.apollo
       .query<{ simpleSearchCount: number }>({
-        query: simpleSearchTitleOnlyCountQuery,
+        query: simpleSearchCountQuery,
         variables: {
-          title: title
+          title: title,
+          qualificationType: qualification,
+          details: details,
         }
       })
       .pipe(
@@ -61,12 +72,14 @@ export class ListingService {
       );
   }
 
-  simpleSearchTitleOnly(title: String, offset: number, limit: number): Observable<Listing[]> {
+  simpleSearch(title: String, qualification: QualificationType | null, details: String, offset: number, limit: number): Observable<Listing[]> {
     return this.apollo
       .query<{ simpleSearch: Listing[] }>({
         query: simpleSearchTitleOnlyQuery,
         variables: {
           title: title,
+          qualificationType: qualification,
+          details: details,
           offset: offset,
           limit: limit
         }

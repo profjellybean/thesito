@@ -28,32 +28,85 @@
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
+/* General styling for the search container */
 .search-container {
+  max-width: 95%; /* Adjust as per your layout */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light grey background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.search-container input[type="text"] {
-  width: 60%;
+/* Flex container for Title and Details */
+.search-container .input-flex {
+  display: flex;
+  gap: 10px;
+}
+
+/* Styling for input fields and dropdown */
+.search-container input[type="text"],
+.search-container select {
   padding: 10px;
-  margin-right: 10px;
   border: 1px solid #ccc;
-  border-radius: 25px;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
+/* Specific styling for Title and Details input */
+.search-container .input-flex input[type="text"] {
+  flex-grow: 1;
+}
+
+/* Custom styling for the dropdown */
+.search-container select {
+  width: 100%;
+  cursor: pointer;
+  background-color: white;
+  font-size: 16px;
+}
+
+/* Option styling */
+.search-container option {
+  padding: 10px;
+}
+
+/* Styling for the search button */
 .search-container button {
-  padding: 10px 20px;
-  background-color: #f44336;
+  width: 100%;
+  background-color: #4CAF50;
   color: white;
+  padding: 14px 20px;
   border: none;
-  border-radius: 25px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .search-container button:hover {
-  background-color: #d32f2f;
+  background-color: #45a049;
+}
+
+/* Toggle switch styling */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+/* Toggle switch styling */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.toggle-slider {
+  /* Add your custom toggle slider styling here */
 }
 
 .toggle-container {

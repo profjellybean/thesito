@@ -32,6 +32,7 @@ public class UserService {
   @Inject
   RefreshTokenRepository refreshTokenRepository;
 
+
   UserValidator userValidator = new UserValidator();
 
   @Transactional
@@ -142,6 +143,9 @@ public class UserService {
 
     existingUser.setName(user.getName());
     existingUser.setEmail(user.getEmail());
+    existingUser.setUserTags(user.getUserTags());
+    existingUser.setQualification(user.getQualification());
+
     userRepository.persist(existingUser);
     return existingUser;
   }

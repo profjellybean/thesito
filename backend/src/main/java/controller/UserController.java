@@ -21,7 +21,6 @@ public class UserController {
   @Inject
   JsonWebToken jwt;
 
-
   @Inject
   UserService userService;
 

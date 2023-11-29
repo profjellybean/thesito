@@ -6,8 +6,14 @@
   <div class="container results-container">
     <!-- search -->
     <div class="search-container">
-      <input type="text" placeholder="Looking for something specific?" name="search" [(ngModel)]="searchTitle">
-     <button type="submit" (click)="performSearch()">Search</button>
+      <div class="input-flex">
+        <input type="text" placeholder="Title" name="title" [(ngModel)]="searchTitle">
+        <select name="qualificationType" [(ngModel)]="searchQualificationType">
+          <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type }}</option>
+        </select>
+      </div>
+      <input type="text" placeholder="Details" name="details" [(ngModel)]="searchDetails">
+      <button type="submit" (click)="performSearch()">Search</button>
       <label class="toggle-container">
         Advanced Search
         <input type="checkbox">

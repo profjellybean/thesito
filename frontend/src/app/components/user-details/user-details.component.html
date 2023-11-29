@@ -1,12 +1,38 @@
-<div class="background">
-  <div *ngIf="!error">
-
-    <p>ID: {{id}}</p>
-    <p>Name: {{name}}</p>
-    <p>Email: {{email}}</p>
-    <p>Role: {{role}}</p>
-  </div>
-    <div *ngIf="error" class="alert alert-warning alert-dismissible fade show">
-      {{ errorMessage }}
+<div class="user-details-container background">
+  <div class="container">
+    <div class="center-card">
+      <div class="col-md-6 mt-5 card-align">
+        <div>
+          <h3 class="card-title h1">{{ 'yourProfile' | translate }}</h3>
+          <div class="card">
+            <div class="card-body">
+              <div class="info-wrapper">
+                <span class="fw-bold">{{ 'name' | translate }}:</span> {{user.name}}<br>
+                <span class="fw-bold">{{ 'email' | translate }}:</span> {{user.email}} <br>
+                <span class="fw-bold">{{ 'role' | translate }}:</span> {{user.userType}}<br>
+                <button type="button" class="btn btn-primary2 " (click)="goToEditProfile()">{{ 'edit' | translate }}</button>
+              </div>
+              <div class="career-wrapper">
+                Completed Academic Career
+                <div class="radios">
+                  <mat-radio-group [(ngModel)]="academicCareer">
+                    <mat-radio-button [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.Bachelors">{{ 'bachelors' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.Masters">{{ 'masters' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.PhD">{{ 'phd' | translate }}</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <app-tag *ngIf="tagsLoaded" [title]="'chooseInterests'" [selectedTagsFromParent]="user.userTags" (updateTag)="addTagToUser($event)"></app-tag>
+              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
+              <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
+              <div class="save-button">
+                <button type="button" class="btn btn-primary" (click)="save()">{{ 'save' | translate }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
