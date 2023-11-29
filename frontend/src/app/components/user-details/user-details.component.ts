@@ -1,14 +1,15 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl} from "@angular/forms";
-import {User, UserType} from "../../models/User";
+import {User} from "../../models/User";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
 import {LanguageService} from "../../services/language.service";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {TagService} from "../../services/tag.service";
 import {Tag} from "../../models/Tag";
-import {QualificationType} from "../../models/Listing";
+
+import {QualificationType, UserType} from "../../models/Enums";
 
 @Component({
   selector: 'app-user-details',
@@ -25,19 +26,13 @@ export class UserDetailsComponent implements OnInit{
   selectedTags: Tag[] = []
   tagsLoaded = false;
   academicCareer: QualificationType = QualificationType.None
-  allTags: string[] = []; // Initialize to an empty array
-  tagCtrl = new FormControl();
-  separatorKeysCodes: number[] = [ENTER, COMMA];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
   constructor(private router: Router,
-              private fb: FormBuilder,
               private userService: UserService,
-              private route: ActivatedRoute,
-              private authService: AuthService,
-              private tagService: TagService,
-              private languageService: LanguageService) {
+              private authService: AuthService
+              ) {
 
     this.user = {
       id: -1,
@@ -62,8 +57,24 @@ export class UserDetailsComponent implements OnInit{
     user.subscribe({
       next: user =>{
         this.user = user;
+        this.academicCareer = this.user.qualification;
+        let tempTags: Tag[] = [];
+        this.user.userTags.forEach(tag =>{
+          let t = {
+            id: tag.id,
+            layer: tag.layer,
+            title_de: tag.title_de,
+            title_en: tag.title_en
+          }
+          tempTags.push(t)
+          this.selectedTags.push(t)
+        });
+        this.user = {
+          ...this.user,  // Copy existing properties
+          userTags: [...tempTags],  // Update userTags property
+          password: ''
+        };
         this.tagsLoaded = true;
-        console.log(this.user.userTags)
       },
       error: error2 =>{
         this.error = true;
@@ -84,13 +95,13 @@ export class UserDetailsComponent implements OnInit{
 
   save():void{
     console.log(this.user.userTags)
-    if(this.user.userTags && this.selectedTags.length < 3){
+    if(this.selectedTags.length < 3){
       this.error = true
       this.errorMessage = "notEnoughTagsError"
       return;
     }
     this.vanishError()
-    this.user.qualification = this.academicCareer;
+    //this.user.qualification = this.academicCareer;
     this.user = {
       ...this.user,  // Copy existing properties
       userTags: [...this.selectedTags],  // Update userTags property

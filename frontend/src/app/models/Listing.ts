@@ -1,11 +1,7 @@
-import { gql } from "@apollo/client/core";
-import { Tag } from "./Tag";
-export enum QualificationType {
-  "None",
-  "Bachelors",
-  "Masters",
-  "PhD"
-}
+import {gql} from "@apollo/client/core";
+import {Tag} from "./Tag";
+import {QualificationType} from "./Enums";
+
 export interface Listing {
   title: string;
   details: string;

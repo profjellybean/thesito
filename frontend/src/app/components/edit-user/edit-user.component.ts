@@ -4,7 +4,8 @@ import {Router} from '@angular/router';
 import {User} from '../../models/User';
 import {UserService} from '../../services/user.service';
 import {AuthService} from "../../services/auth.service";
-import {QualificationType} from "../../models/Listing";
+
+import {QualificationType} from "../../models/Enums";
 
 @Component({
   selector: 'app-edit-user',

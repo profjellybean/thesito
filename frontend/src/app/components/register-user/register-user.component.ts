@@ -1,10 +1,11 @@
 import {Component} from '@angular/core';
-import {User, UserType} from '../../models/User';
+import {User} from '../../models/User';
 import {UserService} from "../../services/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
-import {QualificationType} from "../../models/Listing";
+
+import {QualificationType, UserType} from "../../models/Enums";
 
 @Component({
   selector: 'app-register-user',

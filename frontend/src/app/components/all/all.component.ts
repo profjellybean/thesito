@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {Listing, QualificationType} from "../../models/Listing";
+import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
+import {QualificationType} from "../../models/Enums";
 
 @Component({
   selector: 'app-all',

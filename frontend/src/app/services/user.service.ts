@@ -33,7 +33,8 @@ export class UserService {
         name: user.name,
         password: user.password,
         userType: user.userType,
-        userTags: user.userTags
+        userTags: user.userTags,
+        qualification: user.qualification
       },
     });
   }
@@ -48,6 +49,8 @@ export class UserService {
               name
               userType
               id
+              password
+              qualification
               userTags {
                 id
                 title_en
