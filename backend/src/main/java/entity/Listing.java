@@ -35,14 +35,19 @@ public class Listing extends PanacheEntity {
     @Column(name = "created_at")
     private Date createdAt;
 
+    private String university;
+    private String company;
+
     @Override
     public String toString() {
         return "Listing{" +
                 "title='" + title + '\'' +
                 ", details='" + details + '\'' +
                 ", requirement=" + requirement +
-                ", topicTags=" + tags +
-                ", id=" + id +
+                ", tags=" + tags +
+                ", createdAt=" + createdAt +
+                ", university='" + university + '\'' +
+                ", company='" + company + '\'' +
                 '}';
     }
 }
