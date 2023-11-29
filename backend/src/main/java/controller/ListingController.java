@@ -65,7 +65,7 @@ public class ListingController {
 
     @Query("simpleSearchCount")
     @PermitAll
-    public Integer simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate) {
+    public Integer simpleSearchCount(String title, String details, Qualification qualificationType, Date startDate, Date endDate) {
         // TODO make shorter
         Optional<String> optionalTitle = Optional.ofNullable(title);
         Optional<String> optionalDetails = Optional.ofNullable(details);

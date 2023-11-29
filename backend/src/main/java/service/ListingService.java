@@ -56,14 +56,14 @@ public class ListingService {
         });
 
         details.ifPresent(d -> {
-            query.append(" and details = :details");
-            params.and("details", d);
+            query.append(" and details like :details");
+            params.and("details", "%" + d + "%"); // The '%' wildcard allows partial matching
         });
 
 
         qualificationType.ifPresent(qt -> {
             query.append(" and CAST(requirement AS text) = :requirement");
-            params.and("requirement", Qualification.Masters.name());
+            params.and("requirement", qt.name());
         });
 
         if (startDate.isPresent() && endDate.isPresent()){
