@@ -102,7 +102,7 @@ export class RegisterUserComponent {
       this.formatErrorMessage('pwError');
       return false;
     }
-    if(this.user.userType.toString() === "ListingConsumer" &&  (this.user.tags === undefined || this.user.tags.length === 0)) {
+    if(this.user.userType.toString() === "ListingConsumer" &&  (this.user.userTags === undefined || this.user.userTags.length === 0)) {
       this.error = true;
       this.formatErrorMessage('tagError');
       return false;
