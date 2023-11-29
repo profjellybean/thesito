@@ -32,5 +32,8 @@
   "badCredentials": "Ungültige E-Mail oder Passwort",
   "invalidInput": "Ungültige Eingabe: Sie müssen einen Namen, eine E-Mail, ein Passwort, einen Typ und Tags angeben",
   "profile": "Profil",
-  "allListings": "Alle Einträge"
+  "allListings": "Alle Einträge",
+  "changePassword": "Passwort ändern",
+  "editUser": "User Bearbeiten"
+
 }

@@ -32,5 +32,7 @@
   "badCredentials": "Invalid email or password",
   "invalidInput": "Missing fields: You must provide a name, email, password, type and tags",
   "profile": "Profile",
-  "allListings": "All Listings"
+  "allListings": "All Listings",
+  "changePassword": "Change password",
+  "editUser": "Edit User"
 }

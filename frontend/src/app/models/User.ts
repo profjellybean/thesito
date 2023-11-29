@@ -103,3 +103,16 @@ export const updateUserQuery = gql`
         }
     }
 `;
+
+
+export const changePasswordQuery = gql`
+      mutation ChangePassword($oldPassword: String!, $newPassword: String!, $userId: BigInteger!) {
+        changePassword(oldPassword: $oldPassword, newPassword: $newPassword, userId: $userId) {
+          id
+          email
+          name
+          password
+          userType
+        }
+      }
+    `;

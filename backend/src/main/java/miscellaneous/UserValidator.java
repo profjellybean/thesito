@@ -77,4 +77,9 @@ public class UserValidator {
             throw new ValidationException("Password cannot be longer than 255 characters");
         }
     }
+
+    public void validatePasswordChange(String oldPassword, String newPassword) throws ValidationException {
+        validatePassword(oldPassword);
+        validatePassword(newPassword);
+    }
 }

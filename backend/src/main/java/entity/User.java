@@ -19,6 +19,7 @@ public class User extends PanacheEntity {
     private String name;
     private String email;
     private String password;
+
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::user_type")
     private UserType userType;

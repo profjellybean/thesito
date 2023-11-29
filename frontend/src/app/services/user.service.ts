@@ -1,4 +1,4 @@
-import {User, registerUserQuery, updateUserQuery} from "../models/User";
+import {User, registerUserQuery, updateUserQuery, changePasswordQuery} from "../models/User";
 import {map, Observable} from "rxjs";
 import {Apollo} from "apollo-angular";
 import {Injectable} from "@angular/core";
@@ -59,4 +59,17 @@ export class UserService {
         map((result) => result.data.getUserById)
       );
   }
+
+  changePassword(oldPassword: string, newPassword: string, userId: number): Observable<any> {
+    console.log(oldPassword, newPassword, userId);
+    return this.apollo.mutate<any>({
+      mutation: changePasswordQuery,
+      variables: {
+        oldPassword,
+        newPassword,
+        userId
+      }
+    });
+  }
+
 }

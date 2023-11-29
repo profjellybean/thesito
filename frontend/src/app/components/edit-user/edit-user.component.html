@@ -1,25 +1,53 @@
-<div class="mask">
-  <div class="edit-user-wrapper">
-    <div class="edit-user-area">
-      <form [formGroup]="userForm" (ngSubmit)="submitForm()" class="text-center">
-        <h2 class="unselectable eerie login-title">{{"Edit user" | translate}}</h2>
-        <div class="form-group">
-          <input class="eerie" type="text" formControlName="name" placeholder='{{"name"| translate}}'>
+<div class="edit-user-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 mt-5">
+        <h3 class="card-title h1">{{ 'editUser' | translate }}</h3>
+        <div class="card">
+          <div class="card-body">
+
+            <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+              <!-- Name input -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="name" class="form-label">{{ 'name' | translate }}</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+              </div>
+
+              <!-- Email input -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="email" class="form-label">{{ 'email' | translate }}</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="email" formControlName="email">
+                </div>
+              </div>
+
+              <!-- Change Password button and Save button -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-blue" (click)="openPasswordChangeDialog()">
+                    {{ 'changePassword' | translate }}
+                  </button>
+                </div>
+                <div class="col-md-6 text-end mt-auto">
+                  <button type="button" class="btn btn-primary" (click)="submitForm()">
+                    {{ 'save' | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Error message -->
+              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage }}</span>
+
+            </form>
+          </div>
         </div>
-        <div class="form-group">
-          <input class="eerie" type="text" formControlName="email" placeholder='{{"email" | translate}}'>
-        </div>
-        <div class="form-group visibility">
-          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
-                 placeholder='{{"password" | translate}}'>
-          <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
-          <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
-        </div>
-        <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
-        <div class="text-center button-wrapper">
-          <button type="button" class="btn login-button" (click)="submitForm()">{{"save" | translate}}</button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

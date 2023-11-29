@@ -35,6 +35,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {AllComponent} from "./components/all/all.component";
 import { TagComponent } from './components/tag/tag.component';
+import {PasswordChangeDialogComponent} from "./components/password-change-dialog/password-change-dialog.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -54,7 +55,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserDetailsComponent,
     CreateListingComponent,
     EditUserComponent,
-    TagComponent
+    TagComponent,
+    PasswordChangeDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserType, User } from '../../models/User';
 import { UserService } from '../../services/user.service';
 import {AuthService} from "../../services/auth.service";
+import { MatDialog } from '@angular/material/dialog';
+import { PasswordChangeDialogComponent } from '../password-change-dialog/password-change-dialog.component';
+
 
 @Component({
   selector: 'app-edit-user',
@@ -30,14 +33,33 @@ export class EditUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-  private router: Router,
-  private authService: AuthService
+    private router: Router,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
     this.id = -1;
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: [''],  // Initialize as empty
+    });
+  }
+
+
+  openPasswordChangeDialog(): void {
+    const dialogRef = this.dialog.open(PasswordChangeDialogComponent, {
+      width: '500px',
+      height: '300px',
+      data: { userId: this.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'success') {
+        this.info = true;
+        this.infoMessage = 'Password changed successfully';
+      } else {
+        this.error = true;
+        this.errorMessage = 'Password couldn\'t be changed';
+      }
     });
   }
 
@@ -106,4 +128,5 @@ export class EditUserComponent implements OnInit {
       );
     }
   }
+
 }

@@ -142,13 +142,27 @@ public class UserService {
 
     existingUser.setName(user.getName());
     existingUser.setEmail(user.getEmail());
-
-    // If the password is provided, update it
-    if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-      Hash hashedPassword = Password.hash(user.getPassword()).addRandomSalt().withScrypt();
-      existingUser.setPassword(hashedPassword.getResult());
-    }
     userRepository.persist(existingUser);
     return existingUser;
+  }
+
+  @Transactional
+  public User changePassword(String oldPassword, String newPassword, Long userId) throws ValidationException, ServiceException {
+    userValidator.validatePasswordChange(oldPassword, newPassword);
+
+    User dbUser = userRepository.findById(userId);
+    if (dbUser == null){
+      throw new  ServiceException("User doesn't exist");
+    }
+
+    if (!Password.check(oldPassword, dbUser.getPassword()).withScrypt()) {
+      throw new ServiceException("Bad credentials");
+    }
+
+    Hash hashedPassword = Password.hash(newPassword).addRandomSalt().withScrypt();
+    dbUser.setPassword(hashedPassword.getResult());
+
+    userRepository.persist(dbUser);
+    return dbUser;
   }
 }

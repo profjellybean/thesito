@@ -114,4 +114,14 @@ public class UserController {
     }
   }
 
+  @Mutation
+  @Description("Change user password")
+  public User changePassword(String oldPassword, String newPassword, Long userId) throws GraphQLException {
+    try {
+      return userService.changePassword(oldPassword, newPassword, userId);
+    } catch (ValidationException | ServiceException e) {
+      throw new GraphQLException(e.getMessage());
+    }
+  }
+
 }
