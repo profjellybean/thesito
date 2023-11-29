@@ -1,7 +1,13 @@
 import {Injectable} from "@angular/core";
 import {Apollo} from "apollo-angular";
-import {map, Observable} from "rxjs";
-import {getAllListingsQuery, createListingQuery, Listing} from "../models/Listing";
+import {map, Observable, of} from "rxjs";
+import {
+  getAllListingsQuery,
+  createListingQuery,
+  Listing,
+  getAllListingsQueryPaginated,
+  getTotalListingsCountQuery, simpleSearchTitleOnlyQuery, simpleSearchTitleOnlyCountQuery
+} from "../models/Listing";
 @Injectable({
   providedIn: 'root',
 })
@@ -15,6 +21,58 @@ export class ListingService {
       })
       .pipe(
         map((result) => result.data.getAllListings)
+      );
+  }
+
+  getAllListingsPaginated(offset: number, limit: number): Observable<Listing[]> {
+    return this.apollo
+      .query<{ getAllListingsPaginated: Listing[] }>({
+        query: getAllListingsQueryPaginated,
+        variables: {
+          offset: offset,
+          limit: limit
+        }
+      })
+      .pipe(
+        map((result) => result.data.getAllListingsPaginated)
+      );
+  }
+
+  getTotalListingsCount(): Observable<number> {
+    return this.apollo
+      .query<{ getTotalListingsCount: number }>({
+        query: getTotalListingsCountQuery
+      })
+      .pipe(
+        map((result) => result.data.getTotalListingsCount)
+      );
+  }
+
+  simpleSearchTitleOnlyCount(title: String): Observable<number> {
+    return this.apollo
+      .query<{ simpleSearchCount: number }>({
+        query: simpleSearchTitleOnlyCountQuery,
+        variables: {
+          title: title
+        }
+      })
+      .pipe(
+        map((result) => result.data.simpleSearchCount)
+      );
+  }
+
+  simpleSearchTitleOnly(title: String, offset: number, limit: number): Observable<Listing[]> {
+    return this.apollo
+      .query<{ simpleSearch: Listing[] }>({
+        query: simpleSearchTitleOnlyQuery,
+        variables: {
+          title: title,
+          offset: offset,
+          limit: limit
+        }
+      })
+      .pipe(
+        map((result) => result.data.simpleSearch)
       );
   }
 
