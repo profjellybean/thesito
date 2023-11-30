@@ -1,5 +1,6 @@
 package service;
 
+import com.password4j.Password;
 import entity.RefreshToken;
 import entity.Tag;
 import entity.User;
@@ -19,6 +20,7 @@ import org.antlr.v4.runtime.misc.Array2DHashSet;
 import org.junit.jupiter.api.Test;
 import persistence.DatabaseContainerMock;
 import persistence.RefreshTokenRepository;
+import persistence.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +39,9 @@ import java.security.NoSuchAlgorithmException;
 class UserServiceTest {
     @Inject
     UserService userService;
+
+    @Inject
+    UserRepository userRepository;
 
     @Inject
     RefreshTokenRepository refreshTokenRepository;
@@ -226,6 +231,48 @@ class UserServiceTest {
                 .sign(privateKey);
         assertThrows(ServiceException.class, () -> userService.refreshSession(wrong_signature_refresh_token));
     }
+
+    @Test
+    void changePasswordWithInvalidNewPassword() throws ValidationException, ServiceException {
+        User user = new User();
+        user.setName("Test");
+        user.setEmail("test8@test.com");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingConsumer);
+        userService.registerUser(user);
+
+        User createdUser = userRepository.find("email","test8@test.com" ).firstResult();
+
+        String newPassword = "abcd"; // Invalid password with only 4 letters
+        assertThrows(ValidationException.class, () -> userService.changePassword(user.getPassword(), newPassword, createdUser.id));
+
+        // verify that the password remains unchanged
+        User userAfterChange = userRepository.findById(createdUser.id);
+        assertTrue(Password.check("123456789Test", userAfterChange.getPassword()).withScrypt());
+    }
+
+    @Test
+    void changePasswordWithWrongOldPassword() throws ValidationException, ServiceException {
+        // Step 1: Create a user with correct data
+        User user = new User();
+        user.setName("Test");
+        user.setEmail("test9@test.com");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingConsumer);
+        userService.registerUser(user);
+
+        User createdUser = userRepository.find("email","test9@test.com" ).firstResult();
+
+        // Step 2: Attempt to change the password with a wrong old password
+        String wrongOldPassword = "wrongOldPassword";
+        String newPassword = "newValidPassword123";
+        assertThrows(ValidationException.class, () -> userService.changePassword(wrongOldPassword, newPassword, createdUser.id));
+
+        // Optionally, you can also verify that the password remains unchanged
+        User userAfterChange = userService.getUserById(createdUser.id);
+        assertTrue(Password.check("123456789Test", userAfterChange.getPassword()).withScrypt());
+    }
+
 
     @Test
     void graphQLAuthenticationTests() throws ValidationException, ServiceException {

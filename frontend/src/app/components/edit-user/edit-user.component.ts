@@ -54,7 +54,7 @@ export class EditUserComponent implements OnInit {
 
   openPasswordChangeDialog(): void {
     const dialogRef = this.dialog.open(PasswordChangeDialogComponent, {
-      width: '500px',
+      width: '450px',
       height: '300px',
       data: { userId: this.id },
     });
