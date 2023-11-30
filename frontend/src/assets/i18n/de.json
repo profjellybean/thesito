@@ -39,7 +39,7 @@
   "badCredentials": "Ungültige E-Mail oder Passwort",
   "invalidInput": "Ungültige Eingabe: Sie müssen einen Namen, eine E-Mail, ein Passwort, einen Typ und Tags angeben",
   "changePassword": "Passwort ändern",
-  "editUser": "User Bearbeiten",
+  "editUser": "Benutzer bearbeiten",
   "invalidUniversitySelection": "Ungültige Universitätsauswahl",
   "errorCreatingListing": "Fehler beim Erstellen der Ausschreibung: ",
   "successCreatingListing": "Ausschreibung erfolgreich erstellt",

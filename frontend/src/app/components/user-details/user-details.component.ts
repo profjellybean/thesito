@@ -119,7 +119,7 @@ export class UserDetailsComponent implements OnInit{
   }
 
   goToEditProfile(){
-    this.router.navigate(['/user/edit/' + this.user.id]);
+    this.router.navigate(['/user/edit/']);
   }
 
   addTagToUser(tags: Tag[]): void {
