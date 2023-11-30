@@ -105,7 +105,6 @@ public class UserController {
   @Mutation
   @Description("Updates a user in the database")
   public User updateUser(User user) throws GraphQLException {
-    System.out.println("User is: " + user);
     try {
       return userService.updateUser(user);
     } catch (ValidationException | ServiceException e) {
