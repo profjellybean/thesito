@@ -6,8 +6,9 @@ params = {
     'dbname': 'ase_db',
     'user': 'postgres',
     'password': 'ase',
-    'host': '172.18.0.2'
+    'host': 'localhost'
 }
+
 
 def insert_data(row):
     # Extracting data from the row
@@ -38,12 +39,12 @@ def insert_data(row):
         cursor.close()
         conn.close()
 
+
 # Read the CSV file and insert data into the database
-with open('testdata.csv', newline='') as csvfile:
+with open('testdata.csv', newline='', encoding="utf-8") as csvfile:
     reader = csv.reader(csvfile)
     next(reader)  # Skip the header row
     for row in reader:
         insert_data(row)
 
 print("Data insertion complete.")
-
