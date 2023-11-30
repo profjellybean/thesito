@@ -3,14 +3,19 @@ import {Apollo} from "apollo-angular";
 import {map, Observable} from "rxjs";
 import {QualificationType} from "../models/Enums";
 import {
-  createListingQuery,
+  advancedSearchQuery,
+  createListingQuery, fullTextSearchQuery,
   getAllListingsQuery,
   getAllListingsQueryPaginated,
-  getTotalListingsCountQuery,
   Listing,
-  simpleSearchCountQuery,
   simpleSearchTitleOnlyQuery
 } from "../models/Listing";
+
+
+interface SearchResult {
+  totalHitCount: number;
+  listings: Listing[];
+}
 
 
 const Qualification = {
@@ -47,34 +52,9 @@ export class ListingService {
       );
   }
 
-  getTotalListingsCount(): Observable<number> {
+  simpleSearch(title: String, qualification: QualificationType | null, details: String, offset: number, limit: number): Observable<SearchResult> {
     return this.apollo
-      .query<{ getTotalListingsCount: number }>({
-        query: getTotalListingsCountQuery
-      })
-      .pipe(
-        map((result) => result.data.getTotalListingsCount)
-      );
-  }
-
-  simpleSearchCount(title: String, qualification: QualificationType | null, details: String): Observable<number> {
-    return this.apollo
-      .query<{ simpleSearchCount: number }>({
-        query: simpleSearchCountQuery,
-        variables: {
-          title: title,
-          qualificationType: qualification,
-          details: details,
-        }
-      })
-      .pipe(
-        map((result) => result.data.simpleSearchCount)
-      );
-  }
-
-  simpleSearch(title: String, qualification: QualificationType | null, details: String, offset: number, limit: number): Observable<Listing[]> {
-    return this.apollo
-      .query<{ simpleSearch: Listing[] }>({
+      .query<{ simpleSearch: SearchResult }>({
         query: simpleSearchTitleOnlyQuery,
         variables: {
           title: title,
@@ -86,6 +66,39 @@ export class ListingService {
       })
       .pipe(
         map((result) => result.data.simpleSearch)
+      );
+  }
+
+  fullTextSearch(pattern: String, offset: number, limit: number): Observable<SearchResult> {
+    return this.apollo
+      .query<{ fullTextSearch: SearchResult }>({
+        query: fullTextSearchQuery,
+        variables: {
+          pattern: pattern,
+          offset: offset,
+          limit: limit,
+        }
+      })
+      .pipe(
+        map((result) => result.data.fullTextSearch)
+      );
+  }
+
+  advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null, endDate: String | null, offset: number | null, limit: number | null): Observable<SearchResult> {
+    return this.apollo
+      .query<{ advancedSearch: SearchResult }>({
+        query: advancedSearchQuery,
+        variables: {
+          textPattern: textPattern,
+          qualification: qualification,
+          startDate: startDate,
+          endDate: endDate,
+          offset: offset,
+          limit: limit
+        }
+      })
+      .pipe(
+        map((result) => result.data.advancedSearch)
       );
   }
 

@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 
 import java.util.Collection;
@@ -15,9 +19,14 @@ import java.util.Date;
 @Getter
 @Setter
 @Table(name = "listings")
+@Indexed
 public class Listing extends PanacheEntity {
+
+    @FullTextField(analyzer = "english") // TODO english and german
     private String title;
+    @FullTextField(analyzer = "english") // TODO english and german
     private String details;
+    @GenericField
     @Enumerated(EnumType.STRING)
     @Column(name = "qualification_type", columnDefinition = "qualification_type")
     @ColumnTransformer(write = "?::qualification_type")
@@ -29,6 +38,7 @@ public class Listing extends PanacheEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tag> tags;
 
+    @GenericField
     @Column(name = "created_at")
     private Date createdAt;
 

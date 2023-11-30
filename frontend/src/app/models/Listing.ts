@@ -53,17 +53,6 @@ export const getAllListingsQueryPaginated = gql`
   }
 `;
 
-export const getTotalListingsCountQuery = gql`
-  query {
-    getTotalListingsCount
-  }
-`;
-export const simpleSearchCountQuery = gql`
-  query c ($title: String!) {
-    simpleSearchCount (title: $title)
-  }
-`;
-
 export const simpleSearchTitleOnlyQuery = gql`
   query ($title: String!, $qualificationType: Qualification, $details: String!, $offset: Int!, $limit: Int!) {
     simpleSearch (
@@ -72,17 +61,74 @@ export const simpleSearchTitleOnlyQuery = gql`
       qualificationType: $qualificationType
       offset: $offset
       limit: $limit
+
     ){
-      id
-      title
-      details
-      requirement
-      createdAt
-      tags {
+      totalHitCount
+      listings {
         id
-        title_de
-        title_en
-        layer
+        title
+        details
+        requirement
+        createdAt
+        tags {
+          id
+          title_de
+          title_en
+          layer
+        }
+      }
+    }
+  }
+`;
+
+export const fullTextSearchQuery = gql`
+  query ($pattern: String!, $offset: Int!, $limit: Int!) {
+    fullTextSearch (
+      pattern: $pattern
+      offset: $offset
+      limit: $limit
+    ){
+      totalHitCount
+      listings {
+        id
+        title
+        details
+        requirement
+        createdAt
+        tags {
+          id
+          title_de
+          title_en
+          layer
+        }
+      }
+    }
+  }
+`;
+
+export const advancedSearchQuery = gql`
+  query ($textPattern: String, $qualification: Qualification, $startDate: String, $endDate: String, $offset: Int, $limit: Int) {
+    advancedSearch (
+      textPattern: $textPattern
+      startDate: $startDate
+      endDate: $endDate
+      qualification: $qualification
+      offset: $offset
+      limit: $limit
+    ){
+      totalHitCount
+      listings {
+        id
+        title
+        details
+        requirement
+        createdAt
+        tags {
+          id
+          title_de
+          title_en
+          layer
+        }
       }
     }
   }

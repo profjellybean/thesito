@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
   styleUrl: './all.component.css'
 })
 
+// TODO language toggle
 export class AllComponent {
   listingService: ListingService;
   listings: Listing[] = [];
@@ -17,56 +18,56 @@ export class AllComponent {
   listingsPerPage: number = 10;
   totalPages: number = 0;
   totalListings: number = 0;
-  searchTitle: String = ""
-  searchDetails: String = ""
-  // TODO language toggle
   searchQualificationType: QualificationType | null = null;
   qualificationTypes: string[] = ["Any", ...Object.values(QualificationType)];
+  isAdvancedSearch: boolean = false;
+  searchStartDate: Date | null = null;
+  searchEndDate: Date | null = null;
+  fullTextSearchPattern: String | null = null
+  pages: (number)[] = [];
+
 
   constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;
   }
 
   ngOnInit(): void {
-    this.fetchTotalListingsCount();
     this.loadPage(this.currentPage);
   }
 
   performSearch(): void {
-    this.fetchTotalListingsCount()
     this.loadPage(1);
   }
 
   loadPage(page: number): void {
     this.currentPage = page
+    this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
+    let formattedStartDate = this.convertDateToString(this.searchStartDate)
+    let formattedEndDate = this.convertDateToString(this.searchEndDate)
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
-    this.listingService.simpleSearch(this.searchTitle, this.searchQualificationType, this.searchDetails, offset, limit)
-      .subscribe((listings) => {
-        this.listings = listings;
-        console.log(listings)
+
+    this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate, formattedEndDate, offset, limit)
+      .subscribe((searchResult) => {
+        this.totalListings = searchResult.totalHitCount
+        this.listings = searchResult.listings;
+        this.totalPages = Math.ceil(this.totalListings / this.listingsPerPage);
       });
   }
 
- qualificationToString(q: QualificationType): string {
-   switch (q) {
-     case QualificationType.None:
-       return 'qualificationNone';
-     case QualificationType.Bachelors:
-       return 'bachelors';
-     case QualificationType.Masters:
-       return 'masters';
-     case QualificationType.PhD:
-       return 'phd';
-   }
- }
+  clearSearch() {
+    this.fullTextSearchPattern = null;
+    this.searchStartDate = null;
+    this.searchEndDate = null;
+    this.searchQualificationType = null;
+    this.loadPage(1)
+  }
 
-  fetchTotalListingsCount(): void {
-    this.listingService.simpleSearchCount(this.searchTitle, this.searchQualificationType, this.searchDetails)
-      .subscribe((count) => {
-        this.totalListings = count;
-        this.totalPages = Math.ceil(this.totalListings / this.listingsPerPage);
-      });
+  convertDateToString(date: Date | null): String | null {
+    if (date) {
+      return new Date(date).toISOString().split('T')[0];
+    }
+    return null
   }
 
   goToListing(id: string | undefined) {

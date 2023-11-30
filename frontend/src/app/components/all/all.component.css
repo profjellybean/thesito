@@ -7,113 +7,63 @@
   height: 100vh;
 }
 
-.results-container {
-  background-color: #93B7BE;
-  border-radius: 15px;
-  /*box-shadow: 5px 5px 4px 0px rgba(0, 0, 0, 0.25) inset;*/
-  padding: 10px;
-}
 
-.listing {
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 15px; /* Adjust as needed */
-  padding: 10px;
-  margin: 15px 30px;
-}
-
-.listing:hover {
-  background-color: #f5f5f5;
-  transform: scale(1.02);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
-
-/* General styling for the search container */
-.search-container {
-  max-width: 95%; /* Adjust as per your layout */
-  margin: 0 auto;
+/* General Styles */
+.background {
+  background-color: #f0f0f0;
+  font-family: 'Arial', sans-serif;
+  color: #333;
   padding: 20px;
-  background-color: #f9f9f9; /* Light grey background */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
-/* Flex container for Title and Details */
-.search-container .input-flex {
-  display: flex;
-  gap: 10px;
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Styling for input fields and dropdown */
-.search-container input[type="text"],
-.search-container select {
+/* Header Styles */
+h2 {
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Search and Form Styles */
+.simple-search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #e9ecef;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  border-radius: 5px;
 }
 
-/* Specific styling for Title and Details input */
-.search-container .input-flex input[type="text"] {
+.simple-search-container input[type="text"],
+.simple-search-container input[type="date"],
+.simple-search-container select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
   flex-grow: 1;
 }
 
-/* Custom styling for the dropdown */
-.search-container select {
-  width: 100%;
-  cursor: pointer;
-  background-color: white;
-  font-size: 16px;
+.simple-search-container input[type="date"] {
+  border: 2px solid #007bff;
+  background-color: #f8f9fa;
 }
 
-/* Option styling */
-.search-container option {
-  padding: 10px;
-}
-
-/* Styling for the search button */
-.search-container button {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.search-container button:hover {
-  background-color: #45a049;
-}
-
-/* Toggle switch styling */
+/* Toggle Styles */
 .toggle-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-}
-
-/* Toggle switch styling */
-.toggle-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-}
-
-.toggle-slider {
-  /* Add your custom toggle slider styling here */
-}
-
-.toggle-container {
-  display: block;
+  display: inline-block;
   position: relative;
-  padding-left: 35px;
-  margin-left: 20px;
+  padding-left: 25px; /* Adjusted for smaller toggle */
+  margin-bottom: 0;
+  font-weight: bold;
   cursor: pointer;
   font-size: 16px;
   user-select: none;
@@ -125,70 +75,119 @@
   height: 0;
 }
 
-.checkbox{
-  background-color: #e83e8c;
-}
 .toggle-slider {
-  position: relative;
-  width: 50px; /* Slider width */
-  height: 24px; /* Slider height */
-  background-color: #808080; /* Grey background for slider */
-  border-radius: 24px; /* Rounded edges for slider */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 40px;
+  bottom: 0;
+  background-color: #ccc;
   transition: .4s;
+  border-radius: 20px; /* Rounded edges for slider */
+  height: 20px; /* Smaller height for slider */
 }
 
 .toggle-slider:before {
   position: absolute;
   content: "";
-  height: 20px; /* Circle height */
-  width: 20px; /* Circle width */
-  left: 2px;
-  bottom: 2px;
-  background-color: white; /* Circle color */
+  height: 16px; /* Smaller knob */
+  width: 16px; /* Smaller knob */
+  left: 2px; /* Adjusted position */
+  bottom: 2px; /* Adjusted position */
+  background-color: white;
   transition: .4s;
-  border-radius: 50%; /* Fully rounded for circle */
+  border-radius: 50%;
 }
 
 input:checked + .toggle-slider {
-  background-color: #2196F3; /* Blue background for active state */
+  background-color: #007bff;
 }
 
 input:checked + .toggle-slider:before {
-  transform: translateX(26px); /* Move circle to the right when activated */
+  transform: translateX(26px);
 }
 
-/* Optional: For better touch feedback */
-.toggle-slider:active:before {
-  width: 22px; /* Slightly larger circle on click to indicate action */
-}
-.pagination-container {
-  text-align: center;
-  padding: 20px;
-}
-
-.pagination-button {
-  padding: 10px 20px;
-  background-color: #4CAF50; /* Green background */
+/* Button Styles */
+button {
+  background-color: #007bff;
   color: white;
   border: none;
+  padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
 }
 
-.pagination-button:hover {
-  background-color: #45a049; /* Darker green on hover */
+button:hover {
+  background-color: #0056b3;
 }
 
-.pagination-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+button:disabled {
+  background-color: #cccccc;
+  cursor: default;
+}
+
+/* Listing Styles */
+.listing {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.listing:hover {
+  transform: scale(1.03); /* Slightly scale up on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for "pop up" effect */
+}
+
+.listing h3, .listing h4, .listing h5 {
+  margin: 0;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  text-align: center;
+  margin-top: 20px;
 }
 
 .pagination-text {
-  font-size: 18px;
-  color: #333;
   margin: 0 15px;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .simple-search-container, .input-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .simple-search-container input, .simple-search-container select {
+    margin-bottom: 10px;
+  }
+}
+
+.advanced-search-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the toggle and label */
+  margin-bottom: 15px;
+}
+
+.listing.equal-height {
+  height: 80px; /* Example height, adjust as needed */
+}
+
+.simple-search-container .input-flex {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+  gap: 10px; /* Adds space between items */
+  font-weight: bold;
+}
+
+.simple-search-container .input-flex label,
+.simple-search-container .input-flex .date-input,
+.simple-search-container .input-flex select {
+  margin: 5px; /* Adjust as needed */
+  min-width: 120px; /* Adjust as needed for better control over item widths */
+}
