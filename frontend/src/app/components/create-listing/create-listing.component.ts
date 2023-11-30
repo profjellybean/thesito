@@ -58,7 +58,7 @@ export class CreateListingComponent implements OnInit {
     if (otherConditionControl) {
       this.filteredOptions = otherConditionControl.valueChanges.pipe(
         startWith(''),
-        debounceTime(20), // debounce time in milliseconds
+        debounceTime(200), // debounce time in milliseconds
         distinctUntilChanged(),
         switchMap(value => this.universitySearch(value || 'university of vienna')) // Use the value or a default query of vienna
       );
