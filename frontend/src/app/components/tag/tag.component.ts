@@ -14,7 +14,7 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
   templateUrl: './tag.component.html',
   styleUrl: './tag.component.css'
 })
-export class TagComponent implements  OnInit {
+export class TagComponent implements OnInit {
   allTags: Tag[] = []; // Initialize to an empty array
   selectedTags: Tag[] = [];
   tagCtrl = new FormControl();
@@ -32,14 +32,16 @@ export class TagComponent implements  OnInit {
       map((tag: string | null) => (tag !== null ? this._filter(tag) : this.allTags.slice())),
     );
   }
+
   ngOnInit(): void {
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.getAllTags()
+
     });
     this.getAllTags();
 
-    if(this.selectedTagsFromParent.length > 0){
-      this.selectedTagsFromParent.forEach(tag =>{
+    if (this.selectedTagsFromParent.length > 0) {
+      this.selectedTagsFromParent.forEach(tag => {
         this.selectedTags.push(tag)
       })
     }
@@ -50,7 +52,7 @@ export class TagComponent implements  OnInit {
     this.tagService.getAllTags(this.shallow).subscribe(
       (result: any) => {
         if (result.data) {
-          if(this.shallow) {
+          if (this.shallow) {
             this.allTags = result.data.getAllTagsShallow
           } else {
             this.allTags = result.data.getAllTags
@@ -71,18 +73,20 @@ export class TagComponent implements  OnInit {
   }
 
   private _filter(value: string): Tag[] {
-    if(this.languageService.getLanguage() === 'en') {
+    let searchedFor = value.toLowerCase();
+    if (this.languageService.getLanguage() === 'en') {
       return this.allTags.filter(
-        (tag) => tag?.title_en.includes(value) && !this.selectedTags.find(t => t.title_en === tag.title_en)
+        (tag) => tag?.title_en.toLowerCase().includes(searchedFor) && !this.selectedTags.find(t => t.title_en === tag.title_en)
       );
     } else {
       return this.allTags.filter(
-        (tag) => tag?.title_de.includes(value) && !this.selectedTags.find(t => t.title_de === tag.title_de)
+        (tag) => tag?.title_de.toLowerCase().includes(searchedFor) && !this.selectedTags.find(t => t.title_de === tag.title_de)
       );
     }
   }
+
   remove(tag: Tag): void {
-    let index= this.selectedTags.indexOf(tag);
+    let index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
       this.selectedTags.splice(index, 1);
       this.updateTag.emit(this.selectedTags);
@@ -93,7 +97,7 @@ export class TagComponent implements  OnInit {
     const value = event.option.value;
     let isIncluded = false;
     this.selectedTags.forEach(tag => {
-      if(tag.id === value.id) {
+      if (tag.id === value.id) {
         isIncluded = true;
       }
     })
@@ -111,6 +115,4 @@ export class TagComponent implements  OnInit {
     this.tagInput!.nativeElement.value = '';
     this.tagCtrl.setValue(null);
   }
-
-
 }
