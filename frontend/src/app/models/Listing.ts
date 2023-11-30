@@ -1,11 +1,13 @@
 import { gql } from "@apollo/client/core";
 import { Tag } from "./Tag";
+
 export enum QualificationType {
   None = 0,
   Bachelors = 1,
   Masters = 2,
   PhD = 3,
 }
+
 export interface Listing {
   id?: string;
   title: string;
@@ -13,6 +15,8 @@ export interface Listing {
   requirement: QualificationType;
   tags?: Tag[];
   createdAt?: Date;
+  university?: string;
+  company?: string;
 }
 
 export const getAllListingsQuery = gql`
@@ -34,25 +38,35 @@ export const getAllListingsQuery = gql`
 `;
 
 export const createListingQuery = gql`
-mutation CreateListing($title: String!, $details: String!, $requirement: Qualification!, $tags: [TagInput]) {
-  createListing(
-    listing: {
-      title: $title
-      details: $details
-      requirement: $requirement
-      tags: $tags
-    }
+  mutation CreateListing(
+    $title: String!
+    $details: String!
+    $requirement: Qualification!
+    $tags: [TagInput]
+    $university: String
+    $company: String
   ) {
-    title
-    details
-    requirement
-    tags {
-      id
-      layer
-      title_de
-      title_en
+    createListing(
+      listing: {
+        title: $title
+        details: $details
+        requirement: $requirement
+        tags: $tags
+        university: $university
+        company: $company
+      }
+    ) {
+      title
+      details
+      requirement
+      tags {
+        id
+        layer
+        title_de
+        title_en
+      }
+      university
+      company
     }
   }
-}
-
 `;

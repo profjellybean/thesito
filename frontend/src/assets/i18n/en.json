@@ -31,6 +31,15 @@
   "pwMatchError": "Passwords do not match",
   "badCredentials": "Invalid email or password",
   "invalidInput": "Missing fields: You must provide a name, email, password, type and tags",
+  "invalidListingInput": "Invalid input: You must provide a title, details, at least one tag, prerequisites, and affiliation.",
+  "invalidUniversitySelection": "Invalid university selection",
+  "errorCreatingListing": "Error creating listing: ",
+  "successCreatingListing": "Listing created successfully",
+  "affiliation": "Affiliation",
   "profile": "Profile",
+  "university": "University",
+  "company": "Company",
+  "chooseUniversity": "Choose University",
+  "companyName": "Company Name",
   "allListings": "All Listings"
 }

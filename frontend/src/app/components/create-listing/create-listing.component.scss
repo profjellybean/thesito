@@ -3,45 +3,92 @@
   height: 100vh;
 }
 
-.card {
-  margin-top: 5px;
+.form-container {
+  background-color: #F7F6F2;
+  border-radius: 15px;
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+  padding: 15px;
+  margin: 20px auto;
+  width: 95%;
+  max-width: 600px;
 }
 
-.h1{
-  font-size: 22px;
-  margin-bottom: -5px;
+.listing-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 42px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.checkbox-group {
+  width: 100%;
+  max-width: 400px;
+  padding-left: 10px;
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .form-label {
   font-weight: bold;
 }
 
-.btn-primary {
-  background-color: #5AB779;
-  color: #F7F6F2;
-}
-
-.visually-hidden {
-  color: rgba(128, 128, 128, 0.5); /* Adjust the alpha (last value) for opacity */
-}
-
-.btn-primary:hover {
-  background-color: #131314;
-}
-
-.checkbox-group {
-  display: flex;
-}
-
 .form-check {
-  margin-right: 10px; /* Adjust the spacing between checkboxes as needed */
+  margin-right: 30px;
+  margin-bottom: 10px;
 }
 
-.form-check-input {
-  border-radius: 50%; /* Make the checkboxes round */
-  margin-right: 5px; /* Adjust the spacing between checkboxes as needed */
-}
-
-.example-chip-list {
+.example-full-width {
+  margin-top: 20px;
+  margin-bottom: 5px;
   width: 100%;
 }
+
+
+
+.input-field, textarea{
+  background: rgba(222, 221, 217, 0.25);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  height: 60px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+.save-button {
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 20px;
+  background-color: #1A1A1D;
+  color: #F7F6F2;
+  cursor: pointer;
+}
+
+.error-field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 16px;
+}
+
+
+
+.thesito-red {
+  color: #DA3E52;
+}
+
+.thesito-green {
+  color: #46a55c;
+}
+

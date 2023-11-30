@@ -19,14 +19,16 @@ export class ListingService {
   }
 
   createListing(listing: Listing): Observable<any> {
-    console.log(listing)
+    console.log(listing);
     return this.apollo.mutate<any>({
       mutation: createListingQuery,
       variables: {
         title: listing.title,
         details: listing.details,
         requirement: listing.requirement,
-        tags: listing.tags
+        tags: listing.tags,
+        university: listing.university,
+        company: listing.company,
       },
     });
   }

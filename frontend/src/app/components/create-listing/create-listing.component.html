@@ -1,47 +1,82 @@
-<!-- Import necessary Angular Material modules -->
-<!-- Make sure these imports are present in your module file -->
-<!-- If you haven't installed Angular Material, you can install it using: ng add @angular/material -->
-<!-- Make sure to include 'MatAutocompleteModule' and 'MatChipsModule' in the imports array -->
-
 <div class="create-listing-container">
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3 mt-5">
-        <h3 class="card-title h1">{{ 'createListing' | translate }}</h3>
-        <div class="card">
+        <div class="card form-container">
           <div class="card-body">
 
             <form [formGroup]="createListingForm">
+              <h2 class="unselectable eerie listing-title">{{ 'createListing' | translate }}</h2>
               <!-- First row -->
               <div class="row mb-3 justify-content-between">
                 <div class="col-md-12">
-                  <input type="text" class="form-control" id="shortTitle" placeholder="{{ 'title' | translate }}" formControlName="shortTitle">
+                  <input class="eerie input-field" type="text" id="shortTitle" placeholder="{{ 'title' | translate }}"
+                         formControlName="shortTitle">
                 </div>
               </div>
               <!-- Second row -->
-              <div class="row mb-3">
+              <div class="row mb-3 justify-content-between">
                 <div class="col-md-12">
-                  <textarea class="form-control" id="details" rows="4" placeholder="{{ 'description' | translate }}" formControlName="details"></textarea>
+                  <textarea class="eerie input-field" id="details" placeholder="{{ 'description' | translate }}"
+                            formControlName="details"></textarea>
                 </div>
               </div>
-              <!-- Third row -->
               <app-tag (updateTag)="setTags($event)"></app-tag>
 
-              <!-- Fourth row -->
+
               <div class="row mb-3">
-                <div class="col-md-6">
+                <div class="col-md-12">
                   <label class="form-label">{{ 'preconditions' | translate }}</label>
                   <div class="checkbox-group d-flex">
                     <div class="form-check" *ngFor="let qualification of getQualificationTypes()">
-                      <input class="form-check-input" type="radio" [value]="qualification" formControlName="requirement">
+                      <input class="form-check-input" type="radio" [value]="qualification"
+                             formControlName="requirement">
                       <label class="form-check-label" [for]="qualification">{{ qualification | translate }}</label>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6 text-end mt-auto">
-                  <button type="button" class="btn btn-primary" (click)="createListing()">{{ 'save' | translate }}</button>
-                </div>
               </div>
+              <label class="form-label">{{ 'affiliation' | translate }}</label>
+
+              <mat-chip-listbox formControlName="condition">
+                <mat-chip-option class="example-width"  value="university">{{ 'university' | translate }}</mat-chip-option>
+                <mat-chip-option class="example-width"  value="company">{{ 'company' | translate }}</mat-chip-option>
+              </mat-chip-listbox>
+
+
+              <!-- Show input field when 'institute' is selected -->
+              <div *ngIf="createListingForm.get('condition')?.value === 'company'">
+                <div class="example-full-width">
+                  <input class="eerie input-field" type="text" id="companyName" placeholder="{{ 'companyName' | translate }}"
+                         formControlName="companyName">
+                </div>
+
+              </div>
+              <!-- Show input field when 'university' is selected -->
+              <div *ngIf="createListingForm.get('condition')?.value === 'university'">
+                <mat-form-field class="example-full-width">
+                  <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
+                  <input matInput formControlName="otherCondition" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let university of filteredOptions | async" [value]="university">
+                      {{ university }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-12 text-center">
+                <span class="thesito-red" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+              </div>
+
+              <div class="col-md-12 text-center">
+                <span class="thesito-green" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
+              </div>
+              <div class="col-md-12">
+                <button type="button" class="btn save-button"
+                        (click)="createListing()">{{ 'save' | translate }}</button>
+              </div>
+
             </form>
           </div>
         </div>

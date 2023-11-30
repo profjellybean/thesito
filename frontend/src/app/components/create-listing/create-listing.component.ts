@@ -1,15 +1,13 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Observable, startWith} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {debounceTime, distinctUntilChanged, Observable, startWith, switchMap} from 'rxjs';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {map} from 'rxjs/operators';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {TagService} from '../../services/tag.service';
 import {ListingService} from '../../services/listing.service';
-import { LanguageService } from '../../services/language.service';
+import {UniversityService} from '../../services/university.service';
 import {Tag} from "../../models/Tag";
 import {Router} from "@angular/router";
 import {Listing, QualificationType} from "../../models/Listing";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-create-listing',
@@ -18,22 +16,29 @@ import {Listing, QualificationType} from "../../models/Listing";
 })
 export class CreateListingComponent implements OnInit {
   error = false;
+  errorMessage = '';
   router: Router;
-  listing:Listing;
+  listing: Listing;
   listingService: ListingService;
-  languageService: LanguageService;
+  translateService: TranslateService;
+  universityService: UniversityService;
   selectedTags: Tag[] = [];
   createListingForm: FormGroup;
   success = false;
   successMessage = '';
+  filteredOptions: Observable<string[]> | undefined;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
-  constructor(listingService: ListingService, private tagService: TagService, private fb: FormBuilder, router: Router, languageService: LanguageService) {
+
+  constructor(listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService) {
     this.createListingForm = this.fb.group({
       shortTitle: ['', Validators.required],
       details: ['', Validators.required],
-      requirement: ['None', Validators.required], // Set a default value or adjust as needed
+      requirement: ['', Validators.required],
+      condition: ['', Validators.required],
+      companyName: [''],
+      otherCondition: ['']
     });
     this.listingService = listingService;
     this.listing = {
@@ -42,10 +47,28 @@ export class CreateListingComponent implements OnInit {
       requirement: QualificationType.None,
     };
     this.router = router;
-    this.languageService = languageService;
+    this.translateService = translateService;
+    this.universityService = universityService
   }
 
+
   ngOnInit() {
+    const otherConditionControl = this.createListingForm.get('otherCondition');
+    if (otherConditionControl) {
+      this.filteredOptions = otherConditionControl.valueChanges.pipe(
+        startWith(''),
+        debounceTime(20), // debounce time in milliseconds
+        distinctUntilChanged(),
+        switchMap(value => this.universitySearch(value || 'university of vienna')) // Use the value or a default query of vienna
+      );
+    }
+  }
+
+
+  universitySearch(query: string): Observable<string[]> {
+    return this.universityService.getUniversities(query).pipe(
+      map((response: { items: any[] }) => response.items.map((item: any) => item.name)),
+    );
   }
 
   getQualificationTypes(): string[] {
@@ -54,40 +77,113 @@ export class CreateListingComponent implements OnInit {
 
   setTags(tags: Tag[]) {
     this.selectedTags = tags;
+    console.log(this.selectedTags);
   }
 
 
   createListing() {
-    if (this.createListingForm.valid) {
+    if (this.createListingForm.valid && this.selectedTags.length > 0) {
       const shortTitle = this.createListingForm.get('shortTitle')?.value;
       const details = this.createListingForm.get('details')?.value;
       const requirement = this.createListingForm.get('requirement')?.value;
 
-      const listing: Listing = {
-        title: shortTitle,
-        details: details,
-        requirement: requirement,
-        tags: this.selectedTags,
-      };
+      const conditionValue = this.createListingForm.get('condition')?.value;
+      let companyValue: string;
+      let universityValue: string;
 
+      if (conditionValue === 'company') {
+        companyValue = this.createListingForm.get('companyName')?.value;
 
-      this.listingService.createListing(listing).subscribe(
-        (res: any) => {
-          if (res.data != null && res.data.createListing != null) {
-            this.success = true;
-            this.successMessage = 'Listing created successfully';
-            setTimeout(() => {
-              // Navigate to the listing details page or another appropriate route
-              this.router.navigate([`/listing/${res.data.createListing.id}`]);
-            }, 4000);
+        const listing: Listing = {
+          title: shortTitle,
+          details: details,
+          requirement: requirement,
+          tags: this.selectedTags,
+          company: companyValue
+        };
+
+        this.listingService.createListing(listing).subscribe(
+          (res: any) => {
+            if (res.data != null && res.data.createListing != null) {
+
+              this.error = false;
+              this.errorMessage = ''; // Reset error message
+              this.success = true
+              this.formatSuccessMessage('successCreatingListing');
+              setTimeout(() => {
+                this.router.navigate([`/listing/${res.data.createListing.id}`]);
+              }, 4000);
+            }
+          },
+          (error) => {
+            this.formatErrorMessage('errorCreatingListing' + error.message);
           }
-        },
-        (error) => {
-          if (error != null) {
-            this.error = true;
-          }
-        }
-      );
+        );
+
+      } else {
+        this.universityService.getUniversities(this.createListingForm.get('otherCondition')?.value).subscribe(
+          (response: { items: any[] }) => {
+            const universities = response.items.map((item: any) => item.name);
+            const selectedUniversity = this.createListingForm.get('otherCondition')?.value;
+
+            // Check if the selected university is in the list of options
+            if (selectedUniversity && universities.includes(selectedUniversity)) {
+              universityValue = selectedUniversity;
+
+              // Proceed with creating the listing for other conditions
+              const listing: Listing = {
+                title: shortTitle,
+                details: details,
+                requirement: requirement,
+                tags: this.selectedTags,
+                university: universityValue
+              };
+
+              this.listingService.createListing(listing).subscribe(
+                (res: any) => {
+                  if (res.data != null && res.data.createListing != null) {
+                    this.success = true;
+                    this.error = false;
+                    this.errorMessage = ''; // Reset error message
+                    this.formatSuccessMessage('successCreatingListing');
+                    setTimeout(() => {
+
+                      this.router.navigate([`/all`]);
+                    }, 4000);
+                  }
+                },
+                (error) => {
+                  this.formatErrorMessage('errorCreatingListing' + error.message);
+                }
+              );
+
+            } else {
+              this.formatErrorMessage('invalidUniversitySelection');
+            }
+          },
+        );
+      }
+    } else {
+      this.formatErrorMessage('invalidListingInput');
     }
   }
+
+
+  private formatErrorMessage(error: string): void {
+    this.translateService.get(error).subscribe((res: string) => {
+      this.errorMessage = res;
+    }, e => {
+      this.errorMessage = error;
+    });
+  }
+
+  private formatSuccessMessage(success: string): void {
+    this.translateService.get(success).subscribe((res: string) => {
+      this.successMessage = res;
+    }, e => {
+      this.successMessage = success;
+    });
+  }
+
+
 }
