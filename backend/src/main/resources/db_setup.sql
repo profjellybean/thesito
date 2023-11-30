@@ -1,3 +1,6 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
 CREATE TYPE user_type AS ENUM ('Administrator', 'ListingConsumer', 'ListingProvider');
 CREATE TYPE qualification_type as ENUM ('None', 'Bachelors', 'Masters', 'PhD');
 
@@ -13,11 +16,13 @@ CREATE TABLE users
 
 CREATE TABLE listings
 (
-    id   SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     title VARCHAR NOT NULL,
     details VARCHAR NOT NULL,
-    qualification_type qualification_type NOT NULL
-
+    qualification_type qualification_type NOT NULL,
+    company VARCHAR,
+    university VARCHAR,
+    created_at DATE NOT NULL
 );
 
 CREATE TABLE tags
@@ -40,4 +45,10 @@ CREATE TABLE refreshtokens
     id    SERIAL PRIMARY KEY,
     userid INTEGER NOT NULL,
     uuid VARCHAR NOT NULL
+);
+CREATE TABLE USER_TAGS
+(
+    user_id INTEGER REFERENCES users(id),
+    tag_id INTEGER REFERENCES tags(id),
+    PRIMARY KEY (user_id, tag_id)
 );
