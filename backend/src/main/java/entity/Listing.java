@@ -19,7 +19,7 @@ public class Listing extends PanacheEntity {
     private String title;
     private String details;
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "qualification_type")
+    @Column(name = "qualification_type", columnDefinition = "qualification_type")
     @ColumnTransformer(write = "?::qualification_type")
     private Qualification requirement;
     @ManyToMany(fetch = FetchType.EAGER)
