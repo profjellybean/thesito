@@ -19,7 +19,7 @@ def insert_data(row):
 
     try:
         cursor.execute("""
-            INSERT INTO listings (title, details, requirement, created_at)
+            INSERT INTO listings (title, details, qualification_type, created_at)
             VALUES (%s, %s, %s, %s) RETURNING id;
         """, (title, details, qualification_type, date))
         listing_id = cursor.fetchone()[0]
