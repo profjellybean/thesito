@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import persistence.DatabaseContainerMock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +22,9 @@ public class TagServiceTest {
     @Inject
     TagService tagService;
 
-    @BeforeEach
+    @Test
     @Transactional
-    void setup() throws ServiceException {
+    void fetchingAllTagsShouldReturnAllTags() throws ServiceException {
         Tag tag1 = new Tag();
         tag1.setLayer(1L);
         tag1.setTitle_en("Tag 1");
@@ -47,11 +48,6 @@ public class TagServiceTest {
         tag4.setTitle_en("Tag 4");
         tag4.setTitle_de("Tag 4");
         tagService.createTag(tag4);
-    }
-
-    @Test
-    @Transactional
-    void fetchingAllTagsShouldReturnAllTags() throws ServiceException {
         List<Tag> tags = tagService.getAllTags();
         assertEquals(4, tags.size());
         assertEquals("Tag 1", tags.get(0).getTitle_en());
