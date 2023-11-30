@@ -27,3 +27,168 @@
   transform: scale(1.02);
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
+
+/* General styling for the search container */
+.search-container {
+  max-width: 95%; /* Adjust as per your layout */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light grey background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Flex container for Title and Details */
+.search-container .input-flex {
+  display: flex;
+  gap: 10px;
+}
+
+/* Styling for input fields and dropdown */
+.search-container input[type="text"],
+.search-container select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Specific styling for Title and Details input */
+.search-container .input-flex input[type="text"] {
+  flex-grow: 1;
+}
+
+/* Custom styling for the dropdown */
+.search-container select {
+  width: 100%;
+  cursor: pointer;
+  background-color: white;
+  font-size: 16px;
+}
+
+/* Option styling */
+.search-container option {
+  padding: 10px;
+}
+
+/* Styling for the search button */
+.search-container button {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #45a049;
+}
+
+/* Toggle switch styling */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+/* Toggle switch styling */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.toggle-slider {
+  /* Add your custom toggle slider styling here */
+}
+
+.toggle-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+}
+
+.toggle-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox{
+  background-color: #e83e8c;
+}
+.toggle-slider {
+  position: relative;
+  width: 50px; /* Slider width */
+  height: 24px; /* Slider height */
+  background-color: #808080; /* Grey background for slider */
+  border-radius: 24px; /* Rounded edges for slider */
+  transition: .4s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Circle height */
+  width: 20px; /* Circle width */
+  left: 2px;
+  bottom: 2px;
+  background-color: white; /* Circle color */
+  transition: .4s;
+  border-radius: 50%; /* Fully rounded for circle */
+}
+
+input:checked + .toggle-slider {
+  background-color: #2196F3; /* Blue background for active state */
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px); /* Move circle to the right when activated */
+}
+
+/* Optional: For better touch feedback */
+.toggle-slider:active:before {
+  width: 22px; /* Slightly larger circle on click to indicate action */
+}
+.pagination-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.pagination-button {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-text {
+  font-size: 18px;
+  color: #333;
+  margin: 0 15px;
+}
+

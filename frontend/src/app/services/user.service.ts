@@ -1,4 +1,4 @@
-import {User, registerUserQuery, updateUserQuery} from "../models/User";
+import {User, registerUserQuery, updateUserQuery, changePasswordQuery} from "../models/User";
 import {map, Observable} from "rxjs";
 import {Apollo} from "apollo-angular";
 import {Injectable} from "@angular/core";
@@ -18,14 +18,13 @@ export class UserService {
         name: user.name,
         password: user.password,
         userType: user.userType,
-        tags: user.tags
+        tags: user.userTags
       },
     });
   }
 
   updateUser(user: User): Observable<any> {
-    console.log('User to update: ')
-    console.log(user)
+    console.log('User to update: ', user)
     return this.apollo.mutate<any>({
       mutation: updateUserQuery,
       variables: {
@@ -34,6 +33,8 @@ export class UserService {
         name: user.name,
         password: user.password,
         userType: user.userType,
+        userTags: user.userTags,
+        qualification: user.qualification
       },
     });
   }
@@ -44,10 +45,18 @@ export class UserService {
         query: gql`
           query GetUserById($id: BigInteger!) {
             getUserById(id: $id) {
-              id
               email
               name
               userType
+              id
+              password
+              qualification
+              userTags {
+                id
+                title_en
+                title_de
+                layer
+              }
             }
           }
         `,
@@ -59,4 +68,17 @@ export class UserService {
         map((result) => result.data.getUserById)
       );
   }
+
+  changePassword(oldPassword: string, newPassword: string, userId: number): Observable<any> {
+    console.log(oldPassword, newPassword, userId);
+    return this.apollo.mutate<any>({
+      mutation: changePasswordQuery,
+      variables: {
+        oldPassword,
+        newPassword,
+        userId
+      }
+    });
+  }
+
 }

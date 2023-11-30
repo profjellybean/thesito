@@ -1,9 +1,18 @@
 package miscellaneous;
 
+import entity.Tag;
 import entity.User;
+import enums.Qualification;
 import enums.UserType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import service.TagService;
+
+import java.util.Collection;
 
 public class UserValidator {
+
+
     private void validateEmail(String email) throws ValidationException {
         if (email == null || email.isBlank()) {
             throw new ValidationException("Email cannot be null or empty");
@@ -52,6 +61,15 @@ public class UserValidator {
         }
     }
 
+    private void validateQualification(Qualification qualification) throws ValidationException {
+        if (qualification == null) {
+            throw new ValidationException("Qualification cannot be null or empty");
+        }
+        if (qualification != Qualification.None && qualification != Qualification.Bachelors && qualification != Qualification.Masters && qualification != Qualification.PhD) {
+            throw new ValidationException("Invalid qualification");
+        }
+    }
+
     public void validateUser(User user) throws ValidationException {
         validateEmail(user.getEmail());
         validatePassword(user.getPassword());
@@ -59,22 +77,16 @@ public class UserValidator {
         validateUserType(user.getUserType());
     }
 
+
     public void validateUpdate(User user) throws ValidationException {
         validateEmail(user.getEmail());
         validateName(user.getName());
         validateUserType(user.getUserType());
-        validateUpdatePassword(user.getPassword());
+        validateQualification(user.getQualification());
     }
 
-    private void validateUpdatePassword(String password) throws ValidationException {
-        if (password == null || password.isBlank()) {
-            return;
-        }
-        if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")) {
-            throw new ValidationException("Invalid password. Password must contain at least eight characters, at least one letter and one number");
-        }
-        if (password.length() > 255) {
-            throw new ValidationException("Password cannot be longer than 255 characters");
-        }
+    public void validatePasswordChange(String oldPassword, String newPassword) throws ValidationException {
+        validatePassword(oldPassword);
+        validatePassword(newPassword);
     }
 }

@@ -1,9 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UserType, User } from '../../models/User';
-import { UserService } from '../../services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {User} from '../../models/User';
+import {UserService} from '../../services/user.service';
 import {AuthService} from "../../services/auth.service";
+import { MatDialog } from '@angular/material/dialog';
+import { PasswordChangeDialogComponent } from '../password-change-dialog/password-change-dialog.component';
+
+
+import {QualificationType} from "../../models/Enums";
+import {Tag} from "../../models/Tag";
 
 @Component({
   selector: 'app-edit-user',
@@ -16,10 +22,10 @@ export class EditUserComponent implements OnInit {
   user: User | undefined;
   pwVisible = false;
 
-  authToken: string = '';
+  name: string = '';
+  email: string = '';
 
-
-  owner: boolean = false;
+  selectedTags: Tag[] = [];
 
   info = false;
   infoMessage = '';
@@ -30,14 +36,37 @@ export class EditUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-  private router: Router,
-  private authService: AuthService
+    private router: Router,
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {
     this.id = -1;
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: [''],  // Initialize as empty
+    });
+    this.info = false;
+    this.infoMessage = '';
+    this.error = false;
+    this.errorMessage = '';
+  }
+
+
+  openPasswordChangeDialog(): void {
+    const dialogRef = this.dialog.open(PasswordChangeDialogComponent, {
+      width: '500px',
+      height: '300px',
+      data: { userId: this.id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'success') {
+        this.info = true;
+        this.infoMessage = 'Password changed successfully';
+      } else {
+        this.error = true;
+        this.errorMessage = 'Password couldn\'t be changed';
+      }
     });
   }
 
@@ -55,10 +84,24 @@ export class EditUserComponent implements OnInit {
       user.subscribe({
         next: (userData) => {
           this.user = userData;
+          this.user = {
+            ...this.user,  // Copy existing properties
+            password: ''
+          };
+
+          this.user.userTags.forEach(tag =>{
+            let t = {
+              id: tag.id,
+              layer: tag.layer,
+              title_de: tag.title_de,
+              title_en: tag.title_en
+            }
+            this.selectedTags.push(t)
+          });
+
           this.userForm.patchValue({
             name: userData.name,
             email: userData.email,
-            password: '',  // Set the password field as empty in the form
             userType: userData.userType,
           });
         },
@@ -67,6 +110,7 @@ export class EditUserComponent implements OnInit {
           this.errorMessage = error2.message;
         }
       });
+
     }
   }
 
@@ -86,24 +130,31 @@ export class EditUserComponent implements OnInit {
 
   submitForm(): void {
     if (this.userForm.valid && this.user) {
-      const updatedUser: User = {
-        id: this.user.id,
-        name: this.userForm.get('name')?.value,
-        email: this.userForm.get('email')?.value,
-        password: this.userForm.get('password')?.value,
-        userType: this.user.userType,
+      this.name = this.userForm.get('name')?.value;
+      this.email = this.userForm.get('email')?.value;
+
+      this.user = {
+        ...this.user,
+        name: this.name,
+        email: this.email,
+        userTags: this.selectedTags
       };
-      // Call the service method to update the user
-      this.userService.updateUser(updatedUser).subscribe(
-        () => {
+
+      this.vanishError(); // Clear any previous errors
+      this.vanishInfo();  // Clear any previous info messages
+
+      this.userService.updateUser(this.user).subscribe({
+        next: result => {
           this.info = true;
-          this.infoMessage = 'User updated successfully';
+          this.infoMessage = 'userUpdateSuccess';
         },
-        (error) => {
+        error: error => {
           this.error = true;
           this.errorMessage = error.message;
         }
-      );
+      });
     }
   }
+
+
 }

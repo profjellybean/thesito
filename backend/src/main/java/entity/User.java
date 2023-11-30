@@ -1,6 +1,7 @@
 package entity;
 
 
+import enums.Qualification;
 import enums.UserType;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
@@ -19,6 +20,10 @@ public class User extends PanacheEntity {
     private String name;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @ColumnTransformer(write = "?::qualification_type")
+    private Qualification qualification;
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::user_type")
     private UserType userType;
@@ -34,12 +39,12 @@ public class User extends PanacheEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && userType == user.userType && Objects.equals(id, user.id);
+        return Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && getQualification() == user.getQualification() && getUserType() == user.getUserType() && Objects.equals(getUserTags(), user.getUserTags());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, userType);
+        return Objects.hash(getName(), getEmail(), getPassword(), getQualification(), getUserType(), getUserTags());
     }
 
     @Override
@@ -48,7 +53,9 @@ public class User extends PanacheEntity {
                 "name='" + name + '\n' +
                 ", email='" + email + '\n' +
                 ", password='" + password + '\n' +
-                ", userType=" + userType + '\n' +
+                ", qualification=" + qualification +
+                ", userType=" + userType +
+                ", userTags=" + userTags +
                 ", id=" + id +
                 '}';
     }

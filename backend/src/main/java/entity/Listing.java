@@ -17,14 +17,11 @@ import java.util.Date;
 @Table(name = "listings")
 public class Listing extends PanacheEntity {
     private String title;
-
     private String details;
-
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "qualification_type")
     @ColumnTransformer(write = "?::qualification_type")
     private Qualification requirement;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "listing_tags",

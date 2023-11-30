@@ -6,7 +6,8 @@ import {ListingService} from '../../services/listing.service';
 import {UniversityService} from '../../services/university.service';
 import {Tag} from "../../models/Tag";
 import {Router} from "@angular/router";
-import {Listing, QualificationType} from "../../models/Listing";
+import {Listing} from "../../models/Listing";
+import {QualificationType} from "../../models/Enums";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({

@@ -1,12 +1,7 @@
+import {QualificationType} from "./Enums";
 import { gql } from "@apollo/client/core";
 import { Tag } from "./Tag";
 
-export enum QualificationType {
-  None = 0,
-  Bachelors = 1,
-  Masters = 2,
-  PhD = 3,
-}
 
 export interface Listing {
   id?: string;
@@ -36,6 +31,63 @@ export const getAllListingsQuery = gql`
     }
   }
 `;
+
+export const getAllListingsQueryPaginated = gql`
+  query get ($offset: Int!, $limit: Int!) {
+    getAllListingsPaginated(
+      offset: $offset
+      limit: $limit
+     ){
+      id
+      title
+      details
+      requirement
+      createdAt
+      tags {
+        id
+        title_de
+        title_en
+        layer
+      }
+    }
+  }
+`;
+
+export const getTotalListingsCountQuery = gql`
+  query {
+    getTotalListingsCount
+  }
+`;
+export const simpleSearchCountQuery = gql`
+  query c ($title: String!) {
+    simpleSearchCount (title: $title)
+  }
+`;
+
+export const simpleSearchTitleOnlyQuery = gql`
+  query ($title: String!, $qualificationType: Qualification, $details: String!, $offset: Int!, $limit: Int!) {
+    simpleSearch (
+      title: $title
+      details: $details
+      qualificationType: $qualificationType
+      offset: $offset
+      limit: $limit
+    ){
+      id
+      title
+      details
+      requirement
+      createdAt
+      tags {
+        id
+        title_de
+        title_en
+        layer
+      }
+    }
+  }
+`;
+
 
 export const createListingQuery = gql`
   mutation CreateListing(

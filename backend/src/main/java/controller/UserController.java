@@ -21,7 +21,6 @@ public class UserController {
   @Inject
   JsonWebToken jwt;
 
-
   @Inject
   UserService userService;
 
@@ -109,6 +108,16 @@ public class UserController {
     System.out.println("User is: " + user);
     try {
       return userService.updateUser(user);
+    } catch (ValidationException | ServiceException e) {
+      throw new GraphQLException(e.getMessage());
+    }
+  }
+
+  @Mutation
+  @Description("Change user password")
+  public User changePassword(String oldPassword, String newPassword, Long userId) throws GraphQLException {
+    try {
+      return userService.changePassword(oldPassword, newPassword, userId);
     } catch (ValidationException | ServiceException e) {
       throw new GraphQLException(e.getMessage());
     }

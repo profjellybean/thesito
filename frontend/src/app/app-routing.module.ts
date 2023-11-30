@@ -20,9 +20,9 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterUserComponent },
   { path: 'user', canActivate: [authGuard], component: UserDetailsComponent },
-  { path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
+  //{ path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
   {path: 'create-listing',canActivate: [authGuard], component: CreateListingComponent},
-  {path: 'user/edit/:id', canActivate: [authGuard], component: EditUserComponent},
+  {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];
