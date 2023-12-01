@@ -6,7 +6,7 @@ CREATE TYPE qualification_type as ENUM ('None', 'Bachelors', 'Masters', 'PhD');
 
 CREATE TABLE users
 (
-    id   SERIAL PRIMARY KEY,
+    id   INTEGER PRIMARY KEY,
     name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
@@ -16,7 +16,7 @@ CREATE TABLE users
 
 CREATE TABLE listings
 (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS ( nextval('listings_id_seq') ) STORED NOT NULL,
     title VARCHAR NOT NULL,
     details VARCHAR NOT NULL,
     qualification_type qualification_type NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE listing_tags
 
 CREATE TABLE refreshtokens
 (
-    id    SERIAL PRIMARY KEY,
+    id    INTEGER PRIMARY KEY,
     userid INTEGER NOT NULL,
     uuid VARCHAR NOT NULL
 );

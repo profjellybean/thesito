@@ -23,6 +23,7 @@ public class User extends PanacheEntity {
 
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::qualification_type")
+    @Column(name = "qualification_type", columnDefinition = "qualification_type")
     private Qualification qualification;
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::user_type")

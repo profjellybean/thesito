@@ -1,6 +1,7 @@
 package persistence;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
+import org.junit.jupiter.api.BeforeAll;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Collections;
