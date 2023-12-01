@@ -36,6 +36,8 @@ def insert_data(row):
         print("An error occurred:", e)
         conn.rollback()
     finally:
+        cursor.execute("ALTER SEQUENCE listings_id_seq RESTART WITH 2657;")
+        conn.commit()
         cursor.close()
         conn.close()
 

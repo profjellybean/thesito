@@ -2,6 +2,7 @@ package entity;
 
 import enums.Qualification;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,10 @@ import java.util.Date;
 @Setter
 @Table(name = "listings")
 @Indexed
-public class Listing extends PanacheEntity {
-
+public class Listing extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @FullTextField(analyzer = "english") // TODO english and german
     private String title;
     @FullTextField(analyzer = "english") // TODO english and german
