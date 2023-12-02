@@ -7,8 +7,10 @@ import {UniversityService} from '../../services/university.service';
 import {Tag} from "../../models/Tag";
 import {Router} from "@angular/router";
 import {Listing} from "../../models/Listing";
-import {QualificationType} from "../../models/Enums";
+import {QualificationType, UserType} from "../../models/Enums";
 import {TranslateService} from "@ngx-translate/core";
+import {User} from "../../models/User";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-create-listing',
@@ -28,11 +30,13 @@ export class CreateListingComponent implements OnInit {
   success = false;
   successMessage = '';
   filteredOptions: Observable<string[]> | undefined;
+  user: User;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
 
-  constructor(listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService) {
+  constructor(listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService,
+              private authService: AuthService) {
     this.createListingForm = this.fb.group({
       shortTitle: ['', Validators.required],
       details: ['', Validators.required],
@@ -41,6 +45,15 @@ export class CreateListingComponent implements OnInit {
       companyName: [''],
       otherCondition: ['']
     });
+    this.user = {
+      id: -1,
+      email: "",
+      name: "",
+      password: "",
+      userType: UserType.ListingConsumer,
+      userTags: [],
+      qualification: QualificationType.None
+    };
     this.listingService = listingService;
     this.listing = {
       title: "",
@@ -54,6 +67,13 @@ export class CreateListingComponent implements OnInit {
 
 
   ngOnInit() {
+    if(this.authService.isLoggedIn()){
+      this.user.id = this.authService.getUserId();
+    } else {
+      setTimeout(() => {
+        this.router.navigate(['/404']);
+      }, 100);
+    }
     const otherConditionControl = this.createListingForm.get('otherCondition');
     if (otherConditionControl) {
       this.filteredOptions = otherConditionControl.valueChanges.pipe(
@@ -100,7 +120,9 @@ export class CreateListingComponent implements OnInit {
           details: details,
           requirement: requirement,
           tags: this.selectedTags,
-          company: companyValue
+          company: companyValue,
+          owner: this.user,
+          active: true
         };
 
         this.listingService.createListing(listing).subscribe(
@@ -137,7 +159,9 @@ export class CreateListingComponent implements OnInit {
                 details: details,
                 requirement: requirement,
                 tags: this.selectedTags,
-                university: universityValue
+                university: universityValue,
+                owner: this.user,
+                active: true
               };
 
               this.listingService.createListing(listing).subscribe(

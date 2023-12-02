@@ -50,5 +50,7 @@
   "companyName": "Company Name",
   "allListings": "All Listings",
   "changePassword": "Change password",
-  "editUser": "Edit User"
+  "editUser": "Edit User",
+  "details": "Details",
+  "myListings": "My Listings"
 }

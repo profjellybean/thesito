@@ -11,6 +11,7 @@ import {UserDetailsComponent} from "./components/user-details/user-details.compo
 import {CreateListingComponent} from "./components/create-listing/create-listing.component";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {AuthService} from "./services/auth.service";
+import {MyListingsComponent} from "./components/my-listings/my-listings.component";
 
 
 export const routes: Routes = [
@@ -23,6 +24,7 @@ export const routes: Routes = [
   //{ path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
   {path: 'create-listing',canActivate: [authGuard], component: CreateListingComponent},
   {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},
+  {path: 'user/listings', canActivate: [authGuard], component: MyListingsComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

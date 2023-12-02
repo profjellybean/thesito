@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 import {QualificationType} from "../../models/Enums";
@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
   templateUrl: './all.component.html',
   styleUrl: './all.component.css'
 })
+
 
 // TODO language toggle
 export class AllComponent {
@@ -25,7 +26,6 @@ export class AllComponent {
   searchEndDate: Date | null = null;
   fullTextSearchPattern: String | null = null
   pages: (number)[] = [];
-
 
   constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;

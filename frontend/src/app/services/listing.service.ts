@@ -10,6 +10,8 @@ import {
   Listing,
   simpleSearchTitleOnlyQuery
 } from "../models/Listing";
+import {User} from "../models/User";
+import {gql} from "@apollo/client/core";
 
 
 interface SearchResult {
@@ -113,7 +115,44 @@ export class ListingService {
         tags: listing.tags,
         university: listing.university,
         company: listing.company,
+        ownerId: listing.owner?.id,
+        active: listing.active
       },
     });
+  }
+
+  getAllListingsFromUserWithId(id: number): Observable<Listing[]> {
+    return this.apollo
+      .query<{ getAllListingsFromUserWithId: Listing[] }>({
+        query: gql`
+          query getAllListingsFromUserWithId($id: BigInt){
+            getAllListingsFromUserWithId(id: $id) {
+              active
+              company
+              createdAt
+              details
+              id
+              requirement
+              title
+              university
+              tags {
+                layer
+                title_de
+                title_en
+                id
+              }
+              owner {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          id: Number(id),
+        },
+      })
+      .pipe(
+        map((result) => result.data.getAllListingsFromUserWithId)
+      );
   }
 }

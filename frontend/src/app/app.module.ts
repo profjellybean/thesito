@@ -36,6 +36,7 @@ import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {AllComponent} from "./components/all/all.component";
 import { TagComponent } from './components/tag/tag.component';
 import {PasswordChangeDialogComponent} from "./components/password-change-dialog/password-change-dialog.component";
+import { MyListingsComponent } from './components/my-listings/my-listings.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -56,7 +57,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CreateListingComponent,
     EditUserComponent,
     TagComponent,
-    PasswordChangeDialogComponent
+    PasswordChangeDialogComponent,
+    MyListingsComponent
   ],
   imports: [
     BrowserModule,
