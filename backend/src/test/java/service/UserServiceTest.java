@@ -18,6 +18,7 @@ import miscellaneous.Session;
 import miscellaneous.ValidationException;
 import org.antlr.v4.runtime.misc.Array2DHashSet;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import persistence.DatabaseContainerMock;
 import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
@@ -36,6 +37,7 @@ import java.security.NoSuchAlgorithmException;
 
 @QuarkusTest
 @QuarkusTestResource(DatabaseContainerMock.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserServiceTest {
     @Inject
     UserService userService;

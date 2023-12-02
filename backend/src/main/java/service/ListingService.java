@@ -1,6 +1,7 @@
 package service;
 
 import entity.Listing;
+import entity.User;
 import enums.Qualification;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -11,6 +12,7 @@ import miscellaneous.ServiceException;
 import miscellaneous.ValidationException;
 import persistence.ListingRepository;
 import io.quarkus.panache.common.Page;
+import persistence.UserRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -24,9 +26,18 @@ public class ListingService {
     @Inject
     ListingValidator listingValidator;
 
+    @Inject
+    UserRepository userRepository;
+
     @Transactional
     public List<Listing> getAllListings() {
         return listingRepository.listAll();
+    }
+
+    @Transactional
+    public List<Listing> getAllListingsFromUserWithId(long id){
+        User user = this.userRepository.findById(id);
+        return this.listingRepository.find("owner", user).list();
     }
 
     @Transactional

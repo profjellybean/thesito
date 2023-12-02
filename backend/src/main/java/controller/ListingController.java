@@ -51,6 +51,12 @@ public class ListingController {
         return listingService.getAllListings();
     }
 
+    @Query("getAllListingsFromUserWithId")
+    @Description("Fetches a list of all listings from the a specific User from the dataabase")
+    public List<Listing> getAllListingsFromUserWithId(long id) {
+        return listingService.getAllListingsFromUserWithId(id);
+    }
+
     @Query("getAllListingsPaginated")
     @Description("Fetches a list of all listings from the database")
     public List<Listing> getAllListingsPaginated(int offset, int limit) {

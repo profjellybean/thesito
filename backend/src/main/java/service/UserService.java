@@ -127,7 +127,7 @@ public class UserService {
   }
 
   @Transactional
-  public User getUserById(Long id) throws ServiceException {
+  public User getUserById(long id) throws ServiceException {
     User foundUser = userRepository.findById(id);
     if ( foundUser == null){
       throw new ServiceException("User with this id does not exist");

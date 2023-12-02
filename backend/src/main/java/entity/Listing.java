@@ -47,6 +47,9 @@ public class Listing extends PanacheEntityBase {
 
     private String university;
     private String company;
+    private Boolean active;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User owner;
 
     @Override
     public String toString() {
