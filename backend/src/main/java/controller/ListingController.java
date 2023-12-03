@@ -2,6 +2,7 @@ package controller;
 
 import entity.Listing;
 import entity.Tag;
+import entity.User;
 import enums.Qualification;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.annotation.security.PermitAll;
@@ -172,6 +173,16 @@ public class ListingController {
         searchResult.setListings(query.hits());
         searchResult.setTotalHitCount(query.total().hitCount());
         return searchResult;
+    }
+
+    @Mutation
+    @Description("Updates a listing in the database")
+    public Listing updateListing(Listing listing) throws GraphQLException {
+        try {
+            return listingService.updateListing(listing);
+        } catch (ValidationException | ServiceException e) {
+            throw new GraphQLException(e.getMessage());
+        }
     }
 
 

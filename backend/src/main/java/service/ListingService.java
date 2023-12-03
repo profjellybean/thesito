@@ -89,4 +89,21 @@ public class ListingService {
        return listingRepository.find(query.toString(), params).list();
     }
 
+    @Transactional
+    public Listing updateListing(Listing listing) throws ServiceException, ValidationException {
+        listingValidator.validateListing(listing);
+        Listing existingListing = listingRepository.findById(listing.getId());
+
+        existingListing.setActive(listing.getActive());
+        existingListing.setOwner(listing.getOwner());
+        existingListing.setTitle(listing.getTitle());
+        existingListing.setDetails(listing.getDetails());
+        existingListing.setRequirement(listing.getRequirement());
+        existingListing.setUniversity(listing.getUniversity());
+        existingListing.setCompany(listing.getCompany());
+
+        listingRepository.persist(existingListing);
+        return existingListing;
+    }
+
 }
