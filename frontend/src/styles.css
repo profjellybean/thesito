@@ -14,7 +14,7 @@
 
 .background {
   background-color: #EAE7DC;
-  min-height: calc(100vh - 122px);
+  min-height: calc(100vh - var(--mat-toolbar-standard-height));
   overflow: hidden;
 }
 
