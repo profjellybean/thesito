@@ -1,7 +1,33 @@
-ID {{user.id}}
-<div *ngIf="listings" >
-  <div *ngFor="let listing of listings">
-    {{listing.title}}<br>
-  </div>
+<div class="user-details-container background">
+  <div class="container">
+    <div class="center-card">
+      <div class="col-md-6 mt-5 card-align">
+        <div>
+          <h3 class="card-title h1">{{ 'myListings' | translate }}</h3>
+          <div class="card">
+            <div class="card-body">
+              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
+              <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
 
+              <div *ngIf="listings" >
+                <div *ngFor="let listing of listings">
+                  <div class="card listing-container">
+                    <div class="card-body listing-card-body">
+                      <div class="creation-date">{{ listing.createdAt | date }}</div>
+                      <div class="listing-title">{{listing.title}}</div>
+                      <div class="controls">
+                        <mat-slide-toggle [color]="'primary'" [checked]="listing.active" (change)="toggleListingStatus(listing)"></mat-slide-toggle>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

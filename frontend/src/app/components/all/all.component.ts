@@ -46,7 +46,6 @@ export class AllComponent {
     let formattedEndDate = this.convertDateToString(this.searchEndDate)
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
-
     this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate, formattedEndDate, offset, limit)
       .subscribe((searchResult) => {
         this.totalListings = searchResult.totalHitCount

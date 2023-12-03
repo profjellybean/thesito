@@ -59,6 +59,7 @@ export class CreateListingComponent implements OnInit {
       title: "",
       details: "",
       requirement: QualificationType.None,
+      owner: this.user
     };
     this.router = router;
     this.translateService = translateService;

@@ -8,9 +8,9 @@ import {
   getAllListingsQuery,
   getAllListingsQueryPaginated,
   Listing,
-  simpleSearchTitleOnlyQuery
+  simpleSearchTitleOnlyQuery, updateListingQuery
 } from "../models/Listing";
-import {User} from "../models/User";
+import {updateUserQuery, User} from "../models/User";
 import {gql} from "@apollo/client/core";
 
 
@@ -125,7 +125,7 @@ export class ListingService {
     return this.apollo
       .query<{ getAllListingsFromUserWithId: Listing[] }>({
         query: gql`
-          query getAllListingsFromUserWithId($id: BigInt){
+          query getAllListingsFromUserWithId($id: BigInteger!){
             getAllListingsFromUserWithId(id: $id) {
               active
               company
@@ -154,5 +154,23 @@ export class ListingService {
       .pipe(
         map((result) => result.data.getAllListingsFromUserWithId)
       );
+  }
+
+  updateListing(listing: Listing): Observable<any> {
+    console.log('Listing to update: ', listing)
+    return this.apollo.mutate<any>({
+      mutation: updateListingQuery,
+      variables: {
+        id: Number(listing.id),
+        owner_id: Number(listing.owner.id),
+        active: listing.active,
+        title: listing.title,
+        company: listing.company,
+        university: listing.university,
+        details: listing.details,
+        tags: listing.tags,
+        requirement: listing.requirement
+      },
+    });
   }
 }

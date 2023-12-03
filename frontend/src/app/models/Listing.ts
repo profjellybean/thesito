@@ -13,9 +13,13 @@ export interface Listing {
   createdAt?: Date;
   university?: string;
   company?: string;
-  owner?: User;
+  owner: User;
   active?: Boolean;
 }
+
+
+
+
 
 export const getAllListingsQuery = gql`
   query {
@@ -196,4 +200,52 @@ export const createListingQuery = gql`
   }
 `;
 
+export const updateListingQuery = gql`
+    mutation UpdateListing(
+    $id: BigInteger!,
+    $owner_id: BigInteger!,
+    $active: Boolean!,
+    $title: String!,
+    $company: String,
+    $university: String,
+    $details: String!,
+    $tags: [TagInput]!,
+    $requirement: Qualification!)
+    {
+        updateListing(
+            listing: {
+                id: $id
+                active: $active
+                title: $title
+                company: $company
+                university: $university
+                details: $details
+                requirement: $requirement
+                tags: $tags
+                owner: {
+                  id: $owner_id
+                }
+            }
+        )
+        {
+        active
+        company
+        createdAt
+        details
+        id
+        requirement
+        title
+        university
+        owner {
+            id
+        }
+        tags {
+            layer
+            title_de
+            title_en
+            id
+        }
+        }
+    }
+`;
 

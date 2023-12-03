@@ -46,8 +46,6 @@ export class LoginComponent {
   authenticateUser() {
     this.mail = this.loginForm.get("emailOrName")?.value
     this.password = this.loginForm.get("password")?.value
-    console.log(this.mail);
-    console.log(this.password);
 
     this.authService.getSession(this.mail, this.password).subscribe(
       res => {
