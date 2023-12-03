@@ -73,10 +73,13 @@ export class MyListingsComponent implements OnInit{
             tags: tempTags,
             owner: listing.owner,
             active: listing.active,
-            requirement: listing.requirement
+            requirement: listing.requirement,
+            createdAt: listing.createdAt
           }
           this.listings.push(templisting);
         })
+        // @ts-ignore
+        this.listings = this.listings.sort((a, b) => a.createdAt - b.createdAt);
         console.log("Found Listings: ", result)
         this.listingsLoaded = true;
       },
