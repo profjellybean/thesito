@@ -115,6 +115,16 @@ public class ListingController {
        return searchResult;
     }
 
+    @Mutation("applyToListing")
+    @PermitAll
+    public void applyToListing(Long listingId, Long userId, String applicationText) throws GraphQLException {
+        try {
+            listingService.applyForThesis(listingId, userId, applicationText);
+        } catch (ServiceException | ValidationException e) {
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
     @Query("advancedSearch")
     @PermitAll
     @Transactional
@@ -181,6 +191,16 @@ public class ListingController {
         try {
             return listingService.updateListing(listing);
         } catch (ValidationException | ServiceException e) {
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Query("getListingById")
+    @Description("Fetches a listing from the database by its ID")
+    public Listing getListingById(long id) throws GraphQLException {
+        try {
+            return listingService.getListingById(id);
+        } catch (ServiceException e) {
             throw new GraphQLException(e.getMessage());
         }
     }
