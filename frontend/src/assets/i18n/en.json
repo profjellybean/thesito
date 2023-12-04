@@ -52,5 +52,7 @@
   "changePassword": "Change password",
   "editUser": "Edit User",
   "details": "Details",
-  "myListings": "My Listings"
+  "myListings": "My Listings",
+  "apply": "Apply",
+  "applyText": "Apply to this listing"
 }

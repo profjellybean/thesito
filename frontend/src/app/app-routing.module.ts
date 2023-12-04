@@ -10,7 +10,7 @@ import {LanguageToggleComponent} from "./components/language-toggle/language-tog
 import {UserDetailsComponent} from "./components/user-details/user-details.component";
 import {CreateListingComponent} from "./components/create-listing/create-listing.component";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
-import {AuthService} from "./services/auth.service";
+import {DetailComponent} from "./components/detail/detail.component";
 import {MyListingsComponent} from "./components/my-listings/my-listings.component";
 
 
@@ -21,6 +21,7 @@ export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterUserComponent },
   { path: 'user', canActivate: [authGuard], component: UserDetailsComponent },
+  {path: 'listing/:id', canActivate: [authGuard], component: DetailComponent},
   //{ path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
   {path: 'create-listing',canActivate: [authGuard], component: CreateListingComponent},
   {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},
