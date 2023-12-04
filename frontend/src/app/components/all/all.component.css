@@ -2,15 +2,9 @@
   font-family: Montserrat, sans-serif;
 }
 
-.background {
-  background-color: #EAE7DC;
-  height: 100vh;
-}
-
-
 /* General Styles */
 .background {
-  background-color: #f0f0f0;
+  background-color: #EAE7DC;
   font-family: 'Arial', sans-serif;
   color: #333;
   padding: 20px;
@@ -131,6 +125,7 @@ button:disabled {
 
 /* Listing Styles */
 .listing {
+  background-color: white;
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
 }
