@@ -39,7 +39,7 @@
         <mat-icon>star_border</mat-icon>
       </div>
       <div class="col col-md-9 d-flex align-items-center justify-content-center">
-        <h3 class="my-auto">{{listing.title}}</h3>
+        <h3 class="my-auto text-center">{{listing.title}}</h3>
       </div>
       <div class="col col-md-2 d-flex align-items-center justify-content-center">
         <div class="row-fluid">
@@ -49,7 +49,7 @@
       </div>
     </div>
     <!-- Pagination Controls -->
-    <div class="pagination-container">
+    <div class="pagination-container d-flex justify-content-center">
 
       <button (click)="loadPage(1)"
               [disabled]="currentPage === (1)">First</button>
@@ -57,12 +57,13 @@
       <!-- Previous and Next Buttons -->
       <button (click)="loadPage(currentPage - 1)"
               [disabled]="currentPage === 1">Previous</button>
-      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <span *ngIf="totalPages > 0; else noResultsSpan" class="pagination-text">Page {{ currentPage }} of {{ totalPages }}</span>
+      <ng-template #noResultsSpan><span class="pagination-text">No Results</span></ng-template>
       <button (click)="loadPage(currentPage + 1)"
-              [disabled]="currentPage === totalPages">Next</button>
+              [disabled]="currentPage === totalPages || totalPages === 0">Next</button>
 
       <button (click)="loadPage(this.totalPages - 1)"
-              [disabled]="currentPage === (this.totalPages-1)">Last</button>
+              [disabled]="currentPage === (this.totalPages-1) || totalPages === 0">Last</button>
     </div>
 
   </div>
