@@ -54,9 +54,7 @@ public class ListingService {
         return listing;
     }
 
-    public List<Listing> find(Optional<Integer> pageOffset, Optional<Integer> pageLimit, Optional<String> title, Optional<String> details, Optional<Qualification> qualificationType, Optional<Date> startDate, Optional<Date> endDate){
-
-
+    public List<Listing> find(Optional<Integer> pageOffset, Optional<Integer> pageLimit, Optional<String> title, Optional<String> details, Optional<Qualification> qualificationType, Optional<Date> startDate, Optional<Date> endDate, Optional<Boolean> active){
         var query = new StringBuilder("1 = 1"); // This is always true, used as a starting point
 
         Parameters params = new Parameters();
@@ -86,6 +84,12 @@ public class ListingService {
             Page page = Page.of(pageOffset.get() / pageLimit.get(), pageLimit.get());
             return listingRepository.find(query.toString(), params).page(page).list();
         }
+
+        if (active.isPresent()){
+            query.append(" and active = :active");
+            params.and("active", active.get());
+        }
+
        return listingRepository.find(query.toString(), params).list();
     }
 

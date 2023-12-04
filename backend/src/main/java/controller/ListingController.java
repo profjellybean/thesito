@@ -82,16 +82,17 @@ public class ListingController {
 //    @RolesAllowed("ListingConsumer") TODO: change permissions sooner or later
     @Query("simpleSearch")
     @PermitAll
-    public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit) {
+    public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit, Boolean active) {
         Optional<String> optionalTitle = Optional.ofNullable(title);
         Optional<String> optionalDetails = Optional.ofNullable(details);
         Optional<Qualification> optionalQualificationType = Optional.ofNullable(qualificationType);
         Optional<Date> optionalStartDate = Optional.ofNullable(startDate);
         Optional<Date> optionalEndDate = Optional.ofNullable(endDate);
+        Optional<Boolean> optionalActive = Optional.ofNullable(active);
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
         // TODO make just one query
-        searchResult.totalHitCount = listingService.find(Optional.empty(), Optional.empty(), optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate).size();
-        searchResult.listings = listingService.find(offset, limit, optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate);
+        searchResult.totalHitCount = listingService.find(Optional.empty(), Optional.empty(), optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive).size();
+        searchResult.listings = listingService.find(offset, limit, optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive);
         return searchResult;
     }
 
@@ -147,6 +148,7 @@ public class ListingController {
         PredicateFinalStep requirementPredicate = qualification.isPresent() ?
                 predicateFactory.match().field("requirement").matching(qualification.get()) :
                 predicateFactory.matchAll();
+
 
         // TODO enable tags filtering
         //PredicateFinalStep tagPredicate = tagNames.isPresent() ?
