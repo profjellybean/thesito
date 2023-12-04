@@ -6,6 +6,7 @@ import {Listing} from "../../models/Listing";
 import {User} from "../../models/User";
 import {QualificationType, UserType} from "../../models/Enums";
 import {Tag} from "../../models/Tag";
+import {instanceOf} from "graphql/jsutils/instanceOf";
 
 @Component({
   selector: 'app-my-listings',
@@ -43,52 +44,59 @@ export class MyListingsComponent implements OnInit{
   ngOnInit(): void {
     if(this.authService.isLoggedIn()){
       this.user.id = this.authService.getUserId();
+      this.listingService.getAllListingsFromUserWithId(this.user.id).subscribe({
+        next: result =>{
+          let tempListings = result;
+          tempListings.forEach(listing =>{
+            let tempTags: Tag[] = [];
+            listing.tags?.forEach(tag =>{
+              let t = {
+                id: tag.id,
+                layer: tag.layer,
+                title_de: tag.title_de,
+                title_en: tag.title_en
+              }
+              tempTags.push(t);
+
+            })
+            if (listing.createdAt){
+              let templisting = {
+                id: listing.id,
+                title: listing.title,
+                details: listing.details,
+                company: listing.company,
+                university: listing.university,
+                tags: tempTags,
+                owner: listing.owner,
+                active: listing.active,
+                requirement: listing.requirement,
+                createdAt: new Date(listing.createdAt)
+              }
+              this.listings.push(templisting);
+            }
+
+          })
+          this.listings = this.listings.sort((a, b): number => {
+            let n: number = -1;
+
+            if (a.createdAt instanceof Date && b.createdAt instanceof Date){
+              n = a.createdAt.getTime() - b.createdAt.getTime();
+            }
+            return n == -1 ? -1 : n;
+          });
+          console.log("Found Listings: ", this.listings)
+          this.listingsLoaded = true;
+        },
+        error: error =>{
+          this.error = true;
+          this.errorMessage = error.message;
+        }
+      })
     } else {
       setTimeout(() => {
         this.router.navigate(['/404']);
       }, 100);
     }
-    this.user.id = this.authService.getUserId()
-    this.listingService.getAllListingsFromUserWithId(this.user.id).subscribe({
-      next: result =>{
-        let tempListings = result;
-        tempListings.forEach(listing =>{
-          let tempTags: Tag[] = [];
-          listing.tags?.forEach(tag =>{
-            let t = {
-              id: tag.id,
-              layer: tag.layer,
-              title_de: tag.title_de,
-              title_en: tag.title_en
-            }
-            tempTags.push(t);
-
-          })
-          let templisting = {
-            id: listing.id,
-            title: listing.title,
-            details: listing.details,
-            company: listing.company,
-            university: listing.university,
-            tags: tempTags,
-            owner: listing.owner,
-            active: listing.active,
-            requirement: listing.requirement,
-            createdAt: listing.createdAt
-          }
-          this.listings.push(templisting);
-        })
-        // @ts-ignore
-        this.listings = this.listings.sort((a, b) => a.createdAt - b.createdAt);
-        console.log("Found Listings: ", result)
-        this.listingsLoaded = true;
-      },
-      error: error =>{
-        this.error = true;
-        this.errorMessage = error.message;
-      }
-    })
-
 
   }
 

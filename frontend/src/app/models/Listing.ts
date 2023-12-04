@@ -18,9 +18,6 @@ export interface Listing {
 }
 
 
-
-
-
 export const getAllListingsQuery = gql`
   query {
     getAllListings {
