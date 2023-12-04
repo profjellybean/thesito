@@ -194,4 +194,10 @@ public class ListingValidator {
         validateOwnerId(listing.getOwner());
         validateActive(listing.getActive());
     }
+
+    public void validateApplication(String applicationText) throws ValidationException {
+        if (applicationText == null || applicationText.isBlank()) {
+            throw new ValidationException("Application text cannot be null or empty");
+        }
+    }
 }

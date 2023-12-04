@@ -16,7 +16,7 @@ CREATE TABLE users
 
 CREATE TABLE listings
 (
-    id INTEGER PRIMARY KEY GENERATED ALWAYS AS ( nextval('listings_id_seq') ) STORED NOT NULL,
+    id SERIAL PRIMARY KEY,
     title VARCHAR NOT NULL,
     details VARCHAR NOT NULL,
     qualification_type qualification_type NOT NULL,

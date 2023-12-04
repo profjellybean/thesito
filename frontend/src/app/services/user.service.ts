@@ -3,11 +3,12 @@ import {map, Observable} from "rxjs";
 import {Apollo} from "apollo-angular";
 import {Injectable} from "@angular/core";
 import {gql} from "@apollo/client/core";
+import {AuthService} from "./auth.service";
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo, private authService: AuthService) {}
 
   registerUser(user: User): Observable<any> {
     console.log(user)
@@ -21,6 +22,21 @@ export class UserService {
         tags: user.userTags
       },
     });
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.getUserById(this.authService.getUserId()).pipe(
+      map((user) => {
+        return {
+          name: user.name,
+          email: user.email,
+          id: user.id,
+          userTags: user.userTags,
+          userType: user.userType,
+          qualification: user.qualification,
+        };
+      })
+    )
   }
 
   updateUser(user: User): Observable<any> {

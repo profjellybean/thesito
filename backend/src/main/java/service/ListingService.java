@@ -3,6 +3,8 @@ package service;
 import entity.Listing;
 import entity.User;
 import enums.Qualification;
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.Mailer;
 import io.quarkus.panache.common.Parameters;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -17,6 +19,7 @@ import persistence.UserRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class ListingService {
@@ -25,6 +28,10 @@ public class ListingService {
     ListingRepository listingRepository;
     @Inject
     ListingValidator listingValidator;
+    @Inject
+    UserService userService;
+    @Inject
+    MailService mailService;
 
     @Inject
     UserRepository userRepository;
@@ -41,6 +48,15 @@ public class ListingService {
     }
 
     @Transactional
+    public Listing getListingById(long id) throws ServiceException {
+        try {
+            return listingRepository.findById(id);
+        } catch (IllegalStateException e) {
+            throw new ServiceException("Listing does not exist");
+        }
+    }
+
+    @Transactional
     public List<Listing> getAllListingsPaginated(int offset, int limit) {
         Page page = Page.of(offset / limit, limit);
         return listingRepository.findAll().page(page).list();
@@ -54,7 +70,29 @@ public class ListingService {
         return listing;
     }
 
-    public List<Listing> find(Optional<Integer> pageOffset, Optional<Integer> pageLimit, Optional<String> title, Optional<String> details, Optional<Qualification> qualificationType, Optional<Date> startDate, Optional<Date> endDate, Optional<Boolean> active){
+    public void applyForThesis(Long listingId, Long userId, String applicationText) throws ServiceException, ValidationException {
+        listingValidator.validateApplication(applicationText);
+        Listing listing = listingRepository.findById(listingId);
+        if (listing == null) {
+            throw new ServiceException("Listing does not exist");
+        }
+        User applicationUser = userService.getUserById(userId);
+        if (applicationUser == null) {
+            throw new ServiceException("User does not exist");
+        }
+        User listingAuthor = listing.getOwner();
+
+        String subject = "New application for your listing";
+        String text = "A new application has been made for your listing: " + listing.getTitle()
+                + " from " + applicationUser.getName() + " (" + applicationUser.getEmail() + ") "
+                + "\n\n" + applicationText;
+
+        mailService.sendEmail(listingAuthor.getEmail(), subject, text, applicationUser.getEmail());
+    }
+
+   	public List<Listing> find(Optional<Integer> pageOffset, Optional<Integer> pageLimit, Optional<String> title, Optional<String> details, Optional<Qualification> qualificationType, Optional<Date> startDate, Optional<Date> endDate, Optional<Boolean> active){
+
+
         var query = new StringBuilder("1 = 1"); // This is always true, used as a starting point
 
         Parameters params = new Parameters();

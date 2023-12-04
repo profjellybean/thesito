@@ -39,6 +39,32 @@ export const getAllListingsQuery = gql`
   }
 `;
 
+export const applyToListingQuery = gql`
+  mutation ApplyToListing($listingId: BigInteger!, $userId: BigInteger!, $text: String!) {
+    applyToListing(listingId: $listingId, userId: $userId, applicationText: $text)
+  }
+`;
+export const getListingByIdQuery = gql`
+  query ($id: BigInteger!) {
+    getListingById(id: $id) {
+      id
+      title
+      details
+      requirement
+      createdAt
+      tags {
+        id
+        title_de
+        title_en
+        layer
+      }
+      owner {
+        id
+      }
+    }
+  }
+`;
+
 export const getAllListingsQueryPaginated = gql`
   query get ($offset: Int!, $limit: Int!) {
     getAllListingsPaginated(

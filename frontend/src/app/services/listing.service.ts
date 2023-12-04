@@ -3,10 +3,10 @@ import {Apollo} from "apollo-angular";
 import {map, Observable} from "rxjs";
 import {QualificationType} from "../models/Enums";
 import {
-  advancedSearchQuery,
+  advancedSearchQuery, applyToListingQuery,
   createListingQuery, fullTextSearchQuery,
   getAllListingsQuery,
-  getAllListingsQueryPaginated,
+  getAllListingsQueryPaginated, getListingByIdQuery,
   Listing,
   simpleSearchTitleOnlyQuery, updateListingQuery
 } from "../models/Listing";
@@ -38,6 +38,29 @@ export class ListingService {
       .pipe(
         map((result) => result.data.getAllListings)
       );
+  }
+
+  applyToListing(listingId: number, userId: number, text: number): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: applyToListingQuery,
+      variables: {
+        listingId: listingId,
+        userId: userId,
+        text: text
+      },
+    });
+  }
+
+  getListingById(id: number): Observable<Listing> {
+    return this.apollo
+      .query<{ getListingById: Listing }>({
+        query: getListingByIdQuery,
+        variables: {
+          id: Number(id),
+        },
+      }).pipe(
+        map((result) => result.data.getListingById)
+      )
   }
 
   getAllListingsPaginated(offset: number, limit: number): Observable<Listing[]> {
@@ -105,7 +128,6 @@ export class ListingService {
   }
 
   createListing(listing: Listing): Observable<any> {
-    console.log(listing);
     return this.apollo.mutate<any>({
       mutation: createListingQuery,
       variables: {

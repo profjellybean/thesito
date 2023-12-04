@@ -52,5 +52,9 @@
   "companyName": "Unternehmensname",
   "allListings": "Alle Ausschreibungen",
   "details": "Details",
-  "myListings": "Meine Ausschreibungen"
+  "myListings": "Meine Ausschreibungen",
+  "apply": "Bewerben",
+  "applyText": "Bewerbungstext hier eingeben",
+  "applyHeader": "Bewerbung",
+  "applyLabel": "Bewerbungstext"
 }
