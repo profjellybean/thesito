@@ -54,5 +54,7 @@
   "details": "Details",
   "myListings": "My Listings",
   "apply": "Apply",
-  "applyText": "Apply to this listing"
+  "applyText": "Enter your application text here",
+  "applyHeader": "Application",
+  "applyLabel": "Application Text"
 }

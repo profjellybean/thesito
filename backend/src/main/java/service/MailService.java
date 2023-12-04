@@ -18,6 +18,6 @@ public class MailService {
     public void sendEmail(String recipient, String subject, String body, String cc) {
         mailer.send(Mail.withText(recipient, subject, body).setCc(Collections.singletonList(cc))).onItemOrFailure().invoke(() -> {
             System.out.println("Mail sent"); //TODO logger?
-        }).await().atMost(java.time.Duration.ofSeconds(10));
+        }).await().atMost(java.time.Duration.ofSeconds(2));
     }
 }

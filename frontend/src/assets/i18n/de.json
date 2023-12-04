@@ -54,5 +54,7 @@
   "details": "Details",
   "myListings": "Meine Ausschreibungen",
   "apply": "Bewerben",
-  "applyText": "Zu dieser Ausschreibung bewerben"
+  "applyText": "Bewerbungstext hier eingeben",
+  "applyHeader": "Bewerbung",
+  "applyLabel": "Bewerbungstext"
 }

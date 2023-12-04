@@ -3,12 +3,6 @@
 <div>{{listing?.id}}</div>
 <div>{{listing?.title}}</div>
 
+<button (click)="openApplicationDialog()">Apply</button>
 
-<form *ngIf="applicationForm" [formGroup]="applicationForm" class="text-center">
-  <div class="form-group">
-    <input class="eerie" type="text" formControlName="text" placeholder='{{"applyText" | translate}}' autocomplete="on">
-  </div>
-  <div class="text-center button-wrapper">
-    <button type="button" class="btn login-button" (click)="apply()">{{"apply" | translate}}</button>
-  </div>
-</form>
+
