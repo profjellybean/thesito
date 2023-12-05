@@ -8,6 +8,7 @@ import miscellaneous.ServiceException;
 import miscellaneous.Session;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.graphql.*;
+import org.jboss.logging.Logger;
 import service.UserService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.annotation.security.PermitAll;
@@ -18,108 +19,122 @@ import java.util.List;
 
 @GraphQLApi
 public class UserController {
-  @Inject
-  JsonWebToken jwt;
+    @Inject
+    JsonWebToken jwt;
+    @Inject
+    UserService userService;
 
-  @Inject
-  UserService userService;
+    private static final Logger LOG = Logger.getLogger(UserController.class.getName());
 
-  // Example Requests for each Role:
-  @Query("security")
-  @PermitAll
-  public String hello() {
-    return "Sensitive data for " + jwt.getName();
-  }
-
-  @RolesAllowed("ListingConsumer")
-  @Query("getAllUsersListingConsumer")
-  public List<User> getAllUsers1() {
-    return userService.getAllUsers();
-  }
-
-  @RolesAllowed("ListingProvider")
-  @Query("getAllUsersListingProvider")
-  public List<User> getAllUsers2() {
-    return userService.getAllUsers();
-  }
-
-  @RolesAllowed("Administrator")
-  @Query("getAllUsersAdministrator")
-  public List<User> getAllUsers3() {
-    return userService.getAllUsers();
-  }
-  // --------
-
-  @Query("getAllUsers")
-  @Description("Fetches a list of all users from the database")
-  public List<User> getAllUsers() {
-    return userService.getAllUsers();
-  }
-
-  @Mutation
-  @Description("Registers a user in the database")
-  public User registerUser(User user) throws GraphQLException {
-    try {
-      return userService.registerUser(user);
-    } catch (ValidationException | ServiceException e) {
-      throw new GraphQLException(e.getMessage());
+    // Example Requests for each Role:
+    @Query("security")
+    @PermitAll
+    public String hello() {
+        return "Sensitive data for " + jwt.getName();
     }
-  }
 
-  @Query("getUserById")
-  @Description("Fetches the user corresponding to the given ID from the database")
-  public User getUserById(Long id) throws GraphQLException {
-      try{
-          return userService.getUserById(id);
-      }catch (ServiceException e){
-          throw new GraphQLException(e.getMessage());
-      }
-  }
-
-  // return
-  //    acceess token (15 min) and 
-  //    refresh token (valid for 3 days, can be used once)
-  @Mutation
-  @Description("Get access and refresh token by using username and password")
-  public Session getSession(String email, String password) throws GraphQLException {
-    try {
-      return userService.getSession(email, password);
-    } catch (ServiceException e) {
-      throw new GraphQLException(e.getMessage());
+    @RolesAllowed("ListingConsumer")
+    @Query("getAllUsersListingConsumer")
+    public List<User> getAllUsers1() {
+        return userService.getAllUsers();
     }
-  }
 
-  // when a refresh token is used to get an access token 
-  // the claim number of that refresh token is saved in a DB for (3 days)
-  // -> refresh token can only be used once
-  @Mutation
-  @Description("Get new access and refresh token by using the one-time use refresh token")
-  public Session refreshSession(String token) throws GraphQLException {
-    try {
-      return userService.refreshSession(token);
-    } catch (ServiceException e) {
-      throw new GraphQLException(e.getMessage());
+    @RolesAllowed("ListingProvider")
+    @Query("getAllUsersListingProvider")
+    public List<User> getAllUsers2() {
+        return userService.getAllUsers();
     }
-  }
 
-  @Mutation
-  @Description("Updates a user in the database")
-  public User updateUser(User user) throws GraphQLException {
-    try {
-      return userService.updateUser(user);
-    } catch (ValidationException | ServiceException e) {
-      throw new GraphQLException(e.getMessage());
+    @RolesAllowed("Administrator")
+    @Query("getAllUsersAdministrator")
+    public List<User> getAllUsers3() {
+        return userService.getAllUsers();
     }
-  }
+    // --------
 
-  @Mutation
-  @Description("Change user password")
-  public User changePassword(String oldPassword, String newPassword, Long userId) throws GraphQLException {
-    try {
-      return userService.changePassword(oldPassword, newPassword, userId);
-    } catch (ValidationException | ServiceException e) {
-      throw new GraphQLException(e.getMessage());
+    @Query("getAllUsers")
+    @Description("Fetches a list of all users from the database")
+    public List<User> getAllUsers() {
+        LOG.info("getAllUsers");
+        return userService.getAllUsers();
     }
-  }
+
+    @Mutation
+    @Description("Registers a user in the database")
+    public User registerUser(User user) throws GraphQLException {
+        LOG.info("registerUser");
+        try {
+            return userService.registerUser(user);
+        } catch (ValidationException | ServiceException e) {
+            LOG.error("Error in registerUser: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Query("getUserById")
+    @Description("Fetches the user corresponding to the given ID from the database")
+    public User getUserById(Long id) throws GraphQLException {
+        LOG.info("getUserById");
+        try {
+            return userService.getUserById(id);
+        } catch (ServiceException e) {
+            LOG.error("Error in getUserById: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    // return
+    //    acceess token (15 min) and
+    //    refresh token (valid for 3 days, can be used once)
+    @Mutation
+    @Description("Get access and refresh token by using username and password")
+    public Session getSession(String email, String password) throws GraphQLException {
+        LOG.info("getSession");
+        try {
+            return userService.getSession(email, password);
+        } catch (ServiceException e) {
+            LOG.error("Error in getSession: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    // when a refresh token is used to get an access token
+    // the claim number of that refresh token is saved in a DB for (3 days)
+    // -> refresh token can only be used once
+    @Mutation
+    @Description("Get new access and refresh token by using the one-time use refresh token")
+    public Session refreshSession(String token) throws GraphQLException {
+        LOG.info("refreshSession");
+        try {
+            return userService.refreshSession(token);
+        } catch (ServiceException e) {
+            LOG.error("Error in refreshSession: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Mutation
+    @Description("Updates a user in the database")
+    public User updateUser(User user) throws GraphQLException {
+        LOG.info("updateUser");
+        try {
+            return userService.updateUser(user);
+        } catch (ValidationException | ServiceException e) {
+            LOG.error("Error in updateUser: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Mutation
+    @Description("Change user password")
+    public User changePassword(String oldPassword, String newPassword, Long userId) throws GraphQLException {
+        LOG.info("changePassword");
+        try {
+            return userService.changePassword(oldPassword, newPassword, userId);
+        } catch (ValidationException | ServiceException e) {
+            LOG.error("Error in changePassword: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
 
 }
