@@ -7,8 +7,11 @@ import {UniversityService} from '../../services/university.service';
 import {Tag} from "../../models/Tag";
 import {Router} from "@angular/router";
 import {Listing} from "../../models/Listing";
-import {QualificationType} from "../../models/Enums";
+import {QualificationType, UserType} from "../../models/Enums";
 import {TranslateService} from "@ngx-translate/core";
+import {User} from "../../models/User";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-create-listing',
@@ -28,11 +31,13 @@ export class CreateListingComponent implements OnInit {
   success = false;
   successMessage = '';
   filteredOptions: Observable<string[]> | undefined;
+  user: User;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
 
-  constructor(listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService) {
+  constructor(private userService: UserService, listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService,
+              private authService: AuthService) {
     this.createListingForm = this.fb.group({
       shortTitle: ['', Validators.required],
       details: ['', Validators.required],
@@ -41,12 +46,29 @@ export class CreateListingComponent implements OnInit {
       companyName: [''],
       otherCondition: ['']
     });
+    this.user = {
+      id: -1,
+      email: "",
+      name: "",
+      password: "",
+      userType: UserType.ListingConsumer,
+      userTags: [],
+      qualification: QualificationType.None
+    };
     this.listingService = listingService;
     this.listing = {
       title: "",
       details: "",
       requirement: QualificationType.None,
+      owner: this.user
     };
+    this.userService.getCurrentUser().subscribe((user) => {
+      // @ts-ignore
+      this.listing.owner = user.id;
+    }, e =>
+    {
+      console.log(e)
+    });
     this.router = router;
     this.translateService = translateService;
     this.universityService = universityService
@@ -54,6 +76,13 @@ export class CreateListingComponent implements OnInit {
 
 
   ngOnInit() {
+    if(this.authService.isLoggedIn()){
+      this.user.id = this.authService.getUserId();
+    } else {
+      setTimeout(() => {
+        this.router.navigate(['/404']);
+      }, 100);
+    }
     const otherConditionControl = this.createListingForm.get('otherCondition');
     if (otherConditionControl) {
       this.filteredOptions = otherConditionControl.valueChanges.pipe(
@@ -87,7 +116,6 @@ export class CreateListingComponent implements OnInit {
       const shortTitle = this.createListingForm.get('shortTitle')?.value;
       const details = this.createListingForm.get('details')?.value;
       const requirement = this.createListingForm.get('requirement')?.value;
-
       const conditionValue = this.createListingForm.get('condition')?.value;
       let companyValue: string;
       let universityValue: string;
@@ -100,27 +128,11 @@ export class CreateListingComponent implements OnInit {
           details: details,
           requirement: requirement,
           tags: this.selectedTags,
-          company: companyValue
+          company: companyValue,
+          owner: this.user,
+          active: true
         };
-
-        this.listingService.createListing(listing).subscribe(
-          (res: any) => {
-            if (res.data != null && res.data.createListing != null) {
-
-              this.error = false;
-              this.errorMessage = ''; // Reset error message
-              this.success = true
-              this.formatSuccessMessage('successCreatingListing');
-              setTimeout(() => {
-                this.router.navigate([`/listing/${res.data.createListing.id}`]);
-              }, 4000);
-            }
-          },
-          (error) => {
-            this.formatErrorMessage('errorCreatingListing' + error.message);
-          }
-        );
-
+        this.create(listing);
       } else {
         this.universityService.getUniversities(this.createListingForm.get('otherCondition')?.value).subscribe(
           (response: { items: any[] }) => {
@@ -137,27 +149,11 @@ export class CreateListingComponent implements OnInit {
                 details: details,
                 requirement: requirement,
                 tags: this.selectedTags,
-                university: universityValue
+                university: universityValue,
+                owner: this.user,
+                active: true
               };
-
-              this.listingService.createListing(listing).subscribe(
-                (res: any) => {
-                  if (res.data != null && res.data.createListing != null) {
-                    this.success = true;
-                    this.error = false;
-                    this.errorMessage = ''; // Reset error message
-                    this.formatSuccessMessage('successCreatingListing');
-                    setTimeout(() => {
-
-                      this.router.navigate([`/all`]);
-                    }, 4000);
-                  }
-                },
-                (error) => {
-                  this.formatErrorMessage('errorCreatingListing' + error.message);
-                }
-              );
-
+              this.create(listing)
             } else {
               this.formatErrorMessage('invalidUniversitySelection');
             }
@@ -167,6 +163,34 @@ export class CreateListingComponent implements OnInit {
     } else {
       this.formatErrorMessage('invalidListingInput');
     }
+  }
+
+  private create(listing: Listing) {
+    console.log(listing.tags)
+    let tags = {
+      id: 1,
+      title_en: "test",
+      title_de: "test",
+      layer: 1
+    }
+    listing.tags = [tags]
+    this.listingService.createListing(listing).subscribe(
+      (res: any) => {
+        if (res.data?.createListing != null) {
+          this.success = true;
+          this.error = false;
+          this.errorMessage = ''; // Reset error message
+          this.formatSuccessMessage('successCreatingListing');
+          setTimeout(() => {
+
+            this.router.navigate([`/listing/${res.data.createListing.id}`]);
+          }, 4000);
+        }
+      },
+      (error) => {
+        this.formatErrorMessage('errorCreatingListing ' + error.message);
+      }
+    );
   }
 
 
@@ -185,6 +209,4 @@ export class CreateListingComponent implements OnInit {
       this.successMessage = success;
     });
   }
-
-
 }

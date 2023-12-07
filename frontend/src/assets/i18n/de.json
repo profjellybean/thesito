@@ -23,7 +23,7 @@
   "save": "Speichern",
   "tags": "Tags_de",
   "newTag": "Neuer Tag",
-  "listings": "Einträge",
+  "listings": "Ausschreibungen",
   "logout": "Logout",
   "yourProfile": "Dein Profil",
   "role": "Rolle",
@@ -50,5 +50,11 @@
   "company": "Unternehmen",
   "chooseUniversity": "Universität auswählen",
   "companyName": "Unternehmensname",
-  "allListings": "Alle Einträge"
+  "allListings": "Alle Ausschreibungen",
+  "details": "Details",
+  "myListings": "Meine Ausschreibungen",
+  "apply": "Bewerben",
+  "applyText": "Bewerbungstext hier eingeben",
+  "applyHeader": "Bewerbung",
+  "applyLabel": "Bewerbungstext"
 }

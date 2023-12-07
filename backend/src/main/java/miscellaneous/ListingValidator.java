@@ -3,11 +3,14 @@ package miscellaneous;
 import entity.Listing;
 import entity.Tag;
 
+import entity.User;
 import enums.Qualification;
+import enums.UserType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.*;
 import service.TagService;
+import service.UserService;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -29,6 +32,8 @@ public class ListingValidator {
 
     @Inject
     TagService tagService;
+    @Inject
+    UserService userService;
 
     private void validateTitle(String title) throws ValidationException {
         if (title == null || title.isBlank()) {
@@ -159,6 +164,26 @@ public class ListingValidator {
         }
     }
 
+    public void validateOwnerId(User user) throws ValidationException {
+        if (user == null) {
+            throw new ValidationException("OwnerId cannot be null");
+        }
+        try{
+            user = this.userService.getUserById(user.id);
+            if (!user.getUserType().equals(UserType.ListingProvider)){
+                throw new ValidationException("User with ID ownerId is not a ListingProvider");
+            }
+        }catch (ServiceException e){
+            throw new ValidationException("User with ID ownerId does not exist");
+        }
+
+    }
+
+    public void validateActive(Boolean active) throws ValidationException {
+        if (active == null) {
+            throw new ValidationException("Active Boolean cannot be null");
+        }
+    }
 
     public void validateListing(Listing listing) throws ValidationException {
         validateTitle(listing.getTitle());
@@ -166,5 +191,13 @@ public class ListingValidator {
         validateRequirement(listing.getRequirement());
         validateTags(listing.getTags());
         validateUniversityAndCompany(listing.getUniversity(), listing.getCompany());
+        validateOwnerId(listing.getOwner());
+        validateActive(listing.getActive());
+    }
+
+    public void validateApplication(String applicationText) throws ValidationException {
+        if (applicationText == null || applicationText.isBlank()) {
+            throw new ValidationException("Application text cannot be null or empty");
+        }
     }
 }

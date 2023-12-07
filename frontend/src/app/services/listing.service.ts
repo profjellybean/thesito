@@ -3,13 +3,15 @@ import {Apollo} from "apollo-angular";
 import {map, Observable} from "rxjs";
 import {QualificationType} from "../models/Enums";
 import {
-  advancedSearchQuery,
+  advancedSearchQuery, applyToListingQuery,
   createListingQuery, fullTextSearchQuery,
   getAllListingsQuery,
-  getAllListingsQueryPaginated,
+  getAllListingsQueryPaginated, getListingByIdQuery,
   Listing,
-  simpleSearchTitleOnlyQuery
+  simpleSearchTitleOnlyQuery, updateListingQuery
 } from "../models/Listing";
+import {updateUserQuery, User} from "../models/User";
+import {gql} from "@apollo/client/core";
 
 
 interface SearchResult {
@@ -36,6 +38,29 @@ export class ListingService {
       .pipe(
         map((result) => result.data.getAllListings)
       );
+  }
+
+  applyToListing(listingId: number, userId: number, text: number): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: applyToListingQuery,
+      variables: {
+        listingId: listingId,
+        userId: userId,
+        text: text
+      },
+    });
+  }
+
+  getListingById(id: number): Observable<Listing> {
+    return this.apollo
+      .query<{ getListingById: Listing }>({
+        query: getListingByIdQuery,
+        variables: {
+          id: Number(id),
+        },
+      }).pipe(
+        map((result) => result.data.getListingById)
+      )
   }
 
   getAllListingsPaginated(offset: number, limit: number): Observable<Listing[]> {
@@ -103,7 +128,6 @@ export class ListingService {
   }
 
   createListing(listing: Listing): Observable<any> {
-    console.log(listing);
     return this.apollo.mutate<any>({
       mutation: createListingQuery,
       variables: {
@@ -113,6 +137,61 @@ export class ListingService {
         tags: listing.tags,
         university: listing.university,
         company: listing.company,
+        ownerId: listing.owner?.id,
+        active: listing.active
+      },
+    });
+  }
+
+  getAllListingsFromUserWithId(id: number): Observable<Listing[]> {
+    return this.apollo
+      .query<{ getAllListingsFromUserWithId: Listing[] }>({
+        query: gql`
+          query getAllListingsFromUserWithId($id: BigInteger!){
+            getAllListingsFromUserWithId(id: $id) {
+              active
+              company
+              createdAt
+              details
+              id
+              requirement
+              title
+              university
+              tags {
+                layer
+                title_de
+                title_en
+                id
+              }
+              owner {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          id: Number(id),
+        },
+      })
+      .pipe(
+        map((result) => result.data.getAllListingsFromUserWithId)
+      );
+  }
+
+  updateListing(listing: Listing): Observable<any> {
+    console.log('Listing to update: ', listing)
+    return this.apollo.mutate<any>({
+      mutation: updateListingQuery,
+      variables: {
+        id: Number(listing.id),
+        owner_id: Number(listing.owner.id),
+        active: listing.active,
+        title: listing.title,
+        company: listing.company,
+        university: listing.university,
+        details: listing.details,
+        tags: listing.tags,
+        requirement: listing.requirement
       },
     });
   }

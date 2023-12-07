@@ -1,7 +1,6 @@
 package controller;
 
 import entity.Listing;
-import entity.Tag;
 import enums.Qualification;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.annotation.security.PermitAll;
@@ -12,11 +11,11 @@ import miscellaneous.GraphQLSearchResult;
 import miscellaneous.ServiceException;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.graphql.*;
-import org.hibernate.graph.Graph;
 import org.hibernate.search.engine.search.predicate.SearchPredicate;
 import org.hibernate.search.engine.search.predicate.dsl.PredicateFinalStep;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
 import org.hibernate.search.engine.search.query.SearchResult;
+import org.jboss.logging.Logger;
 import service.ListingService;
 
 import java.text.ParseException;
@@ -33,8 +32,11 @@ public class ListingController {
     @Inject
     ListingService listingService;
 
+    private static final Logger LOG = Logger.getLogger(ListingController.class);
+
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
+        LOG.info("The application is starting...");
         // only reindex if we imported some content
         if (Listing.count() > 0) {
             searchSession.massIndexer()
@@ -48,43 +50,57 @@ public class ListingController {
     @Query("getAllListings")
     @Description("Fetches a list of all listings from the database")
     public List<Listing> getAllListings() {
+        LOG.info("getAllListings");
         return listingService.getAllListings();
+    }
+
+    @Query("getAllListingsFromUserWithId")
+    @Description("Fetches a list of all listings from the a specific User from the dataabase")
+    public List<Listing> getAllListingsFromUserWithId(long id) {
+        LOG.info("getAllListingsFromUserWithId");
+        return listingService.getAllListingsFromUserWithId(id);
     }
 
     @Query("getAllListingsPaginated")
     @Description("Fetches a list of all listings from the database")
     public List<Listing> getAllListingsPaginated(int offset, int limit) {
+        LOG.info("getAllListingsPaginated");
         return listingService.getAllListingsPaginated(offset, limit);
     }
 
     @Query("getTotalListingsCount")
     @Description("Fetches a list of all listings from the database")
     public Integer getTotalListingsCount() {
+        LOG.info("getTotalListingsCount");
         return listingService.getAllListings().size();
     }
 
     @Mutation
     @Description("Creates a listing in the database")
     public Listing createListing(Listing listing) throws GraphQLException {
+        LOG.info("createListing");
         try {
             return listingService.createListing(listing);
         } catch (ValidationException | ServiceException e) {
+            LOG.error("Error in createListing: " + e.getMessage());
             throw new GraphQLException(e.getMessage());
         }
     }
 //    @RolesAllowed("ListingConsumer") TODO: change permissions sooner or later
     @Query("simpleSearch")
     @PermitAll
-    public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit) {
+    public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit, Boolean active) {
+        LOG.info("simpleSearch");
         Optional<String> optionalTitle = Optional.ofNullable(title);
         Optional<String> optionalDetails = Optional.ofNullable(details);
         Optional<Qualification> optionalQualificationType = Optional.ofNullable(qualificationType);
         Optional<Date> optionalStartDate = Optional.ofNullable(startDate);
         Optional<Date> optionalEndDate = Optional.ofNullable(endDate);
+        Optional<Boolean> optionalActive = Optional.ofNullable(active);
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
         // TODO make just one query
-        searchResult.totalHitCount = listingService.find(Optional.empty(), Optional.empty(), optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate).size();
-        searchResult.listings = listingService.find(offset, limit, optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate);
+        searchResult.totalHitCount = listingService.find(Optional.empty(), Optional.empty(), optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive).size();
+        searchResult.listings = listingService.find(offset, limit, optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive);
         return searchResult;
     }
 
@@ -92,6 +108,7 @@ public class ListingController {
     @PermitAll
     @Transactional
     public GraphQLSearchResult fulltextSearch(String pattern, Optional<Integer> offset, Optional<Integer> limit) {
+        LOG.info("fulltextSearch");
         SearchResult<Listing> query = searchSession.search(Listing.class)
                 .where(f -> pattern == null || pattern.trim().isEmpty() ?
                         f.matchAll() :
@@ -108,6 +125,18 @@ public class ListingController {
        return searchResult;
     }
 
+    @Mutation("applyToListing")
+    @PermitAll
+    public void applyToListing(Long listingId, Long userId, String applicationText) throws GraphQLException {
+        LOG.info("applyToListing");
+        try {
+            listingService.applyForThesis(listingId, userId, applicationText);
+        } catch (ServiceException | ValidationException e) {
+            LOG.error("Error in applyToListing: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
     @Query("advancedSearch")
     @PermitAll
     @Transactional
@@ -115,7 +144,7 @@ public class ListingController {
                                               Optional<Qualification> qualification, Optional<String> university,
                                               Optional<Set<String>> tagNames,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
-
+        LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
         PredicateFinalStep fullTextPredicate = textPattern.isPresent() ?
                 predicateFactory.simpleQueryString() .fields("title", "details") .matching(textPattern.get()) :
@@ -140,6 +169,7 @@ public class ListingController {
         PredicateFinalStep requirementPredicate = qualification.isPresent() ?
                 predicateFactory.match().field("requirement").matching(qualification.get()) :
                 predicateFactory.matchAll();
+
 
         // TODO enable tags filtering
         //PredicateFinalStep tagPredicate = tagNames.isPresent() ?
@@ -166,6 +196,30 @@ public class ListingController {
         searchResult.setListings(query.hits());
         searchResult.setTotalHitCount(query.total().hitCount());
         return searchResult;
+    }
+
+    @Mutation
+    @Description("Updates a listing in the database")
+    public Listing updateListing(Listing listing) throws GraphQLException {
+        LOG.info("updateListing");
+        try {
+            return listingService.updateListing(listing);
+        } catch (ValidationException | ServiceException e) {
+            LOG.error("Error in updateListing: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Query("getListingById")
+    @Description("Fetches a listing from the database by its ID")
+    public Listing getListingById(long id) throws GraphQLException {
+        LOG.info("getListingById");
+        try {
+            return listingService.getListingById(id);
+        } catch (ServiceException e) {
+            LOG.error("Error in getListingById: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
     }
 
 

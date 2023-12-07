@@ -50,5 +50,11 @@
   "companyName": "Company Name",
   "allListings": "All Listings",
   "changePassword": "Change password",
-  "editUser": "Edit User"
+  "editUser": "Edit User",
+  "details": "Details",
+  "myListings": "My Listings",
+  "apply": "Apply",
+  "applyText": "Enter your application text here",
+  "applyHeader": "Application",
+  "applyLabel": "Application Text"
 }

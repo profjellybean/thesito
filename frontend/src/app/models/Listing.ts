@@ -1,6 +1,7 @@
 import {QualificationType} from "./Enums";
 import { gql } from "@apollo/client/core";
 import { Tag } from "./Tag";
+import {User} from "./User";
 
 
 export interface Listing {
@@ -12,7 +13,10 @@ export interface Listing {
   createdAt?: Date;
   university?: string;
   company?: string;
+  owner: User;
+  active?: Boolean;
 }
+
 
 export const getAllListingsQuery = gql`
   query {
@@ -27,6 +31,35 @@ export const getAllListingsQuery = gql`
         title_de
         title_en
         layer
+      }
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const applyToListingQuery = gql`
+  mutation ApplyToListing($listingId: BigInteger!, $userId: BigInteger!, $text: String!) {
+    applyToListing(listingId: $listingId, userId: $userId, applicationText: $text)
+  }
+`;
+export const getListingByIdQuery = gql`
+  query ($id: BigInteger!) {
+    getListingById(id: $id) {
+      id
+      title
+      details
+      requirement
+      createdAt
+      tags {
+        id
+        title_de
+        title_en
+        layer
+      }
+      owner {
+        id
       }
     }
   }
@@ -48,6 +81,9 @@ export const getAllListingsQueryPaginated = gql`
         title_de
         title_en
         layer
+      }
+      owner {
+        id
       }
     }
   }
@@ -76,6 +112,9 @@ export const simpleSearchTitleOnlyQuery = gql`
           title_en
           layer
         }
+        owner {
+          id
+        }
       }
     }
   }
@@ -100,6 +139,9 @@ export const fullTextSearchQuery = gql`
           title_de
           title_en
           layer
+        }
+        owner {
+          id
         }
       }
     }
@@ -129,6 +171,9 @@ export const advancedSearchQuery = gql`
           title_en
           layer
         }
+        owner {
+          id
+        }
       }
     }
   }
@@ -143,6 +188,8 @@ export const createListingQuery = gql`
     $tags: [TagInput]
     $university: String
     $company: String
+    $active: Boolean
+    $ownerId: BigInteger
   ) {
     createListing(
       listing: {
@@ -152,6 +199,10 @@ export const createListingQuery = gql`
         tags: $tags
         university: $university
         company: $company
+        active: $active
+        owner: {
+          id: $ownerId
+        }
       }
     ) {
       title
@@ -165,6 +216,59 @@ export const createListingQuery = gql`
       }
       university
       company
+      owner {
+        id
+      }
     }
   }
 `;
+
+export const updateListingQuery = gql`
+    mutation UpdateListing(
+    $id: BigInteger!,
+    $owner_id: BigInteger!,
+    $active: Boolean!,
+    $title: String!,
+    $company: String,
+    $university: String,
+    $details: String!,
+    $tags: [TagInput]!,
+    $requirement: Qualification!)
+    {
+        updateListing(
+            listing: {
+                id: $id
+                active: $active
+                title: $title
+                company: $company
+                university: $university
+                details: $details
+                requirement: $requirement
+                tags: $tags
+                owner: {
+                  id: $owner_id
+                }
+            }
+        )
+        {
+        active
+        company
+        createdAt
+        details
+        id
+        requirement
+        title
+        university
+        owner {
+            id
+        }
+        tags {
+            layer
+            title_de
+            title_en
+            id
+        }
+        }
+    }
+`;
+
