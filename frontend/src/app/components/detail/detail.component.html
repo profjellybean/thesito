@@ -1,8 +1,50 @@
-<p>detail works!</p>
+<!-- detail.component.html -->
+<div class="create-listing-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 mt-5">
+        <div class="card form-container">
+          <div class="card-body">
 
-<div>{{listing?.id}}</div>
-<div>{{listing?.title}}</div>
+            <h2 class="unselectable eerie listing-title">{{ 'listingDetails' | translate }}</h2>
 
-<button (click)="openApplicationDialog()">Apply</button>
+            <!-- Static information display -->
+            <div class="row mb-3 justify-content-between">
+              <div class="col-md-12">
+                <label class="form-label">{{ 'title' | translate }}</label>
+                <div class="static-info">{{ listing?.title }}</div>
+              </div>
+            </div>
 
+            <div class="row mb-3 justify-content-between">
+              <div class="col-md-12">
+                <label class="form-label">{{ 'description' | translate }}</label>
+                <div class="static-info">{{ listing?.details }}</div>
+              </div>
+            </div>
 
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label class="form-label">{{ 'preconditions' | translate }}</label>
+                <div class="static-info">{{ listing.requirement | translate }}</div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label class="form-label">{{ 'affiliation' | translate }}</label>
+                <div class="static-info">{{ listing?.company || listing?.university }}</div>
+              </div>
+            </div>
+
+            <!-- Apply button -->
+            <button class="apply-button" (click)="openApplicationDialog()">
+              {{ 'apply' | translate }}
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

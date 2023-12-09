@@ -56,5 +56,6 @@
   "apply": "Bewerben",
   "applyText": "Bewerbungstext hier eingeben",
   "applyHeader": "Bewerbung",
-  "applyLabel": "Bewerbungstext"
+  "applyLabel": "Bewerbungstext",
+  "listingDetails": "Ausschreibungsdetails"
 }

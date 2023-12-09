@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Listing} from "../../models/Listing";
 import {UserService} from "../../services/user.service";
 import {ApplicationDialogComponent} from "../application-dialog/application-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {TranslateService} from "@ngx-translate/core";
+import {QualificationType, UserType} from "../../models/Enums";
 
 @Component({
   selector: 'app-detail',
@@ -19,13 +20,38 @@ export class DetailComponent {
   successMessage = '';
   error = false;
   errorMessage = '';
-  constructor(private route: ActivatedRoute, private router: Router,
-              private dialog: MatDialog, private translateService: TranslateService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private dialog: MatDialog,
+    private translateService: TranslateService
+  ) {
     console.log('Called Constructor');
     this.route.params.subscribe(params => {
       this.listingId = params['id'];
     });
-    }
+
+    // Initialize listing with hardcoded data
+    this.listing = {
+      id: '1',
+      title: 'Sample Listing',
+      details: 'This is a hardcoded sample listing for demonstration purposes.',
+      requirement: QualificationType.Masters,
+      tags: [],
+      createdAt: new Date(),
+      university: 'Sample University',
+      company: 'Sample Company',
+      owner: {
+        id: 123,
+        email: 'owner@example.com',
+        name: 'John Doe',
+        userType: UserType.ListingProvider,
+        userTags: [],
+        qualification: QualificationType.Bachelors
+      },
+      active: true
+    };
+  }
 
   openApplicationDialog(): void {
     const dialogRef = this.dialog.open(ApplicationDialogComponent, {

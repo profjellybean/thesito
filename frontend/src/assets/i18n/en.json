@@ -56,5 +56,6 @@
   "apply": "Apply",
   "applyText": "Enter your application text here",
   "applyHeader": "Application",
-  "applyLabel": "Application Text"
+  "applyLabel": "Application Text",
+  "listingDetails": "Listing Details"
 }
