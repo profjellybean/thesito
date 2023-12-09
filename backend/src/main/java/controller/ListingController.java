@@ -170,14 +170,17 @@ public class ListingController {
                 predicateFactory.match().field("requirement").matching(qualification.get()) :
                 predicateFactory.matchAll();
 
-
-        // TODO enable tags filtering
-        //PredicateFinalStep tagPredicate = tagNames.isPresent() ?
-        //        predicateFactory.bool(b -> {
-        //            tagNames.get().forEach(tagName ->
-        //                    b.must(predicateFactory.match().field("tags.title_en").matching(tagName))
-        //            );
-        //        }) : predicateFactory.matchAll();
+        // Don't match any tag (will be negated later)
+        PredicateFinalStep noTagPredicate =
+                tagNames.isPresent() ?
+                        predicateFactory.bool().with(
+                                b -> tagNames.get().forEach(tagName ->
+                                        b.mustNot(predicateFactory.match()
+                                                .fields("tags.title_en", "tags.title_de")
+                                                .matching(tagName))
+                                ))
+                        :
+                        predicateFactory.matchNone();
 
         // Combining all predicates
         SearchPredicate combinedPredicate = predicateFactory.bool()
@@ -186,6 +189,7 @@ public class ListingController {
                 .filter(startDatePredicate)
                 .filter(universityPredicate)
                 .filter(requirementPredicate)
+                .mustNot(noTagPredicate)
                 .toPredicate();
 
         SearchResult<Listing> query = searchSession.search(Listing.class)

@@ -1,7 +1,6 @@
 package entity;
 
 import enums.Qualification;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +10,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
-
 
 import java.util.Collection;
 import java.util.Date;
@@ -39,6 +37,7 @@ public class Listing extends PanacheEntityBase {
             name = "listing_tags",
             joinColumns = @JoinColumn(name = "listing_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @IndexedEmbedded
     private Collection<Tag> tags;
 
     @GenericField
