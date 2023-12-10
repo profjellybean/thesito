@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {TranslateService} from "@ngx-translate/core";
 import {QualificationType, UserType} from "../../models/Enums";
 import {ListingService} from "../../services/listing.service";
+import {User} from "../../models/User";
 
 @Component({
   selector: 'app-detail',
@@ -16,17 +17,18 @@ import {ListingService} from "../../services/listing.service";
 export class DetailComponent implements OnInit{
   listingId: number = -1;
   listing: Listing;
-  userService: UserService;
   success = false;
   successMessage = '';
   error = false;
   errorMessage = '';
+  owner: User;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
     private translateService: TranslateService,
-    private listingService: ListingService
+    private listingService: ListingService,
+    private userService: UserService
   ) {
     console.log('Called Constructor');
     this.route.params.subscribe(params => {
@@ -84,9 +86,19 @@ export class DetailComponent implements OnInit{
   ngOnInit(): void {
     this.listingService.getListingById(this.listingId).subscribe((listing: Listing) => {
       this.listing = listing;
-      console.log(this.listing);
+
+      if (this.listing.owner.id != null) {
+        this.userService.getUserById(Number(this.listing.owner.id)).subscribe((user: User) => {
+          this.owner = user;
+        })
+      }
+
     }, e => {
       this.router.navigate(['/404']);
     });
+
+
+
+
   }
 }

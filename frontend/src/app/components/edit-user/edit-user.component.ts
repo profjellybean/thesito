@@ -4,8 +4,8 @@ import {Router} from '@angular/router';
 import {User} from '../../models/User';
 import {UserService} from '../../services/user.service';
 import {AuthService} from "../../services/auth.service";
-import { MatDialog } from '@angular/material/dialog';
-import { PasswordChangeDialogComponent } from '../password-change-dialog/password-change-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {PasswordChangeDialogComponent} from '../password-change-dialog/password-change-dialog.component';
 
 
 import {QualificationType} from "../../models/Enums";
@@ -83,11 +83,16 @@ export class EditUserComponent implements OnInit {
       let user = this.userService.getUserById(Number(this.id));
       user.subscribe({
         next: (userData) => {
+          console.log(userData);
           this.user = userData;
           this.user = {
             ...this.user,  // Copy existing properties
             password: ''
           };
+
+          if (!this.user.qualification){
+            this.user.qualification = QualificationType.None;
+          }
 
           this.user.userTags.forEach(tag =>{
             let t = {

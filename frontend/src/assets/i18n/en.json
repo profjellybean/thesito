@@ -57,5 +57,6 @@
   "applyText": "Enter your application text here",
   "applyHeader": "Application",
   "applyLabel": "Application Text",
-  "listingDetails": "Listing Details"
+  "listingDetails": "Listing Details",
+  "supervisor": "Supervisor"
 }
