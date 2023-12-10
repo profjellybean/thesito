@@ -109,7 +109,7 @@ export class ListingService {
       );
   }
 
-  advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null, endDate: String | null, offset: number | null, limit: number | null): Observable<SearchResult> {
+  advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null, endDate: String | null, tagIds: number[], offset: number | null, limit: number | null): Observable<SearchResult> {
     return this.apollo
       .query<{ advancedSearch: SearchResult }>({
         query: advancedSearchQuery,
@@ -118,6 +118,7 @@ export class ListingService {
           qualification: qualification,
           startDate: startDate,
           endDate: endDate,
+          tagIds: tagIds,
           offset: offset,
           limit: limit
         }

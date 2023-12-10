@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div *ngIf="isAdvancedSearch"  class="simple-search-container">
+    <div *ngIf="isAdvancedSearch" class="simple-search-container">
       <div class="input-flex">
         <label>Start Date:</label>
         <input type="date" placeholder="Start Date" name="startDate" [(ngModel)]="searchStartDate" class="date-input" (ngModelChange)="performSearch()">
@@ -29,6 +29,11 @@
         <select name="qualificationType" [(ngModel)]="searchQualificationType" (ngModelChange)="performSearch()">
           <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type }}</option>
         </select>
+      </div>
+      <!-- TODO improve layout -->
+      <div class="tags-container">
+        <label>Tags:</label>
+        <app-tag (updateTag)="setTags($event)"></app-tag>
       </div>
     </div>
 

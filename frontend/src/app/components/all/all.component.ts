@@ -1,8 +1,9 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 import {QualificationType} from "../../models/Enums";
 import {Router} from "@angular/router";
+import {Tag} from "../../models/Tag";
 
 @Component({
   selector: 'app-all',
@@ -25,6 +26,7 @@ export class AllComponent {
   searchStartDate: Date | null = null;
   searchEndDate: Date | null = null;
   fullTextSearchPattern: String | null = null
+  searchTags: Tag[] = [];
   pages: (number)[] = [];
 
   constructor(listingService: ListingService, private router: Router) {
@@ -36,6 +38,7 @@ export class AllComponent {
   }
 
   performSearch(): void {
+    console.log(this.searchTags)
     this.loadPage(1);
   }
 
@@ -44,9 +47,11 @@ export class AllComponent {
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
     let formattedStartDate = this.convertDateToString(this.searchStartDate)
     let formattedEndDate = this.convertDateToString(this.searchEndDate)
+    let tagIds = this.searchTags.map(tag => tag.id)
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
-    this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate, formattedEndDate, offset, limit)
+    this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate,
+      formattedEndDate, tagIds, offset, limit)
       .subscribe((searchResult) => {
         this.totalListings = searchResult.totalHitCount
         this.listings = searchResult.listings;
@@ -60,6 +65,11 @@ export class AllComponent {
     this.searchEndDate = null;
     this.searchQualificationType = null;
     this.loadPage(1)
+  }
+
+  setTags(tags: Tag[]) {
+    this.searchTags = tags;
+    this.performSearch();
   }
 
   convertDateToString(date: Date | null): String | null {
