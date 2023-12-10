@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.search.engine.backend.types.ObjectStructure;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
@@ -37,7 +38,7 @@ public class Listing extends PanacheEntityBase {
             name = "listing_tags",
             joinColumns = @JoinColumn(name = "listing_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    @IndexedEmbedded
+    @IndexedEmbedded(structure = ObjectStructure.NESTED, includeEmbeddedObjectId = true)
     private Collection<Tag> tags;
 
     @GenericField

@@ -15,6 +15,7 @@ import org.hibernate.search.engine.search.predicate.SearchPredicate;
 import org.hibernate.search.engine.search.predicate.dsl.PredicateFinalStep;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
 import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 import service.ListingService;
 
@@ -24,8 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import org.hibernate.search.mapper.orm.session.SearchSession;
 
 @GraphQLApi
 public class ListingController {
@@ -142,8 +141,10 @@ public class ListingController {
     @Transactional
     public GraphQLSearchResult advancedSearch(Optional<String> textPattern, Optional<String> startDate, Optional<String> endDate,
                                               Optional<Qualification> qualification, Optional<String> university,
-                                              Optional<Set<String>> tagNames,
+                                              Set<Long> tagIds,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
+        System.out.println("textPattern = " + textPattern + ", startDate = " + startDate + ", endDate = " + endDate + ", qualification = " + qualification + ", university = " + university + ", tagIds = " + tagIds + ", offset = " + offset + ", limit = " + limit);
+
         LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
         PredicateFinalStep fullTextPredicate = textPattern.isPresent() ?
@@ -170,17 +171,26 @@ public class ListingController {
                 predicateFactory.match().field("requirement").matching(qualification.get()) :
                 predicateFactory.matchAll();
 
-        // Don't match any tag (will be negated later)
-        PredicateFinalStep noTagPredicate =
-                tagNames.isPresent() ?
-                        predicateFactory.bool().with(
-                                b -> tagNames.get().forEach(tagName ->
-                                        b.mustNot(predicateFactory.match()
-                                                .fields("tags.title_en", "tags.title_de")
-                                                .matching(tagName))
-                                ))
+        // Match any tag (= don't match none of the tags)
+        PredicateFinalStep tagPredicate =
+                !tagIds.isEmpty() ?
+                        predicateFactory.nested("tags").add(
+                                nested -> predicateFactory.bool().with(
+                                        b -> b.mustNot(
+                                                predicateFactory.bool().with(
+                                                        b2 -> tagIds.forEach(tagId ->
+                                                                b2.mustNot(
+                                                                        predicateFactory.match()
+                                                                                .field("tags.id")
+                                                                                .matching(tagIds.iterator().next())
+                                                                ))))
+                                )
+                        )
                         :
-                        predicateFactory.matchNone();
+                        predicateFactory.matchAll();
+
+
+
 
         // Combining all predicates
         SearchPredicate combinedPredicate = predicateFactory.bool()
@@ -189,12 +199,15 @@ public class ListingController {
                 .filter(startDatePredicate)
                 .filter(universityPredicate)
                 .filter(requirementPredicate)
-                .mustNot(noTagPredicate)
+                .filter(tagPredicate)
                 .toPredicate();
 
         SearchResult<Listing> query = searchSession.search(Listing.class)
                 .where(combinedPredicate)
                 .fetch(offset.orElse(0), limit.orElse(100));
+
+        String queryString = searchSession.search(Listing.class).where(combinedPredicate).toQuery().queryString();
+        System.out.println("queryString = " + queryString);
 
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
         searchResult.setListings(query.hits());
