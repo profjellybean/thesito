@@ -12,16 +12,32 @@
             <div class="row mb-3 justify-content-between">
               <div class="col-md-12">
                 <label class="form-label">{{ 'title' | translate }}</label>
-                <div class="static-info">{{ listing?.title }}</div>
+                <div class="static-info">{{ listing.title }}</div>
               </div>
             </div>
 
             <div class="row mb-3 justify-content-between">
               <div class="col-md-12">
                 <label class="form-label">{{ 'description' | translate }}</label>
-                <div class="static-info">{{ listing?.details }}</div>
+                <div class="static-info">{{ listing.details }}</div>
               </div>
             </div>
+
+            <div class="row mb-3 justify-content-between">
+              <div class="col-md-12">
+                <label class="form-label">{{ 'tags' | translate }}</label>
+                <ul class="tag-list">
+                  <li *ngFor="let tag of listing.tags" class="tag">{{ tag.title_en }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <!--<div class="row mb-3 justify-content-between">
+              <div class="col-md-12">
+                <label class="form-label">{{ 'supervisor' | translate }}</label>
+                <div class="static-info">Supervisor: {{ listing.owner.name }}</div>
+              </div>
+            </div>-->
 
             <div class="row mb-3">
               <div class="col-md-12">
@@ -33,7 +49,7 @@
             <div class="row mb-3">
               <div class="col-md-12">
                 <label class="form-label">{{ 'affiliation' | translate }}</label>
-                <div class="static-info">{{ listing?.company || listing?.university }}</div>
+                <div class="static-info">{{ listing.company || listing.university }}</div>
               </div>
             </div>
 
