@@ -143,8 +143,6 @@ public class ListingController {
                                               Optional<Qualification> qualification, Optional<String> university,
                                               Set<Long> tagIds,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
-        System.out.println("textPattern = " + textPattern + ", startDate = " + startDate + ", endDate = " + endDate + ", qualification = " + qualification + ", university = " + university + ", tagIds = " + tagIds + ", offset = " + offset + ", limit = " + limit);
-
         LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
         PredicateFinalStep fullTextPredicate = textPattern.isPresent() ?
@@ -189,9 +187,6 @@ public class ListingController {
                         :
                         predicateFactory.matchAll();
 
-
-
-
         // Combining all predicates
         SearchPredicate combinedPredicate = predicateFactory.bool()
                 .must(fullTextPredicate)
@@ -205,9 +200,6 @@ public class ListingController {
         SearchResult<Listing> query = searchSession.search(Listing.class)
                 .where(combinedPredicate)
                 .fetch(offset.orElse(0), limit.orElse(100));
-
-        String queryString = searchSession.search(Listing.class).where(combinedPredicate).toQuery().queryString();
-        System.out.println("queryString = " + queryString);
 
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
         searchResult.setListings(query.hits());
