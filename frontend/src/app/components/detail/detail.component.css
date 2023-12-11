@@ -1,6 +1,7 @@
 /* detail.component.css */
 .create-listing-container {
   background-color: #EAE7DC;
+  height: 100vh;
 }
 
 .form-container {
