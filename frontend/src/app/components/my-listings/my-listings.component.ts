@@ -112,6 +112,7 @@ export class MyListingsComponent implements OnInit{
   }
 
   toggleListingStatus(listing: Listing){
+    let index = this.listings.indexOf(listing)
     listing = {
       ...listing,  // Copy existing properties
       active: !listing.active
@@ -119,6 +120,7 @@ export class MyListingsComponent implements OnInit{
     this.listingService.updateListing(listing).subscribe({
       next: ret =>{
         console.log("Listing updated successfully! ", ret);
+        this.listings[index] = listing;
       },
       error: error => {
         this.error= true;
@@ -131,5 +133,4 @@ export class MyListingsComponent implements OnInit{
   goToListingDetailPage(id: string | undefined){
     this.router.navigate(['/listing/', id]);
   }
-
 }

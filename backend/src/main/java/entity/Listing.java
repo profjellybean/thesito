@@ -11,6 +11,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -58,13 +59,29 @@ public class Listing extends PanacheEntityBase {
     @Override
     public String toString() {
         return "Listing{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", details='" + details + '\'' +
                 ", requirement=" + requirement +
                 ", tags=" + tags +
                 ", createdAt=" + createdAt +
                 ", university='" + university + '\'' +
                 ", company='" + company + '\'' +
+                ", active=" + active +
+                ", owner=" + owner +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Listing listing = (Listing) o;
+        return Objects.equals(getId(), listing.getId()) && Objects.equals(getTitle(), listing.getTitle()) && Objects.equals(getDetails(), listing.getDetails()) && getRequirement() == listing.getRequirement() && Objects.equals(getTags(), listing.getTags()) && Objects.equals(getCreatedAt(), listing.getCreatedAt()) && Objects.equals(getUniversity(), listing.getUniversity()) && Objects.equals(getCompany(), listing.getCompany()) && Objects.equals(getActive(), listing.getActive()) && Objects.equals(getOwner(), listing.getOwner());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle(), getDetails(), getRequirement(), getTags(), getCreatedAt(), getUniversity(), getCompany(), getActive(), getOwner());
     }
 }

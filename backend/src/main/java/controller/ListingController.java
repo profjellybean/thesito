@@ -221,6 +221,7 @@ public class ListingController {
     @Description("Updates a listing in the database")
     public Listing updateListing(Listing listing) throws GraphQLException {
         LOG.info("updateListing");
+        LOG.info(listing);
         try {
             return listingService.updateListing(listing);
         } catch (ValidationException | ServiceException e) {
