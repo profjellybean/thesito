@@ -154,6 +154,9 @@ public class ListingService {
         existingListing.setRequirement(listing.getRequirement());
         existingListing.setUniversity(listing.getUniversity());
         existingListing.setCompany(listing.getCompany());
+        listingRepository.persist(existingListing);
+
+        existingListing.setTags(listing.getTags());
 
         listingRepository.persist(existingListing);
         return existingListing;

@@ -39,6 +39,7 @@ import {PasswordChangeDialogComponent} from "./components/password-change-dialog
 import { MyListingsComponent } from './components/my-listings/my-listings.component';
 import { DetailComponent } from './components/detail/detail.component';
 import { ApplicationDialogComponent } from './components/application-dialog/application-dialog.component';
+import { EditListingComponent } from './components/edit-listing/edit-listing.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -62,7 +63,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PasswordChangeDialogComponent,
     MyListingsComponent,
     DetailComponent,
-    ApplicationDialogComponent
+    ApplicationDialogComponent,
+    EditListingComponent
   ],
   imports: [
     BrowserModule,

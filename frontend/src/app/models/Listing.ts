@@ -58,6 +58,9 @@ export const getListingByIdQuery = gql`
         title_en
         layer
       }
+      university
+      company
+      active
       owner {
         id
       }
@@ -232,7 +235,7 @@ export const updateListingQuery = gql`
     $company: String,
     $university: String,
     $details: String!,
-    $tags: [TagInput]!,
+    $tags: [TagInput],
     $requirement: Qualification!)
     {
         updateListing(
