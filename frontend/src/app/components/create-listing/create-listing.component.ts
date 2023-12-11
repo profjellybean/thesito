@@ -188,12 +188,15 @@ export class CreateListingComponent implements OnInit {
         }
       },
       (error) => {
-        this.formatErrorMessage('errorCreatingListing ' + error.message);
+        this.formatErrorMessageWithError('errorCreatingListing ', error.message);
       }
     );
   }
 
-
+  private formatErrorMessageWithError(errorKey: string, errorMessage: string): void {
+    const translatedErrorKey = this.translateService.instant(errorKey);
+    this.errorMessage = `${translatedErrorKey} ${errorMessage}`;
+  }
   private formatErrorMessage(error: string): void {
     this.translateService.get(error).subscribe((res: string) => {
       this.errorMessage = res;
