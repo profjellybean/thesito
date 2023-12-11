@@ -141,6 +141,7 @@ public class ListingController {
     @Transactional
     public GraphQLSearchResult advancedSearch(Optional<String> textPattern, Optional<String> startDate, Optional<String> endDate,
                                               Optional<Qualification> qualification, Optional<String> university,
+                                              Optional<String> company,
                                               Set<Long> tagIds,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
         LOG.info("advancedSearch");
@@ -162,12 +163,16 @@ public class ListingController {
                 predicateFactory.range().field("createdAt").atMost(endDateParsed.get()) :
                 predicateFactory.matchAll();
 
+        PredicateFinalStep requirementPredicate = qualification.isPresent() ?
+                predicateFactory.match().field("requirement").matching(qualification.get()) :
+                predicateFactory.matchAll();
+
         PredicateFinalStep universityPredicate = university.isPresent() ?
                 predicateFactory.match().field("university").matching(university.get()) :
                 predicateFactory.matchAll();
 
-        PredicateFinalStep requirementPredicate = qualification.isPresent() ?
-                predicateFactory.match().field("requirement").matching(qualification.get()) :
+        PredicateFinalStep companyPredicate = company.isPresent() ?
+                predicateFactory.match().field("company").matching(company.get()) :
                 predicateFactory.matchAll();
 
 
@@ -196,8 +201,9 @@ public class ListingController {
                 .filter(activePredication)
                 .filter(endDatePredicate)
                 .filter(startDatePredicate)
-                .filter(universityPredicate)
                 .filter(requirementPredicate)
+                .filter(universityPredicate)
+                .filter(companyPredicate)
                 .filter(tagPredicate)
                 .toPredicate();
 

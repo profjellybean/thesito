@@ -165,7 +165,7 @@ public class ListingService {
     public List<String> getAllUniversities() {
         LOG.debug("getAllUniversities");
         return listingRepository
-                .find("select distinct l.university from Listing l")
+                .find("select distinct l.university from Listing l where l.university is not null")
                 .project(ListingUniversityView.class)
                 .list().stream()
                 .map(luv -> luv.university)
@@ -176,7 +176,7 @@ public class ListingService {
     public List<String> getAllCompanies() {
         LOG.debug("getAllCompanies");
         return listingRepository
-                .find("select distinct l.company from Listing l")
+                .find("select distinct l.company from Listing l where l.company is not null")
                 .project(ListingCompanyView.class)
                 .list().stream()
                 .map(lcv -> lcv.company)

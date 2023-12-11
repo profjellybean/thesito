@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
 import {MatChipListboxChange} from "@angular/material/chips";
 import {Observable} from "rxjs";
+import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 @Component({
   selector: 'app-all',
@@ -33,6 +34,8 @@ export class AllComponent {
   pages: (number)[] = [];
   allUniversities: Observable<string[]>;
   allCompanies: Observable<string[]>;
+  searchUniversity: string = '';
+  searchCompany: string = '';
 
   constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;
@@ -45,7 +48,6 @@ export class AllComponent {
   }
 
   performSearch(): void {
-    console.log(this.searchTags)
     this.loadPage(1);
   }
 
@@ -54,11 +56,13 @@ export class AllComponent {
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
     let formattedStartDate = this.convertDateToString(this.searchStartDate)
     let formattedEndDate = this.convertDateToString(this.searchEndDate)
+    let university = this.institutionType === 'university' && this.searchUniversity ? this.searchUniversity : null
+    let company = this.institutionType === 'company' && this.searchCompany ? this.searchCompany : null
     let tagIds = this.searchTags.map(tag => tag.id)
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
     this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate,
-      formattedEndDate, tagIds, offset, limit)
+      formattedEndDate, university, company, tagIds, offset, limit)
       .subscribe((searchResult) => {
         this.totalListings = searchResult.totalHitCount
         this.listings = searchResult.listings;
@@ -92,5 +96,14 @@ export class AllComponent {
 
   onInstitutionTypeChange(event: MatChipListboxChange) {
     this.institutionType = event.value;
+    this.performSearch();
+  }
+
+  onUniversitySelect($event: MatAutocompleteSelectedEvent) {
+    this.performSearch();
+  }
+
+  onCompanySelect($event: MatAutocompleteSelectedEvent) {
+    this.performSearch();
   }
 }
