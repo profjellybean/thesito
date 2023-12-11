@@ -165,9 +165,11 @@ public class ListingController {
         PredicateFinalStep universityPredicate = university.isPresent() ?
                 predicateFactory.match().field("university").matching(university.get()) :
                 predicateFactory.matchAll();
+
         PredicateFinalStep requirementPredicate = qualification.isPresent() ?
                 predicateFactory.match().field("requirement").matching(qualification.get()) :
                 predicateFactory.matchAll();
+
 
         // Match any tag (= don't match none of the tags)
         PredicateFinalStep tagPredicate =
@@ -187,9 +189,11 @@ public class ListingController {
                         :
                         predicateFactory.matchAll();
 
+        PredicateFinalStep activePredication = predicateFactory.match().field("active").matching(true);
         // Combining all predicates
         SearchPredicate combinedPredicate = predicateFactory.bool()
                 .must(fullTextPredicate)
+                .filter(activePredication)
                 .filter(endDatePredicate)
                 .filter(startDatePredicate)
                 .filter(universityPredicate)

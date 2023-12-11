@@ -25,8 +25,10 @@ public class Listing extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @FullTextField(analyzer = "english") // TODO english and german
+    @Column(length = 1000)
     private String title;
     @FullTextField(analyzer = "english") // TODO english and german
+    @Column(length = 10000)
     private String details;
     @GenericField
     @Enumerated(EnumType.STRING)
@@ -47,6 +49,7 @@ public class Listing extends PanacheEntityBase {
 
     private String university;
     private String company;
+    @GenericField
     private Boolean active;
     @ManyToOne(fetch = FetchType.EAGER)
     private User owner;
