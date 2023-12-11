@@ -62,5 +62,6 @@
   "applyHeader": "Bewerbung",
   "applyLabel": "Bewerbungstext",
   "listingDetails": "Ausschreibungsdetails",
-  "supervisor": "Supervisor"
+  "supervisor": "Supervisor",
+  "createdAt" : "Erstellt am:"
 }

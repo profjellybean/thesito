@@ -62,5 +62,6 @@
   "applyHeader": "Application",
   "applyLabel": "Application Text",
   "listingDetails": "Listing Details",
-  "supervisor": "Supervisor"
+  "supervisor": "Supervisor",
+  "createdAt" : "Created at:"
 }

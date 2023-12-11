@@ -5,7 +5,6 @@ import {UserService} from "../../services/user.service";
 import {ApplicationDialogComponent} from "../application-dialog/application-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {TranslateService} from "@ngx-translate/core";
-import {QualificationType, UserType} from "../../models/Enums";
 import {ListingService} from "../../services/listing.service";
 import {User} from "../../models/User";
 
@@ -22,6 +21,7 @@ export class DetailComponent implements OnInit{
   error = false;
   errorMessage = '';
   owner: User;
+  ownership = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -30,31 +30,9 @@ export class DetailComponent implements OnInit{
     private listingService: ListingService,
     private userService: UserService
   ) {
-    console.log('Called Constructor');
     this.route.params.subscribe(params => {
       this.listingId = params['id'];
     });
-
-    // Initialize listing with hardcoded data
-    this.listing = {
-      id: '1',
-      title: 'Sample Listing',
-      details: 'This is a hardcoded sample listing for demonstration purposes.',
-      requirement: QualificationType.Masters,
-      tags: [],
-      createdAt: new Date(),
-      university: 'Sample University',
-      company: 'Sample Company',
-      owner: {
-        id: 123,
-        email: 'owner@example.com',
-        name: 'John Doe',
-        userType: UserType.ListingProvider,
-        userTags: [],
-        qualification: QualificationType.Bachelors
-      },
-      active: true
-    };
   }
 
   openApplicationDialog(): void {
@@ -96,9 +74,5 @@ export class DetailComponent implements OnInit{
     }, e => {
       this.router.navigate(['/404']);
     });
-
-
-
-
   }
 }

@@ -1,7 +1,6 @@
 /* detail.component.css */
 .create-listing-container {
   background-color: #EAE7DC;
-  height: 100vh;
 }
 
 .form-container {
@@ -10,7 +9,7 @@
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
   padding: 15px;
   margin: 20px auto;
-  width: 95%;
+  width: 80%;
   max-width: 600px;
 }
 
@@ -22,12 +21,8 @@
   text-align: center;
 }
 
-.static-info {
-  font-style: normal;
-  font-weight: 300;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
+
+
 
 .apply-button {
   width: 100%;
@@ -40,4 +35,59 @@
   background-color: #1A1A1D;
   color: #F7F6F2;
   cursor: pointer;
+}
+
+hr {
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.custom-chip {
+  font-size: 12px; /* Adjust the font size as needed */
+  margin-right: 5px; /* Adjust the spacing between chips as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Additional style for better alignment of icons within chips */
+.custom-chip mat-icon::ng-deep svg {
+  vertical-align: middle;
+}
+
+/* Add or modify the following styles in your CSS file */
+.static-info {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Make the input larger and adjust the font size */
+.static-info input[disabled] {
+  width: 100%; /* Set the width to 100% to make it expand to the container width */
+  font-size: 16px; /* Adjust the font size as needed */
+  padding: 8px; /* Add padding for better visual appearance */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.btn-primary {
+  background-color: #5AB779;
+  color: #F7F6F2;
+}
+
+.btn-primary:hover {
+  background-color: #131314;
+}
+
+.btn-blue {
+  background-color: #3250A8;
+  color: #F7F6F2;
+}
+
+.btn-blue:hover {
+  background-color: #1A1A1D;
 }
