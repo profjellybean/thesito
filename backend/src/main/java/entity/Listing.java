@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.search.engine.backend.types.ObjectStructure;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.util.Collection;
 import java.util.Date;
@@ -47,8 +44,12 @@ public class Listing extends PanacheEntityBase {
     @Column(name = "created_at")
     private Date createdAt;
 
+    @KeywordField
     private String university;
+
+    @KeywordField
     private String company;
+
     @GenericField
     private Boolean active;
     @ManyToOne(fetch = FetchType.EAGER)

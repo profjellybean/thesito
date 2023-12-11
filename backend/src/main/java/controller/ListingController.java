@@ -235,6 +235,18 @@ public class ListingController {
         }
     }
 
+    @Query("getAllListingUniversities")
+    @Description("Fetches a list of all universities that listings are assigned to")
+    public List<String> getAllListingUniversities() {
+        LOG.info("getAllListingUniversities");
+        return listingService.getAllUniversities();
+    }
 
+    @Query("getAllListingCompanies")
+    @Description("Fetches a list of all companies that listings are assigned to")
+    public List<String> getAllListingCompanies() {
+        LOG.info("getAllListingCompanies");
+        return listingService.getAllCompanies();
+    }
 
 }

@@ -4,6 +4,8 @@ import {ListingService} from "../../services/listing.service";
 import {QualificationType} from "../../models/Enums";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
+import {MatChipListboxChange} from "@angular/material/chips";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-all',
@@ -27,7 +29,10 @@ export class AllComponent {
   searchEndDate: Date | null = null;
   fullTextSearchPattern: String | null = null
   searchTags: Tag[] = [];
+  institutionType = '';
   pages: (number)[] = [];
+  allUniversities: Observable<string[]>;
+  allCompanies: Observable<string[]>;
 
   constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;
@@ -35,6 +40,8 @@ export class AllComponent {
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
+    this.allUniversities = this.listingService.getAllListingUniversities()
+    this.allCompanies = this.listingService.getAllListingCompanies()
   }
 
   performSearch(): void {
@@ -81,5 +88,9 @@ export class AllComponent {
 
   goToListing(id: string | undefined) {
     this.router.navigate(['/listing', id]);
+  }
+
+  onInstitutionTypeChange(event: MatChipListboxChange) {
+    this.institutionType = event.value;
   }
 }

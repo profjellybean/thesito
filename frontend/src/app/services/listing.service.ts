@@ -10,7 +10,6 @@ import {
   Listing,
   simpleSearchTitleOnlyQuery, updateListingQuery
 } from "../models/Listing";
-import {updateUserQuery, User} from "../models/User";
 import {gql} from "@apollo/client/core";
 
 
@@ -196,4 +195,33 @@ export class ListingService {
       },
     });
   }
+
+  getAllListingUniversities(): Observable<string[]> {
+    return this.apollo
+      .query<{ getAllListingUniversities: string[] }>({
+        query: gql`
+          query getAllListingUniversities{
+            getAllListingUniversities
+          }
+        `,
+      })
+      .pipe(
+        map((result) => result.data.getAllListingUniversities)
+      );
+  }
+
+  getAllListingCompanies(): Observable<string[]> {
+    return this.apollo
+      .query<{ getAllListingCompanies: string[] }>({
+        query: gql`
+          query getAllListingCompanies{
+            getAllListingCompanies
+          }
+        `,
+      })
+      .pipe(
+        map((result) => result.data.getAllListingCompanies)
+      );
+  }
+
 }

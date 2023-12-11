@@ -19,8 +19,8 @@
       </div>
     </div>
 
-    <div *ngIf="isAdvancedSearch" class="simple-search-container">
-      <div class="input-flex">
+    <div *ngIf="isAdvancedSearch" class="row simple-search-container">
+      <div class="col-4 input-flex">
         <label>Start Date:</label>
         <input type="date" placeholder="Start Date" name="startDate" [(ngModel)]="searchStartDate" class="date-input" (ngModelChange)="performSearch()">
         <label>End Date:</label>
@@ -30,11 +30,42 @@
           <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type }}</option>
         </select>
       </div>
-      <!-- TODO improve layout -->
-      <div class="tags-container">
+      <div class="col-4 input-flex justify-content-center align-items-center">
+        <mat-chip-listbox (change)="onInstitutionTypeChange($event)">
+          <mat-chip-option class="example-width"  value="university">{{ 'university' | translate }}</mat-chip-option>
+          <mat-chip-option class="example-width"  value="company">{{ 'company' | translate }}</mat-chip-option>
+        </mat-chip-listbox>
+
+        <!-- Show input field depending on selected institutionType -->
+        <div *ngIf="institutionType === 'university'">
+          <mat-form-field class="example-full-width">
+            <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
+            <input matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let university of allUniversities | async" [value]="university">
+                {{ university }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div *ngIf="institutionType === 'company'">
+          <mat-form-field class="example-full-width">
+            <mat-label>{{ 'companyName' | translate }}</mat-label>
+            <input matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let company of allCompanies | async" [value]="company">
+                {{ company }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="col-4 tags-container input-flex">
         <label>Tags:</label>
         <app-tag (updateTag)="setTags($event)"></app-tag>
       </div>
+<!--      <div class="break"></div>-->
     </div>
 
     <!-- listings -->
