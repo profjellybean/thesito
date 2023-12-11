@@ -43,6 +43,7 @@ class ListingServiceTest {
     private User consumer;
     private User provider;
     private User provider2;
+    private User provider3;
 
     @BeforeAll
     @Transactional
@@ -67,6 +68,13 @@ class ListingServiceTest {
         user.setPassword("123456789Test");
         user.setUserType(UserType.ListingProvider);
         this.provider2 = userService.registerUser(user);
+
+        user = new User();
+        user.setName("Prince Provider");
+        user.setEmail("provider3@ase.at");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingProvider);
+        this.provider3 = userService.registerUser(user);
     }
 
     @Test
@@ -152,7 +160,10 @@ class ListingServiceTest {
         listing.setUniversity("University of Vienna");
         listing.setCreatedAt(Date.from(java.time.Instant.now()));
         listing.setActive(true);
-        listing.setOwner(provider);
+        listing.setOwner(provider3);
+
+
+
 
         Listing listing2 = new Listing();
         listing2.setTitle("Titlee");
@@ -161,7 +172,7 @@ class ListingServiceTest {
         listing2.setUniversity("University of Vienna");
         listing2.setCreatedAt(Date.from(java.time.Instant.now()));
         listing2.setActive(true);
-        listing2.setOwner(provider);
+        listing2.setOwner(provider3);
 
         Listing listing3 = new Listing();
         listing3.setTitle("Titleee");
@@ -177,7 +188,7 @@ class ListingServiceTest {
             listingService.createListing(listing2);
             listingService.createListing(listing3);
 
-            List<Listing> list1 =this.listingService.getAllListingsFromUserWithId(provider.id);
+            List<Listing> list1 =this.listingService.getAllListingsFromUserWithId(provider3.id);
             List<Listing> list2 =this.listingService.getAllListingsFromUserWithId(provider2.id);
 
             System.out.println(list1);
@@ -432,6 +443,121 @@ class ListingServiceTest {
         Listing retListing = listingService.createListing(listing);
         assertEquals(listing, retListing);
     }
+
+    @Test
+    void validateUpdateListingWithValidDataAndUniversityShouldNotThrowException() throws ValidationException, ServiceException {
+        // Create the Tags
+        Tag tag1 = new Tag();
+        tag1.setLayer(1L);
+        tag1.setTitle_en("Tag 1");
+        tag1.setTitle_de("Tag 1");
+        tagService.createTag(tag1);
+
+        Tag tag2 = new Tag();
+        tag2.setLayer(2L);
+        tag2.setTitle_en("Tag 2");
+        tag2.setTitle_de("Tag 2");
+        tagService.createTag(tag2);
+
+        // Create a listing to update
+        Listing originalListing = new Listing();
+        originalListing.setTitle("Original Listing title");
+        originalListing.setDetails("Original Listing details");
+        originalListing.setUniversity("University of Vienna");
+        originalListing.setCompany(null);
+        originalListing.setActive(true);
+        originalListing.setOwner(provider);
+        originalListing.setRequirement(Qualification.Bachelors);
+        originalListing.setCreatedAt(Date.from(java.time.Instant.now()));
+
+        List<Tag> originalTags = new ArrayList<>();
+        originalTags.add(tag1);
+        originalTags.add(tag2);
+        originalListing.setTags(originalTags);
+
+        Listing createdListing = listingService.createListing(originalListing);
+
+        // Update the listing
+        Listing updatedListing = new Listing();
+        updatedListing.setId(createdListing.getId());
+        updatedListing.setTitle("Updated Listing title");
+        updatedListing.setDetails("Updated Listing details");
+        updatedListing.setUniversity("Medical University of Vienna");
+        updatedListing.setCompany(null);
+        updatedListing.setActive(true);
+        updatedListing.setOwner(provider);
+        updatedListing.setRequirement(Qualification.Masters);
+
+        List<Tag> updatedTags = new ArrayList<>();
+        updatedTags.add(tag1);
+        updatedTags.add(tag2);
+        updatedListing.setTags(updatedTags);
+
+        Listing retListing = listingService.updateListing(updatedListing);
+
+        // Check that the updated listing matches the expected values
+        assertEquals(updatedListing.getTitle(), retListing.getTitle());
+        assertEquals(updatedListing.getDetails(), retListing.getDetails());
+        assertEquals(updatedListing.getUniversity(), retListing.getUniversity());
+        assertEquals(updatedListing.getCompany(), retListing.getCompany());
+        assertEquals(updatedListing.getActive(), retListing.getActive());
+        assertEquals(updatedListing.getOwner(), retListing.getOwner());
+        assertEquals(updatedListing.getRequirement(), retListing.getRequirement());
+        assertEquals(updatedTags, retListing.getTags());
+    }
+
+    @Test
+    void validateUpdateListingWithUniversityAndCompanySetShouldThrowException() throws ValidationException, ServiceException {
+        // Create the Tags
+        Tag tag1 = new Tag();
+        tag1.setLayer(1L);
+        tag1.setTitle_en("Tag 1");
+        tag1.setTitle_de("Tag 1");
+        tagService.createTag(tag1);
+
+        Tag tag2 = new Tag();
+        tag2.setLayer(2L);
+        tag2.setTitle_en("Tag 2");
+        tag2.setTitle_de("Tag 2");
+        tagService.createTag(tag2);
+
+        // Create a listing to update
+        Listing originalListing = new Listing();
+        originalListing.setTitle("Original Listing title");
+        originalListing.setDetails("Original Listing details");
+        originalListing.setUniversity("University of Vienna");
+        originalListing.setCompany(null);
+        originalListing.setActive(true);
+        originalListing.setOwner(provider);
+        originalListing.setRequirement(Qualification.Bachelors);
+        originalListing.setCreatedAt(Date.from(java.time.Instant.now()));
+
+        List<Tag> originalTags = new ArrayList<>();
+        originalTags.add(tag1);
+        originalTags.add(tag2);
+        originalListing.setTags(originalTags);
+
+        Listing createdListing = listingService.createListing(originalListing);
+
+        // Update the listing
+        Listing updatedListing = new Listing();
+        updatedListing.setId(createdListing.getId());
+        updatedListing.setTitle("Updated Listing title");
+        updatedListing.setDetails("Updated Listing details");
+        updatedListing.setUniversity("Medical University of Vienna");
+        updatedListing.setCompany("Company 1");
+        updatedListing.setActive(true);
+        updatedListing.setRequirement(Qualification.Masters);
+
+        List<Tag> updatedTags = new ArrayList<>();
+        updatedTags.add(tag1);
+        updatedTags.add(tag2);
+        updatedListing.setTags(updatedTags);
+
+        assertThrows(ValidationException.class, () -> listingService.updateListing(updatedListing));
+    }
+
+
 
     @Test
     void validateListingWithValidDataAndCompanyShouldNotThrowException() throws ValidationException, ServiceException {
