@@ -6,11 +6,22 @@
           <h3 class="card-title h1">{{ 'yourProfile' | translate }}</h3>
           <div class="card">
             <div class="card-body">
-              <div class="info-wrapper">
-                <span class="fw-bold">{{ 'name' | translate }}:</span> {{user.name}}<br>
-                <span class="fw-bold">{{ 'email' | translate }}:</span> {{user.email}} <br>
-                <span class="fw-bold">{{ 'role' | translate }}:</span> {{user.userType}}<br>
-                <button type="button" class="btn btn-primary2 " (click)="goToEditProfile()">{{ 'edit' | translate }}</button>
+              <div class="row">
+                <!-- Left column for user details -->
+                <div class="col-md-8">
+                  <div class="info-wrapper">
+                    <span class="fw-bold">{{ 'name' | translate }}:</span> {{user.name}}<br>
+                    <span class="fw-bold">{{ 'email' | translate }}:</span> {{user.email}} <br>
+                    <span class="fw-bold">{{ 'role' | translate }}:</span> {{user.userType}}<br>
+                  </div>
+                </div>
+                <div class="col-md-4 text-end">
+                  <div class="info-wrapper"></div>
+                  <button type="button" class="btn btn-primary2" (click)="goToEditProfile()">
+                    {{ 'edit' | translate }}
+                  </button>
+                </div>
+
               </div>
               <div class="career-wrapper">
                 Completed Academic Career
