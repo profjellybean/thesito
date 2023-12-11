@@ -21,7 +21,7 @@
             <a routerLink="/login" class="text-decoration-none text-light">{{"login" | translate}}
             </a>
           </li>
-          <li class="mx-3" *ngIf="isLoggedIn()">
+          <li class="mx-3" *ngIf="isLoggedIn() && isProducer()">
             <a routerLink="/create-listing" class="text-decoration-none text-light">{{"createListing" | translate}}</a>
           </li>
           <li class="mx-3" *ngIf="isLoggedIn()">
@@ -35,7 +35,7 @@
               <div class="dropdown-menu bg-dark" aria-labelledby="profileDropdown">
                 <a class="text-light dropdown-item text-decoration-none" routerLink='/user/edit'>{{"edit" | translate}}</a>
                 <a class="text-light dropdown-item text-decoration-none" routerLink='/user/'>{{"details" | translate}}</a>
-                <a class="text-light dropdown-item text-decoration-none" routerLink='/user/listings'>{{"myListings" | translate}}</a>
+                <a *ngIf="isProducer()" class="text-light dropdown-item text-decoration-none" routerLink='/user/listings'>{{"myListings" | translate}}</a>
               </div>
             </div>
           </li>

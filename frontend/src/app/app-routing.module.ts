@@ -13,6 +13,7 @@ import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {EditListingComponent} from "./components/edit-listing/edit-listing.component";
 import {DetailComponent} from "./components/detail/detail.component";
 import {MyListingsComponent} from "./components/my-listings/my-listings.component";
+import {producerGuard} from "./guards/producer.guard";
 
 
 export const routes: Routes = [
@@ -23,11 +24,11 @@ export const routes: Routes = [
   { path: 'register', component: RegisterUserComponent },
   { path: 'user', canActivate: [authGuard], component: UserDetailsComponent },
   {path: 'listing/:id', canActivate: [authGuard], component: DetailComponent},
-  {path: 'listing/edit/:id', canActivate: [authGuard], component: EditListingComponent},
+  {path: 'listing/edit/:id', canActivate: [authGuard, producerGuard], component: EditListingComponent},
   //{ path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
-  {path: 'create-listing',canActivate: [authGuard], component: CreateListingComponent},
+  {path: 'create-listing',canActivate: [authGuard, producerGuard], component: CreateListingComponent},
   {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},
-  {path: 'user/listings', canActivate: [authGuard], component: MyListingsComponent},
+  {path: 'user/listings', canActivate: [authGuard, producerGuard], component: MyListingsComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

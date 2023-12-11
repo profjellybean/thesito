@@ -116,6 +116,7 @@ public class UserService {
                 .expiresIn(900)
                 .claim("usage", "access_token")
                 .claim("userid", user.id.toString())
+                .claim("userType", user.getUserType())
                 .sign();
     }
 

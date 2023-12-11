@@ -6,6 +6,7 @@ import {User, registerUserQuery, loginUserQuery, refreshSessionQuery} from "../m
 import { catchError, map } from 'rxjs/operators';
 import { jwtDecode } from "jwt-decode";
 import {subscribe} from "graphql/execution";
+import {UserService} from "./user.service";
 
 
 @Injectable({
@@ -34,6 +35,26 @@ export class AuthService {
      }
      this.logoutUser();
      return false;
+   }
+
+   public isProducer(): boolean {
+      let token = this.getToken();
+      if (token != null) {
+        token = this.decodeToken(token);
+        // @ts-ignore
+        return token.userType === "ListingProvider"
+      }
+      return false;
+   }
+
+   public isConsumer(): boolean {
+      let token = this.getToken();
+      if (token != null) {
+        token = this.decodeToken(token);
+        // @ts-ignore
+        return token.userType === "ListingConsumer"
+      }
+      return false;
    }
 
    private isTokenValid(token: string | null): boolean{

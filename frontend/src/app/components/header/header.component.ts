@@ -1,13 +1,14 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
+import {producerGuard} from "../../guards/producer.guard";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
@@ -28,5 +29,13 @@ export class HeaderComponent implements OnInit{
 
   logoutUser(): void {
     this.authService.logoutUser();
+  }
+
+  isProducer(): boolean{
+    return this.authService.isProducer();
+  }
+
+  isConsumer(): boolean{
+    return this.authService.isConsumer();
   }
 }
