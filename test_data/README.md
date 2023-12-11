@@ -6,6 +6,11 @@ To insert into the DB:
    `quarkus.hibernate-orm.database.generation=drop-and-create` in
    `src/main/resources/application.properties` and start with `quarkus dev`
 3. Insert `tags` via the `tags.sql`
+   ```sh
+   cat ../backend/src/main/resources/tags.sql | docker exec -i -u postgres ase psql -d ase_db
+   ```
 4. Run `python insert_into_db.py`
 5. You may have to restart `quarkus dev` to force elasticsearch reindex. 
    Comment out the option from step 2!!
+
+The password for all test users is `1234567890o`.
