@@ -1,0 +1,4 @@
+<button mat-button (click)="toggleLanguage()">
+  <mat-icon>{{ currentLanguage === 'en' ? 'language' : 'g_translate' }}</mat-icon>
+  {{ currentLanguage === 'en' ? 'English' : 'Deutsch' }}
+</button>

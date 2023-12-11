@@ -1,0 +1,70 @@
+<div class="container-fluid background">
+  <div class="row">
+
+    <div class="logo-wrapper">
+      <div class="unselectable logo">
+        Thesito
+      </div>
+      <div class="unselectable subtitle">
+        {{"thesitoDescription" | translate}}
+      </div>
+    </div>
+
+    <!-- Background Graphic -->
+    <div class="d-none d-xl-block">
+      <svg class="overlay" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 974">
+        <g filter="url(#filter0_d)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.6052 970C214.02 830.724 349 595.375 349 328.5c0-115.871-25.445-225.798-71.052-324.5H1120v966H8.6052z" fill="#EAE7DC"/>
+        </g>
+        <defs>
+          <filter id="filter0_d" x=".6052" y="0" width="1119.39" height="974" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+            <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+            <feOffset dx="-4"/>
+            <feGaussianBlur stdDeviation="2"/>
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Login Area -->
+<div class="mask">
+  <div class="login-wrapper">
+    <div class="login-area">
+      <form *ngIf="loginForm" [formGroup]="loginForm" class="text-center">
+        <h2 class="unselectable eerie login-title">Login</h2>
+        <div class="language-toggle">
+          <app-language-toggle></app-language-toggle>
+        </div>
+        <div class="form-group">
+          <input class="eerie" type="text" formControlName="emailOrName" placeholder="Email" autocomplete="on">
+        </div>
+        <div class="form-group visibility">
+          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password" placeholder="Password" autocomplete="on">
+          <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
+          <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
+        </div>
+        <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+        <div class="text-center button-wrapper">
+          <button type="button" class="btn login-button" (click)="login()">{{"Login" | translate}}</button>
+        </div>
+      </form>
+    </div>
+    <div class="sign-up text-center">
+      <p class="unselectable eerie">Don't have an account yet?</p>
+      <span><span class="thesito-red suggestion"
+                  (click)="goToRegistration()">Create one now</span> | <span class="thesito-red suggestion">{{"forgotPassword" | translate}}</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-large d-none d-xl-block">
+  <p>Thesito © 2023. All Rights Reserved.</p>
+</div>
+
+

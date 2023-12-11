@@ -1,0 +1,25 @@
+<div class="password-change-dialog" style="
+    padding: 1.5em;
+    margin-left: 3em;
+">
+  <h2>{{"applyHeader" | translate}}</h2>
+  <form [formGroup]="applicationForm" (ngSubmit)="apply()">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="applyText">{{"applyLabel" | translate}}:</label>
+      </div>
+      <div class="col-md-8">
+        <textarea formControlName="text" id="applyText" cols="60" rows="10"></textarea>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!applicationForm.valid">{{"apply" | translate}}</button>
+      </div>
+      <div class="col-md-6">
+        <button mat-raised-button color="warn" type="button" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

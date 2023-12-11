@@ -1,0 +1,131 @@
+
+*:not(mat-icon) {
+  font-family: Montserrat, sans-serif;
+}
+
+.language-toggle{
+  z-index: 1;
+  display: flex;
+  justify-content: right;
+  padding-bottom: 10px;
+}
+
+.background {
+  background-color: #EAE7DC;
+  height: 100vh;
+}
+
+.error-field {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+
+.thesito-blue {
+  color: #93B7BE;
+}
+
+.thesito-red {
+  color: #DA3E52;
+}
+
+.thesito-background-warm {
+  color: #EAE7DC;
+}
+
+.thesito-beige-warm {
+  color: #F7F6F2;
+}
+
+.user-details-container{
+  background-color: #EAE7DC;
+  height: 100vh;
+}
+
+.card {
+  margin-top: 5px;
+  border-radius: 10px;
+  width: 80%;
+  min-width: 400px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.h1{
+  font-size: 22px;
+  margin-bottom: -5px;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.career-wrapper{
+  font-weight: bold;
+}
+
+.info-wrapper{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.save-button{
+  display: flex;
+  justify-content: right;
+}
+
+.btn-primary {
+  background-color: #5AB779;
+  color: #F7F6F2;
+}
+
+.btn-primary:hover {
+  background-color: #131314;
+}
+
+.btn-primary2 {
+  background-color: cornflowerblue;
+  color: #F7F6F2;
+}
+
+.btn-primary2:hover {
+  background-color: #131314;
+}
+
+.example-chip-list {
+  width: 100%;
+}
+
+.interests-wrapper{
+}
+
+.tag-selector{
+  background-color: #93B7BE !important;
+}
+
+:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled){
+  background-color: white!important;
+}
+
+.form-check-input {
+  border-radius: 50%; /* Make the checkboxes round */
+  margin-right: 5px; /* Adjust the spacing between checkboxes as needed */
+}
+.card-align{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-title{
+  align-self: start;
+}
+
+.center-card{
+  display: flex;
+  justify-content: center;
+}
+

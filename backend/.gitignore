@@ -1,5 +1,5 @@
 #Maven
-backend/target/
+target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -41,6 +41,3 @@ nb-configuration.xml
 
 # Plugin directory
 /.quarkus/cli/plugins/
-.mvn
-.mvn
-frontend/node_modules

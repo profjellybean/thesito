@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.unselectable:before {
+  content: attr(data-unselectable);
+}
+
+.background {
+  background-color: #EAE7DC;
+  min-height: calc(100vh - var(--mat-toolbar-standard-height));
+  overflow: hidden;
+}
+
+.btn-dark {
+  background-color: #DA3E52 !important;
+  border: #DA3E52 !important;
+}
+
+.eerie {
+  color: #1A1A1D !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.thesito-blue {
+  color: #93B7BE;
+}
+
+.thesito-red {
+  color: #DA3E52;
+}
+
+.thesito-green {
+  color: #46a55c;
+}
+
+.thesito-background-warm {
+  color: #EAE7DC;
+}
+
+.thesito-beige-warm {
+  color: #F7F6F2;
+}

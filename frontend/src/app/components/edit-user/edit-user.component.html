@@ -1,0 +1,53 @@
+<div class="edit-user-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 mt-5">
+        <h3 class="card-title h1">{{ 'editUser' | translate }}</h3>
+        <div class="card">
+          <div class="card-body">
+
+            <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+              <!-- Name input -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="name" class="form-label">{{ 'name' | translate }}</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+              </div>
+
+              <!-- Email input -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="email" class="form-label">{{ 'email' | translate }}</label>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id="email" formControlName="email">
+                </div>
+              </div>
+
+              <!-- Change Password button and Save button -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-blue" (click)="openPasswordChangeDialog()">
+                    {{ 'changePassword' | translate }}
+                  </button>
+                </div>
+                <div class="col-md-6 text-end mt-auto">
+                  <button type="button" class="btn btn-primary" (click)="submitForm()">
+                    {{ 'save' | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
+              <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
