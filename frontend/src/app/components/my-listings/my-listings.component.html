@@ -11,17 +11,18 @@
 
               <div *ngIf="listings" >
                 <div *ngFor="let listing of listings">
-                  <div class="card listing-container">
+                  <div class="card listing-container" (click)="goToListingDetailPage(listing.id)">
                     <div class="card-body listing-card-body">
                       <div class="creation-date">{{listing.createdAt | date }}</div>
                       <div class="listing-title">{{listing.title}}</div>
                       <div class="controls">
-                        <mat-slide-toggle [color]="'primary'" [checked]="listing.active" (change)="toggleListingStatus(listing)"></mat-slide-toggle>
-
+                          <a [routerLink]="['/listing/edit/', listing.id]" class="edit-button" role="button" data-toggle="tooltip" data-placement="bottom">
+                            <mat-icon>edit</mat-icon>
+                          </a>
+                          <mat-slide-toggle [color]="'primary'" [checked]="listing.active" (change)="toggleListingStatus(listing)"></mat-slide-toggle>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>

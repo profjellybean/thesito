@@ -74,6 +74,7 @@ export class MyListingsComponent implements OnInit{
               }
               this.listings.push(templisting);
             }
+            console.log("Listings: ", this.listings);
 
           })
           this.listings = this.listings.sort((a, b): number => {
@@ -125,6 +126,10 @@ export class MyListingsComponent implements OnInit{
         console.log(this.errorMessage);
       }
     });
+  }
+
+  goToListingDetailPage(id: string | undefined){
+    this.router.navigate(['/listing/', id]);
   }
 
 }
