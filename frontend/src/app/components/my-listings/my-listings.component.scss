@@ -117,6 +117,11 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
+.listing-container:hover{
+  transform: scale(1.03); /* Slightly scale up on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for "pop up" effect */
+}
+
 .listing-title{
   font-weight: bold;
   flex: 1;
@@ -125,11 +130,20 @@
 
 .controls{
   flex: 1;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .creation-date{
   flex: 1;
   text-align: left;
 }
+
+.edit-button{
+  color: black;
+  padding-right: 10px;
+}
+
+
 

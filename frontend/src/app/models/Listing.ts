@@ -208,6 +208,7 @@ export const createListingQuery = gql`
         }
       }
     ) {
+      id
       title
       details
       requirement
