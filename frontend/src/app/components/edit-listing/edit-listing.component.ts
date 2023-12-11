@@ -237,7 +237,7 @@ export class EditListingComponent implements OnInit {
           this.formatSuccessMessage('successUpdatingListing');
           setTimeout(() => {
             this.router.navigate([`/listing/${res.data.updateListing.id}`]);
-          }, 4000);
+          }, 1000);
         }
       },
       (error) => {

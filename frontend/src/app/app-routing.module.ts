@@ -16,14 +16,14 @@ import {MyListingsComponent} from "./components/my-listings/my-listings.componen
 
 
 export const routes: Routes = [
-  {path: '', pathMatch: 'full', canActivate: [authGuard], component: HomeComponent},
+  {path: '', pathMatch: 'full', canActivate: [authGuard], component: AllComponent},
   {path: 'home', canActivate: [authGuard], component: HomeComponent},
   {path: 'all', canActivate: [authGuard], component: AllComponent},
   {path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterUserComponent },
   { path: 'user', canActivate: [authGuard], component: UserDetailsComponent },
-  {path: 'listing/edit/:id', canActivate: [authGuard], component: EditListingComponent},
   {path: 'listing/:id', canActivate: [authGuard], component: DetailComponent},
+  {path: 'listing/edit/:id', canActivate: [authGuard], component: EditListingComponent},
   //{ path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
   {path: 'create-listing',canActivate: [authGuard], component: CreateListingComponent},
   {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},

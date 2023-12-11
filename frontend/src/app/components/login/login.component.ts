@@ -52,7 +52,10 @@ export class LoginComponent {
         if (res) {
           this.success = true;
           this.successMessage = 'User logged in';
-          this.router.navigate(['/home']);
+          this.router.navigate(['/all']);
+        } else {
+          this.error = true;
+          this.formatErrorMessage('Bad credentials')
         }
       }, error => {
         console.log(error.message)
