@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Listing} from "../../models/Listing";
+import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {ApplicationDialogComponent} from "../application-dialog/application-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -28,7 +29,8 @@ export class DetailComponent implements OnInit{
     private dialog: MatDialog,
     private translateService: TranslateService,
     private listingService: ListingService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {
     this.route.params.subscribe(params => {
       this.listingId = params['id'];
@@ -65,14 +67,27 @@ export class DetailComponent implements OnInit{
     this.listingService.getListingById(this.listingId).subscribe((listing: Listing) => {
       this.listing = listing;
 
+      if (listing.owner.id === this.authService.getUserId()){
+        this.ownership = true;
+      }
+
       if (this.listing.owner.id != null) {
         this.userService.getUserById(Number(this.listing.owner.id)).subscribe((user: User) => {
           this.owner = user;
         })
       }
 
+
     }, e => {
       this.router.navigate(['/404']);
     });
+
+
+  }
+
+  editListing() {
+    if (this.listingId !=-1) {
+      this.router.navigate(['/listing/edit/'+this.listingId]);
+    }
   }
 }
