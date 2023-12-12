@@ -106,15 +106,21 @@
   display: flex;
   align-items: center;
   //justify-content: center;
+  height: 50px !important;
 }
 
 .listing-container{
   display: flex;
-  flex-direction: row;
+  //flex-direction: row;
   justify-content: center;
-  align-items: center;
+  //align-items: center;
   background-color: #F7F6F2;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  height: 7vh;
+  overflow: hidden!important;
+  width: 100%;
+  margin-bottom: 10px;
+
 }
 
 .listing-container:hover{
@@ -145,5 +151,16 @@
   padding-right: 10px;
 }
 
+.create-listing-btn{
+  display: flex;
+  align-self: end;
+  margin-bottom: 1%;
+}
 
+.card-body{
+  display: flex;
+  flex-direction: inherit;
+  height: 70vh;
+  overflow-y: auto;
+}
 

@@ -22,7 +22,7 @@
             </a>
           </li>
           <li class="mx-3" *ngIf="isLoggedIn() && isProducer()">
-            <a routerLink="/create-listing" class="text-decoration-none text-light">{{"createListing" | translate}}</a>
+            <a routerLink="/listing/create" class="text-decoration-none text-light">{{"createListing" | translate}}</a>
           </li>
           <li class="mx-3" *ngIf="isLoggedIn()">
             <a routerLink="/all" class="text-decoration-none text-light">{{"listings" | translate}}</a>

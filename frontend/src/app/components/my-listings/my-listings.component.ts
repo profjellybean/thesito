@@ -133,4 +133,16 @@ export class MyListingsComponent implements OnInit{
   goToListingDetailPage(id: string | undefined){
     this.router.navigate(['/listing/', id]);
   }
+
+  goToCreateListing(){
+    this.router.navigate(['/listing/create'])
+  }
+
+  isLoggedIn(): boolean{
+    return this.authService.isLoggedIn();
+  }
+
+  isProducer(): boolean{
+    return this.authService.isProducer();
+  }
 }

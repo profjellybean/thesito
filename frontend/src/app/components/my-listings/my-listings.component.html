@@ -8,11 +8,13 @@
             <div class="card-body">
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
               <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
-
+              <button *ngIf="isLoggedIn() && isProducer()" class="btn btn-primary create-listing-btn" (click)="goToCreateListing()">
+                {{ 'createListing' | translate }}
+              </button>
               <div *ngIf="listings" >
                 <div *ngFor="let listing of listings">
                   <div class="card listing-container btn" (click)="goToListingDetailPage(listing.id)">
-                    <div class="card-body listing-card-body">
+                    <div class="listing-card-body">
                       <div class="creation-date">{{listing.createdAt | date }}</div>
                       <div class="listing-title">{{listing.title}}</div>
                       <div class="controls">

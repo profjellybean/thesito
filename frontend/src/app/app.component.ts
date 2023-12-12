@@ -9,11 +9,17 @@ import {LanguageService} from "./services/language.service";
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+
+  private title: string
   constructor(private translate: TranslateService, private languageService: LanguageService) {}
 
   ngOnInit() {
     const initialLanguage = this.languageService.loadLanguage();
     this.translate.use(initialLanguage);
+  }
+
+  getTitle(){
+    return this.title;
   }
 
   protected readonly RegisterUserComponent = RegisterUserComponent;
