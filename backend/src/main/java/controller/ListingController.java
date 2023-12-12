@@ -143,6 +143,7 @@ public class ListingController {
                                               Optional<Qualification> qualification, Optional<String> university,
                                               Optional<String> company,
                                               Set<Long> tagIds,
+                                              Optional <Long> owner_id,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
         LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
@@ -175,10 +176,13 @@ public class ListingController {
                 predicateFactory.match().field("company").matching(company.get()) :
                 predicateFactory.matchAll();
 
+        PredicateFinalStep ownerPredicate = owner_id.isPresent() ?
+                predicateFactory.match().field("owner.id").matching(owner_id.get()) :
+                predicateFactory.matchAll();
 
         // Match any tag (= don't match none of the tags)
         PredicateFinalStep tagPredicate =
-                !tagIds.isEmpty() ?
+                (tagIds != null && !tagIds.isEmpty()) ?
                         predicateFactory.nested("tags").add(
                                 nested -> predicateFactory.bool().with(
                                         b -> b.mustNot(
@@ -205,6 +209,7 @@ public class ListingController {
                 .filter(universityPredicate)
                 .filter(companyPredicate)
                 .filter(tagPredicate)
+                .filter(ownerPredicate)
                 .toPredicate();
 
         SearchResult<Listing> query = searchSession.search(Listing.class)

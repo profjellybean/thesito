@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.search.engine.backend.types.ObjectStructure;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.util.Collection;
@@ -53,6 +54,9 @@ public class Listing extends PanacheEntityBase {
 
     @GenericField
     private Boolean active;
+    @IndexedEmbedded(includePaths = "id")
+    @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
+    // does not reindex when user_id is changed!
     @ManyToOne(fetch = FetchType.EAGER)
     private User owner;
 

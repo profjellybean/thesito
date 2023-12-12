@@ -4,10 +4,12 @@ package entity;
 import enums.Qualification;
 import enums.UserType;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -16,7 +18,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "users")
-public class User extends PanacheEntity {
+public class User extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericField
+    private Long id;
     private String name;
     private String email;
     private String password;
