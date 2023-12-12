@@ -169,7 +169,7 @@ public class ListingValidator {
             throw new ValidationException("OwnerId cannot be null");
         }
         try{
-            user = this.userService.getUserById(user.id);
+            user = this.userService.getUserById(user.getId());
             if (!user.getUserType().equals(UserType.ListingProvider)){
                 throw new ValidationException("User with ID ownerId is not a ListingProvider");
             }

@@ -111,11 +111,11 @@ public class UserService {
     private String generateAccessToken(User user) {
         LOG.debug("generateAccessToken");
         return Jwt.issuer("https://thesito.org")
-                .upn(user.id.toString())
+                .upn(user.getId().toString())
                 .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
                 .expiresIn(900)
                 .claim("usage", "access_token")
-                .claim("userid", user.id.toString())
+                .claim("userid", user.getId().toString())
                 .claim("userType", user.getUserType())
                 .sign();
     }
@@ -123,20 +123,20 @@ public class UserService {
     private String generateRefreshToken(User user) {
         LOG.debug("generateRefreshToken");
         // delete all current refresh token UUID in postgres
-        refreshTokenRepository.deleteByUserId(user.id);
+        refreshTokenRepository.deleteByUserId(user.getId());
         // generate new refresh token and store UUID in DB
         String uuid = UUID.randomUUID().toString();
         String token = Jwt.issuer("https://thesito.org")
-                .upn(user.id.toString())
+                .upn(user.getId().toString())
                 .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
                 .expiresIn(259200)
                 .claim("usage", "refresh_token")
                 .claim("uuid", uuid)
-                .claim("userid", user.id.toString())
+                .claim("userid", user.getId().toString())
                 .sign();
 
         RefreshToken refresh_token = new RefreshToken();
-        refresh_token.setUserid(user.id);
+        refresh_token.setUserid(user.getId());
         refresh_token.setUuid(uuid);
         refreshTokenRepository.persist(refresh_token);
         return token;
@@ -157,7 +157,7 @@ public class UserService {
     public User updateUser(User user) throws ServiceException, ValidationException {
         LOG.debug("updateUser");
         userValidator.validateUpdate(user);
-        User existingUser = userRepository.findById(user.id);
+        User existingUser = userRepository.findById(user.getId());
         // TODO: ensure logged user can only change own profile data
 
         existingUser.setName(user.getName());

@@ -188,8 +188,8 @@ class ListingServiceTest {
             listingService.createListing(listing2);
             listingService.createListing(listing3);
 
-            List<Listing> list1 =this.listingService.getAllListingsFromUserWithId(provider3.id);
-            List<Listing> list2 =this.listingService.getAllListingsFromUserWithId(provider2.id);
+            List<Listing> list1 =this.listingService.getAllListingsFromUserWithId(provider3.getId());
+            List<Listing> list2 =this.listingService.getAllListingsFromUserWithId(provider2.getId());
 
             System.out.println(list1);
             System.out.println(list2);
