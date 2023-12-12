@@ -75,6 +75,11 @@ export class AllComponent {
     this.searchStartDate = null;
     this.searchEndDate = null;
     this.searchQualificationType = null;
+    this.searchTags = [];
+    this.searchUniversity = "";
+    this.searchCompany = "";
+    this.institutionType = "";
+    this.setTags([])
     this.loadPage(1)
   }
 
