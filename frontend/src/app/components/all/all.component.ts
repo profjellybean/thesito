@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 import {QualificationType} from "../../models/Enums";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
-import {MatChipListboxChange} from "@angular/material/chips";
+import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
 import {Observable} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
@@ -36,6 +36,7 @@ export class AllComponent {
   allCompanies: Observable<string[]>;
   searchUniversity: string = '';
   searchCompany: string = '';
+  @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
 
   constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;
@@ -80,6 +81,7 @@ export class AllComponent {
     this.searchCompany = "";
     this.institutionType = "";
     this.setTags([])
+    this.institutionTypeListbox.writeValue('')
     this.loadPage(1)
   }
 

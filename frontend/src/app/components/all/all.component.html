@@ -31,7 +31,7 @@
         </select>
       </div>
       <div class="col-4 input-flex justify-content-center align-items-center">
-        <mat-chip-listbox (change)="onInstitutionTypeChange($event)">
+        <mat-chip-listbox #institutionTypeListbox (change)="onInstitutionTypeChange($event)">
           <mat-chip-option class="example-width"  value="university">{{ 'university' | translate }}</mat-chip-option>
           <mat-chip-option class="example-width"  value="company">{{ 'company' | translate }}</mat-chip-option>
         </mat-chip-listbox>
