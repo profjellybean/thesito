@@ -63,5 +63,16 @@
   "applyLabel": "Bewerbungstext",
   "listingDetails": "Ausschreibungsdetails",
   "supervisor": "Supervisor",
-  "createdAt" : "Erstellt am:"
+  "createdAt" : "Erstellt am:",
+  "startDate" : "Start Datum",
+  "endDate" : "End Datum",
+  "fullTextSearch" : "Volltextsuche",
+  "clear" : "Reset",
+  "advanced" : "Erweiterte Suche",
+  "qualification" : "Qualifikation",
+  "Bachelors" : "Bachelor",
+  "Masters" : "Master",
+  "PhD" : "PhD",
+  "None" : "Keine",
+  "Any" : "Egal"
 }

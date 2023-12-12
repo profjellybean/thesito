@@ -5,13 +5,13 @@
   </div>
   <div class="container results-container">
     <div class="simple-search-container">
-      <input type="text" placeholder="Full Text Search" name="title" [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
+      <input type="text" placeholder="{{'fullTextSearch' | translate}}" name="title" [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
 
      <!-- <button type="submit" class="submit-button" (click)="performSearch()">Search</button> -->
-      <button type="button" class="small-button" (click)="clearSearch()">Clear</button>
+      <button type="button" class="small-button" (click)="clearSearch()">{{"clear"| translate}}</button>
 
       <div class="advanced-search-toggle">
-        <label class="toggle-label">Advanced</label>
+        <label class="toggle-label">{{'advanced' | translate}}</label>
         <label class="toggle-container">
           <input type="checkbox" [(ngModel)]="isAdvancedSearch">
           <span class="toggle-slider"></span>
@@ -21,13 +21,13 @@
 
     <div *ngIf="isAdvancedSearch" class="row simple-search-container">
       <div class="col-4 input-flex">
-        <label>Start Date:</label>
+        <label>{{'startDate' | translate}}</label>
         <input type="date" placeholder="Start Date" name="startDate" [(ngModel)]="searchStartDate" class="date-input" (ngModelChange)="performSearch()">
-        <label>End Date:</label>
+        <label>{{'endDate' | translate}}</label>
         <input type="date" placeholder="End Date" name="endDate" [(ngModel)]="searchEndDate" class="date-input" (ngModelChange)="performSearch()">
-        <label>Qualification:</label>
+        <label>{{'qualification' | translate}}</label>
         <select name="qualificationType" [(ngModel)]="searchQualificationType" (ngModelChange)="performSearch()">
-          <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type }}</option>
+          <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type | translate }}</option>
         </select>
       </div>
       <div class="col-4 input-flex justify-content-center align-items-center">

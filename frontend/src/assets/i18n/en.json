@@ -63,5 +63,17 @@
   "applyLabel": "Application Text",
   "listingDetails": "Listing Details",
   "supervisor": "Supervisor",
-  "createdAt" : "Created at:"
+  "createdAt" : "Created at:",
+  "startDate" : "Start Date",
+  "endDate" : "End Date",
+  "fullTextSearch" : "Full Text Search",
+  "clear" : "Clear",
+  "advanced" : "Advanced Search",
+  "qualification" : "Qualification",
+  "Bachelors" : "Bachelors",
+  "Masters" : "Masters",
+  "PhD" : "PhD",
+  "None" : "None",
+  "Any" : "Any"
+
 }
