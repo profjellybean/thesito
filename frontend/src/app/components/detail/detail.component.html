@@ -57,10 +57,11 @@
             <!-- Description within an input box (not editable) with a darker background -->
             <div class="row mb-3">
                 <label class="form-label">{{ 'description' | translate }}</label>
-                <div>
+              <p style="resize:none; background-color: #EAE7DC;">{{listing.details}}</p>
+                <!--<div>
                   <textarea name="text" cols="70" rows="5" value="{{ listing.details }}" disabled
                             style="resize:none; background-color: #DADADA;"></textarea>
-                </div>
+                </div>-->
 
             </div>
 
