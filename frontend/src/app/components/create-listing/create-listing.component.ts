@@ -167,13 +167,6 @@ export class CreateListingComponent implements OnInit {
 
   private create(listing: Listing) {
     console.log(listing.tags)
-    let tags = {
-      id: 1,
-      title_en: "test",
-      title_de: "test",
-      layer: 1
-    }
-    listing.tags = [tags]
     this.listingService.createListing(listing).subscribe(
       (res: any) => {
         if (res.data?.createListing != null) {
