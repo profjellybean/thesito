@@ -88,18 +88,18 @@
     <div class="pagination-container d-flex justify-content-center">
 
       <button (click)="loadPage(1)"
-              [disabled]="currentPage === (1)">First</button>
+        [disabled]="currentPage === (1)">{{'first' | translate }}</button>
 
       <!-- Previous and Next Buttons -->
       <button (click)="loadPage(currentPage - 1)"
-              [disabled]="currentPage === 1">Previous</button>
+        [disabled]="currentPage === 1">{{'previous' | translate }}</button>
       <span *ngIf="totalPages > 0; else noResultsSpan" class="pagination-text">Page {{ currentPage }} of {{ totalPages }}</span>
       <ng-template #noResultsSpan><span class="pagination-text">No Results</span></ng-template>
       <button (click)="loadPage(currentPage + 1)"
-              [disabled]="currentPage === totalPages || totalPages === 0">Next</button>
+        [disabled]="currentPage === totalPages || totalPages === 0">{{ 'next' | translate}}</button>
 
       <button (click)="loadPage(this.totalPages)"
-              [disabled]="currentPage === (this.totalPages) || totalPages === 0">Last</button>
+              [disabled]="currentPage === (this.totalPages) || totalPages === 0">{{ 'last' | translate}}</button>
     </div>
 
   </div>

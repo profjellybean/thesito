@@ -10,7 +10,7 @@ export interface User {
   password?: string
   userType: UserType
   userTags: Tag[]
-  qualification: QualificationType
+  qualification?: QualificationType
 }
 
 export interface GetAllUsers {
@@ -18,7 +18,7 @@ export interface GetAllUsers {
 }
 
 export const registerUserQuery = gql`
-    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!, $tags: [TagInput]) {
+    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!, $tags: [TagInput], $qualification: Qualification) {
         registerUser(
             user: {
                 email: $email
@@ -26,6 +26,7 @@ export const registerUserQuery = gql`
                 password: $password
                 userType: $userType
                 userTags: $tags
+                qualification: $qualification
             }
         )
         {
@@ -39,6 +40,7 @@ export const registerUserQuery = gql`
                 title_de
                 title_en
             }
+            qualification
         }
     }
 `;

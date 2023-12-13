@@ -32,7 +32,8 @@
   "notEnoughTagsError": "Zu wenige Tags ausgewählt!",
   "interests": "Interessen",
   "userUpdateSuccess": "Benutzer erfolgreich aktualisiert!",
-  "tagError": "Wählen Sie mindestens ein Tag aus",
+  "tagError": "Wählen Sie mindestens drei Tags aus",
+  "qualificationError": "Wählen Sie mindestens eine Qualifikation aus",
   "pwError": "Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Buchstaben und eine Zahl enthalten",
   "emailMatchError": "Die E-Mails stimmen nicht überein",
   "pwMatchError": "Die Passwörter stimmen nicht überein",
@@ -45,7 +46,7 @@
   "errorUpdatingListing": "Fehler beim Bearbeiten der Ausschreibung: ",
   "successCreatingListing": "Ausschreibung erfolgreich erstellt",
   "successUpdatingListing": "Ausschreibung erfolgreich bearbeitet",
-  "invalidListingInput": "Ungültige Eingabe: Sie müssen einen Titel, Beschreibung, mindestens ein Tag, Vorbedingungen und Affiliation angeben",
+  "invalidListingInput": "Ungültige Eingabe: Sie müssen einen Titel, Beschreibung, mindestens ein Tag, Vorbedingungen, Affiliation und Qualifikation angeben",
   "affiliation": "Zugehörigkeit",
   "profile": "Profil",
   "university": "Universität",
@@ -74,5 +75,11 @@
   "Masters" : "Master",
   "PhD" : "PhD",
   "None" : "Keine",
-  "Any" : "Egal"
+  "next": "Nächste",
+  "last": "Letzte Seite",
+  "first": "Erste Seite",
+  "previous": "Vorherige",
+  "Any" : "Egal",
+  "applicationError": "Fehler beim Bewerben",
+  "applicationSuccess": "Bewerbung erfolgreich"
 }

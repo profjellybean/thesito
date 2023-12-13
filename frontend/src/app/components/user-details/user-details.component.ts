@@ -25,7 +25,7 @@ export class UserDetailsComponent implements OnInit{
   errorMessage = '';
   selectedTags: Tag[] = []
   tagsLoaded = false;
-  academicCareer: QualificationType = QualificationType.None
+  academicCareer: QualificationType | undefined = QualificationType.None
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
@@ -126,5 +126,14 @@ export class UserDetailsComponent implements OnInit{
     this.selectedTags = tags;
     console.log('Current Tags: ', this.selectedTags)
   }
+
+  isLoggedIn(): boolean{
+    return this.authService.isLoggedIn();
+  }
+
+  isConsumer(): boolean{
+    return this.authService.isConsumer();
+  }
+
   protected readonly QualificationType = QualificationType;
 }

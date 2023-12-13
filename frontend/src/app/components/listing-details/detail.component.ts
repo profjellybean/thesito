@@ -51,10 +51,10 @@ export class DetailComponent implements OnInit{
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'success') {
         this.success = true;
-        this.successMessage = 'Application sent successfully';
+        this.formatSuccessMessage('applicationSuccess')
       } else {
         this.error = true;
-        this.errorMessage = 'Application couldn\'t be sent';
+        this.formatErrorMessage('applicationError')
       }
     });
   }
@@ -64,6 +64,14 @@ export class DetailComponent implements OnInit{
       this.errorMessage = res;
     }, e => {
       this.errorMessage = error;
+    });
+  }
+
+  private formatSuccessMessage(success: string): void {
+    this.translateService.get(success).subscribe((res: string) => {
+      this.successMessage = res;
+    }, e => {
+      this.successMessage = success;
     });
   }
 

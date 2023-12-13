@@ -11,7 +11,10 @@ import org.jboss.logging.Logger;
 import org.jetbrains.annotations.TestOnly;
 import persistence.TagRepository;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class TagService {
@@ -23,7 +26,15 @@ public class TagService {
     public List<Tag> getAllTags() throws ServiceException {
         LOG.debug("getAllTags");
         try {
-            return tagRepository.listAll();
+            List<Tag> allTags = tagRepository.listAll();
+            List<Tag> retTags = new LinkedList<>();
+            Set<String> tagName = new HashSet<>();
+            for (Tag tag : allTags) {
+                if (tagName.add(tag.getTitle_en())){
+                    retTags.add(tag);
+                }
+            }
+            return retTags;
         } catch (NoResultException e) {
             LOG.error("Error in getAllTags: " + e.getMessage());
             throw new ServiceException("Error while fetching tags");
