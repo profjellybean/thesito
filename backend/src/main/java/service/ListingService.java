@@ -3,9 +3,8 @@ package service;
 import entity.Listing;
 import entity.User;
 import enums.Qualification;
-import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.Mailer;
 import io.quarkus.panache.common.Parameters;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -161,5 +160,37 @@ public class ListingService {
         listingRepository.persist(existingListing);
         return existingListing;
     }
+
+    @Transactional
+    public List<String> getAllUniversities() {
+        LOG.debug("getAllUniversities");
+        return listingRepository
+                .find("select distinct l.university from Listing l where l.university is not null")
+                .project(ListingUniversityView.class)
+                .list().stream()
+                .map(luv -> luv.university)
+                .toList();
+    }
+
+    @Transactional
+    public List<String> getAllCompanies() {
+        LOG.debug("getAllCompanies");
+        return listingRepository
+                .find("select distinct l.company from Listing l where l.company is not null")
+                .project(ListingCompanyView.class)
+                .list().stream()
+                .map(lcv -> lcv.company)
+                .toList();
+    }
+
+    @RegisterForReflection
+    public record ListingUniversityView(String university) {
+    }
+
+    @RegisterForReflection
+    public record ListingCompanyView(String company) {
+    }
+
+
 
 }

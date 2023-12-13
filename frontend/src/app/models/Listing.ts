@@ -152,12 +152,15 @@ export const fullTextSearchQuery = gql`
 `;
 
 export const advancedSearchQuery = gql`
-  query ($textPattern: String, $qualification: Qualification, $startDate: String, $endDate: String $offset: Int, $tagIds: [BigInteger], $limit: Int) {
+  query ($textPattern: String, $qualification: Qualification, $startDate: String, $endDate: String $offset: Int,
+    $university: String, $company: String, $tagIds: [BigInteger], $limit: Int) {
     advancedSearch (
       textPattern: $textPattern
       startDate: $startDate
       endDate: $endDate
       qualification: $qualification
+      university: $university
+      company: $company
       tagIds: $tagIds
       offset: $offset
       limit: $limit

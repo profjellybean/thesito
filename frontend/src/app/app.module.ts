@@ -37,7 +37,7 @@ import {AllComponent} from "./components/all/all.component";
 import { TagComponent } from './components/tag/tag.component';
 import {PasswordChangeDialogComponent} from "./components/password-change-dialog/password-change-dialog.component";
 import { MyListingsComponent } from './components/my-listings/my-listings.component';
-import { DetailComponent } from './components/detail/detail.component';
+import { DetailComponent } from './components/listing-details/detail.component';
 import { ApplicationDialogComponent } from './components/application-dialog/application-dialog.component';
 import { EditListingComponent } from './components/edit-listing/edit-listing.component';
 

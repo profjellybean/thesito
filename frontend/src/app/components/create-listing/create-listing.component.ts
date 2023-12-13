@@ -167,13 +167,6 @@ export class CreateListingComponent implements OnInit {
 
   private create(listing: Listing) {
     console.log(listing.tags)
-    let tags = {
-      id: 1,
-      title_en: "test",
-      title_de: "test",
-      layer: 1
-    }
-    listing.tags = [tags]
     this.listingService.createListing(listing).subscribe(
       (res: any) => {
         if (res.data?.createListing != null) {
@@ -182,7 +175,7 @@ export class CreateListingComponent implements OnInit {
           this.errorMessage = ''; // Reset error message
           this.formatSuccessMessage('successCreatingListing');
           setTimeout(() => {
-            this.router.navigate([`/listing/${res.data.createListing.id}`]);
+            this.router.navigate([`/user/listings`]);
           }, 1000);
         }
       },

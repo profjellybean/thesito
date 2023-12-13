@@ -10,7 +10,6 @@ import {
   Listing,
   simpleSearchTitleOnlyQuery, updateListingQuery
 } from "../models/Listing";
-import {updateUserQuery, User} from "../models/User";
 import {gql} from "@apollo/client/core";
 
 
@@ -109,7 +108,9 @@ export class ListingService {
       );
   }
 
-  advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null, endDate: String | null, tagIds: number[], offset: number | null, limit: number | null): Observable<SearchResult> {
+  advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null,
+                 endDate: String | null, university: String | null, company: String | null, tagIds: number[] | null,
+  offset: number | null, limit: number | null): Observable<SearchResult> {
     return this.apollo
       .query<{ advancedSearch: SearchResult }>({
         query: advancedSearchQuery,
@@ -118,6 +119,8 @@ export class ListingService {
           qualification: qualification,
           startDate: startDate,
           endDate: endDate,
+          university: university,
+          company: company,
           tagIds: tagIds,
           offset: offset,
           limit: limit
@@ -196,4 +199,33 @@ export class ListingService {
       },
     });
   }
+
+  getAllListingUniversities(): Observable<string[]> {
+    return this.apollo
+      .query<{ getAllListingUniversities: string[] }>({
+        query: gql`
+          query getAllListingUniversities{
+            getAllListingUniversities
+          }
+        `,
+      })
+      .pipe(
+        map((result) => result.data.getAllListingUniversities)
+      );
+  }
+
+  getAllListingCompanies(): Observable<string[]> {
+    return this.apollo
+      .query<{ getAllListingCompanies: string[] }>({
+        query: gql`
+          query getAllListingCompanies{
+            getAllListingCompanies
+          }
+        `,
+      })
+      .pipe(
+        map((result) => result.data.getAllListingCompanies)
+      );
+  }
+
 }

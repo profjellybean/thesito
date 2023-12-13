@@ -114,8 +114,8 @@ class UserServiceTest {
         user.setUserType(UserType.ListingConsumer);
         User insertedUser = userService.registerUser(user);
         // Retrieve the user by ID and assert equality
-        userService.getUserById(insertedUser.id);
-        User retrievedUser = userService.getUserById(insertedUser.id);
+        userService.getUserById(insertedUser.getId());
+        User retrievedUser = userService.getUserById(insertedUser.getId());
         insertedUser.setUserTags(retrievedUser.getUserTags());
 
 
@@ -176,10 +176,10 @@ class UserServiceTest {
         user.setUserType(UserType.ListingConsumer);
         userService.registerUser(user);
         Session session = userService.getSession(user.getEmail(), password);
-        RefreshToken refreshToken_old = refreshTokenRepository.find("userid", user.id).firstResult();
-        Long count = refreshTokenRepository.find("userid", user.id).count();
+        RefreshToken refreshToken_old = refreshTokenRepository.find("userid", user.getId()).firstResult();
+        Long count = refreshTokenRepository.find("userid", user.getId()).count();
         userService.refreshSession(session.refreshToken);
-        RefreshToken refreshToken_new = refreshTokenRepository.find("userid", user.id).firstResult();
+        RefreshToken refreshToken_new = refreshTokenRepository.find("userid", user.getId()).firstResult();
         // old refresh token uuid does not match the new one
         assertFalse(refreshToken_new.equals(refreshToken_old));
         // refresh tokens are single-use
@@ -196,14 +196,14 @@ class UserServiceTest {
         user.setUserType(UserType.ListingConsumer);
         userService.registerUser(user);
         Session session = userService.getSession(user.getEmail(), password);
-        RefreshToken refreshToken = refreshTokenRepository.find("userid", user.id).firstResult();
+        RefreshToken refreshToken = refreshTokenRepository.find("userid", user.getId()).firstResult();
         String expired_refresh_token = Jwt.issuer("https://thesito.org")
-                .upn(user.id.toString())
+                .upn(user.getId().toString())
                 .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
                 .expiresAt(1695881286)
                 .claim("usage", "refresh_token")
                 .claim("uuid", refreshToken.getUuid())
-                .claim("userid", user.id.toString())
+                .claim("userid", user.getId().toString())
                 .sign();
         assertThrows(ServiceException.class, () -> userService.refreshSession(expired_refresh_token));
     }
@@ -218,18 +218,18 @@ class UserServiceTest {
         user.setUserType(UserType.ListingConsumer);
         userService.registerUser(user);
         Session session = userService.getSession(user.getEmail(), password);
-        RefreshToken refreshToken = refreshTokenRepository.find("userid", user.id).firstResult();
+        RefreshToken refreshToken = refreshTokenRepository.find("userid", user.getId()).firstResult();
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         keyGen.initialize(2048);
         KeyPair pair = keyGen.generateKeyPair();
         PrivateKey privateKey = pair.getPrivate();
         String wrong_signature_refresh_token = Jwt.issuer("https://thesito.org")
-                .upn(user.id.toString())
+                .upn(user.getId().toString())
                 .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
                 .expiresIn(900)
                 .claim("usage", "refresh_token")
                 .claim("uuid", refreshToken.getUuid())
-                .claim("userid", user.id.toString())
+                .claim("userid", user.getId().toString())
                 .sign(privateKey);
         assertThrows(ServiceException.class, () -> userService.refreshSession(wrong_signature_refresh_token));
     }
@@ -246,10 +246,10 @@ class UserServiceTest {
         User createdUser = userRepository.find("email","test8@test.com" ).firstResult();
 
         String newPassword = "abcd"; // Invalid password with only 4 letters
-        assertThrows(ValidationException.class, () -> userService.changePassword(user.getPassword(), newPassword, createdUser.id));
+        assertThrows(ValidationException.class, () -> userService.changePassword(user.getPassword(), newPassword, createdUser.getId()));
 
         // verify that the password remains unchanged
-        User userAfterChange = userRepository.findById(createdUser.id);
+        User userAfterChange = userRepository.findById(createdUser.getId());
         assertTrue(Password.check("123456789Test", userAfterChange.getPassword()).withScrypt());
     }
 
@@ -268,10 +268,10 @@ class UserServiceTest {
         // Step 2: Attempt to change the password with a wrong old password
         String wrongOldPassword = "wrongOldPassword";
         String newPassword = "newValidPassword123";
-        assertThrows(ValidationException.class, () -> userService.changePassword(wrongOldPassword, newPassword, createdUser.id));
+        assertThrows(ValidationException.class, () -> userService.changePassword(wrongOldPassword, newPassword, createdUser.getId()));
 
         // Optionally, you can also verify that the password remains unchanged
-        User userAfterChange = userService.getUserById(createdUser.id);
+        User userAfterChange = userService.getUserById(createdUser.getId());
         assertTrue(Password.check("123456789Test", userAfterChange.getPassword()).withScrypt());
     }
 

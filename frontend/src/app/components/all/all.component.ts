@@ -1,9 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 import {QualificationType} from "../../models/Enums";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
+import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
+import {Observable} from "rxjs";
+import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 @Component({
   selector: 'app-all',
@@ -27,7 +30,13 @@ export class AllComponent {
   searchEndDate: Date | null = null;
   fullTextSearchPattern: String | null = null
   searchTags: Tag[] = [];
+  institutionType = '';
   pages: (number)[] = [];
+  allUniversities: Observable<string[]>;
+  allCompanies: Observable<string[]>;
+  searchUniversity: string = '';
+  searchCompany: string = '';
+  @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
 
   constructor(listingService: ListingService, private router: Router) {
     this.listingService = listingService;
@@ -35,10 +44,11 @@ export class AllComponent {
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
+    this.allUniversities = this.listingService.getAllListingUniversities()
+    this.allCompanies = this.listingService.getAllListingCompanies()
   }
 
   performSearch(): void {
-    console.log(this.searchTags)
     this.loadPage(1);
   }
 
@@ -47,11 +57,13 @@ export class AllComponent {
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
     let formattedStartDate = this.convertDateToString(this.searchStartDate)
     let formattedEndDate = this.convertDateToString(this.searchEndDate)
+    let university = this.institutionType === 'university' && this.searchUniversity ? this.searchUniversity : null
+    let company = this.institutionType === 'company' && this.searchCompany ? this.searchCompany : null
     let tagIds = this.searchTags.map(tag => tag.id)
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
     this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate,
-      formattedEndDate, tagIds, offset, limit)
+      formattedEndDate, university, company, tagIds, offset, limit)
       .subscribe((searchResult) => {
         this.totalListings = searchResult.totalHitCount
         this.listings = searchResult.listings;
@@ -64,6 +76,12 @@ export class AllComponent {
     this.searchStartDate = null;
     this.searchEndDate = null;
     this.searchQualificationType = null;
+    this.searchTags = [];
+    this.searchUniversity = "";
+    this.searchCompany = "";
+    this.institutionType = "";
+    this.setTags([])
+    this.institutionTypeListbox.writeValue('')
     this.loadPage(1)
   }
 
@@ -81,5 +99,18 @@ export class AllComponent {
 
   goToListing(id: string | undefined) {
     this.router.navigate(['/listing', id]);
+  }
+
+  onInstitutionTypeChange(event: MatChipListboxChange) {
+    this.institutionType = event.value;
+    this.performSearch();
+  }
+
+  onUniversitySelect($event: MatAutocompleteSelectedEvent) {
+    this.performSearch();
+  }
+
+  onCompanySelect($event: MatAutocompleteSelectedEvent) {
+    this.performSearch();
   }
 }

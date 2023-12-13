@@ -18,6 +18,11 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+
 /* Header Styles */
 h2 {
   color: #007bff;
@@ -92,6 +97,10 @@ h2 {
   background-color: white;
   transition: .4s;
   border-radius: 50%;
+}
+
+.tags-container {
+  /*flex-basis: 100%;*/
 }
 
 input:checked + .toggle-slider {

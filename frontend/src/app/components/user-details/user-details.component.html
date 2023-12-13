@@ -23,7 +23,7 @@
                 </div>
 
               </div>
-              <div class="career-wrapper">
+              <div *ngIf="isLoggedIn() && isConsumer()" class="career-wrapper">
                 Completed Academic Career
                 <div class="radios">
                   <mat-radio-group [(ngModel)]="academicCareer">
@@ -34,10 +34,10 @@
                   </mat-radio-group>
                 </div>
               </div>
-              <app-tag *ngIf="tagsLoaded" [title]="'chooseInterests'" [selectedTagsFromParent]="user.userTags" (updateTag)="addTagToUser($event)"></app-tag>
+              <app-tag *ngIf="tagsLoaded && isConsumer() && isLoggedIn()" [title]="'chooseInterests'" [selectedTagsFromParent]="user.userTags" (updateTag)="addTagToUser($event)"></app-tag>
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
               <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
-              <div class="save-button">
+              <div *ngIf="isLoggedIn() && isConsumer()" class="save-button">
                 <button type="button" class="btn btn-primary" (click)="save()">{{ 'save' | translate }}</button>
               </div>
             </div>

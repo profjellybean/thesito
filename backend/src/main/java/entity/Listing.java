@@ -7,13 +7,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.search.engine.backend.types.ObjectStructure;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -25,8 +24,10 @@ public class Listing extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @FullTextField(analyzer = "english") // TODO english and german
+    @Column(length = 1000)
     private String title;
     @FullTextField(analyzer = "english") // TODO english and german
+    @Column(length = 10000)
     private String details;
     @GenericField
     @Enumerated(EnumType.STRING)
@@ -45,22 +46,46 @@ public class Listing extends PanacheEntityBase {
     @Column(name = "created_at")
     private Date createdAt;
 
+    @KeywordField
     private String university;
+
+    @KeywordField
     private String company;
+
+    @GenericField
     private Boolean active;
+    @IndexedEmbedded(includePaths = "id")
+    @IndexingDependency(reindexOnUpdate = ReindexOnUpdate.SHALLOW)
+    // does not reindex when user_id is changed!
     @ManyToOne(fetch = FetchType.EAGER)
     private User owner;
 
     @Override
     public String toString() {
         return "Listing{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", details='" + details + '\'' +
                 ", requirement=" + requirement +
                 ", tags=" + tags +
                 ", createdAt=" + createdAt +
                 ", university='" + university + '\'' +
                 ", company='" + company + '\'' +
+                ", active=" + active +
+                ", owner=" + owner +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Listing listing = (Listing) o;
+        return Objects.equals(getId(), listing.getId()) && Objects.equals(getTitle(), listing.getTitle()) && Objects.equals(getDetails(), listing.getDetails()) && getRequirement() == listing.getRequirement() && Objects.equals(getTags(), listing.getTags()) && Objects.equals(getCreatedAt(), listing.getCreatedAt()) && Objects.equals(getUniversity(), listing.getUniversity()) && Objects.equals(getCompany(), listing.getCompany()) && Objects.equals(getActive(), listing.getActive()) && Objects.equals(getOwner(), listing.getOwner());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTitle(), getDetails(), getRequirement(), getTags(), getCreatedAt(), getUniversity(), getCompany(), getActive(), getOwner());
     }
 }

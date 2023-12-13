@@ -141,7 +141,9 @@ public class ListingController {
     @Transactional
     public GraphQLSearchResult advancedSearch(Optional<String> textPattern, Optional<String> startDate, Optional<String> endDate,
                                               Optional<Qualification> qualification, Optional<String> university,
+                                              Optional<String> company,
                                               Set<Long> tagIds,
+                                              Optional <Long> owner_id,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
         LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
@@ -162,16 +164,25 @@ public class ListingController {
                 predicateFactory.range().field("createdAt").atMost(endDateParsed.get()) :
                 predicateFactory.matchAll();
 
-        PredicateFinalStep universityPredicate = university.isPresent() ?
-                predicateFactory.match().field("university").matching(university.get()) :
-                predicateFactory.matchAll();
         PredicateFinalStep requirementPredicate = qualification.isPresent() ?
                 predicateFactory.match().field("requirement").matching(qualification.get()) :
                 predicateFactory.matchAll();
 
+        PredicateFinalStep universityPredicate = university.isPresent() ?
+                predicateFactory.match().field("university").matching(university.get()) :
+                predicateFactory.matchAll();
+
+        PredicateFinalStep companyPredicate = company.isPresent() ?
+                predicateFactory.match().field("company").matching(company.get()) :
+                predicateFactory.matchAll();
+
+        PredicateFinalStep ownerPredicate = owner_id.isPresent() ?
+                predicateFactory.match().field("owner.id").matching(owner_id.get()) :
+                predicateFactory.matchAll();
+
         // Match any tag (= don't match none of the tags)
         PredicateFinalStep tagPredicate =
-                !tagIds.isEmpty() ?
+                (tagIds != null && !tagIds.isEmpty()) ?
                         predicateFactory.nested("tags").add(
                                 nested -> predicateFactory.bool().with(
                                         b -> b.mustNot(
@@ -187,14 +198,18 @@ public class ListingController {
                         :
                         predicateFactory.matchAll();
 
+        PredicateFinalStep activePredication = predicateFactory.match().field("active").matching(true);
         // Combining all predicates
         SearchPredicate combinedPredicate = predicateFactory.bool()
                 .must(fullTextPredicate)
+                .filter(activePredication)
                 .filter(endDatePredicate)
                 .filter(startDatePredicate)
-                .filter(universityPredicate)
                 .filter(requirementPredicate)
+                .filter(universityPredicate)
+                .filter(companyPredicate)
                 .filter(tagPredicate)
+                .filter(ownerPredicate)
                 .toPredicate();
 
         SearchResult<Listing> query = searchSession.search(Listing.class)
@@ -211,6 +226,7 @@ public class ListingController {
     @Description("Updates a listing in the database")
     public Listing updateListing(Listing listing) throws GraphQLException {
         LOG.info("updateListing");
+        LOG.info(listing);
         try {
             return listingService.updateListing(listing);
         } catch (ValidationException | ServiceException e) {
@@ -231,6 +247,18 @@ public class ListingController {
         }
     }
 
+    @Query("getAllListingUniversities")
+    @Description("Fetches a list of all universities that listings are assigned to")
+    public List<String> getAllListingUniversities() {
+        LOG.info("getAllListingUniversities");
+        return listingService.getAllUniversities();
+    }
 
+    @Query("getAllListingCompanies")
+    @Description("Fetches a list of all companies that listings are assigned to")
+    public List<String> getAllListingCompanies() {
+        LOG.info("getAllListingCompanies");
+        return listingService.getAllCompanies();
+    }
 
 }

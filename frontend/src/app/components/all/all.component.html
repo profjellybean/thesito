@@ -5,13 +5,13 @@
   </div>
   <div class="container results-container">
     <div class="simple-search-container">
-      <input type="text" placeholder="Full Text Search" name="title" [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
+      <input type="text" placeholder="{{'fullTextSearch' | translate}}" name="title" [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
 
      <!-- <button type="submit" class="submit-button" (click)="performSearch()">Search</button> -->
-      <button type="button" class="small-button" (click)="clearSearch()">Clear</button>
+      <button type="button" class="small-button" (click)="clearSearch()">{{"clear"| translate}}</button>
 
       <div class="advanced-search-toggle">
-        <label class="toggle-label">Advanced</label>
+        <label class="toggle-label">{{'advanced' | translate}}</label>
         <label class="toggle-container">
           <input type="checkbox" [(ngModel)]="isAdvancedSearch">
           <span class="toggle-slider"></span>
@@ -19,22 +19,53 @@
       </div>
     </div>
 
-    <div *ngIf="isAdvancedSearch" class="simple-search-container">
-      <div class="input-flex">
-        <label>Start Date:</label>
+    <div *ngIf="isAdvancedSearch" class="row simple-search-container">
+      <div class="col-4 input-flex">
+        <label>{{'startDate' | translate}}</label>
         <input type="date" placeholder="Start Date" name="startDate" [(ngModel)]="searchStartDate" class="date-input" (ngModelChange)="performSearch()">
-        <label>End Date:</label>
+        <label>{{'endDate' | translate}}</label>
         <input type="date" placeholder="End Date" name="endDate" [(ngModel)]="searchEndDate" class="date-input" (ngModelChange)="performSearch()">
-        <label>Qualification:</label>
+        <label>{{'qualification' | translate}}</label>
         <select name="qualificationType" [(ngModel)]="searchQualificationType" (ngModelChange)="performSearch()">
-          <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type }}</option>
+          <option *ngFor="let type of qualificationTypes" [ngValue]="type === 'Any' ? null : type">{{ type | translate }}</option>
         </select>
       </div>
-      <!-- TODO improve layout -->
-      <div class="tags-container">
+      <div class="col-4 input-flex justify-content-center align-items-center">
+        <mat-chip-listbox #institutionTypeListbox (change)="onInstitutionTypeChange($event)">
+          <mat-chip-option class="example-width"  value="university">{{ 'university' | translate }}</mat-chip-option>
+          <mat-chip-option class="example-width"  value="company">{{ 'company' | translate }}</mat-chip-option>
+        </mat-chip-listbox>
+
+        <!-- Show input field depending on selected institutionType -->
+        <div *ngIf="institutionType === 'university'">
+          <mat-form-field class="example-full-width">
+            <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
+            <input matInput [(ngModel)]="searchUniversity" [matAutocomplete]="auto">
+            <mat-autocomplete (optionSelected)="onUniversitySelect($event)" #auto="matAutocomplete">
+              <mat-option *ngFor="let university of allUniversities | async" [value]="university">
+                {{ university }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div *ngIf="institutionType === 'company'">
+          <mat-form-field class="example-full-width">
+            <mat-label>{{ 'companyName' | translate }}</mat-label>
+            <input matInput [(ngModel)]="searchCompany" [matAutocomplete]="auto">
+            <mat-autocomplete (optionSelected)="onCompanySelect($event)" #auto="matAutocomplete">
+              <mat-option *ngFor="let company of allCompanies | async" [value]="company">
+                {{ company }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="col-4 tags-container input-flex">
         <label>Tags:</label>
         <app-tag (updateTag)="setTags($event)"></app-tag>
       </div>
+<!--      <div class="break"></div>-->
     </div>
 
     <!-- listings -->
@@ -57,18 +88,18 @@
     <div class="pagination-container d-flex justify-content-center">
 
       <button (click)="loadPage(1)"
-              [disabled]="currentPage === (1)">First</button>
+        [disabled]="currentPage === (1)">{{'first' | translate }}</button>
 
       <!-- Previous and Next Buttons -->
       <button (click)="loadPage(currentPage - 1)"
-              [disabled]="currentPage === 1">Previous</button>
+        [disabled]="currentPage === 1">{{'previous' | translate }}</button>
       <span *ngIf="totalPages > 0; else noResultsSpan" class="pagination-text">Page {{ currentPage }} of {{ totalPages }}</span>
       <ng-template #noResultsSpan><span class="pagination-text">No Results</span></ng-template>
       <button (click)="loadPage(currentPage + 1)"
-              [disabled]="currentPage === totalPages || totalPages === 0">Next</button>
+        [disabled]="currentPage === totalPages || totalPages === 0">{{ 'next' | translate}}</button>
 
       <button (click)="loadPage(this.totalPages)"
-              [disabled]="currentPage === (this.totalPages) || totalPages === 0">Last</button>
+              [disabled]="currentPage === (this.totalPages) || totalPages === 0">{{ 'last' | translate}}</button>
     </div>
 
   </div>
