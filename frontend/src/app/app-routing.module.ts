@@ -11,7 +11,7 @@ import {UserDetailsComponent} from "./components/user-details/user-details.compo
 import {CreateListingComponent} from "./components/create-listing/create-listing.component";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {EditListingComponent} from "./components/edit-listing/edit-listing.component";
-import {DetailComponent} from "./components/detail/detail.component";
+import {DetailComponent} from "./components/listing-details/detail.component";
 import {MyListingsComponent} from "./components/my-listings/my-listings.component";
 import {producerGuard} from "./guards/producer.guard";
 

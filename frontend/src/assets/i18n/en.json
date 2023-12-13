@@ -79,5 +79,7 @@
   "last": "Last Page",
   "first": "First Page",
   "previous": "Previous",
-  "Any" : "Any"
+  "Any" : "Any",
+  "applicationError": "Error applying to listin",
+  "applicationSuccess": "Successfully applied to listing"
 }

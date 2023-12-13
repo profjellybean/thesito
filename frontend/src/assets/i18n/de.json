@@ -79,5 +79,7 @@
   "last": "Letzte Seite",
   "first": "Erste Seite",
   "previous": "Vorherige",
-  "Any" : "Egal"
+  "Any" : "Egal",
+  "applicationError": "Fehler beim Bewerben",
+  "applicationSuccess": "Bewerbung erfolgreich"
 }
