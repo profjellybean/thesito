@@ -126,5 +126,14 @@ export class UserDetailsComponent implements OnInit{
     this.selectedTags = tags;
     console.log('Current Tags: ', this.selectedTags)
   }
+
+  isLoggedIn(): boolean{
+    return this.authService.isLoggedIn();
+  }
+
+  isConsumer(): boolean{
+    return this.authService.isConsumer();
+  }
+
   protected readonly QualificationType = QualificationType;
 }
