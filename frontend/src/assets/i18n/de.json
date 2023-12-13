@@ -75,5 +75,9 @@
   "Masters" : "Master",
   "PhD" : "PhD",
   "None" : "Keine",
+  "next": "Nächste",
+  "last": "Letzte Seite",
+  "first": "Erste Seite",
+  "previous": "Vorherige",
   "Any" : "Egal"
 }
