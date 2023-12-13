@@ -34,17 +34,16 @@ export class RegisterUserComponent {
       name: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
-      userType: ['', Validators.required]
+      userType: ['', Validators.required],
+      qualification: [''],
     });
     this.userService = userService;
     this.user = {
-      id: -1,
       email: "",
       name: "",
       password: "",
       userType: UserType.ListingConsumer,
-      userTags: [],
-      qualification: QualificationType.None
+      userTags: []
     };
     this.confirm_email = "";
     this.confirm_password = "";
@@ -60,6 +59,20 @@ export class RegisterUserComponent {
       this.user.userType = this.registerForm.get('userType')?.value
       this.confirm_email = this.registerForm.get('confirmEmail')?.value
       this.confirm_password = this.registerForm.get('confirmPassword')?.value
+      this.user.qualification = this.registerForm.get('qualification')?.value
+      if(this.user.userType.toString() === "ListingConsumer" && (this.user.userTags === undefined || this.user.userTags.length < 3)) {
+        this.error = true;
+        this.formatErrorMessage('notEnoughTagsError');
+        return;
+      }
+      if(this.user.userType.toString() === "ListingConsumer" && (this.user.qualification === undefined || this.registerForm.get('qualification')?.value === "")) {
+        this.error = true;
+        this.formatErrorMessage('qualificationError');
+        return;
+      }
+      if (this.user.userType.toString() === "ListingProvider") {
+        this.user.qualification = undefined;
+      }
       if (this.authenticateUser()) {
         this.userService.registerUser(this.user).subscribe(res => {
           if (res.data != null) {
@@ -124,4 +137,6 @@ export class RegisterUserComponent {
   isConsumer() {
     this.isConsumerUser = this.registerForm.value.userType === "ListingConsumer";
   }
+
+  protected readonly QualificationType = QualificationType;
 }

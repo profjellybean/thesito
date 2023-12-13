@@ -25,7 +25,7 @@ export class UserDetailsComponent implements OnInit{
   errorMessage = '';
   selectedTags: Tag[] = []
   tagsLoaded = false;
-  academicCareer: QualificationType = QualificationType.None
+  academicCareer: QualificationType | undefined = QualificationType.None
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
