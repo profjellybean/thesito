@@ -8,6 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {TranslateService} from "@ngx-translate/core";
 import {ListingService} from "../../services/listing.service";
 import {User} from "../../models/User";
+import {UserType} from "../../models/Enums";
 
 @Component({
   selector: 'app-detail',
@@ -23,6 +24,9 @@ export class DetailComponent implements OnInit{
   errorMessage = '';
   owner: User;
   ownership = false;
+  canApply = false;
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -81,8 +85,7 @@ export class DetailComponent implements OnInit{
     }, e => {
       this.router.navigate(['/404']);
     });
-
-
+    this.canApply = !this.authService.isProducer();
   }
 
   editListing() {

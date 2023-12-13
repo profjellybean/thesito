@@ -73,7 +73,7 @@
               </div>
               <div class="col-md-6 text-end mt-auto">
                 <!-- Apply button -->
-                <button class="btn btn-primary align-content-end" (click)="openApplicationDialog()">
+                <button class="btn btn-primary align-content-end" *ngIf="canApply" (click)="openApplicationDialog()">
                   {{ 'apply' | translate }}
                 </button>
               </div>
