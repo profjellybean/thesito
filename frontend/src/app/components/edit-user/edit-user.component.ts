@@ -83,7 +83,6 @@ export class EditUserComponent implements OnInit {
       let user = this.userService.getUserById(Number(this.id));
       user.subscribe({
         next: (userData) => {
-          console.log(userData);
           this.user = userData;
           this.user = {
             ...this.user,  // Copy existing properties

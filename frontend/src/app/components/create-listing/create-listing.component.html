@@ -28,11 +28,16 @@
                 <div class="col-md-12">
                   <label class="form-label">{{ 'preconditions' | translate }}</label>
                   <div class="checkbox-group d-flex">
-                    <div class="form-check" *ngFor="let qualification of getQualificationTypes()">
-                      <input class="form-check-input" type="radio" [value]="qualification"
-                             formControlName="requirement">
-                      <label class="form-check-label" [for]="qualification">{{ qualification | translate }}</label>
-                    </div>
+                    <mat-radio-group formControlName="requirement">
+                      <mat-radio-button class="eerie" id="none"
+                                        [value]="QualificationType.None">{{"None" | translate}}</mat-radio-button>
+                      <mat-radio-button class="eerie" id="bachelors"
+                                        [value]="QualificationType.Bachelors">{{"Bachelors" | translate}}</mat-radio-button>
+                      <mat-radio-button class="eerie" id="masters"
+                                        [value]="QualificationType.Masters">{{"Masters" | translate}}</mat-radio-button>
+                      <mat-radio-button class="eerie" id="phd"
+                                        [value]="QualificationType.PhD">{{"PhD" | translate}}</mat-radio-button>
+                    </mat-radio-group>
                   </div>
                 </div>
               </div>

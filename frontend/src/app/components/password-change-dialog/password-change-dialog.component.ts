@@ -40,12 +40,10 @@ export class PasswordChangeDialogComponent {
         this.passwordChangeForm.get("newPassword")?.value,
         this.data.userId
       ).subscribe((response) => {
-        console.log(response);
         // Close the dialog and notify the parent component if the password change is successful
         this.dialogRef.close('success');
       }, error => {
         this.dialogRef.close('error');
-        console.log(error);
       });
     }
   }

@@ -124,7 +124,6 @@ export class UserDetailsComponent implements OnInit{
 
   addTagToUser(tags: Tag[]): void {
     this.selectedTags = tags;
-    console.log('Current Tags: ', this.selectedTags)
   }
 
   isLoggedIn(): boolean{

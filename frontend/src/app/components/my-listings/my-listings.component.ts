@@ -74,7 +74,6 @@ export class MyListingsComponent implements OnInit{
               }
               this.listings.push(templisting);
             }
-            console.log("Listings: ", this.listings);
 
           })
           this.listings = this.listings.sort((a, b): number => {
@@ -85,7 +84,6 @@ export class MyListingsComponent implements OnInit{
             }
             return n == -1 ? -1 : n;
           });
-          console.log("Found Listings: ", this.listings)
           this.listingsLoaded = true;
         },
         error: error =>{
@@ -119,13 +117,11 @@ export class MyListingsComponent implements OnInit{
     };
     this.listingService.updateListing(listing).subscribe({
       next: ret =>{
-        console.log("Listing updated successfully! ", ret);
         this.listings[index] = listing;
       },
       error: error => {
         this.error= true;
         this.errorMessage = error.message;
-        console.log(this.errorMessage);
       }
     });
   }

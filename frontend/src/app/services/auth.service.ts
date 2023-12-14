@@ -77,8 +77,6 @@ export class AuthService {
         this.isRefreshing = true;
         this.refreshSessionQueryGraphQl().subscribe(
           (res) => {
-            console.log("Refreshing access token");
-            //console.log(res);
             this.setSessionToken(res.data.refreshSession.accessToken);
             this.setRefreshToken(res.data.refreshSession.refreshToken);
             this.isRefreshing = false;
@@ -113,7 +111,6 @@ export class AuthService {
     return this.loginUser(email, password).pipe(
       map((res: any) => {
         if (res.data != null) {
-          //console.log("User " + email + " has a new session")
           this.setSessionToken(res.data.getSession.accessToken);
           this.setRefreshToken(res.data.getSession.refreshToken);
           return true;
