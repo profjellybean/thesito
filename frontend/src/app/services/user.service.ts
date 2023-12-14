@@ -11,7 +11,6 @@ export class UserService {
   constructor(private apollo: Apollo, private authService: AuthService) {}
 
   registerUser(user: User): Observable<any> {
-    console.log(user)
     return this.apollo.mutate<any>({
       mutation: registerUserQuery,
       variables: {
@@ -41,7 +40,6 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<any> {
-    console.log('User to update: ', user)
     return this.apollo.mutate<any>({
       mutation: updateUserQuery,
       variables: {
@@ -87,7 +85,6 @@ export class UserService {
   }
 
   changePassword(oldPassword: string, newPassword: string, userId: number): Observable<any> {
-    console.log(oldPassword, newPassword, userId);
     return this.apollo.mutate<any>({
       mutation: changePasswordQuery,
       variables: {

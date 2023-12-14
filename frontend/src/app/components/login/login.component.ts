@@ -58,7 +58,6 @@ export class LoginComponent {
           this.formatErrorMessage('Bad credentials')
         }
       }, error => {
-        console.log(error.message)
         this.error = true;
         this.formatErrorMessage(error.message)
       })

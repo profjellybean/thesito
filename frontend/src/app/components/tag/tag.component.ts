@@ -45,7 +45,6 @@ export class TagComponent implements OnInit {
         this.selectedTags.push(tag)
       })
     }
-    console.log('Received Tags from Parent: ', this.selectedTagsFromParent)
   }
 
   getAllTags(): void {

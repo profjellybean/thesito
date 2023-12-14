@@ -14,7 +14,6 @@ export class NotFoundComponent implements OnInit{
 
   goBack(): void {
     this.router.navigate(['/']);
-    console.log(location)
   }
 
 

@@ -67,7 +67,6 @@ export class CreateListingComponent implements OnInit {
       this.listing.owner = user.id;
     }, e =>
     {
-      console.log(e)
     });
     this.router = router;
     this.translateService = translateService;
@@ -107,7 +106,6 @@ export class CreateListingComponent implements OnInit {
 
   setTags(tags: Tag[]) {
     this.selectedTags = tags;
-    console.log(this.selectedTags);
   }
 
 
@@ -166,7 +164,6 @@ export class CreateListingComponent implements OnInit {
   }
 
   private create(listing: Listing) {
-    console.log(listing.tags)
     this.listingService.createListing(listing).subscribe(
       (res: any) => {
         if (res.data?.createListing != null) {
@@ -204,4 +201,6 @@ export class CreateListingComponent implements OnInit {
       this.successMessage = success;
     });
   }
+
+  protected readonly QualificationType = QualificationType;
 }

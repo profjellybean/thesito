@@ -268,4 +268,5 @@ export class EditListingComponent implements OnInit {
   }
 
 
+  protected readonly QualificationType = QualificationType;
 }

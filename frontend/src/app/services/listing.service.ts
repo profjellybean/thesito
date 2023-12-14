@@ -183,7 +183,6 @@ export class ListingService {
   }
 
   updateListing(listing: Listing): Observable<any> {
-    console.log('Listing to update: ', listing)
     return this.apollo.mutate<any>({
       mutation: updateListingQuery,
       variables: {
