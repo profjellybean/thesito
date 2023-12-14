@@ -9,6 +9,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {ListingService} from "../../services/listing.service";
 import {User} from "../../models/User";
 import {UserType} from "../../models/Enums";
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-detail',
@@ -25,16 +26,18 @@ export class DetailComponent implements OnInit{
   owner: User;
   ownership = false;
   canApply = false;
+  currentLanguage = 'en';
 
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog,
-    private translateService: TranslateService,
-    private listingService: ListingService,
-    private userService: UserService,
-    private authService: AuthService
+      private route: ActivatedRoute,
+      private router: Router,
+      private dialog: MatDialog,
+      private translateService: TranslateService,
+      private listingService: ListingService,
+      private userService: UserService,
+      private authService: AuthService,
+      private languageService: LanguageService
   ) {
     this.route.params.subscribe(params => {
       this.listingId = params['id'];
@@ -76,6 +79,11 @@ export class DetailComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.languageService.currentLanguage$.subscribe(language => {
+      this.currentLanguage = language;
+      // Add any additional actions you need to perform when language changes
+    });
+
     this.listingService.getListingById(this.listingId).subscribe((listing: Listing) => {
       this.listing = listing;
 
@@ -94,6 +102,7 @@ export class DetailComponent implements OnInit{
       this.router.navigate(['/404']);
     });
     this.canApply = !this.authService.isProducer();
+    this.currentLanguage = this.languageService.getLanguage();
   }
 
   editListing() {
@@ -101,4 +110,5 @@ export class DetailComponent implements OnInit{
       this.router.navigate(['/listing/edit/'+this.listingId]);
     }
   }
+
 }

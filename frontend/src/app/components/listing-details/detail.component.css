@@ -1,6 +1,6 @@
 /* detail.component.css */
 .create-listing-container {
-  background-color: #EAE7DC;
+  /*background-color: #EAE7DC;*/
   height: 100vh;
 }
 
@@ -9,17 +9,18 @@
   border-radius: 15px;
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
   padding: 15px;
-  margin: 20px auto;
-  width: 80%;
-  max-width: 600px;
+  margin: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .listing-title {
   font-style: normal;
-  font-weight: 500;
-  font-size: 42px;
+  font-weight: 400;
+  font-size: 32px;
   padding-bottom: 20px;
-  text-align: center;
+  text-align: left;
+  line-height: 1.2;
 }
 
 

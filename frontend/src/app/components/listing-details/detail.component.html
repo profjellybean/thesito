@@ -1,91 +1,103 @@
 <!-- detail.component.html -->
 <div class="create-listing-container">
   <div class="container">
-    <div class="row">
-      <div class="col-md-8 offset-md-2 mt-5">
-        <!-- Removed the "card" class and modified styling for form-container -->
-        <div class="form-container">
-          <div class="card-body" *ngIf="listing">
+    <!-- <div class="row">-->
+    <div class="col-md-8 offset-md-2 mt-5">
+      <!-- Removed the "card" class and modified styling for form-container -->
+      <!--<div class="form-container">-->
+      <div class="card-body" *ngIf="listing">
 
-            <h2 class="unselectable eerie listing-title">{{ listing.title }}</h2>
+        <h2 class="listing-title">{{ listing.title }}</h2>
 
-            <!-- Display createdAt on the left with a smaller font -->
-            <div class="row mb-3">
-              <!-- Angular Material Form Field for Tags -->
-              <mat-chip-listbox>
-                <mat-chip *ngFor="let tag of listing.tags" class="custom-chip">
-                  <mat-icon>label</mat-icon>
-                  {{tag.title_en}}
-                </mat-chip>
-              </mat-chip-listbox>
+        <!-- Display createdAt on the left with a smaller font -->
+        <div class="row mb-3" *ngIf="currentLanguage==='en'">
+          <!-- Angular Material Form Field for Tags -->
+          <mat-chip-listbox>
+            <mat-chip *ngFor="let tag of listing.tags" class="custom-chip">
+              <mat-icon>label</mat-icon>
+              {{tag.title_en}}
+            </mat-chip>
+          </mat-chip-listbox>
 
-            </div>
+        </div>
 
+        <div class="row mb-3" *ngIf="currentLanguage==='de'">
+          <!-- Angular Material Form Field for Tags -->
+          <mat-chip-listbox>
+            <mat-chip *ngFor="let tag of listing.tags" class="custom-chip">
+              <mat-icon>label</mat-icon>
+              {{tag.title_de}}
+            </mat-chip>
+          </mat-chip-listbox>
 
-            <!-- Horizontal separating line -->
-            <hr>
-
-            <!-- Supervisor, Preconditions, and Affiliation on two columns -->
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">{{ 'createdAt' | translate }}</label>
-                <div class="static-info">{{ listing.createdAt | date:'dd.MM.yyyy' }}</div>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">{{ 'supervisor' | translate }}</label>
-                <div class="static-info" *ngIf="owner">{{ owner.name }}</div>
-              </div>
-            </div>
+        </div>
 
 
-            <!-- Description and Tags on two columns -->
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label class="form-label">{{ 'preconditions' | translate }}</label>
-                <div class="static-info">{{ listing.requirement | translate }}</div>
-              </div>
+        <!-- Horizontal separating line -->
+        <hr>
 
-              <div class="col-md-6">
-                <label class="form-label">{{ 'affiliation' | translate }}</label>
-                <div class="static-info">{{ listing.company || listing.university }}</div>
-              </div>
-            </div>
-
-            <!-- Horizontal separating line -->
-            <hr>
-
-            <!-- Description within an input box (not editable) with a darker background -->
-            <div class="row mb-3">
-                <label class="form-label">{{ 'description' | translate }}</label>
-              <p style="resize:none; background-color: #EAE7DC;">{{listing.details}}</p>
-                <!--<div>
-                  <textarea name="text" cols="70" rows="5" value="{{ listing.details }}" disabled
-                            style="resize:none; background-color: #DADADA;"></textarea>
-                </div>-->
-
-            </div>
-
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <button type="button" class="btn btn-blue" *ngIf="ownership" (click)="editListing()" >
-                  {{ 'edit' | translate }}
-                </button>
-              </div>
-              <div class="col-md-6 text-end mt-auto">
-                <!-- Apply button -->
-                <button class="btn btn-primary align-content-end" *ngIf="canApply" (click)="openApplicationDialog()">
-                  {{ 'apply' | translate }}
-                </button>
-              </div>
-              <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
-              <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
-            </div>
-
-
-
+        <!-- Supervisor, Preconditions, and Affiliation on two columns -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">{{ 'createdAt' | translate }}</label>
+            <div class="static-info">{{ listing.createdAt | date:'dd.MM.yyyy' }}</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ 'supervisor' | translate }}</label>
+            <div class="static-info" *ngIf="owner">{{ owner.name }}</div>
           </div>
         </div>
+
+
+        <!-- Description and Tags on two columns -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">{{ 'preconditions' | translate }}</label>
+            <div class="static-info">{{ listing.requirement | translate }}</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">{{ 'affiliation' | translate }}</label>
+            <div class="static-info">{{ listing.company || listing.university }}</div>
+          </div>
+        </div>
+
+        <!-- Horizontal separating line -->
+        <hr>
+
+        <!-- Description within an input box (not editable) with a darker background -->
+        <div class="row mb-3">
+          <label class="form-label">{{ 'description' | translate }}</label>
+          <p style="resize:none; background-color: #e0e0e0;">{{listing.details}}</p>
+          <!--<div>
+            <textarea name="text" cols="70" rows="5" value="{{ listing.details }}" disabled
+                      style="resize:none; background-color: #DADADA;"></textarea>
+          </div>-->
+
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <button type="button" class="btn btn-blue" *ngIf="ownership" (click)="editListing()">
+              {{ 'edit' | translate }}
+            </button>
+          </div>
+          <div class="col-md-6 text-end mt-auto">
+            <!-- Apply button -->
+            <button class="btn btn-primary align-content-end" *ngIf="canApply" (click)="openApplicationDialog()">
+              {{ 'apply' | translate }}
+            </button>
+          </div>
+          <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+          <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
+        </div>
+
+
       </div>
+      <!--</div>-->
     </div>
+    <!--
+        </div>
+    -->
   </div>
 </div>
