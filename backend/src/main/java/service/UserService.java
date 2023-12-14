@@ -158,7 +158,10 @@ public class UserService {
         LOG.debug("updateUser");
         userValidator.validateUpdate(user);
         User existingUser = userRepository.findById(user.getId());
-        // TODO: ensure logged user can only change own profile data
+        User potentialUserWithSameEmail = userRepository.find("email", user.getEmail()).firstResult();
+        if (potentialUserWithSameEmail!=null && !potentialUserWithSameEmail.getEmail().equals(existingUser.getEmail())){
+            throw new ServiceException("User with this email already exists.");
+        }
 
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
