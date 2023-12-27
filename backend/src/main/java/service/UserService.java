@@ -2,6 +2,7 @@ package service;
 
 import com.password4j.Hash;
 import com.password4j.Password;
+import entity.Listing;
 import entity.RefreshToken;
 import entity.User;
 import io.quarkus.logging.Log;
@@ -16,6 +17,7 @@ import miscellaneous.UserValidator;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import persistence.ListingRepository;
 import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
 
@@ -33,6 +35,9 @@ public class UserService {
 
     @Inject
     RefreshTokenRepository refreshTokenRepository;
+
+    @Inject
+    ListingRepository listingRepository;
 
     private static final Logger LOG = Logger.getLogger(UserService.class.getName());
 
@@ -193,5 +198,28 @@ public class UserService {
 
         userRepository.persist(dbUser);
         return dbUser;
+    }
+
+    @Transactional
+    public boolean toggleFavourite(Long userId, Long listingId) throws ServiceException {
+        LOG.debug("toggleFavourite");
+        User user = userRepository.findById(userId);
+        Listing listing = listingRepository.findById(listingId);
+        if (user == null) {
+            LOG.error("Error in toggleFavourite: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (listing == null) {
+            LOG.error("Error in toggleFavourite: Listing doesn't exist");
+            throw new ServiceException("Listing doesn't exist");
+        }
+        if (user.getFavourites().contains(listing)) {
+            user.getFavourites().remove(listing);
+        } else {
+            user.getFavourites().add(listing);
+        }
+        userRepository.persist(user);
+        return true;
+
     }
 }

@@ -41,6 +41,13 @@ public class User extends PanacheEntityBase {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tag> userTags;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "favourites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "listing_id"))
+    private Collection<Listing> favourites;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
