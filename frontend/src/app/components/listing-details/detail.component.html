@@ -7,7 +7,12 @@
       <!--<div class="form-container">-->
       <div class="card-body" *ngIf="listing">
 
-        <h2 class="listing-title">{{ listing.title }}</h2>
+        <div class="d-flex">
+          <h2 class="listing-title">{{ listing.title }}</h2>
+          <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
+        </div>
+
+
 
         <!-- Display createdAt on the left with a smaller font -->
         <div class="row mb-3" *ngIf="currentLanguage==='en'">

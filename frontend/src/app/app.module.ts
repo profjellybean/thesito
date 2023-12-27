@@ -40,6 +40,7 @@ import { MyListingsComponent } from './components/my-listings/my-listings.compon
 import { DetailComponent } from './components/listing-details/detail.component';
 import { ApplicationDialogComponent } from './components/application-dialog/application-dialog.component';
 import { EditListingComponent } from './components/edit-listing/edit-listing.component';
+import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -64,7 +65,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MyListingsComponent,
     DetailComponent,
     ApplicationDialogComponent,
-    EditListingComponent
+    EditListingComponent,
+    UserFavouritesComponent
   ],
   imports: [
     BrowserModule,

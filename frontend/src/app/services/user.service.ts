@@ -34,6 +34,7 @@ export class UserService {
           userTags: user.userTags,
           userType: user.userType,
           qualification: user.qualification,
+          favourites: user.favourites
         };
       })
     )
@@ -72,6 +73,24 @@ export class UserService {
                 title_de
                 layer
               }
+              favourites {
+                id
+                title
+                details
+                requirement
+                university
+                company
+                active
+                owner {
+                  id
+                }
+                tags {
+                  id
+                  title_en
+                  title_de
+                  layer
+                }
+              }
             }
           }
         `,
@@ -91,6 +110,20 @@ export class UserService {
         oldPassword,
         newPassword,
         userId
+      }
+    });
+  }
+
+  toggleFavourite(userId: number, listingId: string): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: gql`
+        mutation ToggleFavourite($userId: BigInteger!, $listingId: BigInteger!) {
+          toggleFavouriteListing(userId: $userId, listingId: $listingId)
+        }
+      `,
+      variables: {
+        userId,
+        listingId
       }
     });
   }
