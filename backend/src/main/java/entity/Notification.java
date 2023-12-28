@@ -30,7 +30,7 @@ public class Notification {
     @ManyToOne(fetch = FetchType.EAGER)
     private Listing connectedListing;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_notifications",
             joinColumns = @JoinColumn(name = "notification_id"),

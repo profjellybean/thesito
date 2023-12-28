@@ -1,6 +1,7 @@
 package service;
 
 import entity.Notification;
+import entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
 import org.jboss.logging.Logger;
 import persistence.NotificationRepository;
+import persistence.UserRepository;
 
 import java.util.List;
 
@@ -17,6 +19,9 @@ public class NotificationService {
 
     @Inject
     NotificationRepository notificationRepository;
+
+    @Inject
+    UserRepository userRepository;
 
     private static final Logger LOG = Logger.getLogger(ListingService.class.getName());
 
@@ -35,10 +40,13 @@ public class NotificationService {
     }
 
     public List<Notification> getAllNotificationsForUserWithId(Long id) {
+
+        User user = this.userRepository.findById(id);
+
         return entityManager.createQuery(
                         "SELECT n FROM Notification n " +
                                 "WHERE :userId MEMBER OF n.connectedUsers", Notification.class)
-                .setParameter("userId", id)
+                .setParameter("userId", user)
                 .getResultList();
     }
 }
