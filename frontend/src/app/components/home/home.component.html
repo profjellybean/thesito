@@ -1,1 +1,19 @@
-<p>home works!</p>
+<div *ngIf="notificationsLoaded">
+<div class="notification-box">
+  <div *ngFor="let notification of notifications">
+    <div class="card notification-container" (click)="routeToListing(notification.connectedListing.id)">
+      <div class="card-header">
+        <span>{{"notification" | translate}} - {{notification.createdAt | date }}</span>
+      </div>
+      <div class="card-body">
+        <span *ngIf="notification.notificationType == NotificationType.Application">{{"newApplicationNotification" | translate}}</span><br>
+        <span>{{"title" | translate}}: <span style="font-weight: bold">{{notification.connectedListing.title}}</span></span><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>

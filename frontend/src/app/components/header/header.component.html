@@ -12,7 +12,7 @@
       <nav>
         <ul class="list-unstyled d-flex">
           <li class="mx-3" *ngIf="isLoggedIn()">
-            <a routerLink="/" class="text-decoration-none text-light">{{"home" | translate}}</a>
+            <a routerLink="/home" class="text-decoration-none text-light">{{"home" | translate}}</a>
           </li>
           <li class="mx-3" *ngIf="!isLoggedIn()">
             <a routerLink="/register" class="text-decoration-none text-light">{{"register" | translate}}</a>

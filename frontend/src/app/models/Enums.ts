@@ -10,3 +10,8 @@ export enum UserType {
   ListingConsumer,
   ListingProvider
 }
+
+export enum NotificationType {
+  Application = "Application",
+  InterestedTopic = "InterestedTopic"
+}
