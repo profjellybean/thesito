@@ -105,6 +105,7 @@ public class ListingService {
         Notification notification = new Notification();
         notification.setNotificationType(NotificationType.Application);
         notification.setConnectedListing(this.getListingById(listingId));
+        notification.setCreatedAt(new Date());
         notification.addConnectedUser(listingAuthor);
         this.notificationService.createNotification(notification);
         mailService.sendEmail(listingAuthor.getEmail(), subject, text, applicationUser.getEmail());

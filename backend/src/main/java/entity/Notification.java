@@ -10,10 +10,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericFie
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -40,6 +37,10 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     @ColumnTransformer(write = "?::notification_type")
     private NotificationType notificationType;
+
+    @GenericField
+    @Column(name = "created_at")
+    private Date createdAt;
 
 
     public void addConnectedUser(User user){
