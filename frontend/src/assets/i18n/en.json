@@ -83,5 +83,8 @@
   "applicationError": "Error applying to listin",
   "applicationSuccess": "Successfully applied to listing",
   "newApplicationNotification": "There is a new application for your listing!",
-  "notification": "Notification"
+  "notification": "Notification",
+  "notifications": "Notifications",
+  "deleteNotification": "Delete Notification",
+  "noNotifications": "No Notifications available"
 }

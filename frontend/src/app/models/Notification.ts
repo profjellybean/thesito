@@ -24,3 +24,16 @@ export const getAllNotificationsForUserWithId = gql`
     }
 }
 `;
+
+
+export const deleteUserFromNotification = gql`
+  mutation DeleteUserFromNotification(
+    $userId: BigInteger!,
+    $notificationId: BigInteger!)
+  {
+    deleteUserFromNotification(
+      userId: $userId
+      notificationId: $notificationId)
+  }
+`;
+
