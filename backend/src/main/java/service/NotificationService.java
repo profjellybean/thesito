@@ -39,14 +39,41 @@ public class NotificationService {
         }
     }
 
+    @Transactional
     public List<Notification> getAllNotificationsForUserWithId(Long id) {
-
         User user = this.userRepository.findById(id);
-
         return entityManager.createQuery(
                         "SELECT n FROM Notification n " +
                                 "WHERE :userId MEMBER OF n.connectedUsers", Notification.class)
                 .setParameter("userId", user)
                 .getResultList();
     }
+    @Transactional
+    public void deleteUserFromNotification(Long userId, Long notificationId) throws ServiceException {
+        User user = this.userRepository.findById(userId);
+        if (user == null){
+            LOG.error("Error in removeUserFromNotification: User with this id does not exist");
+            throw new ServiceException("User with this id does not exist");
+        }
+
+        Notification notification = this.notificationRepository.findById(notificationId);
+        if (notification == null){
+            LOG.error("Error in removeUserFromNotification: Notification with this id does not exist");
+            throw new ServiceException("Notification with this id does not exist");
+        }
+
+        if (notification.getConnectedUsers().contains(user)){
+            // delete Notification if no user is associated with it
+            if (notification.getConnectedUsers().size() - 1 == 0){
+                this.notificationRepository.delete(notification);
+            }else{
+                notification.getConnectedUsers().remove(user);
+                this.notificationRepository.persist(notification);
+            }
+        }else{
+            LOG.error("Error in removeUserFromNotification: Notification does not contain given user");
+            throw new ServiceException("Notification does not contain given user");
+        }
+    }
+
 }

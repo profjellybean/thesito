@@ -4,10 +4,7 @@ import entity.Notification;
 import entity.Tag;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
-import org.eclipse.microprofile.graphql.Description;
-import org.eclipse.microprofile.graphql.GraphQLApi;
-import org.eclipse.microprofile.graphql.GraphQLException;
-import org.eclipse.microprofile.graphql.Query;
+import org.eclipse.microprofile.graphql.*;
 import org.jboss.logging.Logger;
 import service.NotificationService;
 
@@ -27,4 +24,17 @@ public class NotificationController {
         LOG.info("getAllNotificationsForUserWithId");
         return notificationService.getAllNotificationsForUserWithId(id);
     }
+
+    @Mutation
+    @Description("Removes the given user from the given Notification and deletes it, if there are not associated users left")
+    public void deleteUserFromNotification(Long userId, Long notificationId) throws GraphQLException{
+        LOG.info("deleteUserFromNotification");
+        try{
+            this.notificationService.deleteUserFromNotification(userId, notificationId);
+        }catch (ServiceException e) {
+            LOG.error("Error in deleteUserFromNotification: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
 }
