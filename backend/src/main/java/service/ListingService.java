@@ -1,7 +1,9 @@
 package service;
 
 import entity.Listing;
+import entity.Notification;
 import entity.User;
+import enums.NotificationType;
 import enums.Qualification;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -31,6 +33,9 @@ public class ListingService {
     UserService userService;
     @Inject
     MailService mailService;
+
+    @Inject
+    NotificationService notificationService;
 
     @Inject
     UserRepository userRepository;
@@ -97,6 +102,12 @@ public class ListingService {
                 + " from " + applicationUser.getName() + " (" + applicationUser.getEmail() + ") "
                 + "\n\n" + applicationText;
 
+        Notification notification = new Notification();
+        notification.setNotificationType(NotificationType.Application);
+        notification.setConnectedListing(this.getListingById(listingId));
+        notification.setCreatedAt(new Date());
+        notification.addConnectedUser(listingAuthor);
+        this.notificationService.createNotification(notification);
         mailService.sendEmail(listingAuthor.getEmail(), subject, text, applicationUser.getEmail());
     }
 

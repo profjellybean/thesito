@@ -93,7 +93,7 @@ export class MyListingsComponent implements OnInit{
       })
     } else {
       setTimeout(() => {
-        this.router.navigate(['/404']);
+        this.router.navigate(['/login']);
       }, 100);
     }
 

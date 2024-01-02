@@ -81,5 +81,10 @@
   "previous": "Vorherige",
   "Any" : "Egal",
   "applicationError": "Fehler beim Bewerben",
-  "applicationSuccess": "Bewerbung erfolgreich"
+  "applicationSuccess": "Bewerbung erfolgreich",
+  "newApplicationNotification": "Es gibt eine neue Bewerbung für Ihre Ausschreibung!",
+  "notification": "Benachrichtigung",
+  "notifications": "Benachrichtigungen",
+  "deleteNotification": "Benachrichtigung Löschen",
+  "noNotifications": "Keine Benachrichtigungen vorhanden"
 }

@@ -1,0 +1,24 @@
+<body class="background">
+<div class="scroll-container">
+  <div *ngIf="notificationsLoaded">
+    <div class="wrapper" *ngIf="notifications.length == 0">
+      <h2>{{"noNotifications" | translate}}</h2>
+    </div>
+    <mat-grid-list cols="3" gutterSize="16px" rowHeight="200px">
+      <mat-grid-tile *ngFor="let notification of notifications">
+        <div class="card notification-container" (click)="routeToListing(notification.connectedListing.id)">
+          <div class="card-header">
+            {{"notification" | translate}} - {{notification.createdAt | date }}
+            <mat-icon class="thesito-red controls" matTooltip="{{'deleteNotification' | translate}}" (click)="deleteUserFromNotification(notification.id); $event.stopPropagation()">delete</mat-icon>
+          </div>
+          <div class="card-body">
+            <span *ngIf="notification.notificationType == NotificationType.Application">{{"newApplicationNotification" | translate}}</span><br>
+            <span *ngIf="notification.notificationType == NotificationType.InterestedTopic">{{"newInterestedTopicNotification" | translate}}</span><br>
+            <span>{{"title" | translate}}: <span style="font-weight: bold">{{notification.connectedListing.title}}</span></span><br>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>
+</body>

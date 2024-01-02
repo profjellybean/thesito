@@ -1,4 +1,3 @@
-import {query} from "@angular/animations";
 import {gql} from "@apollo/client/core";
 
 export interface Tag {

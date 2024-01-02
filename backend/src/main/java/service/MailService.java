@@ -18,8 +18,12 @@ public class MailService {
     private static final Logger LOG = Logger.getLogger(MailService.class.getName());
     public void sendEmail(String recipient, String subject, String body, String cc) {
         LOG.debug("sendEmail");
-        mailer.send(Mail.withText(recipient, subject, body).setCc(Collections.singletonList(cc))).onItemOrFailure().invoke(() -> {
-            System.out.println("Mail sent"); //TODO logger?
-        }).await().atMost(java.time.Duration.ofSeconds(2));
+        try{
+            mailer.send(Mail.withText(recipient, subject, body).setCc(Collections.singletonList(cc))).onItemOrFailure().invoke(() -> {
+                LOG.debug("Mail sent to Listing owner");
+            }).await().atMost(java.time.Duration.ofSeconds(2));
+        }catch (Exception e){
+            LOG.debug("Mailer got Exception: " + e);
+        }
     }
 }
