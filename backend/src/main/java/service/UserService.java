@@ -167,6 +167,7 @@ public class UserService {
         existingUser.setEmail(user.getEmail());
         existingUser.setUserTags(user.getUserTags());
         existingUser.setQualification(user.getQualification());
+        existingUser.setReceiveEmails(user.getReceiveEmails());
 
         userRepository.persist(existingUser);
         return existingUser;
