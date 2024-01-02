@@ -1,6 +1,7 @@
 package service;
 
 import entity.Tag;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
@@ -78,4 +79,17 @@ public class TagService {
             throw new ServiceException("Error while fetching tags");
         }
     }
+
+    @Transactional
+    public List<Tag> getAllSubtags(Long prefix) throws ServiceException {
+        LOG.debug("getAllSubtags");
+        try {
+            int digits = prefix.toString().length();
+            return Tag.find("id >= ?1 AND id < ?2", prefix*(Math.pow(10, 6-digits)), (prefix+1)*(Math.pow(10, 6-digits))).list();
+        }catch (NoResultException e){
+            LOG.error("Error in getAllSubtags: " + e.getMessage());
+            throw new ServiceException("Error while fetching tags");
+        }
+    }
+
 }

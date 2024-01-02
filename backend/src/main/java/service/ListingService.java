@@ -2,6 +2,7 @@ package service;
 
 import entity.Listing;
 import entity.Notification;
+import entity.Tag;
 import entity.User;
 import enums.NotificationType;
 import enums.Qualification;
@@ -33,10 +34,10 @@ public class ListingService {
     UserService userService;
     @Inject
     MailService mailService;
-
     @Inject
     NotificationService notificationService;
-
+    @Inject
+    TagService tagService;
     @Inject
     UserRepository userRepository;
 
@@ -79,6 +80,37 @@ public class ListingService {
         listing.setCreatedAt(new Date());
         listingValidator.validateListing(listing);
         listingRepository.persist(listing);
+
+        // create Notifications for interested users
+
+        Notification notification = new Notification();
+        notification.setNotificationType(NotificationType.InterestedTopic);
+        notification.setConnectedListing(this.getListingById(listing.getId()));
+        notification.setCreatedAt(new Date());
+
+        // add all relevant users to notification
+
+        for (Tag tag: listing.getTags()){
+            String prefix = tag.id.toString();
+            //List<Tag> relevantTags = this.tagService.
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+        this.notificationService.createNotification(notification);
+
+
+
+
         return listing;
     }
 

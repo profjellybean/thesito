@@ -43,4 +43,16 @@ public class TagController {
         }
     }
 
+    @Query("getAllSubtags")
+    @Description("Fetches a list of all tags starting with the given prefix")
+    public List<Tag> getAllSubtags(Long tag_id) throws GraphQLException {
+        LOG.info("getAllSubtags");
+        try {
+            return tagService.getAllSubtags(tag_id);
+        } catch (ServiceException e) {
+            LOG.error("Error in getAllSubtags: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
 }
