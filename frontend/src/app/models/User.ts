@@ -11,6 +11,7 @@ export interface User {
   userType: UserType
   userTags: Tag[]
   qualification?: QualificationType
+  receiveEmails: Boolean
 }
 
 export interface GetAllUsers {
@@ -89,7 +90,8 @@ export const updateUserQuery = gql`
     $password: String!,
     $userType: UserType!,
     $userTags: [TagInput],
-    $qualification: Qualification!)
+    $qualification: Qualification!,
+    $receiveEmails: Boolean)
     {
         updateUser(
             user: {
@@ -100,6 +102,7 @@ export const updateUserQuery = gql`
                 userTags: $userTags
                 password: $password
                 qualification: $qualification
+                receiveEmails: $receiveEmails
             }
         )
         {
@@ -115,6 +118,7 @@ export const updateUserQuery = gql`
                 layer
               }
             qualification
+            receiveEmails
         }
     }
 `;

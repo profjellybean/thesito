@@ -43,7 +43,8 @@ export class RegisterUserComponent {
       name: "",
       password: "",
       userType: UserType.ListingConsumer,
-      userTags: []
+      userTags: [],
+      receiveEmails: true
     };
     this.confirm_email = "";
     this.confirm_password = "";

@@ -86,5 +86,6 @@
   "notification": "Notification",
   "notifications": "Notifications",
   "deleteNotification": "Delete Notification",
-  "noNotifications": "No Notifications available"
+  "noNotifications": "No Notifications available",
+  "receiveEmails": "E-mail notifications"
 }

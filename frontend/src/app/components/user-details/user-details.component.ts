@@ -41,7 +41,8 @@ export class UserDetailsComponent implements OnInit{
       password: "",
       userType: UserType.ListingConsumer,
       userTags: [],
-      qualification: QualificationType.None
+      qualification: QualificationType.None,
+      receiveEmails: true
     };
   }
 

@@ -34,6 +34,7 @@ export class UserService {
           userTags: user.userTags,
           userType: user.userType,
           qualification: user.qualification,
+          receiveEmails: user.receiveEmails
         };
       })
     )
@@ -49,7 +50,8 @@ export class UserService {
         password: user.password,
         userType: user.userType,
         userTags: user.userTags,
-        qualification: user.qualification
+        qualification: user.qualification,
+        receiveEmails: user.receiveEmails
       },
     });
   }
@@ -66,6 +68,7 @@ export class UserService {
               id
               password
               qualification
+              receiveEmails
               userTags {
                 id
                 title_en

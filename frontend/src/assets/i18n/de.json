@@ -86,5 +86,6 @@
   "notification": "Benachrichtigung",
   "notifications": "Benachrichtigungen",
   "deleteNotification": "Benachrichtigung Löschen",
-  "noNotifications": "Keine Benachrichtigungen vorhanden"
+  "noNotifications": "Keine Benachrichtigungen vorhanden",
+  "receiveEmails": "E-Mail Benachrichtigungen"
 }
