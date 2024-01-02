@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Tag;
 import entity.User;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
@@ -15,6 +16,7 @@ import jakarta.annotation.security.PermitAll;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @GraphQLApi
@@ -136,5 +138,20 @@ public class UserController {
             throw new GraphQLException(e.getMessage());
         }
     }
+
+    /*@Query
+    @Description("Get all users that contain the given tag")
+    public List<User> getAllUsersByTag(Tag tag) throws GraphQLException {
+        LOG.info("getAllUsersByTags");
+        try {
+            List<Tag> tags = new ArrayList<Tag>();
+            tags.add(tag);
+            return userService.getAllUsersByTags(tags);
+        } catch (ServiceException e) {
+            LOG.error("Error in getSession: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+     */
 
 }

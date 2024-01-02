@@ -160,5 +160,11 @@ export class EditUserComponent implements OnInit {
     }
   }
 
+  toggleReceiveEmails(){
+    if (this.user){
+      this.user.receiveEmails = !this.user.receiveEmails;
+    }
+  }
+
 
 }

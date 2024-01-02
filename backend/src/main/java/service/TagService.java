@@ -1,25 +1,28 @@
 package service;
 
 import entity.Tag;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
 import org.jboss.logging.Logger;
 import org.jetbrains.annotations.TestOnly;
 import persistence.TagRepository;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @ApplicationScoped
 public class TagService {
     @Inject
     TagRepository tagRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     private static final Logger LOG = Logger.getLogger(TagService.class.getName());
 
@@ -78,4 +81,20 @@ public class TagService {
             throw new ServiceException("Error while fetching tags");
         }
     }
+
+    @Transactional
+    public List<Tag> getAllSubtags(Long prefix) throws ServiceException {
+        LOG.debug("getAllSubtags");
+        try {
+            String prefixString = String.valueOf(prefix);
+            return entityManager.createQuery("SELECT t FROM Tag t WHERE CAST(t.id AS string) LIKE :prefix",
+                            Tag.class)
+                    .setParameter("prefix", prefixString + "%")
+                    .getResultList();
+        }catch (NoResultException e){
+            LOG.error("Error in getAllSubtags: " + e.getMessage());
+            throw new ServiceException("Error while fetching tags");
+        }
+    }
+
 }

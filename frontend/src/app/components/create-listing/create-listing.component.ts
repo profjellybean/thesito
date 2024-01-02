@@ -53,7 +53,8 @@ export class CreateListingComponent implements OnInit {
       password: "",
       userType: UserType.ListingConsumer,
       userTags: [],
-      qualification: QualificationType.None
+      qualification: QualificationType.None,
+      receiveEmails: true
     };
     this.listingService = listingService;
     this.listing = {
