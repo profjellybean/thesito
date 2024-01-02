@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Tag;
+import io.vertx.core.cli.annotations.Hidden;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
 import org.eclipse.microprofile.graphql.Description;
@@ -43,7 +44,7 @@ public class TagController {
         }
     }
 
-    @Query("getAllSubtags")
+    /*@Query("getAllSubtags")
     @Description("Fetches a list of all tags starting with the given prefix")
     public List<Tag> getAllSubtags(Long tag_id) throws GraphQLException {
         LOG.info("getAllSubtags");
@@ -54,5 +55,6 @@ public class TagController {
             throw new GraphQLException(e.getMessage());
         }
     }
+     */
 
 }

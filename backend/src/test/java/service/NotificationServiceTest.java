@@ -131,7 +131,4 @@ public class NotificationServiceTest {
             assertEquals(before, notifications.size());
         });
     }
-
-
-
 }
