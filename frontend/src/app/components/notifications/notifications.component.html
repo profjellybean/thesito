@@ -6,15 +6,15 @@
     </div>
     <mat-grid-list cols="3" gutterSize="16px" rowHeight="200px">
       <mat-grid-tile *ngFor="let notification of notifications">
-        <div class="card notification-container" (click)="routeToListing(notification.connectedListing.id)">
+        <div class="card notification-container" (click)="routeToListing(notification.connectedListing.id)" matTooltip="{{'goToListing' | translate}}">
           <div class="card-header">
             {{"notification" | translate}} - {{notification.createdAt | date }}
             <mat-icon class="thesito-red controls" matTooltip="{{'deleteNotification' | translate}}" (click)="deleteUserFromNotification(notification.id); $event.stopPropagation()">delete</mat-icon>
           </div>
           <div class="card-body">
-            <span *ngIf="notification.notificationType == NotificationType.Application">{{"newApplicationNotification" | translate}}</span><br>
-            <span *ngIf="notification.notificationType == NotificationType.InterestedTopic">{{"newInterestedTopicNotification" | translate}}</span><br>
-            <span>{{"title" | translate}}: <span style="font-weight: bold">{{notification.connectedListing.title}}</span></span><br>
+            <p *ngIf="notification.notificationType == NotificationType.Application">{{"newApplicationNotification" | translate}}</p>
+            <p *ngIf="notification.notificationType == NotificationType.InterestedTopic">{{"newInterestedTopicNotification" | translate}}</p>
+            <p>{{"title" | translate}}: <span style="font-weight: bold">{{notification.connectedListing.title}}</span></p>
           </div>
         </div>
       </mat-grid-tile>

@@ -87,5 +87,7 @@
   "notifications": "Notifications",
   "deleteNotification": "Delete Notification",
   "noNotifications": "No Notifications available",
-  "receiveEmails": "E-mail notifications"
+  "receiveEmails": "E-mail notifications",
+  "newInterestedTopicNotification": "There is a new listing, matching at least one of your interests!",
+  "goToListing": "Go to listing"
 }
