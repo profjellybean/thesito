@@ -44,6 +44,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatSliderModule} from "@angular/material/slider";
+import {TrendingComponent} from "./components/trending/trending.component";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -57,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HeaderComponent,
     HomeComponent,
     AllComponent,
+    TrendingComponent,
     LoginComponent,
     NotFoundComponent,
     LanguageToggleComponent,

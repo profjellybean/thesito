@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
 import {gql} from "@apollo/client/core";
 import {LanguageService} from "./language.service";
-import {getAllTagsQuery, getAllTagsShallowQuery} from "../models/Tag";
+import {getAllTagsQuery, getAllTagsShallowQuery, getTrendingTagsQuery} from "../models/Tag";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,12 @@ export class TagService {
     }
     return this.apollo.query({
       query: getAllTagsQuery
+    })
+  }
+
+  getTrendingTags() {
+    return this.apollo.query({
+      query: getTrendingTagsQuery
     })
   }
 }
