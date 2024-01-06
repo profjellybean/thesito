@@ -14,6 +14,7 @@ import org.jboss.logging.Logger;
 import org.jetbrains.annotations.TestOnly;
 import persistence.TagRepository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @ApplicationScoped
@@ -97,4 +98,33 @@ public class TagService {
         }
     }
 
+    public List<Tag> getTrendingTags() throws ServiceException {
+        return getTrendingTags(100);
+    }
+
+    public List<Tag> getTrendingTags(int limit) throws ServiceException {
+        LOG.debug("getTrendingTags");
+        try {
+            // tags for which the most listings were created in the last month
+            List<Tag> trendingTags = entityManager.createQuery(
+                            """
+                                    SELECT t
+                                    FROM Tag t JOIN t.listings l
+                                    WHERE l.createdAt > :date
+                                    GROUP BY t.id
+                                    ORDER BY COUNT(l.id) DESC
+                                    """,
+                            Tag.class)
+                    .setParameter("date", java.sql.Date.valueOf(LocalDate.now().minusMonths(1)))
+                    .setMaxResults(limit)
+                    .getResultList();
+
+            // todo tags for which the most listings were assigned in the last week
+
+            return trendingTags;
+        } catch (NoResultException e) {
+            LOG.error("Error in getTrendingTags: " + e.getMessage());
+            throw new ServiceException("Error while fetching tags");
+        }
+    }
 }
