@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {Apollo} from "apollo-angular";
 import {gql} from "@apollo/client/core";
 import {LanguageService} from "./language.service";
-import {getAllTagsQuery, getAllTagsShallowQuery, getTrendingTagsQuery} from "../models/Tag";
+import {getAllTagsQuery, getAllTagsShallowQuery, getTrendingTagsQuery, Tag} from "../models/Tag";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +25,12 @@ export class TagService {
     })
   }
 
-  getTrendingTags() {
-    return this.apollo.query({
+  getTrendingTags(): Observable<Tag[]> {
+    return this.apollo.query<{ getTrendingTags: Tag[] }>({
       query: getTrendingTagsQuery
     })
+      .pipe(
+        map((result) => result.data.getTrendingTags)
+      );
   }
 }

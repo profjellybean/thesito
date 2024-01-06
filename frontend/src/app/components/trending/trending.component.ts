@@ -8,6 +8,7 @@ import {QualificationType} from "../../models/Enums";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {TagService} from "../../services/tag.service";
+import {LanguageService} from "../../services/language.service";
 
 @Component({
   selector: 'app-trending',
@@ -16,7 +17,9 @@ import {TagService} from "../../services/tag.service";
 })
 
 export class TrendingComponent {
+  tagService: TagService;
   listingService: ListingService;
+  languageService: LanguageService;
   listings: Listing[] = [];
   currentPage: number = 1;
   listingsPerPage: number = 10;
@@ -36,16 +39,27 @@ export class TrendingComponent {
   searchUniversity: string = '';
   searchCompany: string = '';
   @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
-  trendingTopics = ['Hydrotonics', 'Amphetamines', 'Rhymology']
+  trendingTopics: Observable<Tag[]>;
+  currentLanguage = 'en';
 
-  constructor(listingService: ListingService, private router: Router) {
+  constructor(
+    listingService: ListingService,
+    tagService: TagService,
+    languageService: LanguageService,
+    private router: Router
+  ) {
+    this.tagService = tagService;
     this.listingService = listingService;
+    this.languageService = languageService;
   }
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
     this.allUniversities = this.listingService.getAllListingUniversities()
     this.allCompanies = this.listingService.getAllListingCompanies()
+    this.languageService.currentLanguage$.subscribe((language) => {
+      this.currentLanguage = language;
+    });
   }
 
   performSearch(): void {
@@ -53,6 +67,7 @@ export class TrendingComponent {
   }
 
   loadPage(page: number): void {
+    this.trendingTopics = this.tagService.getTrendingTags()
     this.currentPage = page
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
     let formattedStartDate = this.convertDateToString(this.searchStartDate)
