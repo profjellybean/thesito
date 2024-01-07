@@ -1,6 +1,7 @@
 package service;
 
 import com.password4j.Password;
+import entity.Listing;
 import entity.RefreshToken;
 import entity.Tag;
 import entity.User;
@@ -17,16 +18,14 @@ import miscellaneous.ServiceException;
 import miscellaneous.Session;
 import miscellaneous.ValidationException;
 import org.antlr.v4.runtime.misc.Array2DHashSet;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import persistence.DatabaseContainerMock;
 import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +46,9 @@ class UserServiceTest {
 
     @Inject
     RefreshTokenRepository refreshTokenRepository;
+
+    @Inject
+    ListingService listingService;
 
     @Test
     void insertUserWithInvalidMailShouldThrowValidationException() {
@@ -322,5 +324,42 @@ class UserServiceTest {
                 .assertThat()
                 .statusCode(200).log();
 
+    }
+
+    @Test
+    @Transactional
+    void favoriteTest() throws ValidationException, ServiceException {
+        User user = new User();
+        user.setName("Test");
+        user.setEmail("test@test.com");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingConsumer);
+        user.setFavourites(new ArrayList<>());
+        userService.registerUser(user);
+
+        User provider = new User();
+        provider.setName("Peter Provider");
+        provider.setEmail("provider@ase.at");
+        provider.setPassword("123456789Test");
+        provider.setUserType(UserType.ListingProvider);
+        userService.registerUser(provider);
+
+        Listing listing = new Listing();
+        listing.setTitle("Title");
+        listing.setDetails("Listing details");
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setUniversity("University of Vienna");
+        listing.setCreatedAt(Date.from(java.time.Instant.now()));
+        listing.setActive(true);
+        listing.setOwner(provider);
+        listingService.createListing(listing);
+
+        userService.toggleFavourite(user.getId(), listing.getId());
+
+        assertTrue(user.getFavourites().contains(listing));
+
+        userService.toggleFavourite(user.getId(), listing.getId());
+
+        assertFalse(user.getFavourites().contains(listing));
     }
 }
