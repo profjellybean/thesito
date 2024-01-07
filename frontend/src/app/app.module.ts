@@ -44,6 +44,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatSliderModule} from "@angular/material/slider";
+import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -69,41 +70,41 @@ export function HttpLoaderFactory(http: HttpClient) {
     DetailComponent,
     ApplicationDialogComponent,
     EditListingComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    UserFavouritesComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ApolloModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        ApolloModule,
-        FormsModule,
-        RouterModule.forRoot(routes),
-        ReactiveFormsModule,
-        MatRadioModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-            defaultLanguage: 'en'
-        }),
-        MatSlideToggleModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatOptionModule,
-        MatInputModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatChipsModule,
-        MatTooltipModule,
-        MatGridListModule,
-        MatSliderModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ApolloModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    ApolloModule,
+    FormsModule,
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule,
+    MatRadioModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      defaultLanguage: 'en'
+    }),
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatOptionModule,
+    MatInputModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatGridListModule,
+    MatTooltipModule
+  ],
   providers: [
     LanguageService,
     {

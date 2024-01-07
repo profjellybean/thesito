@@ -7,7 +7,6 @@
     <div class="simple-search-container">
       <input type="text" placeholder="{{'fullTextSearch' | translate}}" name="title" [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
 
-     <!-- <button type="submit" class="submit-button" (click)="performSearch()">Search</button> -->
       <button type="button" class="small-button" (click)="clearSearch()">{{"clear"| translate}}</button>
 
       <div class="advanced-search-toggle">
@@ -69,12 +68,9 @@
     </div>
 
     <!-- listings -->
-    <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)" style="cursor: pointer">
-      <div class="col col-md-1 d-flex align-items-center justify-content-center">
-        <i class="bi bi-star"></i>
-        <mat-icon>star_border</mat-icon>
-      </div>
-      <div class="col col-md-9 d-flex align-items-center justify-content-center">
+    <div class="row listing equal-height" *ngFor="let listing of listings" >
+      <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
+      <div class="col col-md-9 d-flex align-items-center justify-content-center" style="cursor: pointer" (click)="goToListing(listing.id)">
         <h3 class="my-auto text-center">{{listing.title}}</h3>
       </div>
       <div class="col col-md-2 d-flex align-items-center justify-content-center">

@@ -153,5 +153,16 @@ public class UserController {
         }
     }
      */
+    @Mutation
+    @Description("Toggle favourite listing")
+    public boolean toggleFavouriteListing(Long userId, Long listingId) throws GraphQLException {
+        LOG.info("toggleFavouriteListing");
+        try {
+            return userService.toggleFavourite(userId, listingId);
+        } catch (ServiceException e) {
+            LOG.error("Error in toggleFavouriteListing: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
 
 }
