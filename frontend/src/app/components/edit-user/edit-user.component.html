@@ -27,6 +27,16 @@
                 </div>
               </div>
 
+              <!-- Receive Emails input with mat-slide-toggle -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label class="form-label">{{ 'receiveEmails' | translate }}</label>
+                </div>
+                <div class="col-md-8">
+                  <mat-slide-toggle [color]="'primary'" [checked]="user?.receiveEmails" (change)="toggleReceiveEmails()"></mat-slide-toggle>
+                </div>
+              </div>
+
               <!-- Change Password button and Save button -->
               <div class="row mb-3">
                 <div class="col-md-6">

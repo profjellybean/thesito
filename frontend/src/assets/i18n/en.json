@@ -81,5 +81,13 @@
   "previous": "Previous",
   "Any" : "Any",
   "applicationError": "Error applying to listin",
-  "applicationSuccess": "Successfully applied to listing"
+  "applicationSuccess": "Successfully applied to listing",
+  "newApplicationNotification": "There is a new application for your listing!",
+  "notification": "Notification",
+  "notifications": "Notifications",
+  "deleteNotification": "Delete Notification",
+  "noNotifications": "No Notifications available",
+  "receiveEmails": "E-mail notifications",
+  "newInterestedTopicNotification": "There is a new listing, matching at least one of your interests!",
+  "goToListing": "Go to listing"
 }

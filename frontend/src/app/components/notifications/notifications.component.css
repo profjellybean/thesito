@@ -1,0 +1,52 @@
+.card{
+  margin: 1vh 1vw;
+  min-width: 250px;
+}
+
+.notification-container{
+  display: flex;
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.notification-container:hover{
+  transform: scale(1.01); /* Slightly scale up on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for "pop up" effect */
+}
+
+.notification-box{
+  display: flex;
+  justify-content: center;
+}
+
+.controls{
+  display: flex;
+  flex: 1;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.card-header{
+  display: flex;
+  align-items: center;
+}
+
+.wrapper {
+  margin-top: 8em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 2em;
+  padding-top: 5%;
+}
+
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+
+

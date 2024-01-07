@@ -14,6 +14,7 @@ import {EditListingComponent} from "./components/edit-listing/edit-listing.compo
 import {DetailComponent} from "./components/listing-details/detail.component";
 import {MyListingsComponent} from "./components/my-listings/my-listings.component";
 import {producerGuard} from "./guards/producer.guard";
+import {NotificationsComponent} from "./components/notifications/notifications.component";
 
 
 export const routes: Routes = [
@@ -29,6 +30,7 @@ export const routes: Routes = [
   //{ path: 'user/:id', canActivate: [authGuard], component: UserDetailsComponent },
   {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},
   {path: 'user/listings', canActivate: [authGuard, producerGuard], component: MyListingsComponent},
+  {path: 'user/notifications', canActivate: [authGuard], component: NotificationsComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

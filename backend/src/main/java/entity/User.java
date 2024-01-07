@@ -40,6 +40,7 @@ public class User extends PanacheEntityBase {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Collection<Tag> userTags;
+    private Boolean receiveEmails = true;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -37,7 +37,8 @@ export class MyListingsComponent implements OnInit{
       password: "",
       userType: UserType.ListingConsumer,
       userTags: [],
-      qualification: QualificationType.None
+      qualification: QualificationType.None,
+      receiveEmails: true
     };
   }
 
@@ -93,7 +94,7 @@ export class MyListingsComponent implements OnInit{
       })
     } else {
       setTimeout(() => {
-        this.router.navigate(['/404']);
+        this.router.navigate(['/login']);
       }, 100);
     }
 

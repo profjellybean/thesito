@@ -40,6 +40,10 @@ import { MyListingsComponent } from './components/my-listings/my-listings.compon
 import { DetailComponent } from './components/listing-details/detail.component';
 import { ApplicationDialogComponent } from './components/application-dialog/application-dialog.component';
 import { EditListingComponent } from './components/edit-listing/edit-listing.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {MatSliderModule} from "@angular/material/slider";
 import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 
 
@@ -66,6 +70,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DetailComponent,
     ApplicationDialogComponent,
     EditListingComponent,
+    NotificationsComponent,
     UserFavouritesComponent
   ],
   imports: [
@@ -96,7 +101,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatInputModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatGridListModule,
+    MatTooltipModule
   ],
   providers: [
     LanguageService,

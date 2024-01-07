@@ -1,7 +1,10 @@
 package service;
 
 import entity.Listing;
+import entity.Notification;
+import entity.Tag;
 import entity.User;
+import enums.NotificationType;
 import enums.Qualification;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -16,9 +19,7 @@ import persistence.ListingRepository;
 import io.quarkus.panache.common.Page;
 import persistence.UserRepository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @ApplicationScoped
 public class ListingService {
@@ -31,7 +32,10 @@ public class ListingService {
     UserService userService;
     @Inject
     MailService mailService;
-
+    @Inject
+    NotificationService notificationService;
+    @Inject
+    TagService tagService;
     @Inject
     UserRepository userRepository;
 
@@ -74,6 +78,40 @@ public class ListingService {
         listing.setCreatedAt(new Date());
         listingValidator.validateListing(listing);
         listingRepository.persist(listing);
+
+        // create Notifications for interested users
+        Notification notification = new Notification();
+        notification.setNotificationType(NotificationType.InterestedTopic);
+        notification.setConnectedListing(this.getListingById(listing.getId()));
+        notification.setCreatedAt(new Date());
+
+        // get all relevant Subtags
+        Set<Tag> relevantTags = new HashSet<>();
+        for (Tag tag: listing.getTags()){
+            relevantTags.addAll(this.tagService.getAllSubtags(tag.id));
+        }
+
+        // add all relevant users to notification
+        Set<User> relevantUsers = new HashSet<>(this.userService.getAllUsersByTags(relevantTags.stream().toList()));
+
+        // remove listing owner (if present)
+        User owner = this.userService.getUserById(listing.getOwner().getId());
+        relevantUsers.remove(owner);
+
+        notification.setConnectedUsers(relevantUsers);
+        this.notificationService.createNotification(notification);
+
+        // send mail if settings apply
+        String subject = "New matching listing created";
+        String text = "A new listing, matching at least one of your interests, has been created!<br>"
+                + "Title: " + listing.getTitle()
+                + "<br>You can find it <a href=\"http://localhost:4200/listing/" + listing.getId() + "\">here</a>.";
+        for (User user : relevantUsers){
+            if (user.getReceiveEmails()){
+                mailService.sendEmail(user.getEmail(), subject, text, null);
+                LOG.info("Mail sent to " + user.getEmail());
+            }
+        }
         return listing;
     }
 
@@ -97,6 +135,12 @@ public class ListingService {
                 + " from " + applicationUser.getName() + " (" + applicationUser.getEmail() + ") "
                 + "\n\n" + applicationText;
 
+        Notification notification = new Notification();
+        notification.setNotificationType(NotificationType.Application);
+        notification.setConnectedListing(this.getListingById(listingId));
+        notification.setCreatedAt(new Date());
+        notification.addConnectedUser(listingAuthor);
+        this.notificationService.createNotification(notification);
         mailService.sendEmail(listingAuthor.getEmail(), subject, text, applicationUser.getEmail());
     }
 

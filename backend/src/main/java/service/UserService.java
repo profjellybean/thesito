@@ -4,10 +4,14 @@ import com.password4j.Hash;
 import com.password4j.Password;
 import entity.Listing;
 import entity.RefreshToken;
+import entity.Tag;
 import entity.User;
 import io.quarkus.logging.Log;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 import miscellaneous.Session;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -36,6 +40,8 @@ public class UserService {
     @Inject
     RefreshTokenRepository refreshTokenRepository;
 
+    @PersistenceContext
+    EntityManager entityManager;
     @Inject
     ListingRepository listingRepository;
 
@@ -172,6 +178,7 @@ public class UserService {
         existingUser.setEmail(user.getEmail());
         existingUser.setUserTags(user.getUserTags());
         existingUser.setQualification(user.getQualification());
+        existingUser.setReceiveEmails(user.getReceiveEmails());
 
         userRepository.persist(existingUser);
         return existingUser;
@@ -200,6 +207,18 @@ public class UserService {
         return dbUser;
     }
 
+    @Transactional
+    public List<User> getAllUsersByTags(List<Tag> tags) throws ServiceException {
+        LOG.debug("getAllUsersByTags");
+        try {
+            return entityManager.createQuery("SELECT DISTINCT u FROM User u JOIN u.userTags t WHERE t IN :userTags", User.class)
+                    .setParameter("userTags", tags)
+                    .getResultList();
+        } catch (NoResultException e) {
+            LOG.error("Error in getUsersByTags: " + e.getMessage());
+            throw new ServiceException("Error while fetching users");
+        }
+    }
     @Transactional
     public boolean toggleFavourite(Long userId, Long listingId) throws ServiceException {
         LOG.debug("toggleFavourite");
