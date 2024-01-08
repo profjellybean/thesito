@@ -6,7 +6,6 @@ import entity.Listing;
 import entity.RefreshToken;
 import entity.Tag;
 import entity.User;
-import io.quarkus.logging.Log;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.persistence.EntityManager;
@@ -218,6 +217,19 @@ public class UserService {
             LOG.error("Error in getUsersByTags: " + e.getMessage());
             throw new ServiceException("Error while fetching users");
         }
+    }
+
+    @Transactional
+    public Collection<Listing> getFavouritesByUserId(Long userId) throws ServiceException {
+        LOG.debug("getFavouritesByUserId");
+
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            LOG.error("Error in getFavouritesByUserId: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+
+        return user.getFavourites();
     }
     @Transactional
     public boolean toggleFavourite(Long userId, Long listingId) throws ServiceException {
