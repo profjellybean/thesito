@@ -1,9 +1,10 @@
-import {User, registerUserQuery, updateUserQuery, changePasswordQuery} from "../models/User";
+import {User, registerUserQuery, updateUserQuery, changePasswordQuery, getFavouritesByUserId} from "../models/User";
 import {map, Observable} from "rxjs";
 import {Apollo} from "apollo-angular";
 import {Injectable} from "@angular/core";
 import {gql} from "@apollo/client/core";
 import {AuthService} from "./auth.service";
+import {Listing} from "../models/Listing";
 @Injectable({
   providedIn: 'root',
 })
@@ -41,6 +42,16 @@ export class UserService {
     )
   }
 
+  getFavouritesByUser(): Observable<Listing[]> {
+    return this.apollo.query<any>({
+      query: getFavouritesByUserId,
+      variables: {
+        userId: this.authService.getUserId()
+      }
+    }).pipe(
+      map((result) => result.data.getFavouritesByUserId)
+    );
+  }
   updateUser(user: User): Observable<any> {
     return this.apollo.mutate<any>({
       mutation: updateUserQuery,

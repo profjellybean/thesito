@@ -93,6 +93,30 @@ export const refreshSessionQuery = gql`
             }
     }
 `;
+export const getFavouritesByUserId = gql`
+  query GetFavouritesById($userId: BigInteger! = 2) {
+    getFavouritesByUserId(userId: $userId) {
+      id,
+      title
+      details
+      requirement
+      university
+      company
+      createdAt
+      active
+      owner {
+        id
+        name
+      }
+      tags {
+        id
+        title_en
+        title_de
+        layer
+      }
+    }
+  }
+`;
 
 export const updateUserQuery = gql`
     mutation UpdateUser(

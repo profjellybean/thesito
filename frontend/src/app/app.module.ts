@@ -45,6 +45,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatSliderModule} from "@angular/material/slider";
 import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
+import { FavouritesListComponent } from './components/favourites-list/favourites-list.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -71,7 +72,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ApplicationDialogComponent,
     EditListingComponent,
     NotificationsComponent,
-    UserFavouritesComponent
+    UserFavouritesComponent,
+    FavouritesListComponent
   ],
   imports: [
     BrowserModule,

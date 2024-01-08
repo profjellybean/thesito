@@ -1,0 +1,85 @@
+<!-- favourites-list.component.html -->
+
+<div class="background">
+  <div class="container">
+    <h2>{{ "favourites" | translate }}</h2>
+  </div>
+
+  <div class="container results-container">
+    <!-- Header row with styling -->
+    <div class="row header-row">
+      <div class="col col-md-1 header-col">
+          <h4 class="my-auto font-weight-bold">#</h4>
+
+      </div>
+      <div class="col col-md-5 header-col">
+        <div class="row-fluid">
+        <h3 class="my-auto font-weight-bold">{{ "title" | translate  }}</h3>
+        </div>
+      </div>
+      <div class="col col-md-3 header-col">
+        <div class="row-fluid">
+          <h3 class="my-auto font-weight-bold">{{ "affiliation" | translate  }}</h3>
+        </div>
+      </div>
+      <div class="col col-md-2 header-col">
+        <div class="row-fluid">
+          <h3 class="my-auto font-weight-bold">{{"owner"| translate}}</h3>
+        </div>
+      </div>
+      <div class="col col-md-1 header-col">
+        <div class="row-fluid">
+          <h3 class="my-auto font-weight-bold">{{"created"| translate}}</h3>
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="favourites && favourites.length > 0; else noFavourites">
+      <div class="row listing equal-height" *ngFor="let listing of favourites" style="margin-bottom: 15px;">
+        <!-- Include the app-user-favourites component with listing_id as an input -->
+        <div class="col  col-md-1 d-flex align-items-center justify-content-center" >
+          <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
+        </div>
+
+        <div class="col  col-md-5 d-flex align-items-center justify-content-center" style="cursor: pointer" (click)="goToListing(listing.id)" >
+          <h4 class="my-auto text-center">{{ listing.title }}</h4>
+        </div>
+
+
+        <div class="col col-md-3 d-flex align-items-center justify-content-center">
+          <div class="row-fluid">
+            <div>
+              <h4 class="my-auto text-center">
+                {{ listing.university ? listing.university : listing.company }}
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="col col-md-2 d-flex align-items-center justify-content-center">
+          <div class="row-fluid">
+            <div><h4 class="my-auto text-center"> {{ listing.owner?.name }}</h4></div>
+          </div>
+        </div>
+        <div class="col col-md-1 d-flex align-items-center justify-content-center">
+          <div class="row-fluid">
+            <div><h5 class="my-auto text-center">{{ listing.createdAt | date }}</h5></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noFavourites>
+      <p>{{"noFavourites" |translate}}</p>
+    </ng-template>
+
+
+
+
+    <!-- Pagination Controls -->
+    <div class="pagination-container d-flex justify-content-center">
+      <!-- Pagination buttons -->
+      <!-- Adjust as needed based on your design -->
+    </div>
+  </div>
+</div>
