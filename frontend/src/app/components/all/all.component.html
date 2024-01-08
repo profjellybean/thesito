@@ -69,8 +69,10 @@
 
     <!-- listings -->
     <div class="row listing equal-height" *ngFor="let listing of listings" >
-      <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
-      <div class="col col-md-9 d-flex align-items-center justify-content-center" style="cursor: pointer" (click)="goToListing(listing.id)">
+      <div class="col col-md-1 d-flex align-items-center justify-content-center">
+        <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
+      </div>
+      <div class="col col-md-8 d-flex align-items-center justify-content-center" style="cursor: pointer" (click)="goToListing(listing.id)">
         <h3 class="my-auto text-center">{{listing.title}}</h3>
       </div>
       <div class="col col-md-2 d-flex align-items-center justify-content-center">
