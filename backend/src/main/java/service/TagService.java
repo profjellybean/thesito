@@ -34,7 +34,7 @@ public class TagService {
             List<Tag> retTags = new LinkedList<>();
             Set<String> tagName = new HashSet<>();
             for (Tag tag : allTags) {
-                if (tagName.add(tag.getTitle_en())){
+                if (tagName.add(tag.getTitle_en())) {
                     retTags.add(tag);
                 }
             }
@@ -92,7 +92,7 @@ public class TagService {
                             Tag.class)
                     .setParameter("prefix", prefixString + "%")
                     .getResultList();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             LOG.error("Error in getAllSubtags: " + e.getMessage());
             throw new ServiceException("Error while fetching tags");
         }
@@ -106,7 +106,7 @@ public class TagService {
         LOG.debug("getTrendingTags");
         try {
             // tags for which the most listings were created in the last month
-            List<Tag> trendingTags = entityManager.createQuery(
+            return entityManager.createQuery(
                             """
                                     SELECT t
                                     FROM Tag t JOIN t.listings l
@@ -118,10 +118,6 @@ public class TagService {
                     .setParameter("date", java.sql.Date.valueOf(LocalDate.now().minusMonths(1)))
                     .setMaxResults(limit)
                     .getResultList();
-
-            // todo tags for which the most listings were assigned in the last week
-
-            return trendingTags;
         } catch (NoResultException e) {
             LOG.error("Error in getTrendingTags: " + e.getMessage());
             throw new ServiceException("Error while fetching tags");
