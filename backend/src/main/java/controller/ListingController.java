@@ -2,10 +2,13 @@ package controller;
 
 import entity.Listing;
 import enums.Qualification;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import miscellaneous.GraphQLSearchResult;
 import miscellaneous.ServiceException;
@@ -221,6 +224,25 @@ public class ListingController {
         searchResult.setTotalHitCount(query.total().hitCount());
         return searchResult;
     }
+
+    @Query("getTrendingListings")
+    @Description("Fetches a list of trending listings from the database")
+    public GraphQLSearchResult getTrendingListings(Optional<String> university, Optional<String> company,
+                                                   Optional<Integer> pageIndex, Optional<Integer> pageSize) {
+
+        LOG.info("getTrendingListings");
+        PanacheQuery<Listing> query = listingService.getTrendingListingsQuery(university, company);
+        GraphQLSearchResult searchResult = new GraphQLSearchResult();
+        searchResult.setListings(query.page(Page.of(pageIndex.orElse(0), pageSize.orElse(100))).list());
+        try {
+            searchResult.setTotalHitCount(query.count());
+        } catch (NoResultException e) {
+            // Can't count if there are no results
+            searchResult.setTotalHitCount(0);
+        }
+        return searchResult;
+    }
+
 
     @Mutation
     @Description("Updates a listing in the database")
