@@ -20,18 +20,15 @@ export class TrendingComponent {
   tagService: TagService;
   listingService: ListingService;
   languageService: LanguageService;
-  listings: Listing[] = [];
+  trendingListings: Listing[] = [];
   currentPage: number = 1;
   listingsPerPage: number = 10;
   totalPages: number = 0;
-  totalListings: number = 0;
+  totalTrendingListings: number = 0;
   searchQualificationType: QualificationType | null = null;
   qualificationTypes: string[] = ["Any", ...Object.values(QualificationType)];
   isAdvancedSearch: boolean = false;
-  searchStartDate: Date | null = null;
-  searchEndDate: Date | null = null;
   fullTextSearchPattern: String | null = null
-  searchTags: Tag[] = [];
   institutionType = '';
   pages: (number)[] = [];
   allUniversities: Observable<string[]>;
@@ -62,70 +59,35 @@ export class TrendingComponent {
     });
   }
 
-  performSearch(): void {
-    this.loadPage(1);
-  }
-
   loadPage(page: number): void {
     this.trendingTopics = this.tagService.getTrendingTags()
     this.currentPage = page
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
-    let formattedStartDate = this.convertDateToString(this.searchStartDate)
-    let formattedEndDate = this.convertDateToString(this.searchEndDate)
     let university = this.institutionType === 'university' && this.searchUniversity ? this.searchUniversity : null
     let company = this.institutionType === 'company' && this.searchCompany ? this.searchCompany : null
-    let tagIds = this.searchTags.map(tag => tag.id)
-    const offset = (page - 1) * this.listingsPerPage;
-    const limit = this.listingsPerPage;
-    this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate,
-      formattedEndDate, university, company, tagIds, offset, limit)
+    const pageSize = this.listingsPerPage;
+    this.listingService.getTrendingListings(university, company, page-1, pageSize)
       .subscribe((searchResult) => {
-        this.totalListings = searchResult.totalHitCount
-        this.listings = searchResult.listings;
-        this.totalPages = Math.ceil(this.totalListings / this.listingsPerPage);
+        this.totalTrendingListings = searchResult.totalHitCount
+        this.trendingListings = searchResult.listings;
+        this.totalPages = Math.ceil(this.totalTrendingListings / this.listingsPerPage);
       });
   }
 
-  clearSearch() {
-    this.fullTextSearchPattern = null;
-    this.searchStartDate = null;
-    this.searchEndDate = null;
-    this.searchQualificationType = null;
-    this.searchTags = [];
-    this.searchUniversity = "";
-    this.searchCompany = "";
-    this.institutionType = "";
-    this.setTags([])
-    this.institutionTypeListbox.writeValue('')
-    this.loadPage(1)
-  }
-
-  setTags(tags: Tag[]) {
-    this.searchTags = tags;
-    this.performSearch();
-  }
-
-  convertDateToString(date: Date | null): String | null {
-    if (date) {
-      return new Date(date).toISOString().split('T')[0];
-    }
-    return null
-  }
-
   goToListing(id: string | undefined) {
-    this.router.navigate(['/listing', id]);
+    this.router.navigate(['/listing', id]).then(() => {});
   }
 
   onInstitutionTypeChange(event: MatChipListboxChange) {
     this.institutionType = event.value;
-    this.performSearch();
+    this.loadPage(1);
   }
 
   onUniversitySelect($event: MatAutocompleteSelectedEvent) {
-    this.performSearch();
+    this.loadPage(1);
   }
 
   onCompanySelect($event: MatAutocompleteSelectedEvent) {
-    this.performSearch();
+    this.loadPage(1);
   }
 }

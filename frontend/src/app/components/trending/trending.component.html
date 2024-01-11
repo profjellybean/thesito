@@ -28,75 +28,43 @@
 
   <!-- Listings of trending topics -->
   <div class="container results-container">
-    <div class="simple-search-container">
-      <input type="text" placeholder="{{ 'fullTextSearch' | translate }}" name="title"
-             [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
 
-      <button type="button" class="small-button" (click)="clearSearch()">{{ "clear" | translate }}</button>
+    <!-- university/company filter -->
+    <!-- TODO add toggle to show/hide filter -->
+    <div class="col-4 input-flex justify-content-center align-items-center">
+      <mat-chip-listbox #institutionTypeListbox (change)="onInstitutionTypeChange($event)">
+        <mat-chip-option class="example-width"  value="university">{{ 'university' | translate }}</mat-chip-option>
+        <mat-chip-option class="example-width"  value="company">{{ 'company' | translate }}</mat-chip-option>
+      </mat-chip-listbox>
 
-      <div class="advanced-search-toggle">
-        <label class="toggle-label" style="padding-left: 10px">{{ 'advanced' | translate }}</label>
-        <label class="toggle-container">
-          <input type="checkbox" [(ngModel)]="isAdvancedSearch">
-          <span class="toggle-slider"></span>
-        </label>
+      <!-- Show input field depending on selected institutionType -->
+      <div *ngIf="institutionType === 'university'">
+        <mat-form-field class="example-full-width">
+          <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
+          <input matInput [(ngModel)]="searchUniversity" [matAutocomplete]="auto">
+          <mat-autocomplete (optionSelected)="onUniversitySelect($event)" #auto="matAutocomplete">
+            <mat-option *ngFor="let university of allUniversities | async" [value]="university">
+              {{ university }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       </div>
-    </div>
-
-    <div *ngIf="isAdvancedSearch" class="row simple-search-container">
-      <div class="col-4 input-flex">
-        <label>{{ 'startDate' | translate }}</label>
-        <input type="date" placeholder="Start Date" name="startDate" [(ngModel)]="searchStartDate" class="date-input"
-               (ngModelChange)="performSearch()">
-        <label>{{ 'endDate' | translate }}</label>
-        <input type="date" placeholder="End Date" name="endDate" [(ngModel)]="searchEndDate" class="date-input"
-               (ngModelChange)="performSearch()">
-        <label>{{ 'qualification' | translate }}</label>
-        <select name="qualificationType" [(ngModel)]="searchQualificationType" (ngModelChange)="performSearch()">
-          <option *ngFor="let type of qualificationTypes"
-                  [ngValue]="type === 'Any' ? null : type">{{ type | translate }}
-          </option>
-        </select>
+      <div *ngIf="institutionType === 'company'">
+        <mat-form-field class="example-full-width">
+          <mat-label>{{ 'companyName' | translate }}</mat-label>
+          <input matInput [(ngModel)]="searchCompany" [matAutocomplete]="auto">
+          <mat-autocomplete (optionSelected)="onCompanySelect($event)" #auto="matAutocomplete">
+            <mat-option *ngFor="let company of allCompanies | async" [value]="company">
+              {{ company }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       </div>
-      <div class="col-4 input-flex justify-content-center align-items-center">
-        <mat-chip-listbox #institutionTypeListbox (change)="onInstitutionTypeChange($event)">
-          <mat-chip-option class="example-width" value="university">{{ 'university' | translate }}</mat-chip-option>
-          <mat-chip-option class="example-width" value="company">{{ 'company' | translate }}</mat-chip-option>
-        </mat-chip-listbox>
 
-        <!-- Show input field depending on selected institutionType -->
-        <div *ngIf="institutionType === 'university'">
-          <mat-form-field class="example-full-width">
-            <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
-            <input matInput [(ngModel)]="searchUniversity" [matAutocomplete]="auto">
-            <mat-autocomplete (optionSelected)="onUniversitySelect($event)" #auto="matAutocomplete">
-              <mat-option *ngFor="let university of allUniversities | async" [value]="university">
-                {{ university }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-        <div *ngIf="institutionType === 'company'">
-          <mat-form-field class="example-full-width">
-            <mat-label>{{ 'companyName' | translate }}</mat-label>
-            <input matInput [(ngModel)]="searchCompany" [matAutocomplete]="auto">
-            <mat-autocomplete (optionSelected)="onCompanySelect($event)" #auto="matAutocomplete">
-              <mat-option *ngFor="let company of allCompanies | async" [value]="company">
-                {{ company }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-
-      </div>
-      <div class="col-4 tags-container input-flex">
-        <label>Tags:</label>
-        <app-tag (updateTag)="setTags($event)"></app-tag>
-      </div>
     </div>
 
     <!-- listings -->
-    <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)"
+    <div class="row listing equal-height" *ngFor="let listing of trendingListings" (click)="goToListing(listing.id)"
          style="cursor: pointer">
       <div class="col col-md-1 d-flex align-items-center justify-content-center">
         <i class="bi bi-star"></i>

@@ -186,6 +186,31 @@ export const advancedSearchQuery = gql`
   }
 `;
 
+export const getTrendingListingsQuery = gql`
+  query ($university: String, $company: String, $pageIndex: Int, $pageSize: Int) {
+    getTrendingListings (
+      university: $university
+      company: $company
+      pageIndex: $pageIndex
+      pageSize: $pageSize
+    ){
+      totalHitCount
+      listings {
+        id
+        title
+        details
+        requirement
+        createdAt
+        tags {
+          id
+          title_de
+          title_en
+          layer
+        }
+      }
+    }
+  }
+`;
 
 export const createListingQuery = gql`
   mutation CreateListing(
