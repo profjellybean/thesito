@@ -18,6 +18,8 @@ import org.hibernate.search.engine.search.predicate.SearchPredicate;
 import org.hibernate.search.engine.search.predicate.dsl.PredicateFinalStep;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
 import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.engine.search.sort.SearchSort;
+import org.hibernate.search.mapper.orm.scope.SearchScope;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 import service.ListingService;
@@ -215,8 +217,12 @@ public class ListingController {
                 .filter(ownerPredicate)
                 .toPredicate();
 
-        SearchResult<Listing> query = searchSession.search(Listing.class)
+        final SearchScope<Listing> scope = searchSession.scope(Listing.class);
+        SearchSort sort = scope.sort().field("createdAt").desc().toSort();
+
+        SearchResult<Listing> query = searchSession.search(scope)
                 .where(combinedPredicate)
+                .sort(sort)
                 .fetch(offset.orElse(0), limit.orElse(100));
 
         GraphQLSearchResult searchResult = new GraphQLSearchResult();

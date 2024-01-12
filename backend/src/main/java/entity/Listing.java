@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.search.engine.backend.types.ObjectStructure;
+import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.automaticindexing.ReindexOnUpdate;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.*;
 
@@ -42,7 +43,7 @@ public class Listing extends PanacheEntityBase {
     @IndexedEmbedded(structure = ObjectStructure.NESTED, includeEmbeddedObjectId = true)
     private Collection<Tag> tags;
 
-    @GenericField
+    @GenericField(sortable = Sortable.YES)
     @Column(name = "created_at")
     private Date createdAt;
 
