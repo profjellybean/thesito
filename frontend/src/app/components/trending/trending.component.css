@@ -197,5 +197,21 @@ button:disabled {
 }
 
 mat-chip.selected-chip {
-  background-color: #0056b3;
+  background-color: #007bff;
 }
+
+.subtitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.subtitle-button{
+  background-color: #e0e0e0;
+  color: #333;
+}
+.subtitle-button.selected{
+  background-color: #007bff;
+}
+

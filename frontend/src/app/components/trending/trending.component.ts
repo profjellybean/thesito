@@ -64,6 +64,7 @@ export class TrendingComponent {
   }
 
   loadPage(page: number): void {
+    this.selectedTag = null;
     this.trendingTopics = this.tagService.getTrendingTags()
     this.currentPage = page
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
@@ -114,13 +115,20 @@ export class TrendingComponent {
     this.filterTag(tag, 1)
   }
 
-  unselectTag(tag: any): void {
+  unselectTag(): void {
     this.selectedTag = null;
     this.loadPage(1)
   }
 
+  isNoTagSelected(): boolean{
+    if(this.selectedTag == null){
+      return true
+    }
+    return false;
+  }
+
   isSelected(tag: any): boolean {
     console.log(this.selectedTag)
-    return this.selectedTag == tag.id // Adjust comparison based on your data structure
+    return this.selectedTag == tag.id
   }
 }
