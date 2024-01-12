@@ -40,7 +40,7 @@
     <h3 class="subtitle">Or: <button (click)=loadPage(1) class="subtitle-button"
                   [ngClass]="{'selected': isNoTagSelected()}"
 
-        > View he most popular listings</button></h3>
+        > View the most popular listings</button></h3>
     <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)"
          style="cursor: pointer">
       <div class="col col-md-1 d-flex align-items-center justify-content-center">
