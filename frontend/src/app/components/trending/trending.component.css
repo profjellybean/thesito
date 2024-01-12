@@ -195,3 +195,7 @@ button:disabled {
   margin: 5px; /* Adjust as needed */
   min-width: 120px; /* Adjust as needed for better control over item widths */
 }
+
+mat-chip.selected-chip {
+  background-color: #0056b3;
+}

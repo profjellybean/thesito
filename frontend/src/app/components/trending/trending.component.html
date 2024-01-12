@@ -6,28 +6,36 @@
 
   <!-- Trending topics -->
   <!-- display trending tags (as bubbles or something) -->
-  <div class="row mb-3" *ngIf="currentLanguage==='en'">
-    <!-- Angular Material Form Field for Tags -->
-    <mat-chip-listbox>
-      <mat-chip *ngFor="let tag of trendingTopics | async" class="custom-chip">
-        <mat-icon>label</mat-icon>
-        {{ tag.title_en }}
-      </mat-chip>
-    </mat-chip-listbox>
-  </div>
-  <div class="row mb-3" *ngIf="currentLanguage==='de'">
-    <!-- Angular Material Form Field for Tags -->
-    <mat-chip-listbox>
-      <mat-chip *ngFor="let tag of trendingTopics | async" class="custom-chip">
-        <mat-icon>label</mat-icon>
-        {{ tag.title_de }}
-      </mat-chip>
-    </mat-chip-listbox>
-  </div>
-
 
   <!-- Listings of trending topics -->
   <div class="container results-container">
+
+    <div class="row mb-3" *ngIf="currentLanguage==='en'">
+      <mat-chip-listbox>
+        <mat-chip type="button" *ngFor="let tag of trendingTopics | async"
+                  type="button"
+                  class="selected-chip"
+                  [ngClass]="{'selected-chip': isSelected(tag)}"
+                  (click)="isSelected(tag) ? unselectTag(tag) : selectTag(tag)">
+          <span class="hot-topic">🔥</span>
+          {{ tag.title_en }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+    <div class="row mb-3" *ngIf="currentLanguage==='de'">
+      <!-- Angular Material Form Field for Tags -->
+      <mat-chip-listbox>
+        <mat-chip type="button" *ngFor="let tag of trendingTopics | async"
+                  type="button"
+                  class="selected-chip"
+                  [ngClass]="{'selected-chip': isSelected(tag)}"
+                  (click)="isSelected(tag) ? unselectTag(tag) : selectTag(tag)">
+          <span class="hot-topic">🔥</span>
+          {{ tag.title_de }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+
 
     <!-- university/company filter -->
     <!-- TODO add toggle to show/hide filter -->
@@ -64,7 +72,7 @@
     </div>
 
     <!-- listings -->
-    <div class="row listing equal-height" *ngFor="let listing of trendingListings" (click)="goToListing(listing.id)"
+    <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)"
          style="cursor: pointer">
       <div class="col col-md-1 d-flex align-items-center justify-content-center">
         <i class="bi bi-star"></i>

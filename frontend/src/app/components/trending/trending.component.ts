@@ -38,6 +38,10 @@ export class TrendingComponent {
   @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
   trendingTopics: Observable<Tag[]>;
   currentLanguage = 'en';
+  totalListings: number = 0;
+  listings: Listing[] = [];
+  searchTags: Tag[] = [];
+  selectedTag: any = null;
 
   constructor(
     listingService: ListingService,
@@ -69,7 +73,7 @@ export class TrendingComponent {
     this.listingService.getTrendingListings(university, company, page-1, pageSize)
       .subscribe((searchResult) => {
         this.totalTrendingListings = searchResult.totalHitCount
-        this.trendingListings = searchResult.listings;
+        this.listings = searchResult.listings;
         this.totalPages = Math.ceil(this.totalTrendingListings / this.listingsPerPage);
       });
   }
@@ -89,5 +93,34 @@ export class TrendingComponent {
 
   onCompanySelect($event: MatAutocompleteSelectedEvent) {
     this.loadPage(1);
+  }
+
+  filterTag(tag: Tag, page: number): void {
+    this.selectedTag = tag.id;
+    const offset = (page - 1) * this.listingsPerPage;
+    const limit = this.listingsPerPage;
+    let tagIds = [tag.id]
+    this.listingService.advancedSearch(null, null, null,
+      null,  null, null, tagIds, offset, limit)
+      .subscribe((searchResult) => {
+        this.totalListings = searchResult.totalHitCount
+        this.listings = searchResult.listings;
+        this.totalPages = Math.ceil(this.totalListings / this.listingsPerPage);
+      });
+  }
+
+  selectTag(tag: any): void {
+    this.selectedTag = tag;
+    this.filterTag(tag, 1)
+  }
+
+  unselectTag(tag: any): void {
+    this.selectedTag = null;
+    this.loadPage(1)
+  }
+
+  isSelected(tag: any): boolean {
+    console.log(this.selectedTag)
+    return this.selectedTag == tag.id // Adjust comparison based on your data structure
   }
 }

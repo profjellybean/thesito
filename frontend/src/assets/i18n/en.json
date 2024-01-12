@@ -89,5 +89,6 @@
   "noNotifications": "No Notifications available",
   "receiveEmails": "E-mail notifications",
   "newInterestedTopicNotification": "There is a new listing, matching at least one of your interests!",
-  "goToListing": "Go to listing"
+  "goToListing": "Go to listing",
+  "trendingTopics": "Trending Topics"
 }
