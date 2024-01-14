@@ -1,5 +1,6 @@
 package controller;
 
+import entity.Listing;
 import entity.Tag;
 import entity.User;
 import io.smallrye.jwt.auth.principal.JWTParser;
@@ -17,6 +18,7 @@ import jakarta.annotation.security.PermitAll;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @GraphQLApi
@@ -81,6 +83,18 @@ public class UserController {
             return userService.getUserById(id);
         } catch (ServiceException e) {
             LOG.error("Error in getUserById: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Query("getFavouritesByUserId")
+    @Description("Fetches the favorite listings of the user corresponding to the given ID from the database")
+    public Collection<Listing> getFavouritesByUserId(Long userId) throws GraphQLException {
+        LOG.info("getFavouritesById");
+        try {
+            return userService.getFavouritesByUserId(userId);
+        } catch (ServiceException e) {
+            LOG.error("Error in getFavouritesById: " + e.getMessage());
             throw new GraphQLException(e.getMessage());
         }
     }
@@ -153,5 +167,16 @@ public class UserController {
         }
     }
      */
+    @Mutation
+    @Description("Toggle favourite listing")
+    public boolean toggleFavouriteListing(Long userId, Long listingId) throws GraphQLException {
+        LOG.info("toggleFavouriteListing");
+        try {
+            return userService.toggleFavourite(userId, listingId);
+        } catch (ServiceException e) {
+            LOG.error("Error in toggleFavouriteListing: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
 
 }

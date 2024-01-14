@@ -16,6 +16,8 @@ import {MyListingsComponent} from "./components/my-listings/my-listings.componen
 import {producerGuard} from "./guards/producer.guard";
 import {NotificationsComponent} from "./components/notifications/notifications.component";
 import {TrendingComponent} from "./components/trending/trending.component";
+import {FavouritesListComponent} from "./components/favourites-list/favourites-list.component";
+import {consumerGuard} from "./guards/consumer.guard";
 
 
 export const routes: Routes = [
@@ -33,6 +35,7 @@ export const routes: Routes = [
   {path: 'user/edit', canActivate: [authGuard], component: EditUserComponent},
   {path: 'user/listings', canActivate: [authGuard, producerGuard], component: MyListingsComponent},
   {path: 'user/notifications', canActivate: [authGuard], component: NotificationsComponent},
+  {path: 'user/favourites', canActivate: [authGuard, consumerGuard], component: FavouritesListComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

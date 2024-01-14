@@ -1,0 +1,39 @@
+
+
+.card {
+  background-color: #f9f9f9; /* Light gray background for individual cards */
+  border-radius: 4px; /* Slightly rounded corners for the cards */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle box shadow for depth */
+  padding: 10px; /* Padding inside individual cards */
+  margin-bottom: 10px; /* Margin between cards */
+}
+
+.container {
+  display: flex;
+  height: 100vh; /* Adjust height as needed */
+  gap: 20px; /* This creates space between the flex items */
+}
+
+.left-section, .top-right-section, .bottom-right-section {
+  background-color: white; /* Card background color */
+  border-radius: 8px; /* Rounded corners for the card effect */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Simple box shadow for depth */
+  padding: 20px; /* Padding inside the cards */
+  margin: 10px; /* Margin around the cards */
+}
+
+.left-section {
+  flex-grow: 2;
+  width: calc(50% - 20px); /* Adjust width ratio as needed, accounting for the gap */
+}
+
+.right-section {
+  flex-grow: 1;
+  width: calc(50% - 20px); /* Adjust width ratio as needed, accounting for the gap */
+  flex-direction: column;
+  gap: 20px; /* This creates space between the stacked items */
+}
+
+.top-right-section, .bottom-right-section {
+  flex: 1;
+}
