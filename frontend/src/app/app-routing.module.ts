@@ -15,6 +15,7 @@ import {DetailComponent} from "./components/listing-details/detail.component";
 import {MyListingsComponent} from "./components/my-listings/my-listings.component";
 import {producerGuard} from "./guards/producer.guard";
 import {NotificationsComponent} from "./components/notifications/notifications.component";
+import {TrendingComponent} from "./components/trending/trending.component";
 import {FavouritesListComponent} from "./components/favourites-list/favourites-list.component";
 import {consumerGuard} from "./guards/consumer.guard";
 
@@ -23,6 +24,7 @@ export const routes: Routes = [
   {path: '', pathMatch: 'full', canActivate: [authGuard], component: AllComponent},
   {path: 'home', canActivate: [authGuard], component: HomeComponent},
   {path: 'all', canActivate: [authGuard], component: AllComponent},
+  {path: 'trending', canActivate: [authGuard], component: TrendingComponent},
   {path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterUserComponent },
   { path: 'user', canActivate: [authGuard], component: UserDetailsComponent },

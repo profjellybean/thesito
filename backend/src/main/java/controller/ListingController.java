@@ -2,10 +2,13 @@ package controller;
 
 import entity.Listing;
 import enums.Qualification;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import miscellaneous.GraphQLSearchResult;
 import miscellaneous.ServiceException;
@@ -15,6 +18,8 @@ import org.hibernate.search.engine.search.predicate.SearchPredicate;
 import org.hibernate.search.engine.search.predicate.dsl.PredicateFinalStep;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
 import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.engine.search.sort.SearchSort;
+import org.hibernate.search.mapper.orm.scope.SearchScope;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 import service.ListingService;
@@ -212,8 +217,12 @@ public class ListingController {
                 .filter(ownerPredicate)
                 .toPredicate();
 
-        SearchResult<Listing> query = searchSession.search(Listing.class)
+        final SearchScope<Listing> scope = searchSession.scope(Listing.class);
+        SearchSort sort = scope.sort().field("createdAt").desc().toSort();
+
+        SearchResult<Listing> query = searchSession.search(scope)
                 .where(combinedPredicate)
+                .sort(sort)
                 .fetch(offset.orElse(0), limit.orElse(100));
 
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
@@ -221,6 +230,25 @@ public class ListingController {
         searchResult.setTotalHitCount(query.total().hitCount());
         return searchResult;
     }
+
+    @Query("getTrendingListings")
+    @Description("Fetches a list of trending listings from the database")
+    public GraphQLSearchResult getTrendingListings(Optional<String> university, Optional<String> company,
+                                                   Optional<Integer> pageIndex, Optional<Integer> pageSize) {
+
+        LOG.info("getTrendingListings");
+        PanacheQuery<Listing> query = listingService.getTrendingListingsQuery(university, company);
+        GraphQLSearchResult searchResult = new GraphQLSearchResult();
+        searchResult.setListings(query.page(Page.of(pageIndex.orElse(0), pageSize.orElse(100))).list());
+        try {
+            searchResult.setTotalHitCount(query.count());
+        } catch (NoResultException e) {
+            // Can't count if there are no results
+            searchResult.setTotalHitCount(0);
+        }
+        return searchResult;
+    }
+
 
     @Mutation
     @Description("Updates a listing in the database")

@@ -6,6 +6,7 @@ import entity.Tag;
 import entity.User;
 import enums.NotificationType;
 import enums.Qualification;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,6 +20,7 @@ import persistence.ListingRepository;
 import io.quarkus.panache.common.Page;
 import persistence.UserRepository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @ApplicationScoped
@@ -203,6 +205,37 @@ public class ListingService {
 
         listingRepository.persist(existingListing);
         return existingListing;
+    }
+
+    @Transactional
+    public PanacheQuery<Listing> getTrendingListingsQuery(Optional<String> university, Optional<String> company) {
+        LOG.debug("getTrendingListings");
+
+        StringBuilder query = new StringBuilder("""
+                        select l
+                        from Notification n
+                        join n.connectedListing l
+                        where n.notificationType = :notificationType
+                        and n.createdAt > :date
+                        and l.active = true
+                """);
+
+        Parameters params = Parameters.with("notificationType", NotificationType.Application)
+                .and("date", java.sql.Date.valueOf(LocalDate.now().minusMonths(1)));
+
+        university.ifPresent(u -> {
+            query.append(" and l.university = :university");
+            params.and("university", u);
+        });
+
+        company.ifPresent(c -> {
+            query.append(" and l.company = :company");
+            params.and("company", c);
+        });
+
+        query.append(" group by l.id order by count(n.id) desc");
+
+        return listingRepository.find(query.toString(), params);
     }
 
     @Transactional

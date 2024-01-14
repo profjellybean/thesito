@@ -28,3 +28,13 @@ export const getAllTagsQuery = gql`
     }
   }
 `
+
+export const getTrendingTagsQuery = gql`
+  query {
+    getTrendingTags {
+      id
+      title_de
+      title_en
+    }
+  }
+`

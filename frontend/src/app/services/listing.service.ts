@@ -6,7 +6,7 @@ import {
   advancedSearchQuery, applyToListingQuery,
   createListingQuery, fullTextSearchQuery,
   getAllListingsQuery,
-  getAllListingsQueryPaginated, getListingByIdQuery,
+  getAllListingsQueryPaginated, getListingByIdQuery, getTrendingListingsQuery,
   Listing,
   simpleSearchTitleOnlyQuery, updateListingQuery
 } from "../models/Listing";
@@ -128,6 +128,22 @@ export class ListingService {
       })
       .pipe(
         map((result) => result.data.advancedSearch)
+      );
+  }
+
+  getTrendingListings(university: string | null, company: string | null, pageIndex: number | null, pageSize: number | null) {
+    return this.apollo
+      .query<{ getTrendingListings: SearchResult }>({
+        query: getTrendingListingsQuery,
+        variables: {
+          university: university,
+          company: company,
+          pageIndex: pageIndex,
+          pageSize: pageSize
+        }
+      })
+      .pipe(
+        map((result) => result.data.getTrendingListings)
       );
   }
 

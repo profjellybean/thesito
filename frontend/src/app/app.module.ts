@@ -44,6 +44,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatSliderModule} from "@angular/material/slider";
+import {TrendingComponent} from "./components/trending/trending.component";
 import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 import { FavouritesListComponent } from './components/favourites-list/favourites-list.component';
 
@@ -59,6 +60,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HeaderComponent,
     HomeComponent,
     AllComponent,
+    TrendingComponent,
     LoginComponent,
     NotFoundComponent,
     LanguageToggleComponent,
