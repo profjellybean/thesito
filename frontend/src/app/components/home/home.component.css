@@ -6,6 +6,7 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle box shadow for depth */
   padding: 10px; /* Padding inside individual cards */
   margin-bottom: 10px; /* Margin between cards */
+  cursor: pointer;
 }
 
 .container {
@@ -20,6 +21,7 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Simple box shadow for depth */
   padding: 20px; /* Padding inside the cards */
   margin: 10px; /* Margin around the cards */
+  cursor: default;
 }
 
 .left-section {
@@ -36,4 +38,38 @@
 
 .top-right-section, .bottom-right-section {
   flex: 1;
+}
+
+/* Style for the button container */
+.button-container {
+  text-align: right; /* Aligns the button to the right */
+  margin-top: 10px; /* Adds some space above the button */
+}
+
+/* Style for the button itself */
+.button-container button {
+  padding: 5px 10px; /* Reduces padding to make the button smaller */
+  font-size: 0.8rem; /* Smaller font size */
+  background-color: #007bff; /* Background color */
+  color: white; /* Text color */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+.button-container button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.notification-count {
+  background-color: red;
+  color: white;
+  border-radius: 50%; /* Makes the shape a circle */
+  padding: 0 6px; /* Adjust as needed for size */
+  font-size: 0.8rem; /* Adjust font size as needed */
+  display: inline-block;
+  min-width: 20px; /* Ensures the circle size even if the number is small */
+  text-align: center;
+  line-height: 20px; /* Adjust for vertical alignment */
+  margin-left: 10px; /* Space between the heading and the circle */
 }

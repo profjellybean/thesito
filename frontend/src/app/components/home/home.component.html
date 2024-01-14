@@ -12,12 +12,18 @@
   </div>
 
   <div class="right-section">
-    <div class="top-right-section card">
-      <h2>Inbox</h2>
-      <div class="card">Notification 1</div>
-      <div class="card">Notification 2</div>
-      <div class="card">Notification 3</div>
-      <div class="card">Notification 4</div>
+    <div *ngIf="notificationsLoaded" class="top-right-section card" (click)="this.router.navigate(['/user/notifications'])">
+      <h2>Inbox<span class="notification-count">{{ notifications.length }}</span></h2>
+
+      <!-- Loop through the notifications array and display only the first three notifications -->
+      <div *ngFor="let notification of notifications | slice:0:3" class="card" (click)="this.router.navigate(['/listing', notification.connectedListing.id])">
+        {{ formatDate(notification.createdAt) }}: new interesting listing - {{ notification.connectedListing.title }}
+      </div>
+
+      <!-- Container for the button -->
+      <div class="button-container" *ngIf="notifications.length > 3">
+        <button (click)="this.router.navigate(['/user/notifications'])">See All</button>
+      </div>
     </div>
 
     <div class="bottom-right-section card">
