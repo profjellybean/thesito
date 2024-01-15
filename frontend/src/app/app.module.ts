@@ -47,6 +47,10 @@ import {MatSliderModule} from "@angular/material/slider";
 import {TrendingComponent} from "./components/trending/trending.component";
 import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 import { FavouritesListComponent } from './components/favourites-list/favourites-list.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTableModule} from "@angular/material/table";
+import {MatCardModule} from "@angular/material/card";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -75,7 +79,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditListingComponent,
     NotificationsComponent,
     UserFavouritesComponent,
-    FavouritesListComponent
+    FavouritesListComponent,
+    AdminPageComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +112,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatAutocompleteModule,
     MatChipsModule,
     MatGridListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCardModule
   ],
   providers: [
     LanguageService,

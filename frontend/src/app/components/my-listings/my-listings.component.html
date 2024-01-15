@@ -8,7 +8,7 @@
             <div class="card-body">
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
               <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
-              <button *ngIf="isLoggedIn() && isProducer()" class="btn btn-primary create-listing-btn" (click)="goToCreateListing()">
+              <button *ngIf="isLoggedIn() && (isProducer() || isAdministartor())" class="btn btn-primary create-listing-btn" (click)="goToCreateListing()">
                 {{ 'createListing' | translate }}
               </button>
               <div *ngIf="listings" >

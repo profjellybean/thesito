@@ -6,9 +6,9 @@ export enum QualificationType {
 }
 
 export enum UserType {
-  Administrator,
-  ListingConsumer,
-  ListingProvider
+  Administrator= "Administrator",
+  ListingConsumer = "ListingConsumer",
+  ListingProvider = "ListingProvider"
 }
 
 export enum NotificationType {

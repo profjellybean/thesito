@@ -16,9 +16,16 @@ export interface User {
   favourites?: Listing[]
 }
 
-export interface GetAllUsers {
-  users: User[];
-}
+export const getAllUsers = gql`
+  query GetAllUsers {
+    getAllUsers {
+      id
+      name
+      userType
+    }
+  }
+`;
+
 
 export const registerUserQuery = gql`
     mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!, $tags: [TagInput], $qualification: Qualification) {

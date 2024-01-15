@@ -20,7 +20,7 @@ export class NotificationsComponent implements OnInit{
   error = false;
   errorMessage = '';
 
-  notificationsLoaded: Boolean = false;
+  notificationsLoaded: boolean = false;
 
   constructor(private router: Router, private notificationService: NotificationService, private authService: AuthService) {
   }

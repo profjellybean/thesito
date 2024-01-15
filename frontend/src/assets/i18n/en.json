@@ -94,5 +94,7 @@
   "receiveEmails": "E-mail notifications",
   "newInterestedTopicNotification": "There is a new listing, matching at least one of your interests!",
   "goToListing": "Go to listing",
-  "trendingTopics": "Trending Topics"
+  "trendingTopics": "Trending Topics",
+  "admin": "Administrator",
+  "trending": "Trending"
 }

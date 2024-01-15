@@ -1,4 +1,11 @@
-import {User, registerUserQuery, updateUserQuery, changePasswordQuery, getFavouritesByUserId} from "../models/User";
+import {
+  User,
+  registerUserQuery,
+  updateUserQuery,
+  changePasswordQuery,
+  getFavouritesByUserId,
+  getAllUsers
+} from "../models/User";
 import {map, Observable} from "rxjs";
 import {Apollo} from "apollo-angular";
 import {Injectable} from "@angular/core";
@@ -41,6 +48,15 @@ export class UserService {
       })
     )
   }
+
+  getAllUsers(): Observable<User[]>{
+    return this.apollo.query<{getAllUsers: User[]}>({
+      query: getAllUsers,
+    }).pipe(
+      map((result) => result.data.getAllUsers)
+    );
+  }
+
 
   getFavouritesByUser(): Observable<Listing[]> {
     return this.apollo.query<any>({
