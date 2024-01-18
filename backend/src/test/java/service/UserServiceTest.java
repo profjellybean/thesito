@@ -122,6 +122,8 @@ class UserServiceTest {
 
 
         assertEquals(insertedUser, retrievedUser);
+
+        userService.deleteUser(user);
     }
 
     @Test
