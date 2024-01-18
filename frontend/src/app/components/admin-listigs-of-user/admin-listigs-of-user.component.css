@@ -1,0 +1,67 @@
+
+
+
+mat-table {
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+.bottom-left-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 16em;
+}
+
+h3 {
+  font-size: 4em;
+  padding-top: 5%;
+}
+
+p{
+  padding-top: 2%;
+}
+
+.wrapper {
+  margin-top: 8em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.back-button {
+  font-weight: 500;
+  opacity: 80%;
+
+}
+
+.back-button:hover {
+  opacity: 100%;
+}
+
+

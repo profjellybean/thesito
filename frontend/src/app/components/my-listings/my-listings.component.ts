@@ -142,4 +142,8 @@ export class MyListingsComponent implements OnInit{
   isProducer(): boolean{
     return this.authService.isProducer();
   }
+
+  isAdministartor(): boolean{
+    return this.authService.isAdministrator();
+  }
 }

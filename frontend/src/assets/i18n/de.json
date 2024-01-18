@@ -94,5 +94,11 @@
   "receiveEmails": "E-Mail Benachrichtigungen",
   "newInterestedTopicNotification": "Es gibt eine neue Ausschreibung, die zu mindestens einer Ihrer Interessen passt!",
   "goToListing": "Zur Ausschreibung wechseln",
-  "trendingTopics": "Aktuelle Themen"
+  "trendingTopics": "Aktuelle Themen",
+  "admin": "Administrator",
+  "trending": "Beliebtes",
+  "viewListingsOfUser": "Ausschreibungen anzeigen",
+  "close": "Schließen",
+  "deleteListing": "Ausschreibung löschen",
+  "noListingsFound": "Keine Ausschreibungen gefunden"
 }

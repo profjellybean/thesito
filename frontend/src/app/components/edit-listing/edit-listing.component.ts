@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import {Component, OnInit, ElementRef, ViewChild, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Observable, startWith, switchMap } from 'rxjs';
@@ -13,6 +13,7 @@ import { User } from "../../models/User";
 import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-edit-listing',
@@ -46,7 +47,9 @@ export class EditListingComponent implements OnInit {
     translateService: TranslateService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: { listingId: number },
+
   ) {
     this.editListingForm = this.fb.group({
       shortTitle: ['', Validators.required],
@@ -90,7 +93,11 @@ export class EditListingComponent implements OnInit {
     this.router = router;
     this.translateService = translateService;
     this.universityService = universityService;
-    this.listingId = this.route.snapshot.params['id'];
+    if (this.data.listingId != -1){
+      this.listingId = this.data.listingId;
+    }else{
+      this.listingId = this.route.snapshot.params['id'];
+    }
   }
 
   ngOnInit() {
@@ -129,6 +136,7 @@ export class EditListingComponent implements OnInit {
           owner: this.listing.owner, // Assuming 'owner' is an object with its own properties
           active: this.listing.active,
         });
+        this.user = this.listing.owner;
         this.listing.tags?.forEach(tag=>{
           let t = {
             id: tag.id,
@@ -236,9 +244,11 @@ export class EditListingComponent implements OnInit {
           this.error = false;
           this.errorMessage = ''; // Reset error message
           this.formatSuccessMessage('successUpdatingListing');
-          setTimeout(() => {
-            this.router.navigate([`/listing/${res.data.updateListing.id}`]);
-          }, 1000);
+          if (!this.authService.isAdministrator()){
+            setTimeout(() => {
+              this.router.navigate([`/listing/${res.data.updateListing.id}`]);
+            }, 1000);
+          }
         }
       },
       (error) => {
