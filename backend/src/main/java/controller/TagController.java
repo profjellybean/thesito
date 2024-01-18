@@ -57,4 +57,16 @@ public class TagController {
     }
      */
 
+    @Query("getTrendingTags")
+    @Description("Fetches a sorted list of currently trending tags from the database")
+    public List<Tag> getTrendingTags() throws GraphQLException {
+        LOG.info("getTrendingTags");
+        try {
+            return tagService.getTrendingTags();
+        } catch (ServiceException e) {
+            LOG.error("Error in getTrendingTags: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
 }

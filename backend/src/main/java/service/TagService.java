@@ -14,6 +14,7 @@ import org.jboss.logging.Logger;
 import org.jetbrains.annotations.TestOnly;
 import persistence.TagRepository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @ApplicationScoped
@@ -33,7 +34,7 @@ public class TagService {
             List<Tag> retTags = new LinkedList<>();
             Set<String> tagName = new HashSet<>();
             for (Tag tag : allTags) {
-                if (tagName.add(tag.getTitle_en())){
+                if (tagName.add(tag.getTitle_en())) {
                     retTags.add(tag);
                 }
             }
@@ -91,10 +92,35 @@ public class TagService {
                             Tag.class)
                     .setParameter("prefix", prefixString + "%")
                     .getResultList();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             LOG.error("Error in getAllSubtags: " + e.getMessage());
             throw new ServiceException("Error while fetching tags");
         }
     }
 
+    public List<Tag> getTrendingTags() throws ServiceException {
+        return getTrendingTags(100);
+    }
+
+    public List<Tag> getTrendingTags(int limit) throws ServiceException {
+        LOG.debug("getTrendingTags");
+        try {
+            // tags for which the most listings were created in the last month
+            return entityManager.createQuery(
+                            """
+                                    SELECT t
+                                    FROM Tag t JOIN t.listings l
+                                    WHERE l.createdAt > :date
+                                    GROUP BY t.id
+                                    ORDER BY COUNT(l.id) DESC
+                                    """,
+                            Tag.class)
+                    .setParameter("date", java.sql.Date.valueOf(LocalDate.now().minusMonths(1)))
+                    .setMaxResults(limit)
+                    .getResultList();
+        } catch (NoResultException e) {
+            LOG.error("Error in getTrendingTags: " + e.getMessage());
+            throw new ServiceException("Error while fetching tags");
+        }
+    }
 }

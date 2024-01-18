@@ -28,6 +28,9 @@
             <a routerLink="/all" class="text-decoration-none text-light">{{"listings" | translate}}</a>
           </li>
           <li class="mx-3" *ngIf="isLoggedIn()">
+            <a routerLink="/trending" class="text-decoration-none text-light">{{"trending" | translate}}</a>
+          </li>
+          <li class="mx-3" *ngIf="isLoggedIn()">
             <div class="dropdown">
               <a class="text-light" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer">
                 {{"profile" | translate}}

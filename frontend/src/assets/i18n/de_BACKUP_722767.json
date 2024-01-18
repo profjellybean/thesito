@@ -85,6 +85,7 @@
   "previous": "Vorherige",
   "Any" : "Egal",
   "applicationError": "Fehler beim Bewerben",
+<<<<<<< HEAD
   "applicationSuccess": "Bewerbung erfolgreich",
   "newApplicationNotification": "Es gibt eine neue Bewerbung für Ihre Ausschreibung!",
   "notification": "Benachrichtigung",
@@ -93,6 +94,8 @@
   "noNotifications": "Keine Benachrichtigungen vorhanden",
   "receiveEmails": "E-Mail Benachrichtigungen",
   "newInterestedTopicNotification": "Es gibt eine neue Ausschreibung, die zu mindestens einer Ihrer Interessen passt!",
-  "goToListing": "Zur Ausschreibung wechseln",
-  "trendingTopics": "Aktuelle Themen"
+  "goToListing": "Zur Ausschreibung wechseln"
+=======
+  "applicationSuccess": "Bewerbung erfolgreich"
+>>>>>>> 93af449 ([5.2][F] configure error/success message)
 }
