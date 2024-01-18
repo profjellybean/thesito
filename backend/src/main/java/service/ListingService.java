@@ -89,8 +89,10 @@ public class ListingService {
 
         // get all relevant Subtags
         Set<Tag> relevantTags = new HashSet<>();
-        for (Tag tag: listing.getTags()){
-            relevantTags.addAll(this.tagService.getAllSubtags(tag.id));
+        if (listing.getTags() != null) {
+            for (Tag tag: listing.getTags()){
+                relevantTags.addAll(this.tagService.getAllSubtags(tag.id));
+            }
         }
 
         // add all relevant users to notification

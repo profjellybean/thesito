@@ -20,6 +20,7 @@ import miscellaneous.UserValidator;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import org.jetbrains.annotations.TestOnly;
 import persistence.ListingRepository;
 import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
@@ -252,5 +253,11 @@ public class UserService {
         userRepository.persist(user);
         return true;
 
+    }
+
+    @TestOnly
+    @Transactional
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }
