@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="bottom-right-section card" (click)="this.router.navigate(['/user/favourites'])">
+    <div  *ngIf="favoritesLoaded" class="bottom-right-section card" (click)="this.router.navigate(['/user/favourites'])">
       <h2>Favorites</h2>
       <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item"  >
        <!-- <app-user-favourites [listing_id]="favourite.id"></app-user-favourites>-->

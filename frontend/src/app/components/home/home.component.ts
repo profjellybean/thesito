@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit{
   errorMessage = '';
 
   notificationsLoaded: Boolean = false;
+  favoritesLoaded: Boolean = false;
 
   constructor(public router: Router, private notificationService: NotificationService,
               private authService: AuthService, private userService: UserService,) {
@@ -53,6 +54,7 @@ export class HomeComponent implements OnInit{
 
         this.userService.getFavouritesByUser().subscribe(favourites => {
           this.favourites = favourites;
+          this.favoritesLoaded = favourites!==null;
           console.log(favourites);
         });
 
