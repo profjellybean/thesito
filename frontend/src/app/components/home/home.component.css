@@ -9,6 +9,7 @@
   cursor: pointer;
 }
 
+
 .container {
   display: flex;
   height: 100vh; /* Adjust height as needed */
@@ -72,4 +73,25 @@
   text-align: center;
   line-height: 20px; /* Adjust for vertical alignment */
   margin-left: 10px; /* Space between the heading and the circle */
+}
+
+.favourite-item {
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Center-align the items vertically */
+  margin-bottom: 5px; /* Space between items */
+}
+
+.favourite-title {
+  margin-left: 10px; /* Space between the star and the title */
+}
+
+.zoom-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
+  cursor: pointer; /* Changes cursor to a pointer on hover */
+}
+
+.zoom-card:hover {
+  transform: scale(1.05); /* Scales up the card slightly */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow to lift the card */
+  z-index: 10; /* Ensure the card is above other elements */
 }

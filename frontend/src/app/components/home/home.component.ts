@@ -4,6 +4,8 @@ import {NotificationService} from "../../services/notification.service";
 import {AuthService} from "../../services/auth.service";
 import {Notification} from "../../models/Notification";
 import { CommonModule } from '@angular/common';
+import {UserService} from "../../services/user.service";
+import {Listing} from "../../models/Listing";
 
 
 @Component({
@@ -16,6 +18,8 @@ export class HomeComponent implements OnInit{
   ownerId: number;
   notifications: Notification[];
 
+  favourites: Listing[] = [];
+
   info = false;
   infoMessage = '';
   error = false;
@@ -23,7 +27,8 @@ export class HomeComponent implements OnInit{
 
   notificationsLoaded: Boolean = false;
 
-  constructor(public router: Router, private notificationService: NotificationService, private authService: AuthService) {
+  constructor(public router: Router, private notificationService: NotificationService,
+              private authService: AuthService, private userService: UserService,) {
   }
 
 
@@ -45,6 +50,11 @@ export class HomeComponent implements OnInit{
           this.errorMessage = error.message;
         }
       });
+
+        this.userService.getFavouritesByUser().subscribe(favourites => {
+          this.favourites = favourites;
+          console.log(favourites);
+        });
 
     }else {
       setTimeout(() => {
