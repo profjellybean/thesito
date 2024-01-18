@@ -96,5 +96,9 @@
   "goToListing": "Go to listing",
   "trendingTopics": "Trending Topics",
   "admin": "Administrator",
-  "trending": "Trending"
+  "trending": "Trending",
+  "viewListingsOfUser": "View listings",
+  "close": "Close",
+  "deleteListing": "Delete listing",
+  "noListingsFound": "No listings found"
 }

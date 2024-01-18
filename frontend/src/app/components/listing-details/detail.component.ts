@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Listing} from "../../models/Listing";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {ApplicationDialogComponent} from "../application-dialog/application-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import {TranslateService} from "@ngx-translate/core";
 import {ListingService} from "../../services/listing.service";
 import {User} from "../../models/User";
@@ -37,10 +37,15 @@ export class DetailComponent implements OnInit{
       private listingService: ListingService,
       private userService: UserService,
       private authService: AuthService,
-      private languageService: LanguageService
+      private languageService: LanguageService,
+      @Inject(MAT_DIALOG_DATA) public data: { listingId: number }
   ) {
     this.route.params.subscribe(params => {
-      this.listingId = params['id'];
+      if(this.data.listingId != -1){
+        this.listingId = this.data.listingId;
+      }else{
+        this.listingId = params['id'];
+      }
     });
   }
 

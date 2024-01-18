@@ -96,5 +96,9 @@
   "goToListing": "Zur Ausschreibung wechseln",
   "trendingTopics": "Aktuelle Themen",
   "admin": "Administrator",
-  "trending": "Beliebtes"
+  "trending": "Beliebtes",
+  "viewListingsOfUser": "Ausschreibungen anzeigen",
+  "close": "Schließen",
+  "deleteListing": "Ausschreibung löschen",
+  "noListingsFound": "Keine Ausschreibungen gefunden"
 }
