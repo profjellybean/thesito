@@ -100,5 +100,7 @@
   "viewListingsOfUser": "View listings",
   "close": "Close",
   "deleteListing": "Delete listing",
-  "noListingsFound": "No listings found"
+  "noListingsFound": "No listings found",
+  "makeAdmin": "Make admin",
+  "users": "Users"
 }

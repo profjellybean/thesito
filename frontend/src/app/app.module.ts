@@ -54,6 +54,7 @@ import {MatCardModule} from "@angular/material/card";
 import { AdminListigsOfUserComponent } from './components/admin-listigs-of-user/admin-listigs-of-user.component';
 import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogActions, MatDialogClose} from "@angular/material/dialog";
 import {MatMenuModule} from "@angular/material/menu";
+import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -84,7 +85,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserFavouritesComponent,
     FavouritesListComponent,
     AdminPageComponent,
-    AdminListigsOfUserComponent
+    AdminListigsOfUserComponent,
+    AdminUserListComponent
   ],
   imports: [
     BrowserModule,
