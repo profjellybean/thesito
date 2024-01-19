@@ -29,6 +29,8 @@ import java.util.*;
 
 import io.smallrye.jwt.build.Jwt;
 
+import static enums.UserType.Administrator;
+
 @ApplicationScoped
 public class UserService {
     @Inject
@@ -68,6 +70,27 @@ public class UserService {
         user.setPassword(hashedPassword.getResult());
         userRepository.persist(user);
         return user;
+    }
+
+    @Transactional
+    public User makeAdmin(Long userId, User user) throws ServiceException {
+        LOG.debug("makeAdmin");
+        User toBeAdmin = userRepository.findById(userId);
+        if (toBeAdmin == null) {
+            LOG.error("Error in makeAdmin: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (user.getUserType() != Administrator) {
+            LOG.error("Error in makeAdmin: User is not an administrator");
+            throw new ServiceException("User is not an administrator");
+        }
+        if (toBeAdmin.getUserType() == Administrator) {
+            LOG.error("Error in makeAdmin: User is already an administrator");
+            throw new ServiceException("User is already an administrator");
+        }
+        toBeAdmin.setUserType(Administrator);
+        userRepository.persist(toBeAdmin);
+        return toBeAdmin;
     }
 
     @Transactional

@@ -179,4 +179,15 @@ public class UserController {
         }
     }
 
+    @Mutation
+    @Description("Makes antother user admin")
+    public User makeAdmin(Long userId, User user) throws GraphQLException {
+        LOG.info("makeAdmin");
+        try {
+            return userService.makeAdmin(userId, user);
+        } catch (ServiceException e) {
+            LOG.error("Error in makeAdmin: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
 }
