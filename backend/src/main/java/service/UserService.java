@@ -73,14 +73,19 @@ public class UserService {
     }
 
     @Transactional
-    public User makeAdmin(Long userId, User user) throws ServiceException {
+    public Boolean makeAdmin(Long userId, Long userIdCurrent) throws ServiceException {
         LOG.debug("makeAdmin");
         User toBeAdmin = userRepository.findById(userId);
+        User userCurrent = userRepository.findById(userIdCurrent);
         if (toBeAdmin == null) {
             LOG.error("Error in makeAdmin: User doesn't exist");
             throw new ServiceException("User doesn't exist");
         }
-        if (user.getUserType() != Administrator) {
+        if (userCurrent == null) {
+            LOG.error("Error in makeAdmin: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (userCurrent.getUserType() != Administrator) {
             LOG.error("Error in makeAdmin: User is not an administrator");
             throw new ServiceException("User is not an administrator");
         }
@@ -90,7 +95,7 @@ public class UserService {
         }
         toBeAdmin.setUserType(Administrator);
         userRepository.persist(toBeAdmin);
-        return toBeAdmin;
+        return true;
     }
 
     @Transactional

@@ -181,10 +181,10 @@ public class UserController {
 
     @Mutation
     @Description("Makes antother user admin")
-    public User makeAdmin(Long userId, User user) throws GraphQLException {
+    public boolean makeAdmin(Long userId, Long userIdCurrent) throws GraphQLException {
         LOG.info("makeAdmin");
         try {
-            return userService.makeAdmin(userId, user);
+            return userService.makeAdmin(userId, userIdCurrent);
         } catch (ServiceException e) {
             LOG.error("Error in makeAdmin: " + e.getMessage());
             throw new GraphQLException(e.getMessage());
