@@ -18,6 +18,9 @@ import {NotificationsComponent} from "./components/notifications/notifications.c
 import {TrendingComponent} from "./components/trending/trending.component";
 import {FavouritesListComponent} from "./components/favourites-list/favourites-list.component";
 import {consumerGuard} from "./guards/consumer.guard";
+import {administratorGuard} from "./guards/administrator.guard";
+import {AdminPageComponent} from "./components/admin-page/admin-page.component";
+import {AdminUserListComponent} from "./components/admin-user-list/admin-user-list.component";
 
 
 export const routes: Routes = [
@@ -36,6 +39,8 @@ export const routes: Routes = [
   {path: 'user/listings', canActivate: [authGuard, producerGuard], component: MyListingsComponent},
   {path: 'user/notifications', canActivate: [authGuard], component: NotificationsComponent},
   {path: 'user/favourites', canActivate: [authGuard, consumerGuard], component: FavouritesListComponent},
+  {path: 'admin/listings', canActivate: [authGuard, administratorGuard], component: AdminPageComponent},
+  {path: 'admin/users', canActivate: [authGuard, administratorGuard], component: AdminUserListComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

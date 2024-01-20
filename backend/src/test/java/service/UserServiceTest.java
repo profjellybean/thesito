@@ -35,7 +35,7 @@ import java.security.PrivateKey;
 import java.security.NoSuchAlgorithmException;
 
 @QuarkusTest
-@QuarkusTestResource(DatabaseContainerMock.class)
+@QuarkusTestResource(value = DatabaseContainerMock.class, restrictToAnnotatedClass = true)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserServiceTest {
     @Inject
@@ -122,6 +122,8 @@ class UserServiceTest {
 
 
         assertEquals(insertedUser, retrievedUser);
+
+        userService.deleteUser(user);
     }
 
     @Test

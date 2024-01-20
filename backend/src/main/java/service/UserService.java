@@ -20,6 +20,7 @@ import miscellaneous.UserValidator;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import org.jetbrains.annotations.TestOnly;
 import persistence.ListingRepository;
 import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
@@ -27,6 +28,8 @@ import persistence.UserRepository;
 import java.util.*;
 
 import io.smallrye.jwt.build.Jwt;
+
+import static enums.UserType.Administrator;
 
 @ApplicationScoped
 public class UserService {
@@ -67,6 +70,32 @@ public class UserService {
         user.setPassword(hashedPassword.getResult());
         userRepository.persist(user);
         return user;
+    }
+
+    @Transactional
+    public Boolean makeAdmin(Long userId, Long userIdCurrent) throws ServiceException {
+        LOG.debug("makeAdmin");
+        User toBeAdmin = userRepository.findById(userId);
+        User userCurrent = userRepository.findById(userIdCurrent);
+        if (toBeAdmin == null) {
+            LOG.error("Error in makeAdmin: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (userCurrent == null) {
+            LOG.error("Error in makeAdmin: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (userCurrent.getUserType() != Administrator) {
+            LOG.error("Error in makeAdmin: User is not an administrator");
+            throw new ServiceException("User is not an administrator");
+        }
+        if (toBeAdmin.getUserType() == Administrator) {
+            LOG.error("Error in makeAdmin: User is already an administrator");
+            throw new ServiceException("User is already an administrator");
+        }
+        toBeAdmin.setUserType(Administrator);
+        userRepository.persist(toBeAdmin);
+        return true;
     }
 
     @Transactional
@@ -252,5 +281,11 @@ public class UserService {
         userRepository.persist(user);
         return true;
 
+    }
+
+    @TestOnly
+    @Transactional
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }

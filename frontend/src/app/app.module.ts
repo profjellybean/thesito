@@ -47,6 +47,14 @@ import {MatSliderModule} from "@angular/material/slider";
 import {TrendingComponent} from "./components/trending/trending.component";
 import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 import { FavouritesListComponent } from './components/favourites-list/favourites-list.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTableModule} from "@angular/material/table";
+import {MatCardModule} from "@angular/material/card";
+import { AdminListigsOfUserComponent } from './components/admin-listigs-of-user/admin-listigs-of-user.component';
+import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogActions, MatDialogClose} from "@angular/material/dialog";
+import {MatMenuModule} from "@angular/material/menu";
+import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -75,7 +83,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     EditListingComponent,
     NotificationsComponent,
     UserFavouritesComponent,
-    FavouritesListComponent
+    FavouritesListComponent,
+    AdminPageComponent,
+    AdminListigsOfUserComponent,
+    AdminUserListComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +118,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatAutocompleteModule,
     MatChipsModule,
     MatGridListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCardModule,
+    MatMenuModule,
+    MatDialogActions,
+    MatDialogClose
   ],
   providers: [
     LanguageService,
@@ -122,7 +139,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         };
       },
       deps: [HttpLink]
-    }
+    },
+    {provide: MAT_DIALOG_DATA, useValue: {listingId: -1}}
   ],
   bootstrap: [AppComponent]
 })

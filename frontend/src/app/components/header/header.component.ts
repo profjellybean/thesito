@@ -35,6 +35,10 @@ export class HeaderComponent implements OnInit {
     return this.authService.isProducer();
   }
 
+  isAdministartor(): boolean{
+    return this.authService.isAdministrator()
+  }
+
   isConsumer(): boolean{
     return this.authService.isConsumer();
   }

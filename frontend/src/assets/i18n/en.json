@@ -94,5 +94,13 @@
   "receiveEmails": "E-mail notifications",
   "newInterestedTopicNotification": "There is a new listing, matching at least one of your interests!",
   "goToListing": "Go to listing",
-  "trendingTopics": "Trending Topics"
+  "trendingTopics": "Trending Topics",
+  "admin": "Administrator",
+  "trending": "Trending",
+  "viewListingsOfUser": "View listings",
+  "close": "Close",
+  "deleteListing": "Delete listing",
+  "noListingsFound": "No listings found",
+  "makeAdmin": "Make admin",
+  "users": "Users"
 }

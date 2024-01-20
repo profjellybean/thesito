@@ -11,6 +11,17 @@
     <div class="d-flex ">
       <nav>
         <ul class="list-unstyled d-flex">
+          <li class="mx-3" *ngIf="isLoggedIn() && isAdministartor()">
+            <div class="dropdown">
+              <a class="text-light" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer">
+                {{"admin" | translate}}
+              </a>
+              <div class="dropdown-menu bg-dark" aria-labelledby="profileDropdown">
+                <a class="text-light dropdown-item text-decoration-none" routerLink='/admin/users'>{{"users" | translate}}</a>
+                <a class="text-light dropdown-item text-decoration-none" routerLink='/admin/listings'>{{"listings" | translate}}</a>
+              </div>
+            </div>
+          </li>
           <li class="mx-3" *ngIf="isLoggedIn()">
             <a routerLink="/home" class="text-decoration-none text-light">{{"home" | translate}}</a>
           </li>
@@ -20,9 +31,6 @@
           <li class="mx-3" *ngIf="!isLoggedIn()">
             <a routerLink="/login" class="text-decoration-none text-light">{{"login" | translate}}
             </a>
-          </li>
-          <li class="mx-3" *ngIf="isLoggedIn() && isProducer()">
-            <a routerLink="/listing/create" class="text-decoration-none text-light">{{"createListing" | translate}}</a>
           </li>
           <li class="mx-3" *ngIf="isLoggedIn()">
             <a routerLink="/all" class="text-decoration-none text-light">{{"listings" | translate}}</a>
@@ -38,8 +46,8 @@
               <div class="dropdown-menu bg-dark" aria-labelledby="profileDropdown">
                 <a class="text-light dropdown-item text-decoration-none" routerLink='/user/edit'>{{"edit" | translate}}</a>
                 <a class="text-light dropdown-item text-decoration-none" routerLink='/user/'>{{"details" | translate}}</a>
-                <a *ngIf="isProducer()" class="text-light dropdown-item text-decoration-none" routerLink='/user/listings'>{{"myListings" | translate}}</a>
-                <a *ngIf="isConsumer()" class="text-light dropdown-item text-decoration-none" routerLink='/user/favourites'>{{"favourites" | translate}}</a>
+                <a *ngIf="isProducer() || isAdministartor()" class="text-light dropdown-item text-decoration-none" routerLink='/user/listings'>{{"myListings" | translate}}</a>
+                <a *ngIf="isConsumer() || isAdministartor()" class="text-light dropdown-item text-decoration-none" routerLink='/user/favourites'>{{"favourites" | translate}}</a>
                 <a class="text-light dropdown-item text-decoration-none" routerLink='/user/notifications'>{{"notifications" | translate}}</a>
               </div>
             </div>

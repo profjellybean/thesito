@@ -23,7 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
-@QuarkusTestResource(DatabaseContainerMock.class)
+@QuarkusTestResource(value = DatabaseContainerMock.class, restrictToAnnotatedClass = true)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NotificationServiceTest {
 

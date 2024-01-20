@@ -57,6 +57,16 @@ export class AuthService {
       return false;
    }
 
+  public isAdministrator(): boolean {
+    let token = this.getToken();
+    if (token != null) {
+      token = this.decodeToken(token);
+      // @ts-ignore
+      return token.userType === "Administrator"
+    }
+    return false;
+  }
+
    private isTokenValid(token: string | null): boolean{
      try {
        if (token){
