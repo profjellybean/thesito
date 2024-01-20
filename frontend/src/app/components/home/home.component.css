@@ -4,11 +4,15 @@
   background-color: #f9f9f9; /* Light gray background for individual cards */
   border-radius: 4px; /* Slightly rounded corners for the cards */
   box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle box shadow for depth */
-  padding: 10px; /* Padding inside individual cards */
+  padding: 6px; /* Padding inside individual cards */
   margin-bottom: 10px; /* Margin between cards */
   cursor: pointer;
+  width: 100%;
 }
 
+mat-chip.selected-chip {
+  background-color: #007bff;
+}
 
 .container {
   display: flex;

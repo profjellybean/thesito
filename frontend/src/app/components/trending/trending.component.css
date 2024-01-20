@@ -215,3 +215,43 @@ mat-chip.selected-chip {
   background-color: #007bff;
 }
 
+.zoom-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and shadow */
+  cursor: pointer; /* Changes cursor to a pointer on hover */
+}
+
+.zoom-card:hover {
+  transform: scale(1.05); /* Scales up the card slightly */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow to lift the card */
+  z-index: 10; /* Ensure the card is above other elements */
+}
+
+.card {
+  background-color: #f9f9f9; /* Light gray background for individual cards */
+  border-radius: 4px; /* Slightly rounded corners for the cards */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle box shadow for depth */
+  padding: 6px; /* Padding inside individual cards */
+  margin-bottom: 10px; /* Margin between cards */
+  cursor: pointer;
+  width: 100%;
+}
+
+.button-container {
+  text-align: right; /* Aligns the button to the right */
+  margin-top: 10px; /* Adds some space above the button */
+}
+
+/* Style for the button itself */
+.button-container button {
+  padding: 5px 10px; /* Reduces padding to make the button smaller */
+  font-size: 0.8rem; /* Smaller font size */
+  background-color: #007bff; /* Background color */
+  color: white; /* Text color */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+.button-container button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}

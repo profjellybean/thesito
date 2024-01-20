@@ -6,6 +6,9 @@ import {Notification} from "../../models/Notification";
 import { CommonModule } from '@angular/common';
 import {UserService} from "../../services/user.service";
 import {Listing} from "../../models/Listing";
+import {Observable} from "rxjs";
+import {Tag} from "../../models/Tag";
+import {TagService} from "../../services/tag.service";
 
 
 @Component({
@@ -28,8 +31,12 @@ export class HomeComponent implements OnInit{
   notificationsLoaded: Boolean = false;
   favoritesLoaded: Boolean = false;
 
+  trendingTags: Observable<Tag[]>;
+  selectedTag: any = null;
+
   constructor(public router: Router, private notificationService: NotificationService,
-              private authService: AuthService, private userService: UserService,) {
+              private authService: AuthService, private userService: UserService,
+              private tagService: TagService) {
   }
 
 
@@ -58,6 +65,9 @@ export class HomeComponent implements OnInit{
           console.log(favourites);
         });
 
+        this.trendingTags = this.tagService.getTrendingTags();
+        console.log(this.trendingTags);
+
     }else {
       setTimeout(() => {
         this.router.navigate(['/login']);
@@ -74,4 +84,6 @@ export class HomeComponent implements OnInit{
   private pad(number: number): string {
     return number < 10 ? `0${number}` : number.toString();
   }
+
+
 }

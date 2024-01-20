@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, ViewChild, Input} from "@angular/core";
 import {ListingService} from "../../services/listing.service";
 import {Tag} from "../../models/Tag";
 import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
@@ -43,11 +43,13 @@ export class TrendingComponent {
   searchTags: Tag[] = [];
   selectedTag: any = null;
 
+  @Input() isStandalone: boolean = true;
+
   constructor(
     listingService: ListingService,
     tagService: TagService,
     languageService: LanguageService,
-    private router: Router
+    public router: Router
   ) {
     this.tagService = tagService;
     this.listingService = listingService;
@@ -128,7 +130,6 @@ export class TrendingComponent {
   }
 
   isSelected(tag: any): boolean {
-    console.log(this.selectedTag)
     return this.selectedTag == tag.id
   }
 }
