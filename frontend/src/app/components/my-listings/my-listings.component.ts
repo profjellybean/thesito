@@ -6,7 +6,10 @@ import {Listing} from "../../models/Listing";
 import {User} from "../../models/User";
 import {QualificationType, UserType} from "../../models/Enums";
 import {Tag} from "../../models/Tag";
-import {instanceOf} from "graphql/jsutils/instanceOf";
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-my-listings',
@@ -27,7 +30,10 @@ export class MyListingsComponent implements OnInit{
 
   constructor(private router: Router,
               private listingService: ListingService,
-              private authService: AuthService
+              private authService: AuthService,
+              private dialog: MatDialog,
+              private translateService: TranslateService,
+              private snackBar: MatSnackBar
 
   ) {
     this.user = {
@@ -124,6 +130,43 @@ export class MyListingsComponent implements OnInit{
         this.error= true;
         this.errorMessage = error.message;
       }
+    });
+  }
+
+  onDeleteButtonClick(listing: Listing): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: { title: listing.title }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // User confirmed deletion
+        const index = this.listings.indexOf(listing);
+
+        this.listingService.deleteListingById(Number(listing.id)).subscribe({
+          next: () => {
+            this.showSuccessMessage();
+            this.listings.splice(index, 1);
+          },
+          error: (error) => {
+            this.error = true;
+            this.errorMessage = error.message;
+          },
+        });
+      }
+    });
+  }
+
+  private showSuccessMessage(): void {
+    const translatedMessage = this.translateService.instant('listingDeletedSuccessfully');
+    const translatedClose = this.translateService.instant('close');
+
+    // Open the snackbar with the translated message
+    this.snackBar.open(translatedMessage, translatedClose, {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      panelClass: ['snackbar-success']
     });
   }
 

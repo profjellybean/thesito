@@ -24,8 +24,6 @@
 }
 
 
-
-
 .apply-button {
   width: 100%;
   margin-top: 20px;
@@ -79,15 +77,37 @@ hr {
 .btn-primary {
   background-color: #5AB779;
   color: #F7F6F2;
+
+}
+
+.button-delete {
+  color: #fff;
+  background-color: #DA3E52;
+  border: 1px solid #DA3E52;
+  cursor: pointer;
+  border-radius: 5px;
+
+  /* New styles for positioning */
+  position: absolute;
+  right: 20px;
+}
+
+.button-delete:hover {
+  background-color: #c9302c;
 }
 
 .btn-primary:hover {
   background-color: #131314;
 }
 
-.btn-blue {
+.button-blue {
   background-color: #3250A8;
   color: #F7F6F2;
+  border: 1px solid #3250A8;
+  cursor: pointer;
+  border-radius: 5px;
+  position: absolute;
+  right: 60px;
 }
 
 .btn-blue:hover {

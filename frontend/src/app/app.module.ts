@@ -52,9 +52,16 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatCardModule} from "@angular/material/card";
 import { AdminListigsOfUserComponent } from './components/admin-listigs-of-user/admin-listigs-of-user.component';
-import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogActions, MatDialogClose} from "@angular/material/dialog";
+import {
+  MAT_DIALOG_DATA,
+  MAT_DIALOG_DEFAULT_OPTIONS,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent, MatDialogTitle
+} from "@angular/material/dialog";
 import {MatMenuModule} from "@angular/material/menu";
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
+import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -86,7 +93,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FavouritesListComponent,
     AdminPageComponent,
     AdminListigsOfUserComponent,
-    AdminUserListComponent
+    AdminUserListComponent,
+    DeleteConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -124,7 +132,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCardModule,
     MatMenuModule,
     MatDialogActions,
-    MatDialogClose
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogTitle
   ],
   providers: [
     LanguageService,

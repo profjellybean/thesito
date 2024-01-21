@@ -10,8 +10,15 @@
         <div class="d-flex">
           <h2 class="listing-title">{{ listing.title }}</h2>
           <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
-        </div>
+          <button type="button" class="button-blue" *ngIf="ownership" (click)="editListing()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button type="button" class="button-delete" *ngIf="ownership" (click)="onDeleteButtonClick(listing)">
+            <mat-icon>delete</mat-icon>
+          </button>
 
+
+        </div>
 
 
         <!-- Display createdAt on the left with a smaller font -->
@@ -82,12 +89,9 @@
         </div>
 
         <div class="row mb-3">
-          <div class="col-md-6">
-            <button type="button" class="btn btn-blue" *ngIf="ownership" (click)="editListing()">
-              {{ 'edit' | translate }}
-            </button>
-          </div>
-          <div class="col-md-6 text-end mt-auto">
+
+
+          <div class="col-md-12 text-end mt-auto">
             <!-- Apply button -->
             <button class="btn btn-primary align-content-end" *ngIf="canApply" (click)="openApplicationDialog()">
               {{ 'apply' | translate }}

@@ -10,6 +10,8 @@ import {ListingService} from "../../services/listing.service";
 import {User} from "../../models/User";
 import {UserType} from "../../models/Enums";
 import { LanguageService } from '../../services/language.service';
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-detail',
@@ -35,6 +37,7 @@ export class DetailComponent implements OnInit{
       private dialog: MatDialog,
       private translateService: TranslateService,
       private listingService: ListingService,
+      private snackBar: MatSnackBar,
       private userService: UserService,
       private authService: AuthService,
       private languageService: LanguageService,
@@ -64,6 +67,41 @@ export class DetailComponent implements OnInit{
         this.error = true;
         this.formatErrorMessage('applicationError')
       }
+    });
+  }
+
+  onDeleteButtonClick(listing: Listing): void {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: { title: listing.title }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.listingService.deleteListingById(Number(listing.id)).subscribe({
+          next: () => {
+            this.showSuccessMessage();
+            // Navigate to the home page after successful deletion
+            this.router.navigate(['/home']);
+          },
+          error: (error) => {
+            this.error = true;
+            this.errorMessage = error.message;
+          },
+        });
+      }
+    });
+  }
+
+  private showSuccessMessage(): void {
+    const translatedMessage = this.translateService.instant('listingDeletedSuccessfully');
+    const translatedClose = this.translateService.instant('close');
+
+    // Open the snackbar with the translated message
+    this.snackBar.open(translatedMessage, translatedClose, {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      panelClass: ['snackbar-success']
     });
   }
 

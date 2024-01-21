@@ -215,6 +215,19 @@ export class ListingService {
     });
   }
 
+  deleteListingById(id: number): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: gql`
+      mutation DeleteListing($id: BigInteger!) {
+        deleteListingById(id: $id)
+      }
+    `,
+      variables: {
+        id: id,
+      },
+    });
+  }
+
   getAllListingUniversities(): Observable<string[]> {
     return this.apollo
       .query<{ getAllListingUniversities: string[] }>({
