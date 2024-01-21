@@ -252,6 +252,23 @@ public class ListingService {
     }
 
     @Transactional
+    public List<String> getAllUniversities(String query) {
+        LOG.debug("getAllUniversities");
+        return listingRepository
+                .find("""
+                                select distinct l.university
+                                from Listing l
+                                where l.university is not null
+                                  and l.university like :query
+                                """,
+                        Parameters.with("query", "%" + query + "%"))
+                .project(ListingUniversityView.class)
+                .list().stream()
+                .map(luv -> luv.university)
+                .toList();
+    }
+
+    @Transactional
     public List<String> getAllCompanies() {
         LOG.debug("getAllCompanies");
         return listingRepository
