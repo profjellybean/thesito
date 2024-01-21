@@ -290,9 +290,13 @@ public class ListingController {
 
     @Query("getAllListingUniversities")
     @Description("Fetches a list of all universities that listings are assigned to")
-    public List<String> getAllListingUniversities() {
+    public List<String> getAllListingUniversities(Optional<String> query) {
         LOG.info("getAllListingUniversities");
-        return listingService.getAllUniversities();
+        if (query.isPresent()) {
+            return listingService.getAllUniversities(query.get());
+        } else {
+            return listingService.getAllUniversities();
+        }
     }
 
     @Query("getAllListingCompanies")

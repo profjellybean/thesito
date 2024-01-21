@@ -7,6 +7,7 @@ import {Tag} from "../../models/Tag";
 import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
 import {Observable} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
+import {UniversityService} from "../../services/university.service";
 
 @Component({
   selector: 'app-all',
@@ -18,6 +19,7 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 // TODO language toggle
 export class AllComponent {
   listingService: ListingService;
+  universityService: UniversityService;
   listings: Listing[] = [];
   currentPage: number = 1;
   listingsPerPage: number = 10;
@@ -38,13 +40,18 @@ export class AllComponent {
   searchCompany: string = '';
   @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
 
-  constructor(listingService: ListingService, private router: Router) {
+  constructor(
+    listingService: ListingService,
+    universityService: UniversityService,
+    private router: Router
+  ) {
     this.listingService = listingService;
+    this.universityService = universityService;
   }
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
-    this.allUniversities = this.listingService.getAllListingUniversities()
+    this.allUniversities = this.universityService.getAllListingUniversities()
     this.allCompanies = this.listingService.getAllListingCompanies()
   }
 

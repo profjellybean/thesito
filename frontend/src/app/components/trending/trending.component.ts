@@ -9,6 +9,7 @@ import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {TagService} from "../../services/tag.service";
 import {LanguageService} from "../../services/language.service";
+import {UniversityService} from "../../services/university.service";
 
 @Component({
   selector: 'app-trending',
@@ -20,6 +21,7 @@ export class TrendingComponent {
   tagService: TagService;
   listingService: ListingService;
   languageService: LanguageService;
+  universityService: UniversityService;
   trendingListings: Listing[] = [];
   currentPage: number = 1;
   listingsPerPage: number = 10;
@@ -47,16 +49,18 @@ export class TrendingComponent {
     listingService: ListingService,
     tagService: TagService,
     languageService: LanguageService,
+    universityService: UniversityService,
     private router: Router
   ) {
     this.tagService = tagService;
     this.listingService = listingService;
     this.languageService = languageService;
+    this.universityService = universityService;
   }
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
-    this.allUniversities = this.listingService.getAllListingUniversities()
+    this.allUniversities = this.universityService.getAllListingUniversities()
     this.allCompanies = this.listingService.getAllListingCompanies()
     this.languageService.currentLanguage$.subscribe((language) => {
       this.currentLanguage = language;
