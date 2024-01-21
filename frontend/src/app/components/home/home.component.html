@@ -12,10 +12,8 @@
         {{ formatDate(notification.createdAt) }}: new interesting listing - {{ notification.connectedListing.title }}
       </div>
 
-      <!-- Container for the button -->
-      <div class="button-container" *ngIf="notifications.length > 3">
-        <button (click)="this.router.navigate(['/user/notifications'])">See All</button>
-      </div>
+      <span class="down-arrow" (click)="this.router.navigate(['/user/notifications'])">&#9660;</span>
+
     </div>
 
     <div  *ngIf="favoritesLoaded" class="bottom-right-section card" (click)="this.router.navigate(['/user/favourites'])">
@@ -25,10 +23,8 @@
         <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
       </div>
 
-      <!-- Button to navigate to all favourites -->
-      <div class="button-container" *ngIf="favourites.length > 3">
-        <button (click)="this.router.navigate(['/user/favourites'])">See All</button>
-      </div>
+      <span class="down-arrow" (click)="this.router.navigate(['/user/favourites'])">&#9660;</span>
+
     </div>
   </div>
 </div>

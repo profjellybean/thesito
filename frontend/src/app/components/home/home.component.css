@@ -66,6 +66,19 @@ mat-chip.selected-chip {
   background-color: #0056b3; /* Darker shade on hover */
 }
 
+.down-arrow {
+  cursor: pointer;
+  color: black; /* or any color you want */
+  align-self: center;
+
+  /* additional styling as needed */
+}
+
+.down-arrow:hover {
+  transform: scale(1.2); /* Scales up the card slightly */
+  z-index: 30; /* Ensure the card is above other elements */
+}
+
 .notification-count {
   background-color: red;
   color: white;
