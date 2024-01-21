@@ -90,7 +90,8 @@ public class ListingController {
             throw new GraphQLException(e.getMessage());
         }
     }
-//    @RolesAllowed("ListingConsumer") TODO: change permissions sooner or later
+
+    //    @RolesAllowed("ListingConsumer") TODO: change permissions sooner or later
     @Query("simpleSearch")
     @PermitAll
     public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit, Boolean active) {
@@ -122,11 +123,11 @@ public class ListingController {
                 )
                 .fetch(offset.orElse(0), limit.orElse(100));
 
-       GraphQLSearchResult searchResult = new GraphQLSearchResult();
-       System.out.println();
-       searchResult.setListings(query.hits());
-       searchResult.setTotalHitCount(query.total().hitCount());
-       return searchResult;
+        GraphQLSearchResult searchResult = new GraphQLSearchResult();
+        System.out.println();
+        searchResult.setListings(query.hits());
+        searchResult.setTotalHitCount(query.total().hitCount());
+        return searchResult;
     }
 
     @Mutation("applyToListing")
@@ -148,12 +149,12 @@ public class ListingController {
                                               Optional<Qualification> qualification, Optional<String> university,
                                               Optional<String> company,
                                               Set<Long> tagIds,
-                                              Optional <Long> owner_id,
+                                              Optional<Long> owner_id,
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
         LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
         PredicateFinalStep fullTextPredicate = textPattern.isPresent() ?
-                predicateFactory.simpleQueryString() .fields("title", "details") .matching(textPattern.get()) :
+                predicateFactory.simpleQueryString().fields("title", "details").matching(textPattern.get()) :
                 predicateFactory.matchAll();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -271,6 +272,18 @@ public class ListingController {
             return listingService.getListingById(id);
         } catch (ServiceException e) {
             LOG.error("Error in getListingById: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
+    @Mutation
+    @Description("Deletes a listing and associated entities in cascade")
+    public void deleteListingById(long id) throws GraphQLException {
+        LOG.info("deleteListingById");
+        try {
+            listingService.deleteListingById(id);
+        } catch (ServiceException e) {
+            LOG.error("Error in deleteListingById: " + e.getMessage());
             throw new GraphQLException(e.getMessage());
         }
     }
