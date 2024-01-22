@@ -228,28 +228,17 @@ export class ListingService {
     });
   }
 
-  getAllListingUniversities(): Observable<string[]> {
-    return this.apollo
-      .query<{ getAllListingUniversities: string[] }>({
-        query: gql`
-          query getAllListingUniversities{
-            getAllListingUniversities
-          }
-        `,
-      })
-      .pipe(
-        map((result) => result.data.getAllListingUniversities)
-      );
-  }
-
-  getAllListingCompanies(): Observable<string[]> {
+  getAllListingCompanies(query: string | null = null): Observable<string[]> {
     return this.apollo
       .query<{ getAllListingCompanies: string[] }>({
         query: gql`
-          query getAllListingCompanies{
-            getAllListingCompanies
+          query getAllListingCompanies($query: String){
+            getAllListingCompanies(query: $query)
           }
         `,
+        variables: {
+          query: query
+        },
       })
       .pipe(
         map((result) => result.data.getAllListingCompanies)

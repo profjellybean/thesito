@@ -66,7 +66,17 @@ export class AllComponent implements OnInit {
         return this.universityService.getAllListingUniversities(value);
       })
     ).subscribe(value => this.allUniversities = of(value));
-    this.allCompanies = this.listingService.getAllListingCompanies();
+    this.searchCompanyControl.setValue(this.searchCompany);
+    this.searchCompanyControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap(value => {
+        // debug: print the allListingCompanies result
+        this.listingService.getAllListingCompanies(value).subscribe(res => console.log(value + ":" + res))
+        return this.listingService.getAllListingCompanies(value);
+      })
+    ).subscribe(value => this.allCompanies = of(value));
   }
 
   performSearch(): void {
