@@ -10,6 +10,8 @@
   "cancel": "Abbrechen",
   "confirmDeletion": "Löschung bestätigen",
   "listingDeletedSuccessfully": "Ausschreibung erfolgreich gelöscht",
+  "listingRemovedFromFavourites": "Ausschreibung aus den Favoriten entfernt",
+  "undo": "Rückgängig machen",
   "confirmEmail": "Email bestätigen",
   "confirmPassword": "Passwort bestätigen",
   "email": "Email",

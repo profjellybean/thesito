@@ -38,6 +38,8 @@
   "tagError": "Select at least three tags",
   "qualificationError": "Select a qualification",
   "listingDeletedSuccessfully": "Listing deleted successfully",
+  "listingRemovedFromFavourites": "Listing removed from favourites",
+  "undo": "Undo",
   "pwError": "Password must be at least 8 characters long and contain at least one letter and one number",
   "emailMatchError": "Emails do not match",
   "pwMatchError": "Passwords do not match",

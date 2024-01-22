@@ -39,7 +39,7 @@
       <div class="row listing equal-height" *ngFor="let listing of favourites" style="margin-bottom: 15px;">
         <!-- Include the app-user-favourites component with listing_id as an input -->
         <div class="col  col-md-1 d-flex align-items-center justify-content-center" >
-          <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
+          <app-user-favourites (click)="removeFromFavorites(listing.id)" [listing_id]="listing.id"></app-user-favourites>
         </div>
 
         <div class="col  col-md-5 d-flex align-items-center justify-content-center" style="cursor: pointer" (click)="goToListing(listing.id)" >
