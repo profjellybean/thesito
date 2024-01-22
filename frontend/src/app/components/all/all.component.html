@@ -39,7 +39,7 @@
         <div *ngIf="institutionType === 'university'">
           <mat-form-field class="example-full-width">
             <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
-            <input matInput [(ngModel)]="searchUniversity" [matAutocomplete]="auto">
+            <input matInput [formControl]="searchUniversityControl" [matAutocomplete]="auto">
             <mat-autocomplete (optionSelected)="onUniversitySelect($event)" #auto="matAutocomplete">
               <mat-option *ngFor="let university of allUniversities | async" [value]="university">
                 {{ university }}
@@ -50,7 +50,7 @@
         <div *ngIf="institutionType === 'company'">
           <mat-form-field class="example-full-width">
             <mat-label>{{ 'companyName' | translate }}</mat-label>
-            <input matInput [(ngModel)]="searchCompany" [matAutocomplete]="auto">
+            <input matInput [formControl]="searchCompanyControl" [matAutocomplete]="auto">
             <mat-autocomplete (optionSelected)="onCompanySelect($event)" #auto="matAutocomplete">
               <mat-option *ngFor="let company of allCompanies | async" [value]="company">
                 {{ company }}

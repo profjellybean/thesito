@@ -1,13 +1,14 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Listing} from "../../models/Listing";
 import {ListingService} from "../../services/listing.service";
 import {QualificationType} from "../../models/Enums";
 import {Router} from "@angular/router";
 import {Tag} from "../../models/Tag";
 import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
-import {Observable} from "rxjs";
+import {debounceTime, distinctUntilChanged, Observable, of, startWith, switchMap} from "rxjs";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {UniversityService} from "../../services/university.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-all',
@@ -17,7 +18,7 @@ import {UniversityService} from "../../services/university.service";
 
 
 // TODO language toggle
-export class AllComponent {
+export class AllComponent implements OnInit {
   listingService: ListingService;
   universityService: UniversityService;
   listings: Listing[] = [];
@@ -38,6 +39,8 @@ export class AllComponent {
   allCompanies: Observable<string[]>;
   searchUniversity: string = '';
   searchCompany: string = '';
+  searchUniversityControl: FormControl = new FormControl();
+  searchCompanyControl: FormControl = new FormControl();
   @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
 
   constructor(
@@ -51,8 +54,19 @@ export class AllComponent {
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
-    this.allUniversities = this.universityService.getAllListingUniversities()
-    this.allCompanies = this.listingService.getAllListingCompanies()
+    // this.allUniversities = this.universityService.getAllListingUniversities()
+    this.searchUniversityControl.setValue(this.searchUniversity);
+    this.searchUniversityControl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200),
+      distinctUntilChanged(),
+      switchMap(value => {
+        // debug: print the allListingUniversities result
+        this.universityService.getAllListingUniversities(value).subscribe(res => console.log(value + ":" + res))
+        return this.universityService.getAllListingUniversities(value);
+      })
+    ).subscribe(value => this.allUniversities = of(value));
+    this.allCompanies = this.listingService.getAllListingCompanies();
   }
 
   performSearch(): void {
@@ -114,10 +128,12 @@ export class AllComponent {
   }
 
   onUniversitySelect($event: MatAutocompleteSelectedEvent) {
+    this.searchUniversity = $event.option.value;
     this.performSearch();
   }
 
   onCompanySelect($event: MatAutocompleteSelectedEvent) {
+    this.searchCompany = $event.option.value;
     this.performSearch();
   }
 }

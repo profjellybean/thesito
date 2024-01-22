@@ -40,6 +40,9 @@ export class UniversityService {
           getAllListingUniversities(query: $query)
         }
       `,
+      variables: {
+        query: query
+      },
     })
     .pipe(
       map((result) => result.data.getAllListingUniversities)
