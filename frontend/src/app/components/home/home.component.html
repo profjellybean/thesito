@@ -2,21 +2,28 @@
   <div class="left-section card">
     <h2>Trending</h2>
     <app-trending [isStandalone]="false"></app-trending>
+    <span class="down-arrow" (click)="this.router.navigate(['/trending'])">&#9660;</span>
   </div>
 
   <div class="right-section">
-    <div *ngIf="notificationsLoaded" class="top-right-section card" (click)="this.router.navigate(['/user/notifications'])">
+    <div *ngIf="notificationsLoaded" class="top-right-section card">
       <h2>Inbox <span class="notification-count">{{ notifications.length }}</span></h2>
 
       <div *ngFor="let notification of notifications | slice:0:3" class="card zoom-card" (click)="this.router.navigate(['/listing', notification.connectedListing.id])">
-        {{ formatDate(notification.createdAt) }}: new interesting listing - {{ notification.connectedListing.title }}
+        <div class="notification-header">
+          <div class="icon-with-text">
+            <mat-icon>email</mat-icon>
+            New matching listing: {{ notification.connectedListing.title }}
+          </div>
+          <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
+        </div>
       </div>
 
       <span class="down-arrow" (click)="this.router.navigate(['/user/notifications'])">&#9660;</span>
 
     </div>
 
-    <div  *ngIf="favoritesLoaded" class="bottom-right-section card" (click)="this.router.navigate(['/user/favourites'])">
+    <div  *ngIf="favoritesLoaded" class="bottom-right-section card">
       <h2>Favorites</h2>
       <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item"  >
        <!-- <app-user-favourites [listing_id]="favourite.id"></app-user-favourites>-->

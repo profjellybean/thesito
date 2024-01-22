@@ -16,8 +16,29 @@ mat-chip.selected-chip {
 
 .container {
   display: flex;
-  height: 100vh; /* Adjust height as needed */
+  height: auto; /* Adjust height as needed */
   gap: 20px; /* This creates space between the flex items */
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between; /* Aligns children to each end */
+  align-items: center;
+}
+
+.date-text {
+  font-size: 0.8rem; /* Smaller font size */
+  color: grey; /* Grey color */
+  margin-top: -20px; /* Adjust as needed to align properly */
+}
+
+.icon-with-text {
+  display: flex;
+  align-items: center; /* Centers the icon vertically with the text */
+}
+
+mat-icon {
+  margin-right: 8px; /* Adds some space between the icon and the text */
 }
 
 .left-section, .top-right-section, .bottom-right-section {
@@ -32,6 +53,7 @@ mat-chip.selected-chip {
 .left-section {
   flex-grow: 2;
   width: calc(50% - 20px); /* Adjust width ratio as needed, accounting for the gap */
+  position: relative; /* Add relative positioning to the parent */
 }
 
 .right-section {
@@ -70,6 +92,11 @@ mat-chip.selected-chip {
   cursor: pointer;
   color: black; /* or any color you want */
   align-self: center;
+  position: absolute; /* Absolute position for the arrow */
+  bottom: 10px; /* Position it 10px from the bottom */
+  left: 50%; /* Center horizontally */
+
+
 
   /* additional styling as needed */
 }
