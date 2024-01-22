@@ -282,6 +282,23 @@ public class ListingService {
     }
 
     @Transactional
+    public List<String> getAllCompanies(String query) {
+        LOG.debug("getAllCompanies");
+        return listingRepository
+                .find("""
+                                select distinct l.company
+                                from Listing l
+                                where l.company is not null
+                                  and lower(l.company) like :query
+                                """,
+                        Parameters.with("query", "%" + query.toLowerCase() + "%"))
+                .project(ListingCompanyView.class)
+                .list().stream()
+                .map(lcv -> lcv.company)
+                .toList();
+    }
+
+    @Transactional
     public void deleteListingById(long id) throws ServiceException {
         LOG.debug("deleteListingById: " + id);
         try {

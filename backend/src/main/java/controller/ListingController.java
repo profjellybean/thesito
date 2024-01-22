@@ -301,9 +301,13 @@ public class ListingController {
 
     @Query("getAllListingCompanies")
     @Description("Fetches a list of all companies that listings are assigned to")
-    public List<String> getAllListingCompanies() {
+    public List<String> getAllListingCompanies(Optional<String> query) {
         LOG.info("getAllListingCompanies");
-        return listingService.getAllCompanies();
+        if (query.isPresent()) {
+            return listingService.getAllCompanies(query.get());
+        } else {
+            return listingService.getAllCompanies();
+        }
     }
 
 }
