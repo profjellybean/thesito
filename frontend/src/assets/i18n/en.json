@@ -102,5 +102,8 @@
   "deleteListing": "Delete listing",
   "noListingsFound": "No listings found",
   "makeAdmin": "Make admin",
-  "users": "Users"
+  "users": "Users",
+  "newApplicationForListing": "New application for listing:",
+  "inbox": "Inbox",
+  "newMatchingListing": "New matching listing:"
 }

@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit{
   selectedTag: any = null;
 
   constructor(public router: Router, private notificationService: NotificationService,
-              private authService: AuthService, private userService: UserService,
+              public authService: AuthService, private userService: UserService,
               private tagService: TagService) {
   }
 

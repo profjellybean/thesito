@@ -1,4 +1,4 @@
-<div class="user-details-container background">
+<div *ngIf="isStandalone" class="user-details-container background">
   <div class="container">
     <div class="center-card">
       <div class="col-md-6 mt-5 card-align">
@@ -33,4 +33,19 @@
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="!isStandalone">
+  <!-- Compact view for homepage -->
+  <button *ngIf="isLoggedIn() && (isProducer() || isAdministartor())" class="btn btn-primary create-listing-btn" (click)="goToCreateListing()">
+    {{ 'createListing' | translate }}
+  </button>
+  <div *ngFor="let listing of listings | slice:0:3" class="compact-listing-card">
+    <!-- Compact card content -->
+    <div class="listing-title">{{listing.title}}</div>
+    <div class="controls">
+      <a [routerLink]="['/listing/edit/', listing.id]" class="edit-button" role="button" data-toggle="tooltip" data-placement="bottom">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <mat-slide-toggle [color]="'primary'" class="toggle-slider" [checked]="listing.active"  (change)="toggleListingStatus(listing)" (click)="$event.stopPropagation()"></mat-slide-toggle>
+    </div>
 </div>

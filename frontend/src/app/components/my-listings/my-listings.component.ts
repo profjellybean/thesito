@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ListingService} from "../../services/listing.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
@@ -24,6 +24,7 @@ export class MyListingsComponent implements OnInit{
   errorMessage = '';
 
   listingsLoaded = false;
+  @Input() isStandalone: boolean = true;
 
   constructor(private router: Router,
               private listingService: ListingService,
