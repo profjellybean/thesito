@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {ListingService} from "../../services/listing.service";
 import {Tag} from "../../models/Tag";
 import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
@@ -9,6 +9,7 @@ import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {TagService} from "../../services/tag.service";
 import {LanguageService} from "../../services/language.service";
+import {UniversityService} from "../../services/university.service";
 
 @Component({
   selector: 'app-trending',
@@ -20,6 +21,7 @@ export class TrendingComponent {
   tagService: TagService;
   listingService: ListingService;
   languageService: LanguageService;
+  universityService: UniversityService;
   trendingListings: Listing[] = [];
   currentPage: number = 1;
   listingsPerPage: number = 10;
@@ -49,16 +51,18 @@ export class TrendingComponent {
     listingService: ListingService,
     tagService: TagService,
     languageService: LanguageService,
-    public router: Router
+    public router: Router,
+    universityService: UniversityService
   ) {
     this.tagService = tagService;
     this.listingService = listingService;
     this.languageService = languageService;
+    this.universityService = universityService;
   }
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
-    this.allUniversities = this.listingService.getAllListingUniversities()
+    this.allUniversities = this.universityService.getAllListingUniversities()
     this.allCompanies = this.listingService.getAllListingCompanies()
     this.languageService.currentLanguage$.subscribe((language) => {
       this.currentLanguage = language;

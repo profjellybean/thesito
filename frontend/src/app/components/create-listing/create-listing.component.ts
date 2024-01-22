@@ -96,9 +96,7 @@ export class CreateListingComponent implements OnInit {
 
 
   universitySearch(query: string): Observable<string[]> {
-    return this.universityService.getUniversities(query).pipe(
-      map((response: { items: any[] }) => response.items.map((item: any) => item.name)),
-    );
+    return this.universityService.getUniversities(query);
   }
 
   getQualificationTypes(): string[] {
@@ -134,8 +132,8 @@ export class CreateListingComponent implements OnInit {
         this.create(listing);
       } else {
         this.universityService.getUniversities(this.createListingForm.get('otherCondition')?.value).subscribe(
-          (response: { items: any[] }) => {
-            const universities = response.items.map((item: any) => item.name);
+          (response) => {
+            const universities = response;
             const selectedUniversity = this.createListingForm.get('otherCondition')?.value;
 
             // Check if the selected university is in the list of options

@@ -145,10 +145,17 @@
   flex: 1;
   text-align: left;
 }
+.listing-container .delete-button {
+  color: #DA3E52;
+  padding-top: 5px;
+  padding-right: 10px;
+}
+
 
 .edit-button{
   color: black;
-  padding-right: 10px;
+  padding-top: 5px;
+  padding-right: 5px;
 }
 
 .create-listing-btn{

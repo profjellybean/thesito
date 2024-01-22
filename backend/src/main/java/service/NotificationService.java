@@ -48,6 +48,11 @@ public class NotificationService {
                 .setParameter("userId", user)
                 .getResultList();
     }
+
+    @Transactional
+    public Notification getNotificationById(Long id) {
+        return notificationRepository.findById(id);
+    }
     @Transactional
     public void deleteUserFromNotification(Long userId, Long notificationId) throws ServiceException {
         User user = this.userRepository.findById(userId);

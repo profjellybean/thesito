@@ -18,10 +18,16 @@
                       <div class="creation-date">{{listing.createdAt | date }}</div>
                       <div class="listing-title">{{listing.title}}</div>
                       <div class="controls">
+
+                        <mat-slide-toggle [color]="'primary'" class="toggle-slider" [checked]="listing.active"  (change)="toggleListingStatus(listing)" (click)="$event.stopPropagation()"></mat-slide-toggle>
                           <a [routerLink]="['/listing/edit/', listing.id]" class="edit-button" role="button" data-toggle="tooltip" data-placement="bottom">
                             <mat-icon>edit</mat-icon>
                           </a>
-                          <mat-slide-toggle [color]="'primary'" class="toggle-slider" [checked]="listing.active"  (change)="toggleListingStatus(listing)" (click)="$event.stopPropagation()"></mat-slide-toggle>
+                        <a class="delete-button" role="button" (click)="$event.stopPropagation(); onDeleteButtonClick(listing)" data-toggle="tooltip" data-placement="bottom">
+                          <mat-icon>delete</mat-icon>
+                        </a>
+
+
                       </div>
                     </div>
                   </div>

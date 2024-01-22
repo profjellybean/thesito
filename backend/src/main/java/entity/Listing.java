@@ -35,6 +35,7 @@ public class Listing extends PanacheEntityBase {
     @Column(name = "qualification_type", columnDefinition = "qualification_type")
     @ColumnTransformer(write = "?::qualification_type")
     private Qualification requirement;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "listing_tags",
@@ -42,6 +43,13 @@ public class Listing extends PanacheEntityBase {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     @IndexedEmbedded(structure = ObjectStructure.NESTED, includeEmbeddedObjectId = true)
     private Collection<Tag> tags;
+
+    @OneToMany(mappedBy = "connectedListing", cascade = CascadeType.REMOVE)
+    private Collection<Notification> notifications;
+
+    @ManyToMany(mappedBy = "favourites", fetch = FetchType.EAGER)
+    private Collection<User> favourites;
+
 
     @GenericField(sortable = Sortable.YES)
     @Column(name = "created_at")

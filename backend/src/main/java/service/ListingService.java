@@ -11,6 +11,7 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import miscellaneous.ListingValidator;
 import miscellaneous.ServiceException;
@@ -50,7 +51,7 @@ public class ListingService {
     }
 
     @Transactional
-    public List<Listing> getAllListingsFromUserWithId(long id){
+    public List<Listing> getAllListingsFromUserWithId(long id) {
         LOG.debug("getAllListingsFromUserWithId: " + id);
         User user = this.userRepository.findById(id);
         return this.listingRepository.find("owner", user).list();
@@ -90,7 +91,7 @@ public class ListingService {
         // get all relevant Subtags
         Set<Tag> relevantTags = new HashSet<>();
         if (listing.getTags() != null) {
-            for (Tag tag: listing.getTags()){
+            for (Tag tag : listing.getTags()) {
                 relevantTags.addAll(this.tagService.getAllSubtags(tag.id));
             }
         }
@@ -110,8 +111,8 @@ public class ListingService {
         String text = "A new listing, matching at least one of your interests, has been created!<br>"
                 + "Title: " + listing.getTitle()
                 + "<br>You can find it <a href=\"http://localhost:4200/listing/" + listing.getId() + "\">here</a>.";
-        for (User user : relevantUsers){
-            if (user.getReceiveEmails()){
+        for (User user : relevantUsers) {
+            if (user.getReceiveEmails()) {
                 mailService.sendEmail(user.getEmail(), subject, text, null);
                 LOG.info("Mail sent to " + user.getEmail());
             }
@@ -148,7 +149,7 @@ public class ListingService {
         mailService.sendEmail(listingAuthor.getEmail(), subject, text, applicationUser.getEmail());
     }
 
-   	public List<Listing> find(Optional<Integer> pageOffset, Optional<Integer> pageLimit, Optional<String> title, Optional<String> details, Optional<Qualification> qualificationType, Optional<Date> startDate, Optional<Date> endDate, Optional<Boolean> active){
+    public List<Listing> find(Optional<Integer> pageOffset, Optional<Integer> pageLimit, Optional<String> title, Optional<String> details, Optional<Qualification> qualificationType, Optional<Date> startDate, Optional<Date> endDate, Optional<Boolean> active) {
         LOG.debug("find");
         var query = new StringBuilder("1 = 1"); // This is always true, used as a starting point
 
@@ -170,22 +171,23 @@ public class ListingService {
             params.and("requirement", qt.name());
         });
 
-        if (startDate.isPresent() && endDate.isPresent()){
-           query.append(" and createdAt BETWEEN :startDate AND :endDate");
-           params.and("startDate", startDate.get())
-                   .and("endDate", endDate.get());
-       };
-        if (pageOffset.isPresent() && pageLimit.isPresent()){
+        if (startDate.isPresent() && endDate.isPresent()) {
+            query.append(" and createdAt BETWEEN :startDate AND :endDate");
+            params.and("startDate", startDate.get())
+                    .and("endDate", endDate.get());
+        }
+        ;
+        if (pageOffset.isPresent() && pageLimit.isPresent()) {
             Page page = Page.of(pageOffset.get() / pageLimit.get(), pageLimit.get());
             return listingRepository.find(query.toString(), params).page(page).list();
         }
 
-        if (active.isPresent()){
+        if (active.isPresent()) {
             query.append(" and active = :active");
             params.and("active", active.get());
         }
 
-       return listingRepository.find(query.toString(), params).list();
+        return listingRepository.find(query.toString(), params).list();
     }
 
     @Transactional
@@ -252,6 +254,23 @@ public class ListingService {
     }
 
     @Transactional
+    public List<String> getAllUniversities(String query) {
+        LOG.debug("getAllUniversities");
+        return listingRepository
+                .find("""
+                                select distinct l.university
+                                from Listing l
+                                where l.university is not null
+                                  and l.university like :query
+                                """,
+                        Parameters.with("query", "%" + query + "%"))
+                .project(ListingUniversityView.class)
+                .list().stream()
+                .map(luv -> luv.university)
+                .toList();
+    }
+
+    @Transactional
     public List<String> getAllCompanies() {
         LOG.debug("getAllCompanies");
         return listingRepository
@@ -262,6 +281,27 @@ public class ListingService {
                 .toList();
     }
 
+    @Transactional
+    public void deleteListingById(long id) throws ServiceException {
+        LOG.debug("deleteListingById: " + id);
+        try {
+            Listing listing = listingRepository.findById(id);
+            if (listing != null) {
+                if (listing.getFavourites() != null) {
+                    for (User user : listing.getFavourites()) {
+                        user.getFavourites().remove(listing);
+                    }
+                }
+                listingRepository.delete(listing);
+            } else {
+                throw new ServiceException("Listing not found");
+            }
+        } catch (EntityNotFoundException | IllegalStateException e) {
+            LOG.error("Error in deleteListingById: " + e.getMessage());
+            throw new ServiceException("Error deleting listing");
+        }
+    }
+
     @RegisterForReflection
     public record ListingUniversityView(String university) {
     }
@@ -269,7 +309,6 @@ public class ListingService {
     @RegisterForReflection
     public record ListingCompanyView(String company) {
     }
-
 
 
 }

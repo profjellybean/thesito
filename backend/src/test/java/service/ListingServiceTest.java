@@ -1,8 +1,10 @@
 package service;
 
 import entity.Listing;
+import entity.Notification;
 import entity.Tag;
 import entity.User;
+import enums.NotificationType;
 import enums.Qualification;
 import enums.UserType;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -10,19 +12,15 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import miscellaneous.ValidationException;
 import org.junit.jupiter.api.TestInstance;
 import persistence.DatabaseContainerMock;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,6 +37,9 @@ class ListingServiceTest {
 
     @Inject
     UserService userService;
+
+    @Inject
+    NotificationService notificationService;
 
     private User consumer;
     private User provider;
@@ -198,6 +199,160 @@ class ListingServiceTest {
             assertEquals(1, list2.size());
         });
     }
+
+    @Test
+    void deleteExistingListingShouldSucceed() throws ServiceException, ValidationException {
+
+        Listing listing = new Listing();
+        listing.setTitle("Title");
+        listing.setDetails("Listing details");
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setUniversity("University of Vienna");
+        listing.setCreatedAt(Date.from(java.time.Instant.now()));
+        listing.setActive(true);
+        listing.setOwner(provider3);
+
+
+        Listing savedListing = listingService.createListing(listing);
+        Long listingId = savedListing.getId();
+
+
+        assertDoesNotThrow(() -> listingService.deleteListingById(listingId));
+        assertNull(listingService.getListingById(listingId), "Listing should not exist after deletion");
+    }
+
+    @Test
+    void deleteExistingListingWithTagsShouldSucceed() throws ServiceException, ValidationException {
+        Tag tag1 = new Tag();
+        tag1.setLayer(1L);
+        tag1.setTitle_en("Tag 1");
+        tag1.setTitle_de("Tag 1");
+        tagService.createTag(tag1);
+
+        Tag tag2 = new Tag();
+        tag2.setLayer(2L);
+        tag2.setTitle_en("Tag 2");
+        tag2.setTitle_de("Tag 2");
+        tagService.createTag(tag2);
+
+        Listing listing = new Listing();
+        listing.setTitle("Listing title 2");
+        listing.setDetails("Listing details 2");
+        listing.setUniversity("University of Graz");
+        listing.setCompany(null);
+        listing.setActive(true);
+        listing.setOwner(provider);
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setCreatedAt(Date.from(java.time.Instant.now()));
+
+        List<Tag> tags = new ArrayList<>();
+        tags.add(tag1);
+        tags.add(tag2);
+        listing.setTags(tags);
+
+
+        Listing savedListing = listingService.createListing(listing);
+        Long listingId = savedListing.getId();
+
+
+        assertDoesNotThrow(() -> listingService.deleteListingById(listingId));
+
+        assertNull(listingService.getListingById(listingId), "Listing should not exist after deletion");
+
+        Tag tagAfterDeletion1 = tagService.getTagById(String.valueOf(tag1.id));
+         assertFalse(tagAfterDeletion1.getListings().contains(listing));
+
+        Tag tagAfterDeletion2 = tagService.getTagById(String.valueOf(tag2.id));
+        assertFalse(tagAfterDeletion2.getListings().contains(listing));
+
+    }
+
+
+    @Test
+    void deleteNonExistingListingShouldThrowException() {
+        // Arrange
+        long nonExistingListingId = 115L;
+
+        // Act and Assert
+        ServiceException exception = assertThrows(ServiceException.class, () ->
+                listingService.deleteListingById(nonExistingListingId));
+
+        assertEquals("Listing not found", exception.getMessage(),
+                "ServiceException should be thrown with the expected message");
+    }
+
+    @Test
+    void deleteExistingListingWithFavoritesShouldSucceed() throws ServiceException, ValidationException {
+        // Arrange
+        Listing listing = new Listing();
+        listing.setTitle("Titleeee 35");
+        listing.setDetails("Listing details");
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setUniversity("University of Vienna");
+        listing.setCreatedAt(Date.from(java.time.Instant.now()));
+        listing.setActive(true);
+        listing.setOwner(provider3);
+
+        Listing savedListing = listingService.createListing(listing);
+        Long listingId = savedListing.getId();
+
+        User user = new User();
+        user.setName("John Doe");
+        user.setEmail("john.doe@example.com");
+        user.setPassword("123456789Test");
+        user.setQualification(Qualification.Bachelors);
+        user.setUserType(UserType.ListingProvider);
+        userService.registerUser(user);
+
+        userService.toggleFavourite(user.getId(), listingId);
+
+        assertNotNull(userService.getUserById(user.getId()).getFavourites());
+
+        assertDoesNotThrow(() -> listingService.deleteListingById(listingId));
+
+        assertNull(listingService.getListingById(listingId), "Listing should not exist after deletion");
+
+        User updatedUser = userService.getUserById(user.getId());
+        assertFalse(updatedUser.getFavourites().contains(listing), "Listing should be removed from user's favorites");
+    }
+
+    @Test
+    void deleteListingWithAssociatedNotificationsShouldSucceed() throws ServiceException, ValidationException {
+        // Arrange
+        User user = new User();
+        user.setName("John Doe");
+        user.setEmail("john.doe279@example.com");
+        user.setPassword("123456789Test");
+        user.setQualification(Qualification.Bachelors);
+        user.setUserType(UserType.ListingProvider);
+        userService.registerUser(user);
+
+        Listing listing = new Listing();
+        listing.setTitle("Listing title");
+        listing.setDetails("Listing details");
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setUniversity("University of Vienna");
+        listing.setCreatedAt(Date.from(java.time.Instant.now()));
+        listing.setActive(true);
+        listing.setOwner(user);
+
+        Listing savedListing = listingService.createListing(listing);
+        Long listingId = savedListing.getId();
+
+        Notification notification = new Notification();
+        notification.setConnectedListing(savedListing);
+        notification.setNotificationType(NotificationType.Application);
+        notification.setCreatedAt(new Date());
+        notificationService.createNotification(notification);
+
+        assertDoesNotThrow(() -> listingService.deleteListingById(listingId));
+
+        assertNull(listingService.getListingById(listingId), "Listing should not exist after deletion");
+
+        Notification updatedListingNotification = notificationService.getNotificationById(notification.getId());
+        assertNull(updatedListingNotification, "Notification should be removed for the listing");
+    }
+
 
 
     @Test
