@@ -261,9 +261,9 @@ public class ListingService {
                                 select distinct l.university
                                 from Listing l
                                 where l.university is not null
-                                  and l.university like :query
+                                  and lower(l.university) like :query
                                 """,
-                        Parameters.with("query", "%" + query + "%"))
+                        Parameters.with("query", "%" + query.toLowerCase() + "%"))
                 .project(ListingUniversityView.class)
                 .list().stream()
                 .map(luv -> luv.university)
