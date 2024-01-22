@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, Input, ViewChild} from "@angular/core";
 import {ListingService} from "../../services/listing.service";
 import {Tag} from "../../models/Tag";
 import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
