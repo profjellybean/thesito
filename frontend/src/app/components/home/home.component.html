@@ -67,3 +67,19 @@
 
   </div>
 </div>
+
+<div *ngIf="authService.isAdministrator()" class="container">
+  <div class="left-section">
+    <h2>{{ 'manageUsers' | translate }}</h2>
+    <app-admin-user-list [isStandalone]="false"></app-admin-user-list>
+    <span class="down-arrow" (click)="this.router.navigate(['/admin/users'])">&#9660;</span>
+  </div>
+
+  <div class="right-section">
+    <div *ngIf="notificationsLoaded" class="top-right-section card">
+      <h2>{{ 'manageListings' | translate }}</h2>
+<!--      <app-admin-page></app-admin-page>-->
+      <span class="down-arrow" (click)="this.router.navigate(['/admin/users'])">&#9660;</span>
+  </div>
+</div>
+</div>

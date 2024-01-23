@@ -1,9 +1,9 @@
-<div class="mat-elevation-z8 background">
+<div *ngIf="isStandalone" class="mat-elevation-z8 background">
   <div class="col-md-12 text-center">
     <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
     <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
   </div>
-  <div [hidden]="users === undefined ||  !usersLoaded">">
+  <div [hidden]="users === undefined ||  !usersLoaded">
     <table mat-table [dataSource]="users">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -41,4 +41,25 @@
     </table>
 
   </div>
+</div>
+
+<div *ngIf="!isStandalone">
+  <!-- Compact view for homepage -->
+  <button class="btn btn-primary create-listing-btn">
+    {{ 'createUser' | translate }}
+  </button>
+  <div *ngFor="let user of users | slice:0:5" class="compact-listing-card">
+    <!-- Compact card content -->
+    <div class="user-info">
+      <div class="h7">ID: {{user.id}}</div>
+      <div class="h7">Name: {{user.name}}</div>
+      <div class="h7">Role: {{user.userType}}</div>
+    </div>
+    <div class="controls">
+      <a [routerLink]="['/listing/edit/', user.id]" class="edit-button" role="button" data-toggle="tooltip" data-placement="bottom">
+        <mat-icon>edit</mat-icon>
+      </a>
+      </div>
+  </div>
+
 </div>

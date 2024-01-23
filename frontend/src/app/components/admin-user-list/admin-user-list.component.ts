@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../models/User";
@@ -17,6 +17,8 @@ export class AdminUserListComponent implements OnInit {
   successMessage = '';
   error = false;
   errorMessage = '';
+
+  @Input() isStandalone: boolean = true;
 
   constructor(private userService: UserService,
               private router: Router,

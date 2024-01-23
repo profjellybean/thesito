@@ -112,5 +112,8 @@
   "users": "Users",
   "newApplicationForListing": "New application for listing:",
   "inbox": "Inbox",
-  "newMatchingListing": "New matching listing:"
+  "newMatchingListing": "New matching listing:",
+  "manageUsers": "Manage Users",
+  "manageListings": "Manage Listings",
+  "createUser": "Create User"
 }

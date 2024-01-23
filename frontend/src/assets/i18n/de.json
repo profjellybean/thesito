@@ -112,5 +112,8 @@
   "users": "Benutzer",
   "newApplicationForListing": "Neue Bewerbung für Ihre Ausschreibung:",
   "inbox": "Posteingang",
-  "newMatchingListing": "Neue passende Ausschreibung:"
+  "newMatchingListing": "Neue passende Ausschreibung:",
+  "manageUsers": "Benutzer verwalten",
+  "manageListings": "Ausschreibungen verwalten",
+  "createUser": "Benutzer erstellen"
 }
