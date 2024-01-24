@@ -12,15 +12,7 @@
       <nav>
         <ul class="list-unstyled d-flex">
           <li class="mx-3" *ngIf="isLoggedIn() && isAdministartor()">
-            <div class="dropdown">
-              <a class="text-light" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer">
-                {{"admin" | translate}}
-              </a>
-              <div class="dropdown-menu bg-dark" aria-labelledby="profileDropdown">
-                <a class="text-light dropdown-item text-decoration-none" routerLink='/admin/users'>{{"users" | translate}}</a>
-                <a class="text-light dropdown-item text-decoration-none" routerLink='/admin/listings'>{{"listings" | translate}}</a>
-              </div>
-            </div>
+            <a class="text-decoration-none text-light" routerLink='/admin/users'>{{"admin" | translate}}</a>
           </li>
           <li class="mx-3" *ngIf="isLoggedIn()">
             <a routerLink="/home" class="text-decoration-none text-light">{{"home" | translate}}</a>

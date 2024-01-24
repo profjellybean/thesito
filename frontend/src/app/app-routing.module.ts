@@ -6,7 +6,6 @@ import {RegisterUserComponent} from "./components/register-user/register-user.co
 import {HomeComponent} from "./components/home/home.component";
 import {AllComponent} from "./components/all/all.component";
 import {authGuard} from "./guards/auth.guard";
-import {LanguageToggleComponent} from "./components/language-toggle/language-toggle.component";
 import {UserDetailsComponent} from "./components/user-details/user-details.component";
 import {CreateListingComponent} from "./components/create-listing/create-listing.component";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
@@ -20,7 +19,6 @@ import {FavouritesListComponent} from "./components/favourites-list/favourites-l
 import {consumerGuard} from "./guards/consumer.guard";
 import {administratorGuard} from "./guards/administrator.guard";
 import {AdminPageComponent} from "./components/admin-page/admin-page.component";
-import {AdminUserListComponent} from "./components/admin-user-list/admin-user-list.component";
 
 
 export const routes: Routes = [
@@ -39,8 +37,7 @@ export const routes: Routes = [
   {path: 'user/listings', canActivate: [authGuard, producerGuard], component: MyListingsComponent},
   {path: 'user/notifications', canActivate: [authGuard], component: NotificationsComponent},
   {path: 'user/favourites', canActivate: [authGuard, consumerGuard], component: FavouritesListComponent},
-  {path: 'admin/listings', canActivate: [authGuard, administratorGuard], component: AdminPageComponent},
-  {path: 'admin/users', canActivate: [authGuard, administratorGuard], component: AdminUserListComponent},
+  {path: 'admin/users', canActivate: [authGuard, administratorGuard], component: AdminPageComponent},
   {path: '**', pathMatch: 'full', redirectTo: '404'},
   {path: '404', component: NotFoundComponent}
 ];

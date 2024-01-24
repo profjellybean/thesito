@@ -43,7 +43,6 @@ import { EditListingComponent } from './components/edit-listing/edit-listing.com
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {MatSliderModule} from "@angular/material/slider";
 import {TrendingComponent} from "./components/trending/trending.component";
 import { UserFavouritesComponent } from './components/user-favourites/user-favourites.component';
 import { FavouritesListComponent } from './components/favourites-list/favourites-list.component';
@@ -51,7 +50,7 @@ import { AdminPageComponent } from './components/admin-page/admin-page.component
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatCardModule} from "@angular/material/card";
-import { AdminListigsOfUserComponent } from './components/admin-listigs-of-user/admin-listigs-of-user.component';
+import { AdminListingsOfUserComponent } from './components/admin-listings-of-user/admin-listings-of-user.component';
 import {
   MAT_DIALOG_DATA,
   MAT_DIALOG_DEFAULT_OPTIONS,
@@ -60,7 +59,6 @@ import {
   MatDialogContent, MatDialogTitle
 } from "@angular/material/dialog";
 import {MatMenuModule} from "@angular/material/menu";
-import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
 import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 
@@ -92,8 +90,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserFavouritesComponent,
     FavouritesListComponent,
     AdminPageComponent,
-    AdminListigsOfUserComponent,
-    AdminUserListComponent,
+    AdminListingsOfUserComponent,
     DeleteConfirmationDialogComponent
   ],
   imports: [

@@ -5,7 +5,7 @@ import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
-import {AdminListigsOfUserComponent} from "../admin-listigs-of-user/admin-listigs-of-user.component";
+import {AdminListingsOfUserComponent} from "../admin-listings-of-user/admin-listings-of-user.component";
 import {MatDialog, MatDialogActions, MatDialogClose,} from "@angular/material/dialog";
 
 @Component({
@@ -22,6 +22,9 @@ export class AdminPageComponent implements OnInit{
   infoMessage = '';
   error = false;
   errorMessage = '';
+
+  success = false;
+  successMessage = '';
 
   displayedColumns: string[] = ['id', 'name', 'userType']
 
@@ -63,10 +66,26 @@ export class AdminPageComponent implements OnInit{
 
 
   openUserListingsDialog(userId: number): void {
-    const dialogRef = this.dialog.open(AdminListigsOfUserComponent, {
+    const dialogRef = this.dialog.open(AdminListingsOfUserComponent, {
       width: '98%',
       height: '80%',
       data: { userId: userId},
+    });
+  }
+
+  makeUserAdmin(userId: number): void {
+    this.userService.makeUserAdmin(userId).subscribe({
+      next: result => {
+        console.log(result);
+        this.ngOnInit();
+        this.success = true;
+        this.successMessage = 'User has been made admin';
+      },
+      error: err => {
+        console.log(err);
+        this.error = true;
+        this.errorMessage = err.message;
+      }
     });
   }
 

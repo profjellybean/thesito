@@ -13,10 +13,10 @@ import {DetailComponent} from "../listing-details/detail.component";
 
 @Component({
   selector: 'app-admin-listigs-of-user',
-  templateUrl: './admin-listigs-of-user.component.html',
-  styleUrl: './admin-listigs-of-user.component.css'
+  templateUrl: './admin-listings-of-user.component.html',
+  styleUrl: './admin-listings-of-user.component.css'
 })
-export class AdminListigsOfUserComponent implements OnInit{
+export class AdminListingsOfUserComponent implements OnInit{
 
   listings: Listing[];
   listingsLoaded: boolean =  false;

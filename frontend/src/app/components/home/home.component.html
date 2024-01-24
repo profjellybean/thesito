@@ -1,13 +1,12 @@
 <div *ngIf="authService.isConsumer()" class="container">
   <div class="left-section card">
-    <h2>{{ 'trending' | translate }}</h2>
+    <h2 class="clickable" (click)="this.router.navigate(['/trending'])">{{ 'trending' | translate }}</h2>
     <app-trending [isStandalone]="false"></app-trending>
-    <span class="down-arrow" (click)="this.router.navigate(['/trending'])">&#9660;</span>
   </div>
 
   <div class="right-section">
     <div *ngIf="notificationsLoaded" class="top-right-section card">
-      <h2>{{ 'inbox' | translate }} <span class="notification-count">{{ notifications.length }}</span></h2>
+      <h2 class="clickable" (click)="this.router.navigate(['/user/notifications'])">{{ 'inbox' | translate }} <span class="notification-count">{{ notifications.length }}</span></h2>
 
       <div *ngFor="let notification of notifications | slice:0:3" class="card zoom-card" (click)="this.router.navigate(['/listing', notification.connectedListing.id])">
         <div class="notification-header">
@@ -18,20 +17,13 @@
           <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
         </div>
       </div>
-
-      <span class="down-arrow" (click)="this.router.navigate(['/user/notifications'])">&#9660;</span>
-
     </div>
 
     <div  *ngIf="favoritesLoaded" class="bottom-right-section card">
-      <h2>{{ 'favourites' | translate }}</h2>
+      <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
       <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item"  >
-       <!-- <app-user-favourites [listing_id]="favourite.id"></app-user-favourites>-->
         <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
       </div>
-
-      <span class="down-arrow" (click)="this.router.navigate(['/user/favourites'])">&#9660;</span>
-
     </div>
   </div>
 </div>
@@ -39,14 +31,13 @@
 
 <div *ngIf="authService.isProducer()" class="container">
   <div class="left-section card">
-    <h2>{{ 'myListings' | translate }}</h2>
+    <h2 class="clickable" (click)="this.router.navigate(['/user/listings'])">{{ 'myListings' | translate }}</h2>
     <app-my-listings [isStandalone]="false"></app-my-listings>
-    <span class="down-arrow" (click)="this.router.navigate(['/user/listings'])">&#9660;</span>
   </div>
 
   <div class="right-section">
     <div *ngIf="notificationsLoaded" class="top-right-section card">
-      <h2>{{ 'inbox' | translate }} <span class="notification-count">{{ notifications.length }}</span></h2>
+      <h2 class="clickable" (click)="this.router.navigate(['/user/notifications'])">{{ 'inbox' | translate }} <span class="notification-count">{{ notifications.length }}</span></h2>
 
       <div *ngFor="let notification of notifications | slice:0:3" class="card zoom-card" (click)="this.router.navigate(['/listing', notification.connectedListing.id])">
         <div class="notification-header">
@@ -60,9 +51,6 @@
       <div *ngIf="notifications.length===0">
         <h4>You haven't go any messages</h4>
       </div>
-
-      <span class="down-arrow" (click)="this.router.navigate(['/user/notifications'])">&#9660;</span>
-
     </div>
 
   </div>
@@ -70,16 +58,7 @@
 
 <div *ngIf="authService.isAdministrator()" class="container">
   <div class="left-section">
-    <h2>{{ 'manageUsers' | translate }}</h2>
-    <app-admin-user-list [isStandalone]="false"></app-admin-user-list>
-    <span class="down-arrow" (click)="this.router.navigate(['/admin/users'])">&#9660;</span>
+    <h2>{{ 'manageUsers' | translate }} <span (click)="this.router.navigate(['/admin/users'])" class="clickable material-symbols-outlined">link</span></h2>
+    <app-admin-page></app-admin-page>
   </div>
-
-  <div class="right-section">
-    <div *ngIf="notificationsLoaded" class="top-right-section card">
-      <h2>{{ 'manageListings' | translate }}</h2>
-<!--      <app-admin-page></app-admin-page>-->
-      <span class="down-arrow" (click)="this.router.navigate(['/admin/users'])">&#9660;</span>
-  </div>
-</div>
 </div>
