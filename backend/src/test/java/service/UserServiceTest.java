@@ -364,4 +364,53 @@ class UserServiceTest {
 
         assertFalse(user.getFavourites().contains(listing));
     }
+
+    @Test
+    @Transactional
+    void makeUserAdminTest() throws ValidationException, ServiceException {
+        User admin = new User();
+        admin.setName("Admin");
+        admin.setEmail("admin@test.com");
+        admin.setPassword("123456789Test");
+        admin.setUserType(UserType.Administrator);
+        userService.registerUser(admin);
+        User user = new User();
+        user.setName("Test");
+        user.setEmail("test@mail.com");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingConsumer);
+        userService.registerUser(user);
+
+        userService.makeAdmin(user.getId(), admin.getId());
+
+        assertEquals(UserType.Administrator, userService.getUserById(user.getId()).getUserType());
+    }
+
+    @Test
+    @Transactional
+    void makeAdminUserAdminTest() throws ValidationException, ServiceException {
+        User admin = new User();
+        admin.setName("Admin");
+        admin.setEmail("admin@test.com");
+        admin.setPassword("123456789Test");
+        admin.setUserType(UserType.Administrator);
+        userService.registerUser(admin);
+
+        userService.makeAdmin(admin.getId(), admin.getId());
+
+        assertThrows(ServiceException.class, () -> userService.makeAdmin(admin.getId(), admin.getId()));
+    }
+
+    @Test
+    @Transactional
+    void makeAdminWithNormalUserTestShouldThrowServiceException() throws ValidationException, ServiceException {
+        User user = new User();
+        user.setName("Test");
+        user.setEmail("user@test.com");
+        user.setPassword("123456789Test");
+        user.setUserType(UserType.ListingConsumer);
+        userService.registerUser(user);
+
+        assertThrows(ServiceException.class, () -> userService.makeAdmin(user.getId(), user.getId()));
+    }
 }
