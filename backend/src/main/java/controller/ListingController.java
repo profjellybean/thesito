@@ -6,6 +6,7 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.persistence.NoResultException;
@@ -36,6 +37,9 @@ public class ListingController {
     @Inject
     ListingService listingService;
 
+    @Inject
+    SearchSession searchSession;
+
     private static final Logger LOG = Logger.getLogger(ListingController.class);
 
     @Transactional
@@ -48,10 +52,8 @@ public class ListingController {
         }
     }
 
-    @Inject
-    SearchSession searchSession;
-
     @Query("getAllListings")
+    @RolesAllowed({"ListingsConsumer", "ListingProvider"})
     @Description("Fetches a list of all listings from the database")
     public List<Listing> getAllListings() {
         LOG.info("getAllListings");
@@ -65,20 +67,6 @@ public class ListingController {
         return listingService.getAllListingsFromUserWithId(id);
     }
 
-    @Query("getAllListingsPaginated")
-    @Description("Fetches a list of all listings from the database")
-    public List<Listing> getAllListingsPaginated(int offset, int limit) {
-        LOG.info("getAllListingsPaginated");
-        return listingService.getAllListingsPaginated(offset, limit);
-    }
-
-    @Query("getTotalListingsCount")
-    @Description("Fetches a list of all listings from the database")
-    public Integer getTotalListingsCount() {
-        LOG.info("getTotalListingsCount");
-        return listingService.getAllListings().size();
-    }
-
     @Mutation
     @Description("Creates a listing in the database")
     public Listing createListing(Listing listing) throws GraphQLException {
@@ -90,46 +78,6 @@ public class ListingController {
             throw new GraphQLException(e.getMessage());
         }
     }
-
-    //    @RolesAllowed("ListingConsumer") TODO: change permissions sooner or later
-    @Query("simpleSearch")
-    @PermitAll
-    public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit, Boolean active) {
-        LOG.info("simpleSearch");
-        Optional<String> optionalTitle = Optional.ofNullable(title);
-        Optional<String> optionalDetails = Optional.ofNullable(details);
-        Optional<Qualification> optionalQualificationType = Optional.ofNullable(qualificationType);
-        Optional<Date> optionalStartDate = Optional.ofNullable(startDate);
-        Optional<Date> optionalEndDate = Optional.ofNullable(endDate);
-        Optional<Boolean> optionalActive = Optional.ofNullable(active);
-        GraphQLSearchResult searchResult = new GraphQLSearchResult();
-        // TODO make just one query
-        searchResult.totalHitCount = listingService.find(Optional.empty(), Optional.empty(), optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive).size();
-        searchResult.listings = listingService.find(offset, limit, optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive);
-        return searchResult;
-    }
-
-    @Query("fullTextSearch")
-    @PermitAll
-    @Transactional
-    public GraphQLSearchResult fulltextSearch(String pattern, Optional<Integer> offset, Optional<Integer> limit) {
-        LOG.info("fulltextSearch");
-        SearchResult<Listing> query = searchSession.search(Listing.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ?
-                        f.matchAll() :
-                        f.simpleQueryString()
-                                .fields("title")
-                                .matching(pattern)
-                )
-                .fetch(offset.orElse(0), limit.orElse(100));
-
-        GraphQLSearchResult searchResult = new GraphQLSearchResult();
-        System.out.println();
-        searchResult.setListings(query.hits());
-        searchResult.setTotalHitCount(query.total().hitCount());
-        return searchResult;
-    }
-
     @Mutation("applyToListing")
     @PermitAll
     public void applyToListing(Long listingId, Long userId, String applicationText) throws GraphQLException {
