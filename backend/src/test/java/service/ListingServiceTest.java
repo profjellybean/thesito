@@ -21,6 +21,7 @@ import persistence.DatabaseContainerMock;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,28 +54,28 @@ class ListingServiceTest {
         user.setName("Conny Consumer");
         user.setEmail("consumer@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         this.consumer = userService.registerUser(user);
 
         user = new User();
         user.setName("Peter Provider");
         user.setEmail("provider@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         this.provider = userService.registerUser(user);
 
         user = new User();
         user.setName("Paul Provider");
         user.setEmail("provider2@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         this.provider2 = userService.registerUser(user);
 
         user = new User();
         user.setName("Prince Provider");
         user.setEmail("provider3@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         this.provider3 = userService.registerUser(user);
     }
 
@@ -301,7 +302,7 @@ class ListingServiceTest {
         user.setEmail("john.doe@example.com");
         user.setPassword("123456789Test");
         user.setQualification(Qualification.Bachelors);
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         userService.registerUser(user);
 
         userService.toggleFavourite(user.getId(), listingId);
@@ -324,7 +325,7 @@ class ListingServiceTest {
         user.setEmail("john.doe279@example.com");
         user.setPassword("123456789Test");
         user.setQualification(Qualification.Bachelors);
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         userService.registerUser(user);
 
         Listing listing = new Listing();

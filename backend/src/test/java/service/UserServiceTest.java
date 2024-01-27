@@ -56,7 +56,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         assertThrows(ValidationException.class, () -> userService.registerUser(user));
     }
 
@@ -66,7 +66,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test@test.com");
         user.setPassword("123");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         assertThrows(ValidationException.class, () -> userService.registerUser(user));
     }
 
@@ -86,7 +86,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test2@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         User retUser = userService.registerUser(user);
         assertEquals(user, retUser);
     }
@@ -97,13 +97,13 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test3@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
         User user1 = new User();
         user1.setName("Test");
         user1.setEmail("test3@test.com");
         user1.setPassword("123456789Test");
-        user1.setUserType(UserType.ListingConsumer);
+        user1.setUserType(Set.of(UserType.ListingConsumer));
         assertThrows(ServiceException.class, () -> userService.registerUser(user1));
     }
 
@@ -113,7 +113,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         User insertedUser = userService.registerUser(user);
         // Retrieve the user by ID and assert equality
         userService.getUserById(insertedUser.getId());
@@ -138,7 +138,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test4@test.com");
         user.setPassword(password);
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
         userService.getSession(user.getEmail(), password);
     }
@@ -151,7 +151,7 @@ class UserServiceTest {
         user.setEmail("test@create.com");
         user.setPassword("1234Test");
         user.setQualification(Qualification.Bachelors);
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
 
         User createdUser = userService.registerUser(user);
 
@@ -177,7 +177,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test5@test.com");
         user.setPassword(password);
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
         Session session = userService.getSession(user.getEmail(), password);
         RefreshToken refreshToken_old = refreshTokenRepository.find("userid", user.getId()).firstResult();
@@ -197,13 +197,13 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test6@test.com");
         user.setPassword(password);
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
         Session session = userService.getSession(user.getEmail(), password);
         RefreshToken refreshToken = refreshTokenRepository.find("userid", user.getId()).firstResult();
         String expired_refresh_token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
                 .expiresAt(1695881286)
                 .claim("usage", "refresh_token")
                 .claim("uuid", refreshToken.getUuid())
@@ -219,7 +219,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test7@test.com");
         user.setPassword(password);
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
         Session session = userService.getSession(user.getEmail(), password);
         RefreshToken refreshToken = refreshTokenRepository.find("userid", user.getId()).firstResult();
@@ -229,7 +229,7 @@ class UserServiceTest {
         PrivateKey privateKey = pair.getPrivate();
         String wrong_signature_refresh_token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
                 .expiresIn(900)
                 .claim("usage", "refresh_token")
                 .claim("uuid", refreshToken.getUuid())
@@ -244,7 +244,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test8@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
         User createdUser = userRepository.find("email","test8@test.com" ).firstResult();
@@ -264,7 +264,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test9@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
         User createdUser = userRepository.find("email","test9@test.com" ).firstResult();
@@ -287,7 +287,7 @@ class UserServiceTest {
         consumer.setName("Consumer");
         consumer.setEmail("conumer1@test.com");
         consumer.setPassword(password);
-        consumer.setUserType(UserType.ListingConsumer);
+        consumer.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(consumer);
         Session consumer_session = userService.getSession(consumer.getEmail(), password);
         String consumer_jwt = consumer_session.accessToken;
@@ -296,7 +296,7 @@ class UserServiceTest {
         provider.setName("Provider");
         provider.setEmail("provider1@test.com");
         provider.setPassword(password);
-        provider.setUserType(UserType.ListingProvider);
+        provider.setUserType(Set.of(UserType.ListingProvider));
         userService.registerUser(provider);
         Session provider_session = userService.getSession(provider.getEmail(), password);
         String provider_jwt = provider_session.accessToken;
@@ -305,7 +305,7 @@ class UserServiceTest {
         admin.setName("Admin");
         admin.setEmail("admin@test.com");
         admin.setPassword(password);
-        admin.setUserType(UserType.Administrator);
+        admin.setUserType(Set.of(UserType.Administrator));
         userService.registerUser(admin);
         Session admin_session = userService.getSession(admin.getEmail(), password);
         String admin_jwt = admin_session.accessToken;
@@ -335,7 +335,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("test@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         user.setFavourites(new ArrayList<>());
         userService.registerUser(user);
 
@@ -343,7 +343,7 @@ class UserServiceTest {
         provider.setName("Peter Provider");
         provider.setEmail("provider@ase.at");
         provider.setPassword("123456789Test");
-        provider.setUserType(UserType.ListingProvider);
+        provider.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(provider);
 
         Listing listing = new Listing();
@@ -372,13 +372,13 @@ class UserServiceTest {
         admin.setName("Admin");
         admin.setEmail("admin@test.com");
         admin.setPassword("123456789Test");
-        admin.setUserType(UserType.Administrator);
+        admin.setUserType(Set.of(UserType.Administrator));
         userService.registerUser(admin);
         User user = new User();
         user.setName("Test");
         user.setEmail("test@mail.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
         userService.makeAdmin(user.getId(), admin.getId());
@@ -393,7 +393,7 @@ class UserServiceTest {
         admin.setName("Admin");
         admin.setEmail("admin@test.com");
         admin.setPassword("123456789Test");
-        admin.setUserType(UserType.Administrator);
+        admin.setUserType(Set.of(UserType.Administrator));
         userService.registerUser(admin);
 
         userService.makeAdmin(admin.getId(), admin.getId());
@@ -408,7 +408,7 @@ class UserServiceTest {
         user.setName("Test");
         user.setEmail("user@test.com");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
         assertThrows(ServiceException.class, () -> userService.makeAdmin(user.getId(), user.getId()));

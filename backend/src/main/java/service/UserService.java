@@ -85,15 +85,15 @@ public class UserService {
             LOG.error("Error in makeAdmin: User doesn't exist");
             throw new ServiceException("User doesn't exist");
         }
-        if (userCurrent.getUserType() != Administrator) {
+        if (!userCurrent.getUserType().contains(Administrator)) {
             LOG.error("Error in makeAdmin: User is not an administrator");
             throw new ServiceException("User is not an administrator");
         }
-        if (toBeAdmin.getUserType() == Administrator) {
+        if (toBeAdmin.getUserType().contains(Administrator)) {
             LOG.error("Error in makeAdmin: User is already an administrator");
             throw new ServiceException("User is already an administrator");
         }
-        toBeAdmin.setUserType(Administrator);
+        toBeAdmin.addUserType(Administrator);
         userRepository.persist(toBeAdmin);
         return true;
     }
@@ -151,7 +151,7 @@ public class UserService {
         LOG.debug("generateAccessToken");
         return Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
                 .expiresIn(900)
                 .claim("usage", "access_token")
                 .claim("userid", user.getId().toString())
@@ -167,7 +167,7 @@ public class UserService {
         String uuid = UUID.randomUUID().toString();
         String token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
                 .expiresIn(259200)
                 .claim("usage", "refresh_token")
                 .claim("uuid", uuid)
