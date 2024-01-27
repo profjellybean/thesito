@@ -23,6 +23,8 @@ export const getAllUsers = gql`
       name
       userType
       email
+      qualification
+      receiveEmails
     }
   }
 `;

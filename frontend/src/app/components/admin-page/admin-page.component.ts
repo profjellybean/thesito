@@ -1,19 +1,20 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {User} from "../../models/User";
-import {Router} from "@angular/router";
-import {AuthService} from "../../services/auth.service";
-import {UserService} from "../../services/user.service";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatTableDataSource} from "@angular/material/table";
-import {AdminListingsOfUserComponent} from "../admin-listings-of-user/admin-listings-of-user.component";
-import {MatDialog, MatDialogActions, MatDialogClose,} from "@angular/material/dialog";
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { User } from "../../models/User";
+import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth.service";
+import { UserService } from "../../services/user.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
+import { AdminListingsOfUserComponent } from "../admin-listings-of-user/admin-listings-of-user.component";
+import { MatDialog } from "@angular/material/dialog";
+import {AdminEditUserComponent} from "../admin-edit-user/admin-edit-user.component";
 
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-page.component.html',
-  styleUrl: './admin-page.component.css'
+  styleUrls: ['./admin-page.component.css']
 })
-export class AdminPageComponent implements OnInit{
+export class AdminPageComponent implements OnInit {
 
   users: User[];
   usersLoaded: boolean = false;
@@ -26,11 +27,19 @@ export class AdminPageComponent implements OnInit{
   success = false;
   successMessage = '';
 
-  displayedColumns: string[] = ['id', 'name', 'userType']
+  @Input() isStandalone: boolean = true;
+  // Add 'email', 'qualification', and 'receiveEmails' to the displayedColumns array
+  displayedColumns: string[] =  ['id', 'name', 'userType', 'email', 'qualification', 'receiveEmails', 'actions'];
+  displayedColumnsNonStandalone: string[] =  ['id', 'name', 'userType', 'actions'];
+
+
+  // ... other code in your component
+
 
   dataSource: MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
 
   constructor(private router: Router, private userService: UserService, private authService: AuthService, private dialog: MatDialog) {
   }
@@ -48,6 +57,8 @@ export class AdminPageComponent implements OnInit{
               return -1;
             }
           });
+
+          console.log(this.users);
           this.dataSource = new MatTableDataSource<User>(this.users);
           this.dataSource.paginator = this.paginator;
           this.usersLoaded = true;
@@ -63,7 +74,6 @@ export class AdminPageComponent implements OnInit{
       }, 100);
     }
   }
-
 
   openUserListingsDialog(userId: number): void {
     const dialogRef = this.dialog.open(AdminListingsOfUserComponent, {
@@ -89,4 +99,29 @@ export class AdminPageComponent implements OnInit{
     });
   }
 
+
+  editUser(userId: number): void {
+    const userToEdit = this.users.find(user => user.id === userId);
+    const dialogRef = this.dialog.open(AdminEditUserComponent, {
+      width: '500px',
+      data: { user: userToEdit }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.refreshTable(); // Create this method to refresh the table data
+      }
+    });
+  }
+
+  refreshTable(): void {
+    this.userService.getAllUsers().subscribe(users => {
+      this.dataSource.data = users;
+    });
+  }
+
+  deleteUser(userId: number): void {
+    // Implement logic to delete the user
+    console.log('Deleting user with ID:', userId);
+  }
 }

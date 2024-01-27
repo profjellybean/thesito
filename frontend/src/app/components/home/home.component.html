@@ -59,6 +59,6 @@
 <div *ngIf="authService.isAdministrator()" class="container">
   <div class="left-section">
     <h2>{{ 'manageUsers' | translate }} <span (click)="this.router.navigate(['/admin/users'])" class="clickable material-symbols-outlined">link</span></h2>
-    <app-admin-page></app-admin-page>
+    <app-admin-page [isStandalone]="false"></app-admin-page>
   </div>
 </div>
