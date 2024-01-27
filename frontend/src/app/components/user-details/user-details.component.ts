@@ -39,7 +39,7 @@ export class UserDetailsComponent implements OnInit{
       email: "",
       name: "",
       password: "",
-      userType: UserType.ListingConsumer,
+      userType: [UserType.ListingConsumer],
       userTags: [],
       qualification: QualificationType.None,
       receiveEmails: true

@@ -42,7 +42,7 @@ export class RegisterUserComponent {
       email: "",
       name: "",
       password: "",
-      userType: UserType.ListingConsumer,
+      userType: [UserType.ListingConsumer],
       userTags: [],
       receiveEmails: true
     };
