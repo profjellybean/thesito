@@ -343,7 +343,7 @@ class UserServiceTest {
         provider.setName("Peter Provider");
         provider.setEmail("provider@ase.at");
         provider.setPassword("123456789Test");
-        provider.setUserType(Set.of(UserType.ListingConsumer));
+        provider.setUserType(Set.of(UserType.ListingProvider));
         userService.registerUser(provider);
 
         Listing listing = new Listing();

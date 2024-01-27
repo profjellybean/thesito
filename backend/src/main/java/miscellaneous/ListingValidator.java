@@ -183,7 +183,7 @@ public class ListingValidator {
         }
         try{
             user = this.userService.getUserById(user.getId());
-            if (!user.getUserType().equals(UserType.ListingProvider) && !user.getUserType().equals(UserType.Administrator) ){
+            if (!user.getUserType().contains(UserType.ListingProvider) && !user.getUserType().contains(UserType.Administrator) ){
                 throw new ValidationException("User with ID ownerId is not a ListingProvider or Administrator");
             }
         }catch (ServiceException e){
