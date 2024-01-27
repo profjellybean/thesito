@@ -67,6 +67,8 @@
   "myListings": "My Listings",
   "editListing": "Edit Listing",
   "active": "Active",
+  "inactive": "Inactive",
+  "status": "State",
   "apply": "Apply",
   "applyText": "Enter your application text here",
   "applyHeader": "Application",
