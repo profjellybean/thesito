@@ -1,4 +1,6 @@
-
+.background{
+  height: 100%;
+}
 
 .card {
   background-color: #f9f9f9; /* Light gray background for individual cards */

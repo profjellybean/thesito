@@ -25,7 +25,8 @@ export class RegisterUserComponent {
   success = false;
   successMessage = '';
   router: Router;
-  isConsumerUser = true;
+  isConsumerUser = false;
+  isProviderUser = false;
 
   constructor(private translateService: TranslateService, userService: UserService, formBuilder: FormBuilder, router: Router) {
     this.registerForm = formBuilder.group({
@@ -42,7 +43,7 @@ export class RegisterUserComponent {
       email: "",
       name: "",
       password: "",
-      userType: [UserType.ListingConsumer],
+      userType: [],
       userTags: [],
       receiveEmails: true
     };
@@ -57,21 +58,26 @@ export class RegisterUserComponent {
       this.user.email = this.registerForm.get('email')?.value
       this.user.name = this.registerForm.get('name')?.value
       this.user.password = this.registerForm.get('password')?.value
-      this.user.userType = this.registerForm.get('userType')?.value
+      if (this.isConsumerUser){
+        this.user.userType.push(UserType.ListingConsumer)
+      }
+      if (this.isProviderUser){
+        this.user.userType.push(UserType.ListingProvider)
+      }
       this.confirm_email = this.registerForm.get('confirmEmail')?.value
       this.confirm_password = this.registerForm.get('confirmPassword')?.value
       this.user.qualification = this.registerForm.get('qualification')?.value
-      if(this.user.userType.toString() === "ListingConsumer" && (this.user.userTags === undefined || this.user.userTags.length < 3)) {
+      if(this.isConsumerUser && (this.user.userTags === undefined || this.user.userTags.length < 3)) {
         this.error = true;
         this.formatErrorMessage('notEnoughTagsError');
         return;
       }
-      if(this.user.userType.toString() === "ListingConsumer" && (this.user.qualification === undefined || this.registerForm.get('qualification')?.value === "")) {
+      if(this.isConsumerUser && (this.user.qualification === undefined || this.registerForm.get('qualification')?.value === "")) {
         this.error = true;
         this.formatErrorMessage('qualificationError');
         return;
       }
-      if (this.user.userType.toString() === "ListingProvider") {
+      if (this.isProviderUser && !this.isConsumerUser) {
         this.user.qualification = undefined;
       }
       if (this.authenticateUser()) {
@@ -136,7 +142,10 @@ export class RegisterUserComponent {
     });
   }
   isConsumer() {
-    this.isConsumerUser = this.registerForm.value.userType === "ListingConsumer";
+    this.isConsumerUser = !this.isConsumerUser;
+  }
+  isProvider() {
+    this.isProviderUser = !this.isProviderUser;
   }
 
   protected readonly QualificationType = QualificationType;

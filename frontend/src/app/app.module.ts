@@ -60,6 +60,8 @@ import {
 } from "@angular/material/dialog";
 import {MatMenuModule} from "@angular/material/menu";
 import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { ChangeUsertypeDialogComponent } from './components/change-usertype-dialog/change-usertype-dialog.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -91,48 +93,50 @@ export function HttpLoaderFactory(http: HttpClient) {
     FavouritesListComponent,
     AdminPageComponent,
     AdminListingsOfUserComponent,
-    DeleteConfirmationDialogComponent
+    DeleteConfirmationDialogComponent,
+    ChangeUsertypeDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ApolloModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatIconModule,
-    ApolloModule,
-    FormsModule,
-    RouterModule.forRoot(routes),
-    ReactiveFormsModule,
-    MatRadioModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-      defaultLanguage: 'en'
-    }),
-    MatSlideToggleModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatOptionModule,
-    MatInputModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatChipsModule,
-    MatGridListModule,
-    MatTooltipModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatCardModule,
-    MatMenuModule,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogContent,
-    MatDialogTitle
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ApolloModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        ApolloModule,
+        FormsModule,
+        RouterModule.forRoot(routes),
+        ReactiveFormsModule,
+        MatRadioModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient],
+            },
+            defaultLanguage: 'en'
+        }),
+        MatSlideToggleModule,
+        MatButtonModule,
+        MatToolbarModule,
+        MatOptionModule,
+        MatInputModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatChipsModule,
+        MatGridListModule,
+        MatTooltipModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatCardModule,
+        MatMenuModule,
+        MatDialogActions,
+        MatDialogClose,
+        MatDialogContent,
+        MatDialogTitle,
+        MatCheckboxModule
+    ],
   providers: [
     LanguageService,
     {

@@ -32,7 +32,10 @@
             <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
             <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
           </mat-menu>
-            {{user.userType}}
+          <div *ngFor="let type of user.userType">
+            {{type}}
+          </div>
+
         </td>
       </ng-container>
 
