@@ -2,6 +2,10 @@ package controller;
 
 import entity.Listing;
 import entity.User;
+import io.quarkus.logging.Log;
+import io.quarkus.security.UnauthorizedException;
+import io.smallrye.jwt.auth.principal.JWTParser;
+import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
 import miscellaneous.Session;
@@ -26,33 +30,8 @@ public class UserController {
 
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
 
-    // Example Requests for each Role:
-    @Query("security")
-    @PermitAll
-    public String hello() {
-        return "Sensitive data for " + jwt.getName();
-    }
-
-    @RolesAllowed("ListingConsumer")
-    @Query("getAllUsersListingConsumer")
-    public List<User> getAllUsers1() {
-        return userService.getAllUsers();
-    }
-
-    @RolesAllowed("ListingProvider")
-    @Query("getAllUsersListingProvider")
-    public List<User> getAllUsers2() {
-        return userService.getAllUsers();
-    }
-
-    @RolesAllowed("Administrator")
-    @Query("getAllUsersAdministrator")
-    public List<User> getAllUsers3() {
-        return userService.getAllUsers();
-    }
-    // --------
-
     @Query("getAllUsers")
+    @RolesAllowed({"Administrator"})
     @Description("Fetches a list of all users from the database")
     public List<User> getAllUsers() {
         LOG.info("getAllUsers");
@@ -60,6 +39,7 @@ public class UserController {
     }
 
     @Mutation
+    @PermitAll
     @Description("Registers a user in the database")
     public User registerUser(User user) throws GraphQLException {
         LOG.info("registerUser");
@@ -72,9 +52,14 @@ public class UserController {
     }
 
     @Query("getUserById")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches the user corresponding to the given ID from the database")
     public User getUserById(Long id) throws GraphQLException {
         LOG.info("getUserById");
+        // check if sender is allowed
+        if (!id.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){
+            throw new UnauthorizedException();
+        }
         try {
             return userService.getUserById(id);
         } catch (ServiceException e) {
@@ -83,10 +68,29 @@ public class UserController {
         }
     }
 
+
+    @Query("getUsernameByUserId")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
+    @Description("Returns the name of a user")
+    public String getUsernameByUserId(Long id) throws GraphQLException {
+        LOG.info("getUsernameByUserId");
+        try {
+            return userService.getUserById(id).getName();
+        } catch (ServiceException e) {
+            LOG.error("Error in getUserNameByUserId: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
+
     @Query("getFavouritesByUserId")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches the favorite listings of the user corresponding to the given ID from the database")
     public Collection<Listing> getFavouritesByUserId(Long userId) throws GraphQLException {
         LOG.info("getFavouritesById");
+        // check if sender is allowed
+        if (!userId.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){
+            throw new UnauthorizedException();
+        }
         try {
             return userService.getFavouritesByUserId(userId);
         } catch (ServiceException e) {
@@ -99,6 +103,7 @@ public class UserController {
     //    acceess token (15 min) and
     //    refresh token (valid for 3 days, can be used once)
     @Mutation
+    @PermitAll
     @Description("Get access and refresh token by using username and password")
     public Session getSession(String email, String password) throws GraphQLException {
         LOG.info("getSession");
@@ -114,6 +119,7 @@ public class UserController {
     // the claim number of that refresh token is saved in a DB for (3 days)
     // -> refresh token can only be used once
     @Mutation
+    @PermitAll
     @Description("Get new access and refresh token by using the one-time use refresh token")
     public Session refreshSession(String token) throws GraphQLException {
         LOG.info("refreshSession");
@@ -126,9 +132,14 @@ public class UserController {
     }
 
     @Mutation
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Updates a user in the database")
     public User updateUser(User user) throws GraphQLException {
         LOG.info("updateUser");
+        // check if sender is allowed to do that
+        if (!user.getId().equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){
+            throw new UnauthorizedException();
+        }
         try {
             return userService.updateUser(user);
         } catch (ValidationException | ServiceException e) {
@@ -138,9 +149,14 @@ public class UserController {
     }
 
     @Mutation
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Change user password")
     public User changePassword(String oldPassword, String newPassword, Long userId) throws GraphQLException {
         LOG.info("changePassword");
+        // check if sender is allowed to do that
+        if (!userId.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")) {
+            throw new UnauthorizedException();
+        }
         try {
             return userService.changePassword(oldPassword, newPassword, userId);
         } catch (ValidationException | ServiceException e) {
@@ -164,8 +180,13 @@ public class UserController {
     }
      */
     @Mutation
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Toggle favourite listing")
     public boolean toggleFavouriteListing(Long userId, Long listingId) throws GraphQLException {
+        // check if sender is allowed
+        if (!userId.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")) {
+            throw new UnauthorizedException();
+        }
         LOG.info("toggleFavouriteListing");
         try {
             return userService.toggleFavourite(userId, listingId);
@@ -176,7 +197,8 @@ public class UserController {
     }
 
     @Mutation
-    @Description("Makes antother user admin")
+    @RolesAllowed({"Administrator"})
+    @Description("Makes another user admin")
     public boolean makeAdmin(Long userId, Long userIdCurrent) throws GraphQLException {
         LOG.info("makeAdmin");
         try {

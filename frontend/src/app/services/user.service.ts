@@ -4,7 +4,8 @@ import {
   updateUserQuery,
   changePasswordQuery,
   getFavouritesByUserId,
-  getAllUsers
+  getAllUsers,
+  getUsernameByUserIdQuery
 } from "../models/User";
 import {map, Observable} from "rxjs";
 import {Apollo} from "apollo-angular";
@@ -56,6 +57,17 @@ export class UserService {
       query: getAllUsers,
     }).pipe(
       map((result) => result.data.getAllUsers)
+    );
+  }
+
+  getUsernameByUserId(userid: number): Observable<String> {
+    return this.apollo.query<{ getUsernameByUserId: String}>({
+      query: getUsernameByUserIdQuery,
+      variables: {
+        id: userid
+      }
+    }).pipe(
+      map((result) => result.data.getUsernameByUserId)
     );
   }
 

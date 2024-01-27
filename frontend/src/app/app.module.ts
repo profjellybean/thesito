@@ -63,6 +63,7 @@ import { DeleteConfirmationDialogComponent } from './components/delete-confirmat
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ChangeUsertypeDialogComponent } from './components/change-usertype-dialog/change-usertype-dialog.component';
 import { AdminEditUserComponent } from './components/admin-edit-user/admin-edit-user.component';
+import { GraphQLModule } from './graphql/graphql.module';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -138,22 +139,23 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatDialogClose,
         MatDialogContent,
         MatDialogTitle,
-        MatCheckboxModule
+        MatCheckboxModule,
+        GraphQLModule
     ],
   providers: [
     LanguageService,
-    {
-      provide: APOLLO_OPTIONS,
-      useFactory: (httpLink: HttpLink) => {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: 'http://localhost:8080/graphql'
-          })
-        };
-      },
-      deps: [HttpLink]
-    },
+   // {
+   //   provide: APOLLO_OPTIONS,
+   //   useFactory: (httpLink: HttpLink) => {
+   //     return {
+   //       cache: new InMemoryCache(),
+   //       link: httpLink.create({
+   //         uri: 'http://localhost:8080/graphql'
+   //       })
+   //     };
+   //   },
+   //   deps: [HttpLink]
+   // },
     {provide: MAT_DIALOG_DATA, useValue: {listingId: -1}}
   ],
   bootstrap: [AppComponent]

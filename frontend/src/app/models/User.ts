@@ -29,6 +29,12 @@ export const getAllUsers = gql`
   }
 `;
 
+export const getUsernameByUserIdQuery = gql`
+  query GetUsernameByUserId($id: BigInteger!) {
+    getUsernameByUserId(id: $id)
+  }
+`;
+
 
 export const registerUserQuery = gql`
     mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: [UserType]!, $tags: [TagInput], $qualification: Qualification) {
