@@ -42,9 +42,7 @@
 </div>
 <div *ngIf="!isStandalone">
   <!-- Compact view for homepage -->
-  <button *ngIf="isLoggedIn() && (isProducer() || isAdministartor())" class="btn btn-primary create-listing-btn" (click)="goToCreateListing()">
-    {{ 'createListing' | translate }}
-  </button>
+
   <div *ngFor="let listing of listings | slice:0:3" class="compact-listing-card">
     <!-- Compact card content -->
     <div class="h7">{{listing.title}}</div>
