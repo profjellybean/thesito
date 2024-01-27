@@ -8,8 +8,10 @@ import {MatDialog} from '@angular/material/dialog';
 import {PasswordChangeDialogComponent} from '../password-change-dialog/password-change-dialog.component';
 
 
-import {QualificationType} from "../../models/Enums";
+import {QualificationType, UserType} from "../../models/Enums";
 import {Tag} from "../../models/Tag";
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import {ChangeUsertypeDialogComponent} from "../change-usertype-dialog/change-usertype-dialog.component";
 
 @Component({
   selector: 'app-edit-user',
@@ -33,6 +35,13 @@ export class EditUserComponent implements OnInit {
   error = false;
   errorMessage = '';
 
+  isConsumerUser = false;
+  isProviderUser = false;
+  isAdminUser = false;
+
+  dataLoaded = false;
+
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -44,6 +53,8 @@ export class EditUserComponent implements OnInit {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      isConsumer: [this.isConsumerUser],
+      isProvider: [this.isProviderUser],
     });
     this.info = false;
     this.infoMessage = '';
@@ -93,6 +104,10 @@ export class EditUserComponent implements OnInit {
             this.user.qualification = QualificationType.None;
           }
 
+          this.isConsumerUser = this.user.userType.includes(UserType.ListingConsumer);
+          this.isProviderUser = this.user.userType.includes(UserType.ListingProvider);
+          this.isAdminUser = this.user.userType.includes(UserType.Administrator);
+
           this.user.userTags.forEach(tag =>{
             let t = {
               id: tag.id,
@@ -114,7 +129,7 @@ export class EditUserComponent implements OnInit {
           this.errorMessage = error2.message;
         }
       });
-
+      this.dataLoaded = true;
     }
   }
 
@@ -137,6 +152,19 @@ export class EditUserComponent implements OnInit {
       this.name = this.userForm.get('name')?.value;
       this.email = this.userForm.get('email')?.value;
 
+      this.user.userType = [...[]]
+
+      if (this.isAdminUser){
+        this.user.userType = [...this.user.userType, UserType.Administrator];
+      }
+
+      if (this.isConsumerUser){
+        this.user.userType = [...this.user.userType, UserType.ListingConsumer];
+      }
+      if (this.isProviderUser){
+        this.user.userType = [...this.user.userType, UserType.ListingProvider];
+      }
+
       this.user = {
         ...this.user,
         name: this.name,
@@ -151,12 +179,14 @@ export class EditUserComponent implements OnInit {
         next: result => {
           this.info = true;
           this.infoMessage = 'userUpdateSuccess';
+          this.authService.removeTokens()
         },
         error: error => {
           this.error = true;
           this.errorMessage = error.message;
         }
       });
+
     }
   }
 
@@ -166,5 +196,21 @@ export class EditUserComponent implements OnInit {
     }
   }
 
+  isConsumer() {
+    this.isConsumerUser = !this.isConsumerUser;
+  }
+  isProvider() {
+    this.isProviderUser = !this.isProviderUser;
+  }
+
+  openUserTypeConfirmationDialog(){
+    const dialogRef = this.dialog.open(ChangeUsertypeDialogComponent);
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.submitForm()
+      }
+    });
+  }
 
 }

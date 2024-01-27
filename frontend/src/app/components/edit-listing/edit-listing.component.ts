@@ -65,7 +65,7 @@ export class EditListingComponent implements OnInit {
       email: "",
       name: "",
       password: "",
-      userType: UserType.ListingConsumer,
+      userType: [UserType.ListingConsumer],
       userTags: [],
       qualification: QualificationType.None,
       receiveEmails: true

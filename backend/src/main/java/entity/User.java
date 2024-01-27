@@ -13,6 +13,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericFie
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,9 +32,11 @@ public class User extends PanacheEntityBase {
     @ColumnTransformer(write = "?::qualification_type")
     @Column(name = "qualification_type", columnDefinition = "qualification_type")
     private Qualification qualification;
+    @ElementCollection(targetClass = UserType.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @ColumnTransformer(write = "?::user_type")
-    private UserType userType;
+    @CollectionTable(name = "user_types", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "user_type")
+    private Set<UserType> userType;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_tags",
@@ -60,6 +63,10 @@ public class User extends PanacheEntityBase {
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getEmail(), getPassword(), getQualification(), getUserType(), getUserTags());
+    }
+
+    public void addUserType(UserType userType){
+        this.userType.add(userType);
     }
 
     @Override

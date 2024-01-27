@@ -32,7 +32,7 @@
   "tags": "Tags_de",
   "newTag": "Neuer Tag",
   "listings": "Ausschreibungen",
-  "logout": "Logout",
+  "logout": "Ausloggen",
   "yourProfile": "Dein Profil",
   "role": "Rolle",
   "chooseInterests": "Wähle mindestens 3 Interessen aus",
@@ -117,5 +117,10 @@
   "newMatchingListing": "Neue passende Ausschreibung:",
   "manageUsers": "Benutzer verwalten",
   "manageListings": "Ausschreibungen verwalten",
-  "createUser": "Benutzer erstellen"
+  "createUser": "Benutzer erstellen",
+  "consumerInfo": "Ich möchte Ausschreibungen suchen",
+  "providerInfo": "Ich möchte Ausschreibungen erstellen",
+  "confirmChange": "Änderungen bestätigen",
+  "confirmationDialogUserType": "Sind Sie sicher, dass Sie die Änderungen übernehmen möchten? Sie werden autmatisch ausgeloggt."
+
 }
