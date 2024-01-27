@@ -8,7 +8,6 @@ import enums.UserType;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
 import miscellaneous.ValidationException;
 import org.junit.jupiter.api.BeforeAll;
@@ -105,7 +104,7 @@ public class NotificationServiceTest {
 
     @Test
     void deleteUserFromNotificationWithNonexistentNotificationShouldThrowServiceException() {
-        assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21l, 12l));
+        assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21L, 12L));
     }
 
     @Test
@@ -114,7 +113,7 @@ public class NotificationServiceTest {
             this.listingService.applyForThesis(this.listing.getId(), this.consumer.getId(), "TEST");
             List<Notification> notifications = this.notificationService.getAllNotificationsForUserWithId(this.provider.getId());
             assertEquals(1, notifications.size());
-            assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21l, notifications.get(0).getId()));
+            assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21L, notifications.get(0).getId()));
         });
     }
 

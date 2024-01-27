@@ -3,7 +3,6 @@ package entity;
 
 import enums.Qualification;
 import enums.UserType;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,6 +11,7 @@ import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -57,7 +57,7 @@ public class User extends PanacheEntityBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && getQualification() == user.getQualification() && getUserType() == user.getUserType() && Objects.equals(getUserTags(), user.getUserTags());
+        return Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && getQualification() == user.getQualification() && user.getUserType().equals(((User) o).getUserType()) && Objects.equals(getUserTags(), user.getUserTags());
     }
 
     @Override
@@ -66,7 +66,9 @@ public class User extends PanacheEntityBase {
     }
 
     public void addUserType(UserType userType){
-        this.userType.add(userType);
+        Set<UserType> userTypeSet = new HashSet<>(this.getUserType());
+        userTypeSet.add(userType);
+        this.setUserType(userTypeSet);
     }
 
     @Override

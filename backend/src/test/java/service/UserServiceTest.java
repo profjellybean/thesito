@@ -3,11 +3,9 @@ package service;
 import com.password4j.Password;
 import entity.Listing;
 import entity.RefreshToken;
-import entity.Tag;
 import entity.User;
 import enums.Qualification;
 import enums.UserType;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
@@ -17,8 +15,6 @@ import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
 import miscellaneous.Session;
 import miscellaneous.ValidationException;
-import org.antlr.v4.runtime.misc.Array2DHashSet;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import persistence.DatabaseContainerMock;
@@ -111,7 +107,7 @@ class UserServiceTest {
     void getUserByValidIdShouldReturnUser() throws ServiceException, ValidationException {
         User user = new User();
         user.setName("Test");
-        user.setEmail("test@test.com");
+        user.setEmail("test5@test.com");
         user.setPassword("123456789Test");
         user.setUserType(Set.of(UserType.ListingConsumer));
         User insertedUser = userService.registerUser(user);
@@ -136,7 +132,7 @@ class UserServiceTest {
         String password = "123456789Test";
         User user = new User();
         user.setName("Test");
-        user.setEmail("test4@test.com");
+        user.setEmail("test6@test.com");
         user.setPassword(password);
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
@@ -148,7 +144,7 @@ class UserServiceTest {
     void updateExistingUser() throws ValidationException, ServiceException {
         User user = new User();
         user.setName("Created User");
-        user.setEmail("test@create.com");
+        user.setEmail("test7@create.com");
         user.setPassword("1234Test");
         user.setQualification(Qualification.Bachelors);
         user.setUserType(Set.of(UserType.ListingConsumer));
@@ -161,11 +157,11 @@ class UserServiceTest {
         assertEquals(user.getUserType(), createdUser.getUserType());
 
         createdUser.setName("Updated User");
-        createdUser.setEmail("test@update.com");
+        createdUser.setEmail("test8@update.com");
         createdUser.setQualification(Qualification.Masters);
         User updatedUser = userService.updateUser(createdUser);
 
-        assertEquals("test@update.com", updatedUser.getEmail());
+        assertEquals("test8@update.com", updatedUser.getEmail());
         assertEquals("Updated User", updatedUser.getName());
         assertEquals(Qualification.Masters, updatedUser.getQualification());
     }
@@ -175,7 +171,7 @@ class UserServiceTest {
         String password = "123456789Test";
         User user = new User();
         user.setName("Test");
-        user.setEmail("test5@test.com");
+        user.setEmail("test9@test.com");
         user.setPassword(password);
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
@@ -185,7 +181,7 @@ class UserServiceTest {
         userService.refreshSession(session.refreshToken);
         RefreshToken refreshToken_new = refreshTokenRepository.find("userid", user.getId()).firstResult();
         // old refresh token uuid does not match the new one
-        assertFalse(refreshToken_new.equals(refreshToken_old));
+        assertNotEquals(refreshToken_new, refreshToken_old);
         // refresh tokens are single-use
         assertEquals(count, 1);
     }
@@ -195,7 +191,7 @@ class UserServiceTest {
         String password = "123456789Test";
         User user = new User();
         user.setName("Test");
-        user.setEmail("test6@test.com");
+        user.setEmail("test10@test.com");
         user.setPassword(password);
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
@@ -203,7 +199,7 @@ class UserServiceTest {
         RefreshToken refreshToken = refreshTokenRepository.find("userid", user.getId()).firstResult();
         String expired_refresh_token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
+                .groups(new HashSet<>(Collections.singletonList(user.getUserType().toString())))
                 .expiresAt(1695881286)
                 .claim("usage", "refresh_token")
                 .claim("uuid", refreshToken.getUuid())
@@ -217,7 +213,7 @@ class UserServiceTest {
         String password = "123456789Test";
         User user = new User();
         user.setName("Test");
-        user.setEmail("test7@test.com");
+        user.setEmail("test11@test.com");
         user.setPassword(password);
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
@@ -229,7 +225,7 @@ class UserServiceTest {
         PrivateKey privateKey = pair.getPrivate();
         String wrong_signature_refresh_token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
+                .groups(new HashSet<>(Collections.singletonList(user.getUserType().toString())))
                 .expiresIn(900)
                 .claim("usage", "refresh_token")
                 .claim("uuid", refreshToken.getUuid())
@@ -242,12 +238,12 @@ class UserServiceTest {
     void changePasswordWithInvalidNewPassword() throws ValidationException, ServiceException {
         User user = new User();
         user.setName("Test");
-        user.setEmail("test8@test.com");
+        user.setEmail("test12@test.com");
         user.setPassword("123456789Test");
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
-        User createdUser = userRepository.find("email","test8@test.com" ).firstResult();
+        User createdUser = userRepository.find("email","test12@test.com" ).firstResult();
 
         String newPassword = "abcd"; // Invalid password with only 4 letters
         assertThrows(ValidationException.class, () -> userService.changePassword(user.getPassword(), newPassword, createdUser.getId()));
@@ -262,12 +258,12 @@ class UserServiceTest {
         // Step 1: Create a user with correct data
         User user = new User();
         user.setName("Test");
-        user.setEmail("test9@test.com");
+        user.setEmail("test13@test.com");
         user.setPassword("123456789Test");
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
-        User createdUser = userRepository.find("email","test9@test.com" ).firstResult();
+        User createdUser = userRepository.find("email","test13@test.com" ).firstResult();
 
         // Step 2: Attempt to change the password with a wrong old password
         String wrongOldPassword = "wrongOldPassword";
@@ -303,7 +299,7 @@ class UserServiceTest {
 
         User admin = new User();
         admin.setName("Admin");
-        admin.setEmail("admin@test.com");
+        admin.setEmail("admin1@test.com");
         admin.setPassword(password);
         admin.setUserType(Set.of(UserType.Administrator));
         userService.registerUser(admin);
@@ -333,7 +329,7 @@ class UserServiceTest {
     void favoriteTest() throws ValidationException, ServiceException {
         User user = new User();
         user.setName("Test");
-        user.setEmail("test@test.com");
+        user.setEmail("test14@test.com");
         user.setPassword("123456789Test");
         user.setUserType(Set.of(UserType.ListingConsumer));
         user.setFavourites(new ArrayList<>());
@@ -370,20 +366,21 @@ class UserServiceTest {
     void makeUserAdminTest() throws ValidationException, ServiceException {
         User admin = new User();
         admin.setName("Admin");
-        admin.setEmail("admin@test.com");
+        admin.setEmail("admin15@test.com");
         admin.setPassword("123456789Test");
         admin.setUserType(Set.of(UserType.Administrator));
         userService.registerUser(admin);
         User user = new User();
         user.setName("Test");
-        user.setEmail("test@mail.com");
+        user.setEmail("test16@mail.com");
         user.setPassword("123456789Test");
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
         userService.makeAdmin(user.getId(), admin.getId());
 
-        assertEquals(UserType.Administrator, userService.getUserById(user.getId()).getUserType());
+
+        assertTrue(userService.getUserById(user.getId()).getUserType().contains(UserType.Administrator));
     }
 
     @Test
@@ -391,12 +388,10 @@ class UserServiceTest {
     void makeAdminUserAdminTest() throws ValidationException, ServiceException {
         User admin = new User();
         admin.setName("Admin");
-        admin.setEmail("admin@test.com");
+        admin.setEmail("admin17@test.com");
         admin.setPassword("123456789Test");
         admin.setUserType(Set.of(UserType.Administrator));
         userService.registerUser(admin);
-
-        userService.makeAdmin(admin.getId(), admin.getId());
 
         assertThrows(ServiceException.class, () -> userService.makeAdmin(admin.getId(), admin.getId()));
     }
@@ -406,7 +401,7 @@ class UserServiceTest {
     void makeAdminWithNormalUserTestShouldThrowServiceException() throws ValidationException, ServiceException {
         User user = new User();
         user.setName("Test");
-        user.setEmail("user@test.com");
+        user.setEmail("user18@test.com");
         user.setPassword("123456789Test");
         user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);

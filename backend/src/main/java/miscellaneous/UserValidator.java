@@ -1,14 +1,9 @@
 package miscellaneous;
 
-import entity.Tag;
 import entity.User;
 import enums.Qualification;
 import enums.UserType;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import service.TagService;
 
-import java.util.Collection;
 import java.util.Set;
 
 public class UserValidator {

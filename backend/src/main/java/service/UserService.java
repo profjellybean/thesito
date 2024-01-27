@@ -151,7 +151,7 @@ public class UserService {
         LOG.debug("generateAccessToken");
         return Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
+                .groups(new HashSet<>(Collections.singletonList(user.getUserType().toString())))
                 .expiresIn(900)
                 .claim("usage", "access_token")
                 .claim("userid", user.getId().toString())
@@ -167,7 +167,7 @@ public class UserService {
         String uuid = UUID.randomUUID().toString();
         String token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().toString())))
+                .groups(new HashSet<>(Collections.singletonList(user.getUserType().toString())))
                 .expiresIn(259200)
                 .claim("usage", "refresh_token")
                 .claim("uuid", uuid)
