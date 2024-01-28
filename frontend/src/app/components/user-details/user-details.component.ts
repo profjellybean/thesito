@@ -1,15 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl} from "@angular/forms";
+import {Router} from "@angular/router";
 import {User} from "../../models/User";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
-import {LanguageService} from "../../services/language.service";
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {TagService} from "../../services/tag.service";
 import {Tag} from "../../models/Tag";
 
 import {QualificationType, UserType} from "../../models/Enums";
+import {LanguageService} from "../../services/language.service";
 
 @Component({
   selector: 'app-user-details',
@@ -31,7 +28,8 @@ export class UserDetailsComponent implements OnInit{
 
   constructor(private router: Router,
               private userService: UserService,
-              private authService: AuthService
+              private authService: AuthService,
+              private languageService: LanguageService
               ) {
 
     this.user = {
@@ -123,9 +121,10 @@ export class UserDetailsComponent implements OnInit{
     this.router.navigate(['/user/edit/']);
   }
 
-  addTagToUser(tags: Tag[]): void {
-    this.selectedTags = tags;
+  getLanguage(): string{
+    return this.languageService.getLanguage();
   }
+
 
   isLoggedIn(): boolean{
     return this.authService.isLoggedIn();

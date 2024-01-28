@@ -38,16 +38,29 @@
               </div>
               <div *ngIf="dataLoaded">
                 <div class="form-group checkboxes">
-                  <mat-checkbox formControlName="isConsumer" [checked]="isConsumerUser" (change)="isConsumer()">
+                  <mat-checkbox formControlName="isConsumer" [checked]="isConsumerUser" (change)="toggleConsumer()">
                     {{ "consumerInfo" | translate }}
                   </mat-checkbox>
                 </div>
                 <div class="form-group checkboxes">
-                  <mat-checkbox formControlName="isProvider" [checked]="isProviderUser" (change)="isProvider()">
+                  <mat-checkbox formControlName="isProvider" [checked]="isProviderUser" (change)="toggleProvider()">
                     {{ "providerInfo" | translate }}
                   </mat-checkbox>
                 </div>
               </div>
+
+              <div *ngIf="dataLoaded && isConsumer()">
+                {{ "completedAcademicCareer" | translate }}
+                <div class="form-group radios">
+                  <mat-radio-group id="qualification" formControlName="qualification">
+                    <mat-radio-button [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.Bachelors">{{ 'bachelors' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.Masters">{{ 'masters' | translate }}</mat-radio-button>
+                    <mat-radio-button [value]="QualificationType.PhD">{{ 'phd' | translate }}</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <app-tag *ngIf="tagsLoaded && isConsumer()" [title]="'chooseInterests'" [selectedTagsFromParent]="selectedTags" (updateTag)="addTagToUser($event)"></app-tag>
 
 
               <!-- Change Password button and Save button -->
@@ -66,7 +79,6 @@
                   </button>
                 </div>
               </div>
-
               <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
               <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
 

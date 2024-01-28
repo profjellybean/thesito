@@ -24,10 +24,15 @@ export class EditUserComponent implements OnInit {
   user: User | undefined;
   pwVisible = false;
 
+  mustBeLoggedOutConsumer = false;
+  mustBeLoggedOutProvider = false;
+
   name: string = '';
   email: string = '';
 
   selectedTags: Tag[] = [];
+
+  academicCareer: QualificationType | undefined = QualificationType.None;
 
   info = false;
   infoMessage = '';
@@ -38,6 +43,8 @@ export class EditUserComponent implements OnInit {
   isConsumerUser = false;
   isProviderUser = false;
   isAdminUser = false;
+
+  tagsLoaded = false;
 
   dataLoaded = false;
 
@@ -58,6 +65,9 @@ export class EditUserComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       isConsumer: [this.isConsumerUser],
       isProvider: [this.isProviderUser],
+      userTags: [],
+      qualification: [QualificationType.None],
+      receiveEmails: [true]
     });
     this.info = false;
     this.infoMessage = '';
@@ -125,7 +135,9 @@ export class EditUserComponent implements OnInit {
             name: userData.name,
             email: userData.email,
             userType: userData.userType,
+            qualification: userData.qualification,
           });
+          this.tagsLoaded = true;
         },
         error: (error2) => {
           this.error = true;
@@ -186,10 +198,15 @@ export class EditUserComponent implements OnInit {
     this.errorMessage = '';
   }
 
+  addTagToUser(tags: Tag[]): void {
+    this.selectedTags = tags;
+  }
+
   submitForm(): void {
     if (this.userForm.valid && this.user) {
       this.name = this.userForm.get('name')?.value;
       this.email = this.userForm.get('email')?.value;
+      let qualification = this.userForm.get('qualification')?.value;
 
       this.user.userType = [...[]]
 
@@ -208,7 +225,8 @@ export class EditUserComponent implements OnInit {
         ...this.user,
         name: this.name,
         email: this.email,
-        userTags: this.selectedTags
+        userTags: this.selectedTags,
+        qualification: qualification,
       };
 
       this.vanishError(); // Clear any previous errors
@@ -218,7 +236,9 @@ export class EditUserComponent implements OnInit {
         next: result => {
           this.info = true;
           this.infoMessage = 'userUpdateSuccess';
-          this.authService.removeTokens()
+          if(this.mustBeLoggedOutConsumer || this.mustBeLoggedOutProvider){
+            this.authService.removeTokens();
+          }
         },
         error: error => {
           this.error = true;
@@ -236,10 +256,24 @@ export class EditUserComponent implements OnInit {
   }
 
   isConsumer() {
-    this.isConsumerUser = !this.isConsumerUser;
+    return this.isConsumerUser;
   }
   isProvider() {
+    return this.isProviderUser;
+  }
+
+  toggleConsumer() {
+    this.isConsumerUser = !this.isConsumerUser;
+    this.mustBeLoggedOutConsumer = !this.mustBeLoggedOutConsumer;
+  }
+
+  toggleProvider() {
     this.isProviderUser = !this.isProviderUser;
+    this.mustBeLoggedOutProvider = !this.mustBeLoggedOutProvider;
+  }
+
+  isLoggedIn(): boolean{
+    return this.authService.isLoggedIn();
   }
 
   openUserTypeConfirmationDialog(){
@@ -252,4 +286,5 @@ export class EditUserComponent implements OnInit {
     });
   }
 
+  protected readonly QualificationType = QualificationType;
 }
