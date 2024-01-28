@@ -3,11 +3,9 @@ package controller;
 import entity.Listing;
 import enums.Qualification;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.security.UnauthorizedException;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -17,6 +15,7 @@ import miscellaneous.GraphQLSearchResult;
 import miscellaneous.ServiceException;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.graphql.*;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.hibernate.search.engine.search.predicate.SearchPredicate;
 import org.hibernate.search.engine.search.predicate.dsl.PredicateFinalStep;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
@@ -26,7 +25,6 @@ import org.hibernate.search.mapper.orm.scope.SearchScope;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 import service.ListingService;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +46,9 @@ public class ListingController {
 
     private static final Logger LOG = Logger.getLogger(ListingController.class);
 
+    /**
+     * This method is called on application startup. It will reindex all listings if the database is not empty.
+     */
     @Transactional
     void onStart(@Observes StartupEvent ev) throws InterruptedException {
         LOG.info("The application is starting...");
@@ -58,6 +59,10 @@ public class ListingController {
         }
     }
 
+    /**
+     * Gets all listings from the database.
+     * @return list of all listings
+     */
     @Query("getAllListings")
     @RolesAllowed({"ListingConsumer", "ListingProvider", "Administrator"})
     @Description("Fetches a list of all listings from the database")
@@ -66,9 +71,14 @@ public class ListingController {
         return listingService.getAllListings();
     }
 
+    /**
+     * Gets all listings from the database that are assigned to a specific user.
+     * @param id id of the user
+     * @return list of all listings assigned to the user
+     */
     @Query("getAllListingsFromUserWithId")
     @RolesAllowed({"ListingConsumer", "ListingProvider", "Administrator"})
-    @Description("Fetches a list of all listings from the a specific User from the dataabase")
+    @Description("Fetches a list of all listings from the a specific User from the database")
     public List<Listing> getAllListingsFromUserWithId(Long id) throws GraphQLException{
         LOG.info("getAllListingsFromUserWithId");
         // check if sender is allowed
@@ -79,6 +89,12 @@ public class ListingController {
         return listingService.getAllListingsFromUserWithId(id);
     }
 
+    /**
+     * Stores a given listing in the database.
+     * @param listing listing to be stored
+     * @return the stored listing with its ID
+     * @throws GraphQLException if the listing could not be stored
+     */
     @Mutation
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Creates a listing in the database")
@@ -91,8 +107,17 @@ public class ListingController {
             throw new GraphQLException(e.getMessage());
         }
     }
+
+    /**
+     * Applies for a listing, notifying the listing provider.
+     * @param listingId id of the listing
+     * @param userId id of the user
+     * @param applicationText application text
+     * @throws GraphQLException if the application could not be made
+     */
     @Mutation("applyToListing")
     @RolesAllowed({"ListingConsumer", "Administrator"})
+    @Description("Applies for a listing, notifying the listing provider")
     public void applyToListing(Long listingId, Long userId, String applicationText) throws GraphQLException {
         LOG.info("applyToListing");
         try {
@@ -103,8 +128,20 @@ public class ListingController {
         }
     }
 
+    /**
+     * Searches for listings in the database according to the query and filters.
+     * @param textPattern search query
+     * @param startDate earliest listing creation date
+     * @param endDate latest listing creation date
+     * @param qualification qualification needed to apply for the listing
+     * @param offset offset of the search result
+     * @param limit limit of the search result
+     * @return search result
+     * @throws ParseException if the dates could not be parsed
+     */
     @Query("advancedSearch")
     @RolesAllowed({"ListingConsumer","ListingProvider", "Administrator"})
+    @Description("Searches for listings in the database according to the query and filters")
     @Transactional
     public GraphQLSearchResult advancedSearch(Optional<String> textPattern, Optional<String> startDate, Optional<String> endDate,
                                               Optional<Qualification> qualification, Optional<String> university,
@@ -215,6 +252,15 @@ public class ListingController {
         return searchResult;
     }
 
+    /**
+     * Gets a list of trending listings from the database. Trending listings are listings that have the most
+     * applications from within the last 30 days.
+     * @param university university to filter by if given
+     * @param company company to filter by if given
+     * @param pageIndex index of the page to fetch
+     * @param pageSize size of the page to fetch
+     * @return list of trending listings
+     */
     @Query("getTrendingListings")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of trending listings from the database")
@@ -234,8 +280,12 @@ public class ListingController {
         return searchResult;
     }
 
-
-
+    /**
+     * Updates a listing in the database.
+     * @param listing listing to be updated
+     * @return the updated listing
+     * @throws GraphQLException if the listing could not be updated
+     */
     @Mutation
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Updates a listing in the database")
@@ -253,6 +303,11 @@ public class ListingController {
         }
     }
 
+    /**
+     * Gets a listing from the database by its ID.
+     * @param id id of the listing
+     * @return the listing
+     */
     @Query("getListingById")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a listing from the database by its ID")
@@ -266,6 +321,11 @@ public class ListingController {
         }
     }
 
+    /**
+     * Deletes a listing from the database by its ID.
+     * @param id id of the listing
+     * @throws GraphQLException if the listing could not be deleted
+     */
     @Mutation
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Deletes a listing and associated entities in cascade")
@@ -283,6 +343,11 @@ public class ListingController {
         }
     }
 
+    /**
+     * Gets a list of all university names that listings are assigned to.
+     * @param query query to filter the university names by
+     * @return list of known university names
+     */
     @Query("getAllListingUniversities")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of all universities that listings are assigned to")
@@ -295,6 +360,11 @@ public class ListingController {
         }
     }
 
+    /**
+     * Gets a list of all company names that listings are assigned to.
+     * @param query query to filter the company names by
+     * @return list of known company names
+     */
     @Query("getAllListingCompanies")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of all companies that listings are assigned to")
