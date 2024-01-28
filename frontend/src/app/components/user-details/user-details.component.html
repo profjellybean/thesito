@@ -3,34 +3,35 @@
     <div class="center-card">
       <div class="col-md-6 mt-5 card-align">
         <div>
-          <h3 class="card-title h1">{{ 'yourProfile' | translate }}</h3>
+          <div class="card-title">
+            <h2>{{ "yourProfile" | translate }}</h2>
+          </div>
           <div class="card">
             <div class="card-body">
-              <div class="row">
+              <div class="row d-flex justify-content-center">
                 <!-- Left column for user details -->
                 <div class="col-md-8">
                   <div class="info-wrapper">
-                    <div class="d-flex justify-content-between">
-                      <label class="form-label" for="name">{{ 'name' | translate }}:</label>
-                      <div id="name">{{user.name}}</div>
+                    <div class="d-flex justify-content-center">
+                      <h1 id="name">{{user.name}}</h1>
                     </div>
 
                     <div class="d-flex justify-content-between">
                       <label class="form-label" for="email">{{ 'email' | translate }}:</label>
-                      <div id="email">{{user.email}}</div>
+                      <h3 id="email">{{user.email}}</h3>
                     </div>
 
                     <div class="d-flex justify-content-between">
                       <label class="form-label" for="role">{{ 'role' | translate }}:</label>
-                      <div *ngFor="let type of user.userType" id="role">
+                      <h3 *ngFor="let type of user.userType" id="role">
                         {{type | translate}}
-                      </div>
+                      </h3>
                     </div>
 
                     <div *ngIf="isConsumer">
                       <div class="d-flex justify-content-between">
                         <label class="form-label" for="qualification">{{ 'qualification' | translate }}:</label>
-                        <div id="qualification">{{user.qualification}}</div>
+                        <h3 id="qualification">{{user.qualification}}</h3>
                       </div>
 
                       <div class="d-flex justify-content-between">
@@ -53,7 +54,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 text-end">
+                <div class="col-md-1 text-end">
                   <div class="info-wrapper"></div>
                   <button type="button" class="button-blue" (click)="goToEditProfile()">
                     <mat-icon>edit</mat-icon>
