@@ -51,7 +51,7 @@ export class MyListingsComponent implements OnInit {
   constructor(
     listingService: ListingService,
     private authService: AuthService,
-    private router: Router
+    public router: Router
   ) {
     this.listingService = listingService;
     this.user_id = this.authService.getUserId();

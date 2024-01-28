@@ -73,3 +73,7 @@
       <mat-slide-toggle [color]="'primary'" class="toggle-slider" [checked]="listing.active"  (change)="toggleListingStatus(listing)" (click)="$event.stopPropagation()"></mat-slide-toggle>
     </div>
   </div>
+  <div *ngIf="listings.length > 3" class="see-all-link">
+    <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
+  </div>
+</div>
