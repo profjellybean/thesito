@@ -34,6 +34,14 @@ export class HomeComponent implements OnInit{
   trendingTags: Observable<Tag[]>;
   selectedTag: any = null;
 
+  // Add a new property for the selected role, default to 'consumer'
+  selectedRole: 'consumer' | 'producer' ;
+
+  // Method to handle role change
+  onRoleChange(role: 'consumer' | 'producer'): void {
+    this.selectedRole = role;
+  }
+
   constructor(public router: Router, private notificationService: NotificationService,
               public authService: AuthService, private userService: UserService,
               private tagService: TagService) {
@@ -58,6 +66,12 @@ export class HomeComponent implements OnInit{
           this.errorMessage = error.message;
         }
       });
+
+      if (this.authService.isProducer()){
+        this.selectedRole = "producer";
+      } else if (this.authService.isConsumer()){
+        this.selectedRole = "consumer";
+      }
 
         this.userService.getFavouritesByUser().subscribe(favourites => {
           this.favourites = favourites;

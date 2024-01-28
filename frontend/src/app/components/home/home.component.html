@@ -1,4 +1,11 @@
-<div *ngIf="authService.isConsumer()" class="container">
+<div class="role-selector" *ngIf="authService.isProducer() && authService.isConsumer()">
+  <mat-radio-group [(ngModel)]="selectedRole" (change)="onRoleChange($event.value)" class="role-radio-group">
+    <mat-radio-button value="consumer" checked> {{"consumer" | translate}}</mat-radio-button>
+    <mat-radio-button value="producer">{{"provider" | translate}}</mat-radio-button>
+  </mat-radio-group>
+</div>
+
+<div *ngIf="authService.isConsumer() && selectedRole === 'consumer'" class="container">
   <div class="left-section card">
     <h2 class="clickable" (click)="this.router.navigate(['/trending'])">{{ 'trending' | translate }}</h2>
     <app-trending [isStandalone]="false"></app-trending>
@@ -40,8 +47,7 @@
   </div>
 </div>
 
-
-<div *ngIf="authService.isProducer()" class="container">
+<div *ngIf="authService.isProducer() && selectedRole === 'producer'" class="container">
   <div class="left-section card">
     <div class="header">
       <h2 class="clickable" (click)="this.router.navigate(['/user/listings'])">{{ 'myListings' | translate }}</h2>

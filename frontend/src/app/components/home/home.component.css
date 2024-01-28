@@ -1,3 +1,21 @@
+.toggle-container {
+  display: flex;
+  justify-content: left; /* Aligns the toggle to the left */
+  padding: 10px; /* Padding around the toggle */
+  margin-bottom: 20px; /* Space below the toggle */
+}
+
+.role-selector {
+  display: flex;
+  justify-content: center; /* Centers the radio group */
+  padding: 10px; /* Padding around the radio group */
+  margin-bottom: 20px; /* Space below the radio group */
+}
+
+.role-radio-group {
+  display: inline-flex;
+  margin: 0 auto; /* Additional centering for the radio group */
+}
 
 .card {
   background-color: #f9f9f9; /* Light gray background for individual cards */
