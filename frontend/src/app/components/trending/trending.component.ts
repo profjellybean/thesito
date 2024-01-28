@@ -108,7 +108,7 @@ export class TrendingComponent {
     const limit = this.listingsPerPage;
     let tagIds = [tag.id]
     this.listingService.advancedSearch(null, null, null,
-      null,  null, null, tagIds, offset, limit)
+      null,  null, null, tagIds, offset, limit, null, null)
       .subscribe((searchResult) => {
         this.totalListings = searchResult.totalHitCount
         this.listings = searchResult.listings;

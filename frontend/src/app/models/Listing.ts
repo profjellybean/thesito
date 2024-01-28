@@ -70,7 +70,7 @@ export const getListingByIdQuery = gql`
 
 export const advancedSearchQuery = gql`
   query ($textPattern: String, $qualification: Qualification, $startDate: String, $endDate: String $offset: Int,
-    $university: String, $company: String, $tagIds: [BigInteger], $limit: Int) {
+    $university: String, $company: String, $tagIds: [BigInteger], $limit: Int, $owner_id: BigInteger, $non_active: Boolean) {
     advancedSearch (
       textPattern: $textPattern
       startDate: $startDate
@@ -81,6 +81,8 @@ export const advancedSearchQuery = gql`
       tagIds: $tagIds
       offset: $offset
       limit: $limit
+      owner_id: $owner_id
+      non_active: $non_active
     ){
       totalHitCount
       listings {
@@ -89,6 +91,9 @@ export const advancedSearchQuery = gql`
         details
         requirement
         createdAt
+        active
+        company
+        university
         tags {
           id
           title_de

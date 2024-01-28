@@ -148,8 +148,16 @@ public class ListingController {
                                               Optional<String> company,
                                               Set<Long> tagIds,
                                               Optional<Long> owner_id,
-                                              Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
+                                              Optional<Integer> offset, Optional<Integer> limit, Optional<Boolean> non_active) throws ParseException {
         LOG.info("advancedSearch");
+
+        if (non_active.isPresent()){
+            // only possible to see non_active listings if there is a userid filter which equals the JWT user id
+            if (owner_id.isEmpty() || !owner_id.get().equals(Long.parseLong(jwt.getClaim("userid").toString()))){
+                throw new UnauthorizedException();
+            }
+        }
+
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
         PredicateFinalStep fullTextPredicate;
         if (textPattern.isPresent()){
@@ -213,7 +221,9 @@ public class ListingController {
                         :
                         predicateFactory.matchAll();
 
-        PredicateFinalStep activePredication = predicateFactory.match().field("active").matching(true);
+        PredicateFinalStep activePredication = non_active.isPresent() && non_active.get() ?
+                predicateFactory.matchAll() :
+                predicateFactory.match().field("active").matching(true);
         // Combining all predicates
         SearchPredicate combinedPredicate = predicateFactory.bool()
                 .must(fullTextPredicate)
@@ -290,6 +300,7 @@ public class ListingController {
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Updates a listing in the database")
     public Listing updateListing(Listing listing) throws GraphQLException {
+        LOG.info("updateListing");
         // check if user (identified with JWT) is allowed to change listing
         if (!is_user_allowed_to_access_listing(jwt,listing.getId()) && !jwt.getGroups().contains("Administrator")){
             throw new UnauthorizedException();

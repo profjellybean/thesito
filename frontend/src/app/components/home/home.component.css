@@ -76,8 +76,9 @@ mat-icon {
 
 .left-section {
   flex-grow: 2;
-  width: calc(50% - 20px); /* Adjust width ratio as needed, accounting for the gap */
+  width: calc(90% - 10px); /* Adjust width ratio as needed, accounting for the gap */
   position: relative; /* Add relative positioning to the parent */
+  height: 100%
 }
 
 .right-section {

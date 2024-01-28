@@ -64,7 +64,7 @@ export class ListingService {
 
   advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null,
                  endDate: String | null, university: String | null, company: String | null, tagIds: number[] | null,
-  offset: number | null, limit: number | null): Observable<SearchResult> {
+  offset: number | null, limit: number | null, owner_id: number | null, non_active: boolean | null): Observable<SearchResult> {
     return this.apollo
       .query<{ advancedSearch: SearchResult }>({
         query: advancedSearchQuery,
@@ -77,7 +77,9 @@ export class ListingService {
           company: company,
           tagIds: tagIds,
           offset: offset,
-          limit: limit
+          limit: limit,
+          owner_id: owner_id,
+          non_active: non_active
         }
       })
       .pipe(

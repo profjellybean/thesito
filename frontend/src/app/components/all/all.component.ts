@@ -90,7 +90,7 @@ export class AllComponent implements OnInit {
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
     this.listingService.advancedSearch(this.fullTextSearchPattern, this.searchQualificationType, formattedStartDate,
-      formattedEndDate, university, company, tagIds, offset, limit)
+      formattedEndDate, university, company, tagIds, offset, limit, null, null)
       .subscribe((searchResult) => {
         this.totalListings = searchResult.totalHitCount
         this.listings = searchResult.listings;
