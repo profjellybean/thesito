@@ -297,6 +297,13 @@ public class UserService {
                         notification.getConnectedUsers().remove(user);
                     }
                 }
+                for (Listing listing : user.getOwner()) {
+                    for (User user_ : listing.getFavourites()) {
+                        user_.getFavourites().remove(listing);
+                    }
+
+                }
+
                 refreshTokenRepository.deleteByUserId(id);
                 userRepository.delete(user);
             } else {

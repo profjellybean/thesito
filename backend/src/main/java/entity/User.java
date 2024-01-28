@@ -52,7 +52,7 @@ public class User extends PanacheEntityBase {
             inverseJoinColumns = @JoinColumn(name = "listing_id"))
     private Collection<Listing> favourites;
 
-    @ManyToMany(mappedBy = "connectedUsers")
+    @ManyToMany(mappedBy = "connectedUsers", cascade = CascadeType.REMOVE)
     private Collection<Notification> notifications;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
