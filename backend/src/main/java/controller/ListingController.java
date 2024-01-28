@@ -114,9 +114,20 @@ public class ListingController {
                                               Optional<Integer> offset, Optional<Integer> limit) throws ParseException {
         LOG.info("advancedSearch");
         SearchPredicateFactory predicateFactory = searchSession.scope(Listing.class).predicate();
-        PredicateFinalStep fullTextPredicate = textPattern.isPresent() ?
-                predicateFactory.simpleQueryString().fields("title", "details").matching(textPattern.get()) :
-                predicateFactory.matchAll();
+        PredicateFinalStep fullTextPredicate;
+        if (textPattern.isPresent()){
+            String searchText = textPattern.get();
+            PredicateFinalStep phrasePredicate = predicateFactory.phrase().field("title")
+                    .matching(searchText).boost(5.0f).analyzer("english"); // Boost factor for exact matches
+
+            PredicateFinalStep simpleQueryPredicate = predicateFactory.simpleQueryString().fields("title", "details").matching(searchText).analyzer("english");
+
+            fullTextPredicate = predicateFactory.bool()
+                    .must(phrasePredicate)
+                    .must(simpleQueryPredicate);
+        } else {
+            fullTextPredicate = predicateFactory.matchAll();
+        }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // Parsing startDate and endDate from String to Date
@@ -179,13 +190,24 @@ public class ListingController {
                 .filter(ownerPredicate)
                 .toPredicate();
 
+
         final SearchScope<Listing> scope = searchSession.scope(Listing.class);
+        SearchResult<Listing> query = null;
         SearchSort sort = scope.sort().field("createdAt").desc().toSort();
 
-        SearchResult<Listing> query = searchSession.search(scope)
-                .where(combinedPredicate)
-                .sort(sort)
-                .fetch(offset.orElse(0), limit.orElse(100));
+        if (textPattern.isPresent()) {
+            query = searchSession.search(scope)
+                    .where(combinedPredicate)
+                    //.sort(sort)
+                    .fetch(offset.orElse(0), limit.orElse(100));
+        } else {
+            query = searchSession.search(scope)
+                    .where(combinedPredicate)
+                    .sort(sort)
+                    .fetch(offset.orElse(0), limit.orElse(100));
+        }
+
+
 
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
         searchResult.setListings(query.hits());
