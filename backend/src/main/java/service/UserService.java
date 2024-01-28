@@ -26,6 +26,7 @@ import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import io.smallrye.jwt.build.Jwt;
 
@@ -151,7 +152,7 @@ public class UserService {
         LOG.debug("generateAccessToken");
         return Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Collections.singletonList(user.getUserType().toString())))
+                .groups(user.getUserType().stream().map(m -> m.toString()).collect(Collectors.toSet()))
                 .expiresIn(900)
                 .claim("usage", "access_token")
                 .claim("userid", user.getId().toString())
@@ -165,9 +166,10 @@ public class UserService {
         refreshTokenRepository.deleteByUserId(user.getId());
         // generate new refresh token and store UUID in DB
         String uuid = UUID.randomUUID().toString();
+        System.out.println(user.getUserType().toString());
         String token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Collections.singletonList(user.getUserType().toString())))
+                .groups(user.getUserType().stream().map(m -> m.toString()).collect(Collectors.toSet()))
                 .expiresIn(259200)
                 .claim("usage", "refresh_token")
                 .claim("uuid", uuid)
