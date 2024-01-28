@@ -14,7 +14,7 @@
           <div class="card-body">
             <p *ngIf="notification.notificationType == NotificationType.Application">{{"newApplicationNotification" | translate}}</p>
             <p *ngIf="notification.notificationType == NotificationType.InterestedTopic">{{"newInterestedTopicNotification" | translate}}</p>
-            <p>{{"title" | translate}}: <span style="font-weight: bold">{{notification.connectedListing.title}}</span></p>
+            <p class="title-text">{{"title" | translate}}: <span style="font-weight: bold">{{notification.connectedListing.title}}</span></p>
           </div>
         </div>
       </mat-grid-tile>

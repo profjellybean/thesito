@@ -48,5 +48,9 @@ h2 {
   overflow-y: auto;
 }
 
-
-
+.title-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 2vh;
+}
