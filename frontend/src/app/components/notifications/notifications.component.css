@@ -1,22 +1,20 @@
 .card{
-  margin: 1vh 1vw;
-  min-width: 250px;
+  width: calc(90vw / 3);
+  height: 200px;
+  max-width: 600px;
+
 }
 
 .notification-container{
   display: flex;
   cursor: pointer;
+  margin-top: 15px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .notification-container:hover{
   transform: scale(1.01); /* Slightly scale up on hover */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for "pop up" effect */
-}
-
-.notification-box{
-  display: flex;
-  justify-content: center;
 }
 
 .controls{
@@ -48,5 +46,9 @@ h2 {
   overflow-y: auto;
 }
 
-
-
+.title-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 2vh;
+}

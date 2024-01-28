@@ -4,11 +4,11 @@ import {map, Observable} from "rxjs";
 import {QualificationType} from "../models/Enums";
 import {
   advancedSearchQuery, applyToListingQuery,
-  createListingQuery, fullTextSearchQuery,
+  createListingQuery,
   getAllListingsQuery,
-  getAllListingsQueryPaginated, getListingByIdQuery, getTrendingListingsQuery,
+  getListingByIdQuery, getTrendingListingsQuery,
   Listing,
-  simpleSearchTitleOnlyQuery, updateListingQuery
+  updateListingQuery
 } from "../models/Listing";
 import {gql} from "@apollo/client/core";
 
@@ -60,52 +60,6 @@ export class ListingService {
       }).pipe(
         map((result) => result.data.getListingById)
       )
-  }
-
-  getAllListingsPaginated(offset: number, limit: number): Observable<Listing[]> {
-    return this.apollo
-      .query<{ getAllListingsPaginated: Listing[] }>({
-        query: getAllListingsQueryPaginated,
-        variables: {
-          offset: offset,
-          limit: limit
-        }
-      })
-      .pipe(
-        map((result) => result.data.getAllListingsPaginated)
-      );
-  }
-
-  simpleSearch(title: String, qualification: QualificationType | null, details: String, offset: number, limit: number): Observable<SearchResult> {
-    return this.apollo
-      .query<{ simpleSearch: SearchResult }>({
-        query: simpleSearchTitleOnlyQuery,
-        variables: {
-          title: title,
-          qualificationType: qualification,
-          details: details,
-          offset: offset,
-          limit: limit
-        }
-      })
-      .pipe(
-        map((result) => result.data.simpleSearch)
-      );
-  }
-
-  fullTextSearch(pattern: String, offset: number, limit: number): Observable<SearchResult> {
-    return this.apollo
-      .query<{ fullTextSearch: SearchResult }>({
-        query: fullTextSearchQuery,
-        variables: {
-          pattern: pattern,
-          offset: offset,
-          limit: limit,
-        }
-      })
-      .pipe(
-        map((result) => result.data.fullTextSearch)
-      );
   }
 
   advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null,

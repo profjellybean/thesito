@@ -21,3 +21,12 @@ tr:hover {
 table {
   width: 100%;
 }
+
+.mat-icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.mat-icon:hover {
+  transform: translateY(-2px); /* Moves the icon slightly up */
+  color: #1976d2; /* Optional: Change color on hover */
+}

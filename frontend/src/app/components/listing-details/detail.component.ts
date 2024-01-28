@@ -25,7 +25,7 @@ export class DetailComponent implements OnInit{
   successMessage = '';
   error = false;
   errorMessage = '';
-  owner: User;
+  owner: String;
   ownership = false;
   canApply = false;
   currentLanguage = 'en';
@@ -135,8 +135,10 @@ export class DetailComponent implements OnInit{
       }
 
       if (this.listing.owner.id != null) {
-        this.userService.getUserById(Number(this.listing.owner.id)).subscribe((user: User) => {
-          this.owner = user;
+        //this.userService.getUserById(Number(this.listing.owner.id)).subscribe((user: User) => {
+        this.userService.getUsernameByUserId(Number(this.listing.owner.id)).subscribe((username: String) => {
+          console.log(username)
+          this.owner = username;
         })
       }
 

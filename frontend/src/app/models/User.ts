@@ -23,7 +23,15 @@ export const getAllUsers = gql`
       name
       userType
       email
+      qualification
+      receiveEmails
     }
+  }
+`;
+
+export const getUsernameByUserIdQuery = gql`
+  query GetUsernameByUserId($id: BigInteger!) {
+    getUsernameByUserId(id: $id)
   }
 `;
 

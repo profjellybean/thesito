@@ -125,6 +125,7 @@
   "consumerInfo": "Ich möchte Ausschreibungen suchen",
   "providerInfo": "Ich möchte Ausschreibungen erstellen",
   "confirmChange": "Änderungen bestätigen",
-  "confirmationDialogUserType": "Sind Sie sicher, dass Sie die Änderungen übernehmen möchten? Sie werden autmatisch ausgeloggt."
+  "confirmationDialogUserType": "Sind Sie sicher, dass Sie die Änderungen übernehmen möchten? Sie werden autmatisch ausgeloggt.",
+  "seeAll": "Alle ansehen"
 
 }

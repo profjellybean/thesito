@@ -12,19 +12,31 @@
         <div class="notification-header">
           <div class="icon-with-text">
             <mat-icon>email</mat-icon>
-            {{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}
+            <span *ngIf="notification.notificationType === 'Application'">{{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}</span>
+            <span *ngIf="notification.notificationType === 'InterestedTopic'">{{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}</span>
           </div>
           <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
         </div>
       </div>
-    </div>
-
-    <div  *ngIf="favoritesLoaded" class="bottom-right-section card">
-      <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
-      <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item"  >
-        <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
+      <div *ngIf="notifications.length===0">
+        <h4>{{"noNotifications" | translate}}</h4>
+      </div>
+      <div *ngIf="notifications.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
       </div>
     </div>
+
+    <div *ngIf="favoritesLoaded" class="bottom-right-section card">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
+      <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item">
+        <mat-icon>star</mat-icon> <!-- Star icon -->
+        <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
+      </div>
+      <div *ngIf="favourites.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/favourites'])">{{ 'seeAll' | translate }}</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -50,13 +62,17 @@
         <div class="notification-header">
           <div class="icon-with-text">
             <mat-icon>email</mat-icon>
-            {{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}
+            <span *ngIf="notification.notificationType === 'Application'">{{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}</span>
+            <span *ngIf="notification.notificationType === 'InterestedTopic'">{{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}</span>
           </div>
           <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
         </div>
       </div>
       <div *ngIf="notifications.length===0">
-        <h4>You haven't go any messages</h4>
+        <h4>{{"noNotifications" | translate}}</h4>
+      </div>
+      <div *ngIf="notifications.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
       </div>
     </div>
 
@@ -66,6 +82,6 @@
 <div *ngIf="authService.isAdministrator()" class="container">
   <div class="left-section">
     <h2>{{ 'manageUsers' | translate }} <span (click)="this.router.navigate(['/admin/users'])" class="clickable material-symbols-outlined">link</span></h2>
-    <app-admin-page></app-admin-page>
+    <app-admin-page [isStandalone]="false"></app-admin-page>
   </div>
 </div>

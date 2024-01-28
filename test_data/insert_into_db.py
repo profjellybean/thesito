@@ -13,9 +13,13 @@ def insert_user(row):
     conn = psycopg2.connect(**params)
     cursor = conn.cursor()
     try:
-        cursor.execute("""INSERT INTO users(id, email, name, password, usertype)
-            VALUES (%s, %s, %s, %s, %s) RETURNING id;
-        """, (user_id, email, name, password, usertype))
+        cursor.execute("""INSERT INTO users(id, email, name, password)
+            VALUES (%s, %s, %s, %s) RETURNING id;
+        """, (user_id, email, name, password))
+
+        cursor.execute("""INSERT INTO user_types(user_id, user_type)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (user_id, usertype))
         conn.commit()
     except Exception as e:
         print("An error occurred:", e)
@@ -60,7 +64,7 @@ with open('users.csv', newline='', encoding="utf-8") as csvfile:
     for row in reader:
         insert_user(row)
 
-# inser listings
+# insert listings
 with open('testdata.csv', newline='', encoding="utf-8") as csvfile:
     reader = csv.reader(csvfile)
     listing_id = 1

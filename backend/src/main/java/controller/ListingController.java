@@ -3,9 +3,12 @@ package controller;
 import entity.Listing;
 import enums.Qualification;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Page;
 import io.quarkus.runtime.StartupEvent;
+import io.quarkus.security.UnauthorizedException;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.persistence.NoResultException;
@@ -23,6 +26,7 @@ import org.hibernate.search.mapper.orm.scope.SearchScope;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 import service.ListingService;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +40,12 @@ public class ListingController {
     @Inject
     ListingService listingService;
 
+    @Inject
+    JsonWebToken jwt;
+
+    @Inject
+    SearchSession searchSession;
+
     private static final Logger LOG = Logger.getLogger(ListingController.class);
 
     @Transactional
@@ -48,10 +58,8 @@ public class ListingController {
         }
     }
 
-    @Inject
-    SearchSession searchSession;
-
     @Query("getAllListings")
+    @RolesAllowed({"ListingConsumer", "ListingProvider", "Administrator"})
     @Description("Fetches a list of all listings from the database")
     public List<Listing> getAllListings() {
         LOG.info("getAllListings");
@@ -59,27 +67,20 @@ public class ListingController {
     }
 
     @Query("getAllListingsFromUserWithId")
+    @RolesAllowed({"ListingConsumer", "ListingProvider", "Administrator"})
     @Description("Fetches a list of all listings from the a specific User from the dataabase")
-    public List<Listing> getAllListingsFromUserWithId(long id) {
+    public List<Listing> getAllListingsFromUserWithId(Long id) throws GraphQLException{
         LOG.info("getAllListingsFromUserWithId");
+        // check if sender is allowed
+        if (!id.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){
+            throw new GraphQLException("Not allowed");
+        }
+
         return listingService.getAllListingsFromUserWithId(id);
     }
 
-    @Query("getAllListingsPaginated")
-    @Description("Fetches a list of all listings from the database")
-    public List<Listing> getAllListingsPaginated(int offset, int limit) {
-        LOG.info("getAllListingsPaginated");
-        return listingService.getAllListingsPaginated(offset, limit);
-    }
-
-    @Query("getTotalListingsCount")
-    @Description("Fetches a list of all listings from the database")
-    public Integer getTotalListingsCount() {
-        LOG.info("getTotalListingsCount");
-        return listingService.getAllListings().size();
-    }
-
     @Mutation
+    @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Creates a listing in the database")
     public Listing createListing(Listing listing) throws GraphQLException {
         LOG.info("createListing");
@@ -90,48 +91,8 @@ public class ListingController {
             throw new GraphQLException(e.getMessage());
         }
     }
-
-    //    @RolesAllowed("ListingConsumer") TODO: change permissions sooner or later
-    @Query("simpleSearch")
-    @PermitAll
-    public GraphQLSearchResult simpleSearch(String title, String details, Qualification qualificationType, Date startDate, Date endDate, Optional<Integer> offset, Optional<Integer> limit, Boolean active) {
-        LOG.info("simpleSearch");
-        Optional<String> optionalTitle = Optional.ofNullable(title);
-        Optional<String> optionalDetails = Optional.ofNullable(details);
-        Optional<Qualification> optionalQualificationType = Optional.ofNullable(qualificationType);
-        Optional<Date> optionalStartDate = Optional.ofNullable(startDate);
-        Optional<Date> optionalEndDate = Optional.ofNullable(endDate);
-        Optional<Boolean> optionalActive = Optional.ofNullable(active);
-        GraphQLSearchResult searchResult = new GraphQLSearchResult();
-        // TODO make just one query
-        searchResult.totalHitCount = listingService.find(Optional.empty(), Optional.empty(), optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive).size();
-        searchResult.listings = listingService.find(offset, limit, optionalTitle, optionalDetails, optionalQualificationType, optionalStartDate, optionalEndDate, optionalActive);
-        return searchResult;
-    }
-
-    @Query("fullTextSearch")
-    @PermitAll
-    @Transactional
-    public GraphQLSearchResult fulltextSearch(String pattern, Optional<Integer> offset, Optional<Integer> limit) {
-        LOG.info("fulltextSearch");
-        SearchResult<Listing> query = searchSession.search(Listing.class)
-                .where(f -> pattern == null || pattern.trim().isEmpty() ?
-                        f.matchAll() :
-                        f.simpleQueryString()
-                                .fields("title")
-                                .matching(pattern)
-                )
-                .fetch(offset.orElse(0), limit.orElse(100));
-
-        GraphQLSearchResult searchResult = new GraphQLSearchResult();
-        System.out.println();
-        searchResult.setListings(query.hits());
-        searchResult.setTotalHitCount(query.total().hitCount());
-        return searchResult;
-    }
-
     @Mutation("applyToListing")
-    @PermitAll
+    @RolesAllowed({"ListingConsumer", "Administrator"})
     public void applyToListing(Long listingId, Long userId, String applicationText) throws GraphQLException {
         LOG.info("applyToListing");
         try {
@@ -143,7 +104,7 @@ public class ListingController {
     }
 
     @Query("advancedSearch")
-    @PermitAll
+    @RolesAllowed({"ListingConsumer","ListingProvider", "Administrator"})
     @Transactional
     public GraphQLSearchResult advancedSearch(Optional<String> textPattern, Optional<String> startDate, Optional<String> endDate,
                                               Optional<Qualification> qualification, Optional<String> university,
@@ -233,6 +194,7 @@ public class ListingController {
     }
 
     @Query("getTrendingListings")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of trending listings from the database")
     public GraphQLSearchResult getTrendingListings(Optional<String> university, Optional<String> company,
                                                    Optional<Integer> pageIndex, Optional<Integer> pageSize) {
@@ -251,20 +213,26 @@ public class ListingController {
     }
 
 
+
     @Mutation
+    @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Updates a listing in the database")
     public Listing updateListing(Listing listing) throws GraphQLException {
-        LOG.info("updateListing");
-        LOG.info(listing);
+        // check if user (identified with JWT) is allowed to change listing
+        if (!is_user_allowed_to_access_listing(jwt,listing.getId()) && !jwt.getGroups().contains("Administrator")){
+            throw new UnauthorizedException();
+        }
         try {
+            //return listingService.getListingById(listing.getId());
             return listingService.updateListing(listing);
-        } catch (ValidationException | ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             LOG.error("Error in updateListing: " + e.getMessage());
             throw new GraphQLException(e.getMessage());
         }
     }
 
     @Query("getListingById")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a listing from the database by its ID")
     public Listing getListingById(long id) throws GraphQLException {
         LOG.info("getListingById");
@@ -277,8 +245,13 @@ public class ListingController {
     }
 
     @Mutation
+    @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Deletes a listing and associated entities in cascade")
     public void deleteListingById(long id) throws GraphQLException {
+        // check if user (identified with JWT) is allowed to change listing
+        if (!is_user_allowed_to_access_listing(jwt, id) && !jwt.getGroups().contains("Administrator")){
+            throw new UnauthorizedException();
+        }
         LOG.info("deleteListingById");
         try {
             listingService.deleteListingById(id);
@@ -289,6 +262,7 @@ public class ListingController {
     }
 
     @Query("getAllListingUniversities")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of all universities that listings are assigned to")
     public List<String> getAllListingUniversities(Optional<String> query) {
         LOG.info("getAllListingUniversities");
@@ -300,6 +274,7 @@ public class ListingController {
     }
 
     @Query("getAllListingCompanies")
+    @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of all companies that listings are assigned to")
     public List<String> getAllListingCompanies(Optional<String> query) {
         LOG.info("getAllListingCompanies");
@@ -307,6 +282,19 @@ public class ListingController {
             return listingService.getAllCompanies(query.get());
         } else {
             return listingService.getAllCompanies();
+        }
+    }
+
+    // Checks if user (identified via JWT) is allowed to edit a listing
+    // Listing Owner is read from DB and compared with JWT Token userID
+    private boolean is_user_allowed_to_access_listing(JsonWebToken jwt, Long listingId) throws GraphQLException {
+        try {
+            Long userId = Long.parseLong(jwt.getClaim("userid").toString());
+            // get owner of listing id in DB
+            Long listing_owner_db = listingService.getListingById(listingId).getOwner().getId();
+            return listing_owner_db.equals(userId);
+        } catch (ServiceException e) {
+            throw new GraphQLException(e.getMessage());
         }
     }
 
