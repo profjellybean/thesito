@@ -9,7 +9,7 @@ export interface User {
   email: string
   name: string
   password?: string
-  userType: UserType
+  userType: UserType[]
   userTags: Tag[]
   qualification?: QualificationType
   receiveEmails: Boolean
@@ -31,7 +31,7 @@ export const getAllUsers = gql`
 
 
 export const registerUserQuery = gql`
-    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!, $tags: [TagInput], $qualification: Qualification) {
+    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: [UserType]!, $tags: [TagInput], $qualification: Qualification) {
         registerUser(
             user: {
                 email: $email
@@ -134,7 +134,7 @@ export const updateUserQuery = gql`
     $email: String!,
     $name: String!,
     $password: String!,
-    $userType: UserType!,
+    $userType: [UserType]!,
     $userTags: [TagInput],
     $qualification: Qualification!,
     $receiveEmails: Boolean)

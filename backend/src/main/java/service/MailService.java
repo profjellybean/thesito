@@ -1,11 +1,9 @@
 package service;
 
 import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.Mailer;
 import io.quarkus.mailer.reactive.ReactiveMailer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import lombok.extern.java.Log;
 import org.jboss.logging.Logger;
 
 import java.util.Collections;

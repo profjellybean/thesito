@@ -1,10 +1,7 @@
 package controller;
 
 import entity.Listing;
-import entity.Tag;
 import entity.User;
-import io.smallrye.jwt.auth.principal.JWTParser;
-import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
 import miscellaneous.Session;
@@ -17,7 +14,6 @@ import jakarta.annotation.security.PermitAll;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

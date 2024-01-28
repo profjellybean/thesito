@@ -12,7 +12,10 @@
                   <div class="info-wrapper">
                     <span class="fw-bold">{{ 'name' | translate }}:</span> {{user.name}}<br>
                     <span class="fw-bold">{{ 'email' | translate }}:</span> {{user.email}} <br>
-                    <span class="fw-bold">{{ 'role' | translate }}:</span> {{user.userType}}<br>
+                    <span class="fw-bold">{{ 'role' | translate }}:</span>
+                    <div *ngFor="let type of user.userType">
+                      {{type}}
+                    </div><br>
                   </div>
                 </div>
                 <div class="col-md-4 text-end">

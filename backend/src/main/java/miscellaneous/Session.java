@@ -1,8 +1,6 @@
 package miscellaneous;
 
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-
 public class Session {
 
     public  String accessToken;

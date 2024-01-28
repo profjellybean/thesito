@@ -31,9 +31,16 @@
 
 <div *ngIf="authService.isProducer()" class="container">
   <div class="left-section card">
-    <h2 class="clickable" (click)="this.router.navigate(['/user/listings'])">{{ 'myListings' | translate }}</h2>
+    <div class="header">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/listings'])">{{ 'myListings' | translate }}</h2>
+      <mat-chip highlighted *ngIf="authService.isLoggedIn() && (authService.isProducer() || authService.isAdministrator())" class="create-listing-btn" (click)="goToCreateListing()">
+      {{ 'createListing' | translate}} +
+      </mat-chip>
+    </div>
+
     <app-my-listings [isStandalone]="false"></app-my-listings>
   </div>
+
 
   <div class="right-section">
     <div *ngIf="notificationsLoaded" class="top-right-section card">

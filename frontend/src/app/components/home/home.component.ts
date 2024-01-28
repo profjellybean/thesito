@@ -75,6 +75,10 @@ export class HomeComponent implements OnInit{
     }
   }
 
+  goToCreateListing(){
+    this.router.navigate(['/listing/create'])
+  }
+
 
   formatDate(dateString: Date): string {
     const date = new Date(dateString);

@@ -67,6 +67,8 @@
   "myListings": "My Listings",
   "editListing": "Edit Listing",
   "active": "Active",
+  "inactive": "Inactive",
+  "status": "State",
   "apply": "Apply",
   "applyText": "Enter your application text here",
   "applyHeader": "Application",
@@ -115,5 +117,9 @@
   "newMatchingListing": "New matching listing:",
   "manageUsers": "Manage Users",
   "manageListings": "Manage Listings",
-  "createUser": "Create User"
+  "createUser": "Create User",
+  "consumerInfo": "I am looking for listings",
+  "providerInfo": "I want to create listings",
+  "confirmChange": "Confirm changes",
+  "confirmationDialogUserType": "Are you sure you want to apply the changes? You will be logged out automatically."
 }
