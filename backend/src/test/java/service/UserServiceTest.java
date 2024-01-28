@@ -307,17 +307,17 @@ class UserServiceTest {
         String admin_jwt = admin_session.accessToken;
 
 
-        String query = "{\"query\":\"query Consumer {\n  getAllUsersListingConsumer {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
+        String query = "{\"query\":\"query Consumer {\n  getAllListings {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
         RestAssured.given().when().header("Authorization", "Bearer " + consumer_jwt).body(query).post("/graphql").then()
                 .assertThat()
                 .statusCode(200).log();
 
-        query = "{\"query\":\"query Consumer {\n  getAllUsersListingProvider {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
+        query = "{\"query\":\"query Consumer {\n  getAllListings {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
         RestAssured.given().when().header("Authorization", "Bearer " + provider_jwt).body(query).post("/graphql").then()
                 .assertThat()
                 .statusCode(200).log();
 
-        query = "{\"query\":\"query Consumer {\n  getAllUsersAdministrator {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
+        query = "{\"query\":\"query Consumer {\n  getAllListings {\n    id\n  }\n}\",\"operationName\":\"Consumer\"}";
         RestAssured.given().when().header("Authorization", "Bearer " + admin_jwt).body(query).post("/graphql").then()
                 .assertThat()
                 .statusCode(200).log();
