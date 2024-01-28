@@ -6,10 +6,14 @@ import {UserService} from '../../services/user.service';
 import {AuthService} from "../../services/auth.service";
 import {MatDialog} from '@angular/material/dialog';
 import {PasswordChangeDialogComponent} from '../password-change-dialog/password-change-dialog.component';
-
-
+import {MatSnackBar} from "@angular/material/snack-bar";
 import {QualificationType} from "../../models/Enums";
 import {Tag} from "../../models/Tag";
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog-listing/delete-confirmation-dialog.component";
+import {TranslateService} from "@ngx-translate/core";
+import {
+  DeleteConfirmationDialogUserComponent
+} from "../delete-confirmation-dialog-user/delete-confirmation-dialog-user.component";
 
 @Component({
   selector: 'app-edit-user',
@@ -38,6 +42,8 @@ export class EditUserComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private authService: AuthService,
+    private translateService: TranslateService,
+    private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {
     this.id = -1;
@@ -116,6 +122,42 @@ export class EditUserComponent implements OnInit {
       });
 
     }
+  }
+
+  onDeleteButtonClick(): void{
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogUserComponent, {
+      data: { name: this.user?.name } // Safely access the user's name using optional chaining
+    });
+    console.log(Number(this?.user?.id));
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteUserById(Number(this.user?.id)).subscribe({
+          next: () => {
+            this.showSuccessMessage();
+            // Navigate to the login page after successful deletion
+            this.router.navigate(['/login']);
+          },
+          error: (error) => {
+            this.error = true;
+            this.errorMessage = error.message;
+          },
+        });
+      }
+    });
+  }
+
+  private showSuccessMessage(): void {
+    const translatedMessage = this.translateService.instant('userDeletedSuccessfully');
+    const translatedClose = this.translateService.instant('close');
+
+    // Open the snackbar with the translated message
+    this.snackBar.open(translatedMessage, translatedClose, {
+      duration: 3000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      panelClass: ['snackbar-success']
+    });
   }
 
   vanishInfo(): void {

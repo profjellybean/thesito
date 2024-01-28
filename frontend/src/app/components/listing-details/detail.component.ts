@@ -10,7 +10,7 @@ import {ListingService} from "../../services/listing.service";
 import {User} from "../../models/User";
 import {UserType} from "../../models/Enums";
 import { LanguageService } from '../../services/language.service';
-import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog-listing/delete-confirmation-dialog.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({

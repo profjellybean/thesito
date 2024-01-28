@@ -59,7 +59,8 @@ import {
   MatDialogContent, MatDialogTitle
 } from "@angular/material/dialog";
 import {MatMenuModule} from "@angular/material/menu";
-import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { DeleteConfirmationDialogComponent } from './components/delete-confirmation-dialog-listing/delete-confirmation-dialog.component';
+import { DeleteConfirmationDialogUserComponent } from './components/delete-confirmation-dialog-user/delete-confirmation-dialog-user.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -91,7 +92,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FavouritesListComponent,
     AdminPageComponent,
     AdminListingsOfUserComponent,
-    DeleteConfirmationDialogComponent
+    DeleteConfirmationDialogComponent,
+    DeleteConfirmationDialogUserComponent
   ],
   imports: [
     BrowserModule,

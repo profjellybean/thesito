@@ -7,7 +7,7 @@ import {User} from "../../models/User";
 import {QualificationType, UserType} from "../../models/Enums";
 import {Tag} from "../../models/Tag";
 import {MatDialog} from "@angular/material/dialog";
-import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog/delete-confirmation-dialog.component";
+import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog-listing/delete-confirmation-dialog.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {TranslateService} from "@ngx-translate/core";
 

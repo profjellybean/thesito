@@ -59,6 +59,19 @@ export class UserService {
     );
   }
 
+  deleteUserById(id: number): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: gql`
+      mutation DeleteUser($userId: BigInteger!) {
+        deleteUserById(userId: $userId)
+      }
+    `,
+      variables: {
+        userId: id,
+      },
+    });
+  }
+
 
   getFavouritesByUser(): Observable<Listing[]> {
     return this.apollo.query<any>({
