@@ -12,7 +12,8 @@
         <div class="notification-header">
           <div class="icon-with-text">
             <mat-icon>email</mat-icon>
-            {{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}
+            <span *ngIf="notification.notificationType === 'Application'">{{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}</span>
+            <span *ngIf="notification.notificationType === 'InterestedTopic'">{{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}</span>
           </div>
           <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
         </div>
@@ -50,13 +51,14 @@
         <div class="notification-header">
           <div class="icon-with-text">
             <mat-icon>email</mat-icon>
-            {{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}
+            <span *ngIf="notification.notificationType === 'Application'">{{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}</span>
+            <span *ngIf="notification.notificationType === 'InterestedTopic'">{{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}</span>
           </div>
           <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
         </div>
       </div>
       <div *ngIf="notifications.length===0">
-        <h4>You haven't go any messages</h4>
+        <h4>You haven't got any messages</h4>
       </div>
     </div>
 
