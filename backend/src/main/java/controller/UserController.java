@@ -2,21 +2,17 @@ package controller;
 
 import entity.Listing;
 import entity.User;
-import io.quarkus.logging.Log;
 import io.quarkus.security.UnauthorizedException;
-import io.smallrye.jwt.auth.principal.JWTParser;
-import io.smallrye.jwt.auth.principal.ParseException;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
 import miscellaneous.Session;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.graphql.*;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 import service.UserService;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.annotation.security.PermitAll;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +26,10 @@ public class UserController {
 
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
 
+    /**
+     * Gets all users from the database.
+     * @return a list of all users
+     */
     @Query("getAllUsers")
     @RolesAllowed({"Administrator"})
     @Description("Fetches a list of all users from the database")
@@ -38,6 +38,12 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    /**
+     * Registers the given user.
+     * @param user the user to be registered
+     * @return the registered user with the generated id
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @PermitAll
     @Description("Registers a user in the database")
@@ -51,6 +57,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Gets a user by their id.
+     * @param id the id of the user
+     * @return the user
+     * @throws GraphQLException if an error occurs
+     */
     @Query("getUserById")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches the user corresponding to the given ID from the database")
@@ -68,10 +80,15 @@ public class UserController {
         }
     }
 
-
+    /**
+     * Gets the full name of the user with the given id.
+     * @param id the id of the user
+     * @return the user's full name
+     * @throws GraphQLException if the user does not exist
+     */
     @Query("getUsernameByUserId")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
-    @Description("Returns the name of a user")
+    @Description("Returns the full name of the user with the given id")
     public String getUsernameByUserId(Long id) throws GraphQLException {
         LOG.info("getUsernameByUserId");
         try {
@@ -82,6 +99,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Get the favourite listings of a user.
+     * @param userId the id of the user
+     * @return a list of the user's favourite listings
+     * @throws GraphQLException if the user does not exist
+     */
     @Query("getFavouritesByUserId")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches the favorite listings of the user corresponding to the given ID from the database")
@@ -99,12 +122,17 @@ public class UserController {
         }
     }
 
-    // return
-    //    acceess token (15 min) and
-    //    refresh token (valid for 3 days, can be used once)
+    /**
+     * Gets an access and refresh token by using username and password.
+     * The returned access token is valid for 15 minutes, the refresh token is valid for 3 days and can be used once.
+     * @param email the email of the user
+     * @param password the password of the user
+     * @return the session containing the access token and refresh token
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @PermitAll
-    @Description("Get access and refresh token by using username and password")
+    @Description("Get access and refresh token by using username (email) and password")
     public Session getSession(String email, String password) throws GraphQLException {
         LOG.info("getSession");
         try {
@@ -115,9 +143,14 @@ public class UserController {
         }
     }
 
-    // when a refresh token is used to get an access token
-    // the claim number of that refresh token is saved in a DB for (3 days)
-    // -> refresh token can only be used once
+    /**
+     * Gets a new access and refresh token by using the one-time use refresh token.
+     * When a refresh token is used to get an access token, the claim number of that refresh token is stored in the
+     * database for 3 days. The refresh token can only be used once.
+     * @param token the one-time use refresh token
+     * @return the session containing the new access token and refresh token
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @PermitAll
     @Description("Get new access and refresh token by using the one-time use refresh token")
@@ -131,6 +164,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Updates a user in the database.
+     * @param user the user to be updated
+     * @return the updated user
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Updates a user in the database")
@@ -148,6 +187,14 @@ public class UserController {
         }
     }
 
+    /**
+     * Changes the password of a user.
+     * @param oldPassword the old password
+     * @param newPassword the new password
+     * @param userId the id of the user
+     * @return the updated user
+     * @throws GraphQLException if the old password is incorrect or the user does not exist
+     */
     @Mutation
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Change user password")
@@ -165,23 +212,17 @@ public class UserController {
         }
     }
 
-    /*@Query
-    @Description("Get all users that contain the given tag")
-    public List<User> getAllUsersByTag(Tag tag) throws GraphQLException {
-        LOG.info("getAllUsersByTags");
-        try {
-            List<Tag> tags = new ArrayList<Tag>();
-            tags.add(tag);
-            return userService.getAllUsersByTags(tags);
-        } catch (ServiceException e) {
-            LOG.error("Error in getSession: " + e.getMessage());
-            throw new GraphQLException(e.getMessage());
-        }
-    }
+    /**
+     * Toggles the favourite status of a listing for a user,
+     * i.e. adds or removes the listing from the user's favourites.
+     * @param userId the id of the user
+     * @param listingId the id of the listing
+     * @return true if the operation was successful
+     * @throws GraphQLException if an error occurs
      */
     @Mutation
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
-    @Description("Toggle favourite listing")
+    @Description("Toggle favourite listing, i.e. add or remove a listing from a user's favourites")
     public boolean toggleFavouriteListing(Long userId, Long listingId) throws GraphQLException {
         // check if sender is allowed
         if (!userId.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")) {
@@ -196,6 +237,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Gives the given user admin status.
+     * @param userId the id of the user to be made admin
+     * @param userIdCurrent the id of the user who wants to make the other user admin
+     * @return true if the user was successfully made admin
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @RolesAllowed({"Administrator"})
     @Description("Makes another user admin")
@@ -209,6 +257,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Deletes a user from the database.
+     * @param userId the id of the user to be deleted
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @Description("Delete a user from the database")
     public void deleteUserById(Long userId) throws GraphQLException {

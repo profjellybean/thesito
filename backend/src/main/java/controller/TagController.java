@@ -19,6 +19,11 @@ public class TagController {
 
     private static final Logger LOG = Logger.getLogger(TagController.class.getName());
 
+    /**
+     * Gets all tags from the database.
+     * @return a list of all tags
+     * @throws GraphQLException if an error occurs
+     */
     @Query("getAllTags")
     @Description("Fetches a list of all tags from the database")
     public List<Tag> getAllTags() throws GraphQLException {
@@ -31,6 +36,11 @@ public class TagController {
         }
     }
 
+    /**
+     * Get all tags of layers 1 and 2 from the database.
+     * @return a list of all tags from layers 1 and 2
+     * @throws GraphQLException if an error occurs
+     */
     @Query("getAllTagsShallow")
     @Description("Fetches a list of all tags from layer 1 and 2 from the database")
     public List<Tag> getAllTagsShallow() throws GraphQLException {
@@ -43,21 +53,14 @@ public class TagController {
         }
     }
 
-    /*@Query("getAllSubtags")
-    @Description("Fetches a list of all tags starting with the given prefix")
-    public List<Tag> getAllSubtags(Long tag_id) throws GraphQLException {
-        LOG.info("getAllSubtags");
-        try {
-            return tagService.getAllSubtags(tag_id);
-        } catch (ServiceException e) {
-            LOG.error("Error in getAllSubtags: " + e.getMessage());
-            throw new GraphQLException(e.getMessage());
-        }
-    }
+    /**
+     * Gets a list of currently trending tags. These are the tags for which the most listings have been created in the
+     * last 30 days, sorted by the number of listings.
+     * @return a list of currently trending tags
+     * @throws GraphQLException if an error occurs
      */
-
     @Query("getTrendingTags")
-    @Description("Fetches a sorted list of currently trending tags from the database")
+    @Description("Fetches a sorted list of tags for which the most listings have been created in the last 30 days")
     public List<Tag> getTrendingTags() throws GraphQLException {
         LOG.info("getTrendingTags");
         try {

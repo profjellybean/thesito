@@ -1,7 +1,6 @@
 package controller;
 
 import entity.Notification;
-import entity.Tag;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
@@ -22,6 +21,12 @@ public class NotificationController {
 
     private static final Logger LOG = Logger.getLogger(TagController.class.getName());
 
+    /**
+     * Gets all notifications for a user.
+     * @param id the id of the user
+     * @return a list of all notifications for a user
+     * @throws GraphQLException if an error occurs
+     */
     @Query("getAllNotificationsForUserWithId")
     @Description("Fetches a list of all notifications for a user in the database")
     public List<Notification> getAllNotificationsForUserWithId(Long id) throws GraphQLException {
@@ -33,6 +38,13 @@ public class NotificationController {
         return notificationService.getAllNotificationsForUserWithId(id);
     }
 
+    /**
+     * Removes a user from a notification.
+     * If there are no other associated users left, the notification will be deleted.
+     * @param userId the id of the user to be removed
+     * @param notificationId the id of the notification
+     * @throws GraphQLException if an error occurs
+     */
     @Mutation
     @Description("Removes the given user from the given Notification and deletes it, if there are not associated users left")
     public void deleteUserFromNotification(Long userId, Long notificationId) throws GraphQLException{
