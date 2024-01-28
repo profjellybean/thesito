@@ -87,7 +87,9 @@ export class EditUserComponent implements OnInit {
       if (result === 'success') {
         this.info = true;
         this.errorMessage = this.translate.instant('passwordChangeSuccess')
-      } else {
+      } else if(result === undefined){
+      }
+      else {
         this.error = true;
         this.errorMessage = this.translate.instant('passwordChangeFailed')
       }
