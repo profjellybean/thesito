@@ -67,14 +67,17 @@
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>
-        <div class="form-group">
-          <mat-radio-group formControlName="userType" (change)="isConsumer()">
-            <mat-radio-button class="eerie" id="consumer"
-                              value="ListingConsumer">{{"consumer" | translate}}</mat-radio-button>
-            <mat-radio-button class="eerie" id="producer"
-                              value="ListingProvider">{{"provider" | translate}}</mat-radio-button>
-          </mat-radio-group>
+        <div class="form-group checkboxes">
+          <mat-checkbox formControlName="userType" (change)="isConsumer()">
+            {{ "consumerInfo" | translate }}
+          </mat-checkbox>
         </div>
+        <div class="form-group checkboxes">
+          <mat-checkbox formControlName="userType" (change)="isProvider()">
+            {{ "providerInfo" | translate }}
+          </mat-checkbox>
+        </div>
+
         <div class="form-group" *ngIf="this.isConsumerUser">
           <app-tag [shallow]="true" (updateTag)="addTagToUser($event)"></app-tag>
         </div>

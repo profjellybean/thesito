@@ -176,7 +176,6 @@ public class ListingService {
             params.and("startDate", startDate.get())
                     .and("endDate", endDate.get());
         }
-        ;
         if (pageOffset.isPresent() && pageLimit.isPresent()) {
             Page page = Page.of(pageOffset.get() / pageLimit.get(), pageLimit.get());
             return listingRepository.find(query.toString(), params).page(page).list();

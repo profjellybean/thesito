@@ -11,7 +11,9 @@ import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,9 +32,11 @@ public class User extends PanacheEntityBase {
     @ColumnTransformer(write = "?::qualification_type")
     @Column(name = "qualification_type", columnDefinition = "qualification_type")
     private Qualification qualification;
+    @ElementCollection(targetClass = UserType.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @ColumnTransformer(write = "?::user_type")
-    private UserType userType;
+    @CollectionTable(name = "user_types", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "user_type")
+    private Set<UserType> userType;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_tags",
@@ -59,12 +63,18 @@ public class User extends PanacheEntityBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && getQualification() == user.getQualification() && getUserType() == user.getUserType() && Objects.equals(getUserTags(), user.getUserTags());
+        return Objects.equals(getName(), user.getName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword()) && getQualification() == user.getQualification() && user.getUserType().equals(((User) o).getUserType()) && Objects.equals(getUserTags(), user.getUserTags());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getEmail(), getPassword(), getQualification(), getUserType(), getUserTags());
+    }
+
+    public void addUserType(UserType userType){
+        Set<UserType> userTypeSet = new HashSet<>(this.getUserType());
+        userTypeSet.add(userType);
+        this.setUserType(userTypeSet);
     }
 
     @Override

@@ -1,14 +1,10 @@
 package miscellaneous;
 
-import entity.Tag;
 import entity.User;
 import enums.Qualification;
 import enums.UserType;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import service.TagService;
 
-import java.util.Collection;
+import java.util.Set;
 
 public class UserValidator {
 
@@ -52,11 +48,11 @@ public class UserValidator {
         }
     }
 
-    private void validateUserType(UserType userType) throws ValidationException {
-        if (userType == null) {
+    private void validateUserTypes(Set<UserType> userType) throws ValidationException {
+        if (userType == null || userType.isEmpty()) {
             throw new ValidationException("User type cannot be null or empty");
         }
-        if (userType != UserType.ListingConsumer && userType != UserType.ListingProvider && userType != UserType.Administrator) {
+        if (!userType.contains(UserType.ListingConsumer) && !userType.contains(UserType.ListingProvider) && !userType.contains(UserType.Administrator)) {
             throw new ValidationException("Invalid user type");
         }
     }
@@ -74,14 +70,14 @@ public class UserValidator {
         validateEmail(user.getEmail());
         validatePassword(user.getPassword());
         validateName(user.getName());
-        validateUserType(user.getUserType());
+        validateUserTypes(user.getUserType());
     }
 
 
     public void validateUpdate(User user) throws ValidationException {
         validateEmail(user.getEmail());
         validateName(user.getName());
-        validateUserType(user.getUserType());
+        validateUserTypes(user.getUserType());
         validateQualification(user.getQualification());
     }
 

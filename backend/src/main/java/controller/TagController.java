@@ -1,7 +1,6 @@
 package controller;
 
 import entity.Tag;
-import io.vertx.core.cli.annotations.Hidden;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
 import org.eclipse.microprofile.graphql.Description;

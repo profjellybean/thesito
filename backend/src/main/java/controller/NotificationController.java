@@ -1,7 +1,6 @@
 package controller;
 
 import entity.Notification;
-import entity.Tag;
 import jakarta.inject.Inject;
 import miscellaneous.ServiceException;
 import org.eclipse.microprofile.graphql.*;

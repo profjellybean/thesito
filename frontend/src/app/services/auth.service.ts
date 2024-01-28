@@ -42,7 +42,7 @@ export class AuthService {
       if (token != null) {
         token = this.decodeToken(token);
         // @ts-ignore
-        return token.userType === "ListingProvider"
+        return token.userType.includes("ListingProvider")
       }
       return false;
    }
@@ -52,7 +52,7 @@ export class AuthService {
       if (token != null) {
         token = this.decodeToken(token);
         // @ts-ignore
-        return token.userType === "ListingConsumer"
+        return token.userType.includes("ListingConsumer")
       }
       return false;
    }
@@ -62,7 +62,7 @@ export class AuthService {
     if (token != null) {
       token = this.decodeToken(token);
       // @ts-ignore
-      return token.userType === "Administrator"
+      return token.userType.includes("Administrator")
     }
     return false;
   }

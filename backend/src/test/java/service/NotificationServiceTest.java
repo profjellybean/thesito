@@ -8,7 +8,6 @@ import enums.UserType;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import miscellaneous.ServiceException;
 import miscellaneous.ValidationException;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,9 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import persistence.DatabaseContainerMock;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,28 +47,29 @@ public class NotificationServiceTest {
         user.setName("Conny Consumer");
         user.setEmail("consumer@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingConsumer);
+
+        user.setUserType(Set.of(UserType.ListingConsumer));
         this.consumer = userService.registerUser(user);
 
         user = new User();
         user.setName("Peter Provider");
         user.setEmail("provider@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         this.provider = userService.registerUser(user);
 
         user = new User();
         user.setName("Paul Provider");
         user.setEmail("provider2@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         this.provider2 = userService.registerUser(user);
 
         user = new User();
         user.setName("Prince Provider");
         user.setEmail("provider3@ase.at");
         user.setPassword("123456789Test");
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         this.provider3 = userService.registerUser(user);
 
         this.listing = new Listing();
@@ -106,7 +104,7 @@ public class NotificationServiceTest {
 
     @Test
     void deleteUserFromNotificationWithNonexistentNotificationShouldThrowServiceException() {
-        assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21l, 12l));
+        assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21L, 12L));
     }
 
     @Test
@@ -115,7 +113,7 @@ public class NotificationServiceTest {
             this.listingService.applyForThesis(this.listing.getId(), this.consumer.getId(), "TEST");
             List<Notification> notifications = this.notificationService.getAllNotificationsForUserWithId(this.provider.getId());
             assertEquals(1, notifications.size());
-            assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21l, notifications.get(0).getId()));
+            assertThrows(ServiceException.class, () -> this.notificationService.deleteUserFromNotification(21L, notifications.get(0).getId()));
         });
     }
 

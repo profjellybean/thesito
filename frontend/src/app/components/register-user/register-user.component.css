@@ -257,3 +257,8 @@ input::-moz-placeholder {
 .thesito-beige-warm {
   color: #F7F6F2;
 }
+
+.checkboxes{
+  display: flex;
+  margin-left: 2.5vw;
+}
