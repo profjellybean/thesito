@@ -109,6 +109,10 @@ export class TagComponent implements OnInit {
       }
       this.selectedTags.push(tag);
       this.updateTag.emit(this.selectedTags);
+      this.filteredTags = this.tagCtrl.valueChanges.pipe(
+        startWith(null),
+        map((tag: string | null) => (tag !== null ? this._filter(tag) : this.allTags.slice())),
+      );
     }
     // Clear the input value
     this.tagInput!.nativeElement.value = '';
