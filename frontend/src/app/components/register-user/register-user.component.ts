@@ -15,6 +15,7 @@ import {QualificationType, UserType} from "../../models/Enums";
 })
 export class RegisterUserComponent {
   error = false;
+  showAdditionalRegistration: boolean = false;
   errorMessage = '';
   pwVisible = false;
   confirm_password: string;
@@ -37,6 +38,7 @@ export class RegisterUserComponent {
       confirmPassword: ['', Validators.required],
       userType: ['', Validators.required],
       qualification: [''],
+
     });
     this.userService = userService;
     this.user = {
@@ -54,10 +56,14 @@ export class RegisterUserComponent {
 
 
   register() {
+    // Check if both main and additional forms are valid
     if (this.registerForm.valid) {
-      this.user.email = this.registerForm.get('email')?.value
-      this.user.name = this.registerForm.get('name')?.value
-      this.user.password = this.registerForm.get('password')?.value
+      // Populate user data from registerForm
+      this.user.email = this.registerForm.get('email')?.value;
+      this.user.name = this.registerForm.get('name')?.value;
+      this.user.password = this.registerForm.get('password')?.value;
+
+      // Populate user type from additionalRegisterForm
       if (this.isConsumerUser){
         this.user.userType.push(UserType.ListingConsumer)
       }
@@ -80,27 +86,36 @@ export class RegisterUserComponent {
       if (this.isProviderUser && !this.isConsumerUser) {
         this.user.qualification = undefined;
       }
+
+      // Validate user data
       if (this.authenticateUser()) {
+        // Call the user service to register the user
         this.userService.registerUser(this.user).subscribe(res => {
           if (res.data != null) {
+            // Registration successful
+            this.error = false;
             this.success = true;
+            this.errorMessage= '';
             this.successMessage = 'User registered successfully';
             setTimeout(() => {
               this.router.navigate(['/login']);
             }, 2000);
           }
         }, error => {
+          // Registration failed
           if (error != null) {
             this.error = true;
             this.formatErrorMessage(error.message);
           }
-        })
+        });
       }
     } else {
+      // Form validation failed
       this.error = true;
       this.formatErrorMessage('invalidInput');
     }
   }
+
 
   addTagToUser(tag: Tag[]): void {
     this.user.userTags = tag;
