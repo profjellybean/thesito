@@ -49,7 +49,8 @@ export class EditUserComponent implements OnInit {
     private authService: AuthService,
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {
     this.id = -1;
     this.userForm = this.fb.group({
@@ -75,10 +76,10 @@ export class EditUserComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'success') {
         this.info = true;
-        this.infoMessage = 'Password changed successfully';
+        this.errorMessage = this.translate.instant('passwordChangeSuccess')
       } else {
         this.error = true;
-        this.errorMessage = 'Password couldn\'t be changed';
+        this.errorMessage = this.translate.instant('passwordChangeFailed')
       }
     });
   }

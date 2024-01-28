@@ -92,7 +92,7 @@
       <button (click)="loadPage(currentPage - 1)"
         [disabled]="currentPage === 1">{{'previous' | translate }}</button>
       <span *ngIf="totalPages > 0; else noResultsSpan" class="pagination-text">Page {{ currentPage }} of {{ totalPages }}</span>
-      <ng-template #noResultsSpan><span class="pagination-text">No Results</span></ng-template>
+      <ng-template #noResultsSpan><span class="pagination-text">{{ "noResults" | translate }}</span></ng-template>
       <button (click)="loadPage(currentPage + 1)"
         [disabled]="currentPage === totalPages || totalPages === 0">{{ 'next' | translate}}</button>
 

@@ -14,7 +14,7 @@
                     <span class="fw-bold">{{ 'email' | translate }}:</span> {{user.email}} <br>
                     <span class="fw-bold">{{ 'role' | translate }}:</span>
                     <div *ngFor="let type of user.userType">
-                      {{type}}
+                      {{type | translate}}
                     </div><br>
                   </div>
                 </div>
@@ -27,7 +27,7 @@
 
               </div>
               <div *ngIf="isLoggedIn() && isConsumer()" class="career-wrapper">
-                Completed Academic Career
+                {{ "completedAcademicCareer" | translate }}
                 <div class="radios">
                   <mat-radio-group [(ngModel)]="academicCareer">
                     <mat-radio-button [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>

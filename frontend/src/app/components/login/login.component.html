@@ -56,15 +56,15 @@
       </form>
     </div>
     <div class="sign-up text-center">
-      <p class="unselectable eerie">Don't have an account yet?</p>
+      <p class="unselectable eerie">{{ "wantToRegister" | translate }}</p>
       <span><span class="thesito-red suggestion"
-                  (click)="goToRegistration()">Create one now</span> | <span class="thesito-red suggestion">{{"forgotPassword" | translate}}</span></span>
+                  (click)="goToRegistration()">{{ "createAccountNow" | translate }}</span> | <span class="thesito-red suggestion">{{"forgotPassword" | translate}}</span></span>
     </div>
   </div>
 </div>
 
 <div class="bottom-large d-none d-xl-block">
-  <p>Thesito © 2023. All Rights Reserved.</p>
+  <p>{{ "thesito" | translate }}</p>
 </div>
 
 

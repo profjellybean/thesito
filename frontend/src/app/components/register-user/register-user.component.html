@@ -83,6 +83,7 @@
         </div>
         <div class="form-group" *ngIf="this.isConsumerUser">
           <mat-radio-group formControlName="qualification">
+            {{ "completedAcademicCareer" | translate }}<br>
             <mat-radio-button class="eerie" id="none"
                               [value]="QualificationType.None">{{"None" | translate}}</mat-radio-button>
             <mat-radio-button class="eerie" id="bachelors"
