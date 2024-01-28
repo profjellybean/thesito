@@ -121,5 +121,6 @@
   "consumerInfo": "I am looking for listings",
   "providerInfo": "I want to create listings",
   "confirmChange": "Confirm changes",
-  "confirmationDialogUserType": "Are you sure you want to apply the changes? You will be logged out automatically."
+  "confirmationDialogUserType": "Are you sure you want to apply the changes? You will be logged out automatically.",
+  "seeAll": "See all"
 }

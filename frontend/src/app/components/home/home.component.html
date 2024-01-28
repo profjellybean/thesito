@@ -18,14 +18,25 @@
           <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
         </div>
       </div>
-    </div>
-
-    <div  *ngIf="favoritesLoaded" class="bottom-right-section card">
-      <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
-      <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item"  >
-        <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
+      <div *ngIf="notifications.length===0">
+        <h4>{{"noNotifications" | translate}}</h4>
+      </div>
+      <div *ngIf="notifications.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
       </div>
     </div>
+
+    <div *ngIf="favoritesLoaded" class="bottom-right-section card">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
+      <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item">
+        <mat-icon>star</mat-icon> <!-- Star icon -->
+        <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
+      </div>
+      <div *ngIf="favourites.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/favourites'])">{{ 'seeAll' | translate }}</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -58,7 +69,10 @@
         </div>
       </div>
       <div *ngIf="notifications.length===0">
-        <h4>You haven't got any messages</h4>
+        <h4>{{"noNotifications" | translate}}</h4>
+      </div>
+      <div *ngIf="notifications.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
       </div>
     </div>
 
