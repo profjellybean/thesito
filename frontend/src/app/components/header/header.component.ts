@@ -42,4 +42,8 @@ export class HeaderComponent implements OnInit {
   isConsumer(): boolean{
     return this.authService.isConsumer();
   }
+
+  goToHome(): void{
+    this.router.navigate(['/home']);
+  }
 }
