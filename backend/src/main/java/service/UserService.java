@@ -6,9 +6,11 @@ import entity.Listing;
 import entity.RefreshToken;
 import entity.Tag;
 import entity.User;
+import entity.Notification;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import miscellaneous.Session;
@@ -283,9 +285,28 @@ public class UserService {
 
     }
 
-    @TestOnly
     @Transactional
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+    public void deleteUserById(long id) throws ServiceException {
+        LOG.debug("deleteUserById");
+        try {
+            User user = userRepository.findById(id);
+            if (user != null) {
+                if (user.getNotifications() != null) {
+                    for (Notification notification : user.getNotifications()) {
+                        notification.getConnectedUsers().remove(user);
+                    }
+                }
+                refreshTokenRepository.deleteByUserId(id);
+                userRepository.delete(user);
+            } else {
+                throw new ServiceException("User not found");
+            }
+        } catch (EntityNotFoundException | IllegalStateException e) {
+            LOG.error("Error in deleteUserById: " + e.getMessage());
+            throw new ServiceException("Error deleting user");
+        }
     }
+
+
+
 }

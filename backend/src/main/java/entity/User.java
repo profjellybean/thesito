@@ -3,7 +3,6 @@ package entity;
 
 import enums.Qualification;
 import enums.UserType;
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -48,6 +47,12 @@ public class User extends PanacheEntityBase {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "listing_id"))
     private Collection<Listing> favourites;
+
+    @ManyToMany(mappedBy = "connectedUsers")
+    private Collection<Notification> notifications;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    private Collection<Listing> owner;
 
     @Override
     public boolean equals(Object o) {

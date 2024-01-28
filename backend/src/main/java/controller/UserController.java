@@ -190,4 +190,16 @@ public class UserController {
             throw new GraphQLException(e.getMessage());
         }
     }
+
+    @Mutation
+    @Description("Delete a user from the database")
+    public void deleteUserById(Long userId) throws GraphQLException {
+        LOG.info("deleteUserById");
+        try {
+            userService.deleteUserById(userId);
+        } catch (ServiceException e) {
+            LOG.error("Error in deleteUserById: " + e.getMessage());
+            throw new GraphQLException(e.getMessage());
+        }
+    }
 }
