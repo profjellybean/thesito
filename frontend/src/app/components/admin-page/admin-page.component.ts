@@ -58,7 +58,6 @@ export class AdminPageComponent implements OnInit {
             }
           });
 
-          console.log(this.users);
           this.dataSource = new MatTableDataSource<User>(this.users);
           this.dataSource.paginator = this.paginator;
           this.usersLoaded = true;
@@ -86,13 +85,11 @@ export class AdminPageComponent implements OnInit {
   makeUserAdmin(userId: number): void {
     this.userService.makeUserAdmin(userId).subscribe({
       next: result => {
-        console.log(result);
         this.ngOnInit();
         this.success = true;
         this.successMessage = 'User has been made admin';
       },
       error: err => {
-        console.log(err);
         this.error = true;
         this.errorMessage = err.message;
       }
@@ -121,7 +118,5 @@ export class AdminPageComponent implements OnInit {
   }
 
   deleteUser(userId: number): void {
-    // Implement logic to delete the user
-    console.log('Deleting user with ID:', userId);
   }
 }

@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit{
             return n;
           });
           this.notificationsLoaded = true;
-          console.log(this.notifications);
         },
         error: error =>{
           this.error = true;
@@ -76,11 +75,9 @@ export class HomeComponent implements OnInit{
         this.userService.getFavouritesByUser().subscribe(favourites => {
           this.favourites = favourites;
           this.favoritesLoaded = favourites!==null;
-          console.log(favourites);
         });
 
         this.trendingTags = this.tagService.getTrendingTags();
-        console.log(this.trendingTags);
 
     }else {
       setTimeout(() => {

@@ -61,8 +61,6 @@ export class AllComponent implements OnInit {
       debounceTime(200),
       distinctUntilChanged(),
       switchMap(value => {
-        // debug: print the allListingUniversities result
-        this.universityService.getAllListingUniversities(value).subscribe(res => console.log(value + ":" + res))
         return this.universityService.getAllListingUniversities(value);
       })
     ).subscribe(value => this.allUniversities = of(value));
@@ -72,8 +70,6 @@ export class AllComponent implements OnInit {
       debounceTime(200),
       distinctUntilChanged(),
       switchMap(value => {
-        // debug: print the allListingCompanies result
-        this.listingService.getAllListingCompanies(value).subscribe(res => console.log(value + ":" + res))
         return this.listingService.getAllListingCompanies(value);
       })
     ).subscribe(value => this.allCompanies = of(value));

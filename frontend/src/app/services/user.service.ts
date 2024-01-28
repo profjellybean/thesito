@@ -173,7 +173,6 @@ export class UserService {
   }
 
   toggleFavourite(userId: number, listingId: string): Observable<any> {
-    console.log(userId, listingId)
     return this.apollo.mutate<any>({
       mutation: gql`
         mutation ToggleFavourite($userId: BigInteger!, $listingId: BigInteger!) {

@@ -154,7 +154,6 @@ export class EditUserComponent implements OnInit {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogUserComponent, {
       data: { name: this.user?.name } // Safely access the user's name using optional chaining
     });
-    console.log(Number(this?.user?.id));
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

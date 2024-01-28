@@ -13,7 +13,6 @@ export function createApollo(httpLink: HttpLink) {
     const token = localStorage.getItem('accessToken');
 
     if (token === null) {
-      console.log("JWT NOT FOUND")
       return {};
 
     } else {

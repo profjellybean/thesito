@@ -43,7 +43,6 @@ export class AdminEditUserComponent implements OnInit {
         password: ''
       };
 
-      console.log(updatedUser)
 
       this.userService.updateUser(updatedUser).subscribe(() => {
         this.dialogRef.close(true);
