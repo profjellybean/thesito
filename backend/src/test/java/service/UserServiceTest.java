@@ -123,7 +123,7 @@ class UserServiceTest {
 
         assertEquals(insertedUser, retrievedUser);
 
-        userService.deleteUser(user);
+        userService.deleteUserById(user.getId());
     }
 
     @Test
@@ -141,6 +141,95 @@ class UserServiceTest {
         user.setUserType(UserType.ListingConsumer);
         userService.registerUser(user);
         userService.getSession(user.getEmail(), password);
+    }
+    @Test
+    void deleteUserByIdShouldSucceed() throws ServiceException, ValidationException {
+        // Create a user
+        User user = new User();
+        user.setName("John Doe");
+        user.setEmail("john.doe@example.com");
+        user.setPassword("123456789Test");
+        user.setQualification(Qualification.Bachelors);
+        user.setUserType(UserType.ListingConsumer);
+        userService.registerUser(user);
+
+        // Delete the user by ID
+        Long userId = user.getId();
+        assertDoesNotThrow(() -> userService.deleteUserById(userId));
+
+        // Verify that the user no longer exists
+        assertThrows(ServiceException.class, () -> userService.getUserById(userId));
+    }
+
+    @Test
+    void deleteExistingUserWithFavoritesShouldSucceed() throws ServiceException, ValidationException {
+
+        User user = new User();
+        user.setName("John Doe");
+        user.setEmail("john.doe156@example.com");
+        user.setPassword("123456789Test");
+        user.setQualification(Qualification.Bachelors);
+        user.setUserType(UserType.ListingProvider);
+        userService.registerUser(user);
+        // Create a listing
+        Listing listing = new Listing();
+        listing.setTitle("Sample Listing");
+        listing.setDetails("Listing details");
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setUniversity("University of Vienna");
+        listing.setActive(true);
+        listing.setOwner(user);
+        listingService.createListing(listing);
+
+
+
+        // Add the listing to the user's favorites
+        userService.toggleFavourite(user.getId(), listing.getId());
+
+        // Verify that the user has the listing as a favorite
+        assertNotNull(userService.getUserById(user.getId()).getFavourites());
+        Long listingId = listing.getId();
+
+        // Attempt to delete the user
+        assertDoesNotThrow(() -> userService.deleteUserById(user.getId()));
+
+        assertThrows(ServiceException.class, () -> userService.getUserById(user.getId()));
+
+        assertNull(listingService.getListingById(listingId), "Listing should be removed from user's favorites");
+    }
+
+    @Test
+    void deleteUserByNonExistingIdShouldThrowError() {
+        assertThrows(ServiceException.class, () -> userService.deleteUserById(-123456L));
+    }
+    @Test
+    void deleteListingOwnerUserShouldSucceed() throws ServiceException, ValidationException {
+        // Create a user who is also a listing owner
+        User user = new User();
+        user.setName("Listing Owner");
+        user.setEmail("owner@example.com");
+        user.setPassword("123456789Test");
+        user.setQualification(Qualification.Bachelors);
+        user.setUserType(UserType.ListingProvider);
+        userService.registerUser(user);
+
+        // Create a listing with the user as the owner
+        Listing listing = new Listing();
+        listing.setTitle("Test Listing");
+        listing.setDetails("Listing details");
+        listing.setRequirement(Qualification.Bachelors);
+        listing.setUniversity("University of Vienna");
+        listing.setActive(true);
+        listing.setOwner(user);
+        listingService.createListing(listing);
+
+        // Attempt to delete the user (listing owner)
+        assertDoesNotThrow(() -> userService.deleteUserById(user.getId()));
+
+        // Verify that the user is deleted
+        assertThrows(ServiceException.class, () -> userService.getUserById(user.getId()));
+        assertNull(listingService.getListingById(listing.getId()));
+
     }
 
 
