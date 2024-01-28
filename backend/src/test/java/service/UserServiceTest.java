@@ -146,7 +146,7 @@ class UserServiceTest {
         user.setEmail("john.doe@example.com");
         user.setPassword("123456789Test");
         user.setQualification(Qualification.Bachelors);
-        user.setUserType(UserType.ListingConsumer);
+        user.setUserType(Set.of(UserType.ListingConsumer));
         userService.registerUser(user);
 
         // Delete the user by ID
@@ -165,7 +165,7 @@ class UserServiceTest {
         user.setEmail("john.doe156@example.com");
         user.setPassword("123456789Test");
         user.setQualification(Qualification.Bachelors);
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         userService.registerUser(user);
         // Create a listing
         Listing listing = new Listing();
@@ -206,7 +206,7 @@ class UserServiceTest {
         user.setEmail("owner@example.com");
         user.setPassword("123456789Test");
         user.setQualification(Qualification.Bachelors);
-        user.setUserType(UserType.ListingProvider);
+        user.setUserType(Set.of(UserType.ListingProvider));
         userService.registerUser(user);
 
         // Create a listing with the user as the owner
