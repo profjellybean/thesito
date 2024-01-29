@@ -210,13 +210,15 @@ public class UserService {
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
 
-        existingUser.setQualification(user.getQualification());
+
         existingUser.setUserType(user.getUserType());
 
         if (user.getUserType().contains(UserType.ListingConsumer) || user.getUserType().contains(Administrator)){
             existingUser.setUserTags(user.getUserTags());
+            existingUser.setQualification(user.getQualification());
         }else{
             existingUser.setUserTags(new ArrayList<Tag>());
+            existingUser.setQualification(null);
         }
 
         existingUser.setReceiveEmails(user.getReceiveEmails());

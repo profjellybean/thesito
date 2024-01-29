@@ -53,7 +53,8 @@
                 {{ "completedAcademicCareer" | translate }}
                 <div class="form-group radios">
                   <mat-radio-group id="qualification" formControlName="qualification">
-                    <mat-radio-button color="primary" [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
+                    <mat-radio-button color="primary" *ngIf="user?.qualification !== undefined" [checked]="true" [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
+                    <mat-radio-button color="primary" *ngIf="user?.qualification === undefined" [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
                     <mat-radio-button color="primary" [value]="QualificationType.Bachelors">{{ 'bachelors' | translate }}</mat-radio-button>
                     <mat-radio-button color="primary" [value]="QualificationType.Masters">{{ 'masters' | translate }}</mat-radio-button>
                     <mat-radio-button color="primary" [value]="QualificationType.PhD">{{ 'phd' | translate }}</mat-radio-button>
