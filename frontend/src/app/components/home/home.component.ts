@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Router} from "@angular/router";
 import {NotificationService} from "../../services/notification.service";
 import {AuthService} from "../../services/auth.service";
 import {Notification} from "../../models/Notification";
-import { CommonModule } from '@angular/common';
 import {UserService} from "../../services/user.service";
 import {Listing} from "../../models/Listing";
 import {Observable} from "rxjs";
@@ -16,7 +15,7 @@ import {TagService} from "../../services/tag.service";
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   ownerId: number;
   notifications: Notification[];
@@ -35,7 +34,7 @@ export class HomeComponent implements OnInit{
   selectedTag: any = null;
 
   // Add a new property for the selected role, default to 'consumer'
-  selectedRole: 'consumer' | 'producer' ;
+  selectedRole: 'consumer' | 'producer';
 
   // Method to handle role change
   onRoleChange(role: 'consumer' | 'producer'): void {
@@ -46,6 +45,7 @@ export class HomeComponent implements OnInit{
               public authService: AuthService, private userService: UserService,
               private tagService: TagService) {
   }
+
 
 
     ngOnInit(): void {
