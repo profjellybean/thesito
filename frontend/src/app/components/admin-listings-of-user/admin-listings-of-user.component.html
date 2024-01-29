@@ -8,7 +8,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
             <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
-            <button mat-menu-item (click)="deleteListing(listing.id)">{{'deleteListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
           </mat-menu>
           {{listing.id}}
         </td>
@@ -21,7 +21,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
             <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
-            <button mat-menu-item (click)="deleteListing(listing.id)">{{'deleteListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
           </mat-menu>
           {{listing.title}}
         </td>
@@ -33,7 +33,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
             <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
-            <button mat-menu-item (click)="deleteListing(listing.id)">{{'deleteListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
           </mat-menu>
           {{listing.requirement |translate}}
         </td>
@@ -45,7 +45,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
             <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
-            <button mat-menu-item (click)="deleteListing(listing.id)">{{'deleteListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
           </mat-menu>
           <div *ngFor="let tag of listing.tags">
             <div *ngIf="languageService.getLanguage() === 'en'">
@@ -64,7 +64,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
             <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
-            <button mat-menu-item (click)="deleteListing(listing.id)">{{'deleteListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
           </mat-menu>
           {{listing.createdAt | date }}
         </td>
@@ -76,7 +76,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
             <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
-            <button mat-menu-item (click)="deleteListing(listing.id)">{{'deleteListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
           </mat-menu>
           {{listing.active}}
         </td>
