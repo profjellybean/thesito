@@ -85,7 +85,7 @@
       <th mat-header-cell *matHeaderCellDef> {{'actions' |translate}} </th>
       <td mat-cell *matCellDef="let user">
         <mat-icon (click)="editUser(user.id)">edit</mat-icon>
-        <mat-icon (click)="deleteUser(user)">delete</mat-icon>
+        <mat-icon  *ngIf="!userIsCurrentUser(user)" (click)="deleteUser(user)">delete</mat-icon>
       </td>
     </ng-container>
 
