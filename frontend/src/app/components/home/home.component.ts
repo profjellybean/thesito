@@ -34,10 +34,10 @@ export class HomeComponent implements OnInit {
   selectedTag: any = null;
 
   // Add a new property for the selected role, default to 'consumer'
-  selectedRole: 'consumer' | 'producer';
+  selectedRole: 'consumer' | 'producer' | 'administrator';
 
   // Method to handle role change
-  onRoleChange(role: 'consumer' | 'producer'): void {
+  onRoleChange(role: 'consumer' | 'producer' | 'administrator'): void {
     this.selectedRole = role;
   }
 
@@ -47,12 +47,11 @@ export class HomeComponent implements OnInit {
   }
 
 
-
-    ngOnInit(): void {
-      if(this.authService.isLoggedIn()){
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
       this.ownerId = this.authService.getUserId();
       this.notificationService.getAllNotificationsForUserWithId(this.ownerId).subscribe({
-        next: result =>{
+        next: result => {
           this.notifications = [...result];
           this.notifications = this.notifications.sort((a, b): number => {
             let n = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
@@ -60,33 +59,37 @@ export class HomeComponent implements OnInit {
           });
           this.notificationsLoaded = true;
         },
-        error: error =>{
+        error: error => {
           this.error = true;
           this.errorMessage = error.message;
         }
       });
 
-      if (this.authService.isProducer()){
+      if (this.authService.isProducer()) {
         this.selectedRole = "producer";
-      } else if (this.authService.isConsumer()){
+      }
+      if (this.authService.isConsumer()) {
         this.selectedRole = "consumer";
       }
+      if (this.authService.isAdministrator()) {
+        this.selectedRole = 'administrator';
+      }
 
-        this.userService.getFavouritesByUser().subscribe(favourites => {
-          this.favourites = favourites;
-          this.favoritesLoaded = favourites!==null;
-        });
+      this.userService.getFavouritesByUser().subscribe(favourites => {
+        this.favourites = favourites;
+        this.favoritesLoaded = favourites !== null;
+      });
 
-        this.trendingTags = this.tagService.getTrendingTags();
+      this.trendingTags = this.tagService.getTrendingTags();
 
-    }else {
+    } else {
       setTimeout(() => {
         this.router.navigate(['/login']);
       }, 100);
     }
   }
 
-  goToCreateListing(){
+  goToCreateListing() {
     this.router.navigate(['/listing/create'])
   }
 
