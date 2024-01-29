@@ -52,3 +52,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .thesito-beige-warm {
   color: #F7F6F2;
 }
+
+.mat-typography{
+  background-color: #EAE7DC;
+}
