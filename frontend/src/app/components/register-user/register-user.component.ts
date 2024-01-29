@@ -28,6 +28,7 @@ export class RegisterUserComponent {
   router: Router;
   isConsumerUser = false;
   isProviderUser = false;
+  selectedTags: Tag[] = [];
 
   constructor(private translateService: TranslateService, userService: UserService, formBuilder: FormBuilder, router: Router) {
     this.registerForm = formBuilder.group({

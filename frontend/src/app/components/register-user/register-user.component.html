@@ -118,9 +118,10 @@
               </mat-checkbox>
             </div>
 
-            <div class="form-group" *ngIf="this.isConsumerUser">
-              <app-tag [shallow]="true" (updateTag)="addTagToUser($event)"></app-tag>
+            <div class="form-group" *ngIf="isConsumerUser">
+              <app-tag [selectedTags]="selectedTags" [shallow]="true" (updateTag)="addTagToUser($event)"></app-tag>
             </div>
+
             <div class="form-group" *ngIf="this.isConsumerUser">
               <mat-radio-group formControlName="qualification">
                 <div class ="completed-academic">  {{ "completedAcademicCareer" | translate }}<br /></div>
