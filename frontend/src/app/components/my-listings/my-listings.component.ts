@@ -150,20 +150,16 @@ export class MyListingsComponent implements OnInit {
    //   active: !listing.active
    // };
     listing.active = !listing.active;
-    console.log(listing)
     this.listingService.updateListing(listing).subscribe({
       next: ret =>{
         //this.listings[index] = listing;
         //
-        console.log("updated listing")
         this.loadPage(this.currentPage)
-        console.log(ret)
 
       },
       error: error => {
         this.error= true;
         this.errorMessage = error.message;
-        console.log(this.errorMessage)
       }
     });
   }
