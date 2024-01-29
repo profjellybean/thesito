@@ -145,7 +145,7 @@ export class DetailComponent implements OnInit{
     }, e => {
       this.router.navigate(['/404']);
     });
-    this.canApply = !this.authService.isProducer();
+    this.canApply = this.authService.isConsumer();
     this.currentLanguage = this.languageService.getLanguage();
   }
 

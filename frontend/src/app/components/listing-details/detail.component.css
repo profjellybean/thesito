@@ -1,115 +1,134 @@
-/* detail.component.css */
 .create-listing-container {
-  /*background-color: #EAE7DC;*/
-  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
 .form-container {
+  width: 100%;
+  max-width: 800px; /* Adjust based on your layout */
+  padding: 20px;
   background-color: #F7F6F2;
   border-radius: 15px;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
-  padding: 15px;
-  margin: 20px;
-  width: 100%;
-  max-width: 1200px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .listing-title {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  padding-bottom: 20px;
-  text-align: left;
-  line-height: 1.2;
+  font-size: 24px;
 }
 
+.details-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid #ccc; /* Creates a divider line on top */
+  border-bottom: 1px solid #ccc; /* Creates a divider line on bottom */
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  font-size: 14px;
+}
+
+.info-heading {
+  font-weight: bold;
+}
+
+.description-box {
+  background-color: #fff; /* White background */
+  border-radius: 8px; /* Rounded corners */
+  padding: 15px; /* Padding inside the box */
+  margin: 20px 0; /* Margin around the box */
+}
+
+.description-content {
+  max-height: auto; /* Adjusts height based on content */
+  overflow-y: auto; /* Allows scroll if content is too long */
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+}
 
 .apply-button {
+  margin-left: auto; /* Pushes the button to the right */
+}
+
+.create-listing-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.form-container {
   width: 100%;
-  margin-top: 20px;
-  border-radius: 10px;
-  font-style: normal;
-  font-weight: 600;
+  max-width: 800px; /* Adjust based on your layout */
+}
+
+.listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listing-title {
   font-size: 24px;
-  margin-bottom: 20px;
-  background-color: #1A1A1D;
-  color: #F7F6F2;
-  cursor: pointer;
 }
 
-hr {
-  border: 1px solid #ccc;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-
-.custom-chip {
-  font-size: 12px; /* Adjust the font size as needed */
-  margin-right: 5px; /* Adjust the spacing between chips as needed */
+.action-buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px; /* Adjust the space between buttons */
 }
 
-
-/* Additional style for better alignment of icons within chips */
-.custom-chip mat-icon::ng-deep svg {
-  vertical-align: middle;
+.apply-button-container {
+  display: flex;
+  justify-content: flex-end; /* Aligns the Apply button to the right */
+  padding: 10px 0; /* Spacing above and below the Apply button */
 }
 
-/* Add or modify the following styles in your CSS file */
-.static-info {
-  font-style: normal;
-  font-weight: 300;
-  font-size: 18px;
-  margin-bottom: 10px;
+.listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Make the input larger and adjust the font size */
-.static-info input[disabled] {
-  width: 100%; /* Set the width to 100% to make it expand to the container width */
-  font-size: 16px; /* Adjust the font size as needed */
-  padding: 8px; /* Add padding for better visual appearance */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+.title-and-favourite {
+  display: flex;
+  align-items: center;
 }
 
-.btn-primary {
-  background-color: #5AB779;
-  color: #F7F6F2;
-
+.listing-title {
+  font-size: 24px;
+  margin-right: 8px; /* Adjust as needed */
 }
 
-.button-delete {
-  color: #fff;
-  background-color: #DA3E52;
-  border: 1px solid #DA3E52;
-  cursor: pointer;
-  border-radius: 5px;
-
-  /* New styles for positioning */
-  position: absolute;
-  right: 20px;
+/* Ensure app-user-favourites is styled to be inline, e.g., */
+app-user-favourites {
+  display: inline-block;
 }
 
-.button-delete:hover {
-  background-color: #c9302c;
-}
-
-.btn-primary:hover {
-  background-color: #131314;
-}
-
-.button-blue {
-  background-color: #3250A8;
-  color: #F7F6F2;
-  border: 1px solid #3250A8;
-  cursor: pointer;
-  border-radius: 5px;
-  position: absolute;
-  right: 60px;
-}
-
-.button-blue:hover {
-  background-color: #1F3393;
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the space between buttons */
 }

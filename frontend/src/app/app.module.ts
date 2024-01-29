@@ -5,7 +5,8 @@ import {AppRoutingModule, routes} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import {MatIconModule} from "@angular/material/icon";
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -131,6 +132,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         MatSelectModule,
         MatAutocompleteModule,
         MatChipsModule,
+      MatDividerModule,
+      MatExpansionModule,
         MatGridListModule,
         MatTooltipModule,
         MatPaginatorModule,
