@@ -30,8 +30,14 @@
   cursor: pointer;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .thesito-blue {
   color: #93B7BE;
@@ -53,6 +59,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #F7F6F2;
 }
 
-.mat-typography{
+.mat-typography {
   background-color: #EAE7DC;
 }

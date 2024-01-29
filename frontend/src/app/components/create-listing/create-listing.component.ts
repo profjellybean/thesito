@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {debounceTime, distinctUntilChanged, Observable, startWith, switchMap} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import {map} from 'rxjs/operators';
 import {ListingService} from '../../services/listing.service';
 import {UniversityService} from '../../services/university.service';
@@ -37,7 +38,7 @@ export class CreateListingComponent implements OnInit {
 
 
   constructor(private userService: UserService, listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService,
-              private authService: AuthService) {
+              private authService: AuthService, private toastr: ToastrService,) {
     this.createListingForm = this.fb.group({
       shortTitle: ['', Validators.required],
       details: ['', Validators.required],
@@ -152,12 +153,16 @@ export class CreateListingComponent implements OnInit {
               };
               this.create(listing)
             } else {
-              this.formatErrorMessage('invalidUniversitySelection');
+
+              this.toastr.error('Invalid university selection', 'Error');
+              //this.formatErrorMessage('invalidUniversitySelection');
             }
           },
         );
       }
     } else {
+      //this.toastr.error('invalidListingInput');
+      this.toastr.error('Invalid listing input', 'Error');
       this.formatErrorMessage('invalidListingInput');
     }
   }
@@ -169,14 +174,17 @@ export class CreateListingComponent implements OnInit {
           this.success = true;
           this.error = false;
           this.errorMessage = ''; // Reset error message
-          this.formatSuccessMessage('successCreatingListing');
+          //this.formatSuccessMessage('successCreatingListing');
+          this.toastr.success('Listing created successfully!', 'Success');
           setTimeout(() => {
             this.router.navigate([`/home`]);
           }, 1000);
         }
       },
       (error) => {
-        this.formatErrorMessageWithError('errorCreatingListing ', error.message);
+        //this.toastr.error('errorCreatingListing', error.message);
+        this.toastr.error(error.message, 'Error');
+        //this.formatErrorMessageWithError('errorCreatingListing ', error.message);
       }
     );
   }
