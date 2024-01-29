@@ -15,6 +15,7 @@ import {UserService} from "../../services/user.service";
 export class ApplicationDialogComponent {
   listing: Listing;
   applicationForm: FormGroup;
+  disableSubmit = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
                 listingId: number
@@ -33,6 +34,7 @@ export class ApplicationDialogComponent {
 
 
   apply() {
+    this.disableSubmit = true;
     // @ts-ignore
     if (this.applicationForm.valid) {
       this.userService.getCurrentUser().subscribe((user: User) => {

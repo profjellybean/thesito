@@ -38,12 +38,12 @@
               </div>
               <div *ngIf="dataLoaded">
                 <div class="form-group checkboxes">
-                  <mat-checkbox formControlName="isConsumer" [checked]="isConsumerUser" (change)="toggleConsumer()">
+                  <mat-checkbox color = "primary" formControlName="isConsumer" [checked]="isConsumerUser" (change)="toggleConsumer()">
                     {{ "consumerInfo" | translate }}
                   </mat-checkbox>
                 </div>
                 <div class="form-group checkboxes">
-                  <mat-checkbox formControlName="isProvider" [checked]="isProviderUser" (change)="toggleProvider()">
+                  <mat-checkbox color = "primary" formControlName="isProvider" [checked]="isProviderUser" (change)="toggleProvider()">
                     {{ "providerInfo" | translate }}
                   </mat-checkbox>
                 </div>
@@ -53,10 +53,10 @@
                 {{ "completedAcademicCareer" | translate }}
                 <div class="form-group radios">
                   <mat-radio-group id="qualification" formControlName="qualification">
-                    <mat-radio-button [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
-                    <mat-radio-button [value]="QualificationType.Bachelors">{{ 'bachelors' | translate }}</mat-radio-button>
-                    <mat-radio-button [value]="QualificationType.Masters">{{ 'masters' | translate }}</mat-radio-button>
-                    <mat-radio-button [value]="QualificationType.PhD">{{ 'phd' | translate }}</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="QualificationType.None">{{ 'qualificationNone' | translate }}</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="QualificationType.Bachelors">{{ 'bachelors' | translate }}</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="QualificationType.Masters">{{ 'masters' | translate }}</mat-radio-button>
+                    <mat-radio-button color="primary" [value]="QualificationType.PhD">{{ 'phd' | translate }}</mat-radio-button>
                   </mat-radio-group>
                 </div>
               </div>
