@@ -144,5 +144,8 @@
   "confirmNewPassword": "Confirm new password",
   "passwordMismatch": "Passwords do not match",
   "passwordChangeSuccess": "Password changed successfully",
-  "passwordChangeFailed": "Password couldn't be changed"
+  "passwordChangeFailed": "Password couldn't be changed",
+  "actions": "Actions",
+  "yes": "Yes",
+  "no": "No"
 }
