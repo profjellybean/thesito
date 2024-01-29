@@ -26,3 +26,32 @@
 .toolbar-spacer {
   flex: 1 1 auto;
 }
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adjust the space between items */
+}
+
+.mat-icon {
+  vertical-align: middle; /* Aligns icons vertically in the middle */
+}
+
+
+.vertical-separator {
+  display: inline-block;
+  height: 24px; /* Adjust to match the height of your icons or toolbar */
+  width: 1px;
+  background-color: #ffffff; /* Change this to the color of your line */
+  margin: 0 20px; /* Adjust margins as needed */
+  vertical-align: middle;
+}
+
+/* Adjust the user menu button to remove additional space */
+.user-menu-button {
+  display: flex;
+  align-items: center;
+  padding-left: 0; /* Adjust as needed */
+  margin-left: 0; /* Adjust as needed */
+  gap: 4px; /* Adjust the gap between items */
+}
