@@ -92,7 +92,8 @@ export class AuthService {
             this.isRefreshing = false;
           },
           (error) => {
-            this.isRefreshing = false;
+          this.isRefreshing = false;
+          this.logoutUser()
           }
         )
       }
