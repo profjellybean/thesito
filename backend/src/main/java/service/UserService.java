@@ -7,6 +7,7 @@ import entity.RefreshToken;
 import entity.Tag;
 import entity.User;
 import entity.Notification;
+import enums.UserType;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
 import jakarta.persistence.EntityManager;
@@ -208,9 +209,16 @@ public class UserService {
 
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
-        existingUser.setUserTags(user.getUserTags());
+
         existingUser.setQualification(user.getQualification());
         existingUser.setUserType(user.getUserType());
+
+        if (user.getUserType().contains(UserType.ListingConsumer) || user.getUserType().contains(Administrator)){
+            existingUser.setUserTags(user.getUserTags());
+        }else{
+            existingUser.setUserTags(new ArrayList<Tag>());
+        }
+
         existingUser.setReceiveEmails(user.getReceiveEmails());
 
         userRepository.persist(existingUser);
