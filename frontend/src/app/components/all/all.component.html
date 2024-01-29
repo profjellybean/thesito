@@ -12,8 +12,9 @@
       <div class="advanced-search-toggle">
         <label class="toggle-label" style="padding-left: 10px">{{'advanced' | translate}}</label>
         <label class="toggle-container">
-          <input type="checkbox" [(ngModel)]="isAdvancedSearch">
-          <span class="toggle-slider"></span>
+          <input type="checkbox" [(ngModel)]="isAdvancedSearch"
+          (ngModelChange)="updateQueryParams()" >
+          <span class="toggle-slider" ></span>
         </label>
       </div>
     </div>
