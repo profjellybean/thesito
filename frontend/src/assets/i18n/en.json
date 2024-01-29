@@ -106,7 +106,7 @@
   "Any" : "Any",
   "applicationError": "Error applying to listing",
   "applicationSuccess": "Successfully applied to listing",
-  "newApplicationNotification": "There is a new application for your listing!",
+  "newApplicationNotification": "There is a new application for your listing! Check your Emails.",
   "notification": "Notification",
   "notifications": "Notifications",
   "deleteNotification": "Delete Notification",
