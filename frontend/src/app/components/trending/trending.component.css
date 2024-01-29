@@ -208,6 +208,7 @@ mat-chip.selected-chip {
 }
 
 .subtitle-button{
+  font-size: 18px;
   background-color: #e0e0e0;
   color: #333;
 }
