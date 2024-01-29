@@ -25,7 +25,7 @@ def insert_user(row):
         print("An error occurred:", e)
         conn.rollback()
     finally:
-        cursor.execute("ALTER SEQUENCE users_id_seq RESTART WITH 6;")
+        cursor.execute("ALTER SEQUENCE users_id_seq RESTART WITH 7;")
         conn.commit()
         cursor.close()
         conn.close()
