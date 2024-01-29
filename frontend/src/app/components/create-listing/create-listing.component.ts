@@ -171,7 +171,7 @@ export class CreateListingComponent implements OnInit {
           this.errorMessage = ''; // Reset error message
           this.formatSuccessMessage('successCreatingListing');
           setTimeout(() => {
-            this.router.navigate([`/user/listings`]);
+            this.router.navigate([`/home`]);
           }, 1000);
         }
       },

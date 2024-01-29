@@ -221,14 +221,23 @@ export class EditUserComponent implements OnInit {
       if (this.isProviderUser){
         this.user.userType = [...this.user.userType, UserType.ListingProvider];
       }
+      if(qualification !=null){
+        this.user = {
+          ...this.user,
+          name: this.name,
+          email: this.email,
+          userTags: this.selectedTags,
+          qualification: qualification,
+        };
+      } else {
+        this.user = {
+          ...this.user,
+          name: this.name,
+          email: this.email,
+          userTags: this.selectedTags,
+        };
+      }
 
-      this.user = {
-        ...this.user,
-        name: this.name,
-        email: this.email,
-        userTags: this.selectedTags,
-        qualification: qualification,
-      };
 
       this.vanishError(); // Clear any previous errors
       this.vanishInfo();  // Clear any previous info messages

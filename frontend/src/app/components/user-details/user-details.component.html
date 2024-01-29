@@ -28,7 +28,7 @@
                       </h3>
                     </div>
 
-                    <div *ngIf="isConsumer">
+                    <div *ngIf="isConsumer()">
                       <div class="d-flex justify-content-between">
                         <label class="form-label" for="qualification">{{ 'qualification' | translate }}:</label>
                         <h3 id="qualification">{{user.qualification}}</h3>

@@ -16,8 +16,6 @@ import {LanguageService} from "../../services/language.service";
 export class UserDetailsComponent implements OnInit{
   owner: boolean = false;
   user: User;
-  info = false;
-  infoMessage = '';
   error = false;
   errorMessage = '';
   selectedTags: Tag[] = []
@@ -74,6 +72,7 @@ export class UserDetailsComponent implements OnInit{
           password: ''
         };
         this.tagsLoaded = true;
+
       },
       error: error2 =>{
         this.error = true;
@@ -81,42 +80,6 @@ export class UserDetailsComponent implements OnInit{
       }
     });
   }
-
-  vanishInfo(): void {
-    this.info = false;
-    this.infoMessage = '';
-  }
-
-  vanishError(): void {
-    this.error = false;
-    this.errorMessage = '';
-  }
-
-  save():void{
-    if(this.selectedTags.length < 3){
-      this.error = true
-      this.errorMessage = 'notEnoughTagsError'
-      return;
-    }
-    this.vanishError()
-    this.vanishInfo()
-    this.user = {
-      ...this.user,  // Copy existing properties
-      userTags: [...this.selectedTags],  // Update userTags property
-      qualification: this.academicCareer, // Update qualification property
-    };
-    this.userService.updateUser(this.user).subscribe({
-      next: result => {
-        this.info = true;
-        this.infoMessage = 'userUpdateSuccess';
-      },
-      error: error => {
-        this.error = true;
-        this.errorMessage = error.message;
-      }
-    });
-  }
-
   goToEditProfile(){
     this.router.navigate(['/user/edit/']);
   }

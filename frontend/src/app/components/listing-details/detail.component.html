@@ -59,6 +59,9 @@
       </div>
     </div>
 
+    <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+    <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
+
 
     <div class="apply-button-container" *ngIf="canApply && !ownership">
       <button mat-raised-button color="primary" (click)="openApplicationDialog()">
