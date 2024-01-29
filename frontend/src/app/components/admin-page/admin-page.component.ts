@@ -35,7 +35,7 @@ export class AdminPageComponent implements OnInit {
   @Input() isStandalone: boolean = true;
   // Add 'email', 'qualification', and 'receiveEmails' to the displayedColumns array
   displayedColumns: string[] = ['id', 'name', 'userType', 'email', 'qualification', 'receiveEmails', 'actions'];
-  displayedColumnsNonStandalone: string[] = ['id', 'name', 'userType', 'actions'];
+  displayedColumnsNonStandalone: string[] = ['id', 'name', 'email', 'userType', 'actions'];
 
 
   // ... other code in your component

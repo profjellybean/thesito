@@ -66,6 +66,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import { ChangeUsertypeDialogComponent } from './components/change-usertype-dialog/change-usertype-dialog.component';
 import { AdminEditUserComponent } from './components/admin-edit-user/admin-edit-user.component';
 import { GraphQLModule } from './graphql/graphql.module';
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -103,50 +104,51 @@ export function HttpLoaderFactory(http: HttpClient) {
     DeleteConfirmationDialogComponent,
     AdminEditUserComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ApolloModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        ApolloModule,
-        FormsModule,
-        RouterModule.forRoot(routes),
-        ReactiveFormsModule,
-        MatRadioModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-            defaultLanguage: 'en'
-        }),
-        MatSlideToggleModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatOptionModule,
-        MatInputModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatChipsModule,
-      MatDividerModule,
-      MatExpansionModule,
-        MatGridListModule,
-        MatTooltipModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatCardModule,
-        MatMenuModule,
-        MatDialogActions,
-        MatDialogClose,
-        MatDialogContent,
-        MatDialogTitle,
-        MatCheckboxModule,
-        GraphQLModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ApolloModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    ApolloModule,
+    FormsModule,
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule,
+    MatRadioModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+      defaultLanguage: 'en'
+    }),
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatOptionModule,
+    MatInputModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatCardModule,
+    MatMenuModule,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogTitle,
+    MatCheckboxModule,
+    GraphQLModule,
+    MatButtonToggleModule
+  ],
   providers: [
     LanguageService,
    // {
