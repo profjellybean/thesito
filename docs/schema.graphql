@@ -1,0 +1,357 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"Indicates a Bean Validation constraint"
+directive @constraint(format: String, max: BigInteger, maxFloat: BigDecimal, maxLength: Int, min: BigInteger, minFloat: BigDecimal, minLength: Int, pattern: String) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+"Used to specify the role required to execute a given field or operation."
+directive @rolesAllowed(value: String) on FIELD_DEFINITION
+
+"Represents a search result for listings."
+type GraphQLSearchResult {
+    "The listings returned by the search, possibly limited by the pagination parameters."
+    listings: [Listing]
+    "The total number of listings matching the search."
+    totalHitCount: BigInteger!
+}
+
+"A thesis listing on the platform."
+type Listing {
+    "If the listing is active, allowing users to see and apply to it."
+    active: Boolean
+    company: String
+    "ISO-8601"
+    createdAt: DateTime
+    "The listing's details, limited to 10,000 characters."
+    details: String
+    favourites: [User]
+    "The listing's unique identifier."
+    id: BigInteger
+    "The notifications associated with this listing."
+    notifications: [Notification]
+    owner: User
+    requirement: Qualification
+    tags: [Tag]
+    "The listing's title, limited to 1,000 characters."
+    title: String
+    university: String
+}
+
+"Mutation root"
+type Mutation {
+    "Applies for a listing, notifying the listing provider"
+    applyToListing(
+        "The application text"
+        applicationText: String,
+        "The id of the listing"
+        listingId: BigInteger,
+        "The id of the user"
+        userId: BigInteger
+    ): Void
+    "Change user password"
+    changePassword(
+        "The new password"
+        newPassword: String,
+        "The old password"
+        oldPassword: String,
+        "The ID of the user whose password to change"
+        userId: BigInteger
+    ): User
+    "Creates a listing in the database"
+    createListing(
+        "The listing to be created"
+        listing: ListingInput
+    ): Listing
+    "Deletes a listing and associated entities in cascade"
+    deleteListingById(
+        "The id of the listing"
+        id: BigInteger!
+    ): Void
+    "Delete a user from the database"
+    deleteUserById(
+        "The ID of the user to be deleted"
+        userId: BigInteger
+    ): Void
+    "Removes the given user from the given Notification and deletes it, if there are not associated users left"
+    deleteUserFromNotification(
+        "The id of the notification"
+        notificationId: BigInteger,
+        "The id of the user to be removed"
+        userId: BigInteger
+    ): Void
+    "Get access and refresh token by using username (email) and password.The returned access token is valid for 15 minutes, the refresh token is valid for 3 days and can be used once."
+    getSession(
+        "The email of the user"
+        email: String,
+        "The password of the user"
+        password: String
+    ): Session
+    "Makes another user admin"
+    makeAdmin(
+        "The ID of the user to be made admin"
+        userId: BigInteger,
+        "The ID of the user who wants to make the other user admin"
+        userIdCurrent: BigInteger
+    ): Boolean!
+    "Get new access and refresh token by using the one-time use refresh token"
+    refreshSession(
+        "The one-time use refresh token"
+        token: String
+    ): Session
+    "Registers a user in the database"
+    registerUser(user: UserInput): User
+    "Toggle favourite listing, i.e. add or remove a listing from a user's favourites"
+    toggleFavouriteListing(
+        "The listing's ID"
+        listingId: BigInteger,
+        "The user's ID"
+        userId: BigInteger
+    ): Boolean!
+    "Updates a listing in the database"
+    updateListing(
+        "The listing to be updated"
+        listing: ListingInput
+    ): Listing
+    "Updates a user in the database"
+    updateUser(
+        "The user to be updated"
+        user: UserInput
+    ): User
+}
+
+type Notification {
+    connectedListing: Listing
+    connectedUsers: [User]
+    "ISO-8601"
+    createdAt: DateTime
+    id: BigInteger
+    notificationType: NotificationType
+}
+
+"Query root"
+type Query {
+    "Searches for listings in the database according to the query and filters"
+    advancedSearch(
+        "The assigned company to filter by"
+        company: String,
+        "The latest listing creation date"
+        endDate: String,
+        "The limit of the search result"
+        limit: Int,
+        "If true, also show non-active listings"
+        non_active: Boolean,
+        "The offset of the search result"
+        offset: Int,
+        "The id of the owner to filter by"
+        owner_id: BigInteger,
+        "The qualification needed to apply for the listing"
+        qualification: Qualification,
+        "The earliest listing creation date"
+        startDate: String,
+        "The assigned tags to filter by"
+        tagIds: [BigInteger],
+        "The search query"
+        textPattern: String,
+        "The assigned university to filter by"
+        university: String
+    ): GraphQLSearchResult
+    "Fetches a list of all companies that listings are assigned to"
+    getAllListingCompanies(
+        "The query to filter the company names by"
+        query: String
+    ): [String]
+    "Fetches a list of all universities that listings are assigned to"
+    getAllListingUniversities(
+        "The query to filter the university names by"
+        query: String
+    ): [String]
+    "Fetches a list of all listings from the database"
+    getAllListings: [Listing]
+    "Fetches a list of all listings from the a specific User from the database"
+    getAllListingsFromUserWithId(
+        "The id of the user"
+        id: BigInteger
+    ): [Listing]
+    "Fetches a list of all notifications for a user in the database"
+    getAllNotificationsForUserWithId(
+        "The id of the user"
+        id: BigInteger
+    ): [Notification]
+    "Fetches a list of all tags from the database"
+    getAllTags: [Tag]
+    "Fetches a list of all tags from layer 1 and 2 from the database"
+    getAllTagsShallow: [Tag]
+    "Fetches a list of all users from the database"
+    getAllUsers: [User]
+    "Fetches the favorite listings of the user corresponding to the given ID from the database"
+    getFavouritesByUserId(
+        "The ID of the user whose favorite listings to fetch"
+        userId: BigInteger
+    ): [Listing]
+    "Fetches a listing from the database by its ID"
+    getListingById(id: BigInteger!): Listing
+    "Fetches a list of trending listings from the database"
+    getTrendingListings(
+        "The company to filter by"
+        company: String,
+        "The index of the page to fetch"
+        pageIndex: Int,
+        "The size of the page to fetch"
+        pageSize: Int,
+        "The university to filter by"
+        university: String
+    ): GraphQLSearchResult
+    "Fetches a sorted list of tags for which the most listings have been created in the last 30 days"
+    getTrendingTags: [Tag]
+    "Fetches the user corresponding to the given ID from the database"
+    getUserById(
+        "The ID of the user to fetch"
+        id: BigInteger
+    ): User
+    "Returns the full name of the user with the given id"
+    getUsernameByUserId(
+        "The ID of the user to fetch"
+        id: BigInteger
+    ): String
+}
+
+"Represents a session for a user containing access and refresh tokens."
+type Session {
+    "The access token."
+    accessToken: String
+    "The one-time refresh token."
+    refreshToken: String
+}
+
+type Tag {
+    id: BigInteger
+    layer: BigInteger!
+    listings: [Listing]
+    title_de: String
+    title_en: String
+}
+
+"A user of the platform, can be listing consumer, listing provider, and/or admin."
+type User {
+    "The user's email."
+    email: String
+    "The user's favourite listings."
+    favourites: [Listing]
+    "The user's unique identifier."
+    id: BigInteger
+    "The user's name."
+    name: String
+    "The notifications sent to the user."
+    notifications: [Notification]
+    "The listings created by the user."
+    owner: [Listing]
+    "The user's password."
+    password: String
+    "The user's qualification, can be Bachelors, Masters, Phd, or none."
+    qualification: Qualification
+    "If the user opted in to receive emails."
+    receiveEmails: Boolean
+    "The user's preferred tags."
+    userTags: [Tag]
+    "The user's type(s), can include listing consumer, listing provider, and admin."
+    userType: [UserType]
+}
+
+enum NotificationType {
+    Application
+    InterestedTopic
+}
+
+enum Qualification {
+    Bachelors
+    Masters
+    None
+    PhD
+}
+
+enum UserType {
+    Administrator
+    ListingConsumer
+    ListingProvider
+}
+
+"Scalar for BigDecimal"
+scalar BigDecimal
+
+"Scalar for BigInteger"
+scalar BigInteger
+
+"Scalar for DateTime"
+scalar DateTime
+
+"Scalar for Void"
+scalar Void
+
+"A thesis listing on the platform."
+input ListingInput {
+    "If the listing is active, allowing users to see and apply to it."
+    active: Boolean
+    company: String
+    "ISO-8601"
+    createdAt: DateTime
+    "The listing's details, limited to 10,000 characters."
+    details: String
+    favourites: [UserInput]
+    "The listing's unique identifier."
+    id: BigInteger
+    "The notifications associated with this listing."
+    notifications: [NotificationInput]
+    owner: UserInput
+    requirement: Qualification
+    tags: [TagInput]
+    "The listing's title, limited to 1,000 characters."
+    title: String
+    university: String
+}
+
+input NotificationInput {
+    connectedListing: ListingInput
+    connectedUsers: [UserInput]
+    "ISO-8601"
+    createdAt: DateTime
+    id: BigInteger
+    notificationType: NotificationType
+}
+
+input TagInput {
+    id: BigInteger
+    layer: BigInteger!
+    listings: [ListingInput]
+    title_de: String
+    title_en: String
+}
+
+"A user of the platform, can be listing consumer, listing provider, and/or admin."
+input UserInput {
+    "The user's email."
+    email: String
+    "The user's favourite listings."
+    favourites: [ListingInput]
+    "The user's unique identifier."
+    id: BigInteger
+    "The user's name."
+    name: String
+    "The notifications sent to the user."
+    notifications: [NotificationInput]
+    "The listings created by the user."
+    owner: [ListingInput]
+    "The user's password."
+    password: String
+    "The user's qualification, can be Bachelors, Masters, Phd, or none."
+    qualification: Qualification
+    "If the user opted in to receive emails."
+    receiveEmails: Boolean
+    "The user's preferred tags."
+    userTags: [TagInput]
+    "The user's type(s), can include listing consumer, listing provider, and admin."
+    userType: [UserType]
+}
