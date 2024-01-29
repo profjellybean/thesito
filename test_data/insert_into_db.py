@@ -13,9 +13,10 @@ def insert_user(row):
     conn = psycopg2.connect(**params)
     cursor = conn.cursor()
     try:
-        cursor.execute("""INSERT INTO users(id, email, name, password)
-            VALUES (%s, %s, %s, %s) RETURNING id;
-        """, (user_id, email, name, password))
+        cursor.execute("""INSERT INTO users(id, email, name, password,
+        receiveemails, qualification_type)
+            VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;
+        """, (user_id, email, name, password, True, "Masters"))
 
         cursor.execute("""INSERT INTO user_types(user_id, user_type)
             VALUES (%s, %s) RETURNING user_id;
@@ -25,7 +26,7 @@ def insert_user(row):
         print("An error occurred:", e)
         conn.rollback()
     finally:
-        cursor.execute("ALTER SEQUENCE users_id_seq RESTART WITH 7;")
+        cursor.execute("ALTER SEQUENCE users_id_seq RESTART WITH 8;")
         conn.commit()
         cursor.close()
         conn.close()
