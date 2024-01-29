@@ -79,7 +79,10 @@ public class ListingController {
     @Query("getAllListingsFromUserWithId")
     @RolesAllowed({"ListingConsumer", "ListingProvider", "Administrator"})
     @Description("Fetches a list of all listings from the a specific User from the database")
-    public List<Listing> getAllListingsFromUserWithId(Long id) throws GraphQLException{
+    public List<Listing> getAllListingsFromUserWithId(
+            @Description("The id of the user")
+            Long id
+    ) throws GraphQLException{
         LOG.info("getAllListingsFromUserWithId");
         // check if sender is allowed
         if (!id.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){
@@ -98,7 +101,10 @@ public class ListingController {
     @Mutation
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Creates a listing in the database")
-    public Listing createListing(Listing listing) throws GraphQLException {
+    public Listing createListing(
+            @Description("The listing to be created")
+            Listing listing
+    ) throws GraphQLException {
         LOG.info("createListing");
         try {
             return listingService.createListing(listing);
@@ -118,7 +124,14 @@ public class ListingController {
     @Mutation("applyToListing")
     @RolesAllowed({"ListingConsumer", "Administrator"})
     @Description("Applies for a listing, notifying the listing provider")
-    public void applyToListing(Long listingId, Long userId, String applicationText) throws GraphQLException {
+    public void applyToListing(
+            @Description("The id of the listing")
+            Long listingId,
+            @Description("The id of the user")
+            Long userId,
+            @Description("The application text")
+            String applicationText
+    ) throws GraphQLException {
         LOG.info("applyToListing");
         try {
             listingService.applyForThesis(listingId, userId, applicationText);
@@ -143,12 +156,30 @@ public class ListingController {
     @RolesAllowed({"ListingConsumer","ListingProvider", "Administrator"})
     @Description("Searches for listings in the database according to the query and filters")
     @Transactional
-    public GraphQLSearchResult advancedSearch(Optional<String> textPattern, Optional<String> startDate, Optional<String> endDate,
-                                              Optional<Qualification> qualification, Optional<String> university,
-                                              Optional<String> company,
-                                              Set<Long> tagIds,
-                                              Optional<Long> owner_id,
-                                              Optional<Integer> offset, Optional<Integer> limit, Optional<Boolean> non_active) throws ParseException {
+    public GraphQLSearchResult advancedSearch(
+            @Description("The search query")
+            Optional<String> textPattern,
+            @Description("The earliest listing creation date")
+            Optional<String> startDate,
+            @Description("The latest listing creation date")
+            Optional<String> endDate,
+            @Description("The qualification needed to apply for the listing")
+            Optional<Qualification> qualification,
+            @Description("The assigned university to filter by")
+            Optional<String> university,
+            @Description("The assigned company to filter by")
+            Optional<String> company,
+            @Description("The assigned tags to filter by")
+            Set<Long> tagIds,
+            @Description("The id of the owner to filter by")
+            Optional<Long> owner_id,
+            @Description("The offset of the search result")
+            Optional<Integer> offset,
+            @Description("The limit of the search result")
+            Optional<Integer> limit,
+            @Description("If true, also show non-active listings")
+            Optional<Boolean> non_active
+    ) throws ParseException {
         LOG.info("advancedSearch");
 
         if (non_active.isPresent()){
@@ -274,9 +305,16 @@ public class ListingController {
     @Query("getTrendingListings")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of trending listings from the database")
-    public GraphQLSearchResult getTrendingListings(Optional<String> university, Optional<String> company,
-                                                   Optional<Integer> pageIndex, Optional<Integer> pageSize) {
-
+    public GraphQLSearchResult getTrendingListings(
+            @Description("The university to filter by")
+            Optional<String> university,
+            @Description("The company to filter by")
+            Optional<String> company,
+            @Description("The index of the page to fetch")
+            Optional<Integer> pageIndex,
+            @Description("The size of the page to fetch")
+            Optional<Integer> pageSize
+    ) {
         LOG.info("getTrendingListings");
         PanacheQuery<Listing> query = listingService.getTrendingListingsQuery(university, company);
         GraphQLSearchResult searchResult = new GraphQLSearchResult();
@@ -299,7 +337,10 @@ public class ListingController {
     @Mutation
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Updates a listing in the database")
-    public Listing updateListing(Listing listing) throws GraphQLException {
+    public Listing updateListing(
+            @Description("The listing to be updated")
+            Listing listing
+    ) throws GraphQLException {
         LOG.info("updateListing");
         // check if user (identified with JWT) is allowed to change listing
         if (!is_user_allowed_to_access_listing(jwt,listing.getId()) && !jwt.getGroups().contains("Administrator")){
@@ -340,7 +381,10 @@ public class ListingController {
     @Mutation
     @RolesAllowed({"ListingProvider", "Administrator"})
     @Description("Deletes a listing and associated entities in cascade")
-    public void deleteListingById(long id) throws GraphQLException {
+    public void deleteListingById(
+            @Description("The id of the listing")
+            long id
+    ) throws GraphQLException {
         // check if user (identified with JWT) is allowed to change listing
         if (!is_user_allowed_to_access_listing(jwt, id) && !jwt.getGroups().contains("Administrator")){
             throw new UnauthorizedException();
@@ -362,7 +406,10 @@ public class ListingController {
     @Query("getAllListingUniversities")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of all universities that listings are assigned to")
-    public List<String> getAllListingUniversities(Optional<String> query) {
+    public List<String> getAllListingUniversities(
+            @Description("The query to filter the university names by")
+            Optional<String> query
+    ) {
         LOG.info("getAllListingUniversities");
         if (query.isPresent()) {
             return listingService.getAllUniversities(query.get());
@@ -379,7 +426,10 @@ public class ListingController {
     @Query("getAllListingCompanies")
     @RolesAllowed({"ListingProvider", "ListingConsumer", "Administrator"})
     @Description("Fetches a list of all companies that listings are assigned to")
-    public List<String> getAllListingCompanies(Optional<String> query) {
+    public List<String> getAllListingCompanies(
+            @Description("The query to filter the company names by")
+            Optional<String> query
+    ) {
         LOG.info("getAllListingCompanies");
         if (query.isPresent()) {
             return listingService.getAllCompanies(query.get());

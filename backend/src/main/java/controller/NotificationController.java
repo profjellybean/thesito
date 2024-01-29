@@ -29,7 +29,10 @@ public class NotificationController {
      */
     @Query("getAllNotificationsForUserWithId")
     @Description("Fetches a list of all notifications for a user in the database")
-    public List<Notification> getAllNotificationsForUserWithId(Long id) throws GraphQLException {
+    public List<Notification> getAllNotificationsForUserWithId(
+            @Description("The id of the user")
+            Long id
+    ) throws GraphQLException {
         LOG.info("getAllNotificationsForUserWithId");
         // check if sender is allowed
         if (!id.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){
@@ -47,7 +50,11 @@ public class NotificationController {
      */
     @Mutation
     @Description("Removes the given user from the given Notification and deletes it, if there are not associated users left")
-    public void deleteUserFromNotification(Long userId, Long notificationId) throws GraphQLException{
+    public void deleteUserFromNotification(
+            @Description("The id of the user to be removed")
+            Long userId,
+            @Description("The id of the notification")
+            Long notificationId) throws GraphQLException{
         LOG.info("deleteUserFromNotification");
         // check if sender is allowed
         if (!userId.equals(Long.parseLong(jwt.getClaim("userid").toString())) && !jwt.getGroups().contains("Administrator")){

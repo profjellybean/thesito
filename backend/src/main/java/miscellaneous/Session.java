@@ -1,10 +1,14 @@
 package miscellaneous;
 
+import org.eclipse.microprofile.graphql.Description;
 
+@Description("Represents a session for a user containing access and refresh tokens.")
 public class Session {
 
-    public  String accessToken;
+    @Description("The access token.")
+    public String accessToken;
 
+    @Description("The one-time refresh token.")
     public String refreshToken;
 
     public void setAccessToken(String accessToken) {
@@ -18,8 +22,8 @@ public class Session {
     @Override
     public String toString() {
         return "Session{" +
-                "refreshToken='" + refreshToken + '\'' +
-                ", accessToken='" + accessToken + '\'' +
+                "refreshToken='" + refreshToken + "'" +
+                ", accessToken='" + accessToken + "'" +
                 '}';
     }
 }
