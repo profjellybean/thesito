@@ -1,34 +1,37 @@
 <div class="container-fluid background">
   <div class="row">
-
     <div class="logo-wrapper">
-      <div class="unselectable logo">
-        Thesito
-      </div>
-      <div class="unselectable subtitle">
-        {{"thesitoDescription" | translate}}
-      </div>
+      <div class="unselectable logo">Thesito</div>
+      <div class="unselectable subtitle">{{"thesitoDescription" | translate}}</div>
     </div>
-
-
     <!-- Background Graphic -->
     <div class="d-none d-xl-block">
       <svg class="overlay" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 974">
         <g filter="url(#filter0_d)">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M8.6052 970C214.02 830.724 349 595.375 349 328.5c0-115.871-25.445-225.798-71.052-324.5H1120v966H8.6052z"
-                fill="#EAE7DC"/>
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M8.6052 970C214.02 830.724 349 595.375 349 328.5c0-115.871-25.445-225.798-71.052-324.5H1120v966H8.6052z"
+            fill="#EAE7DC"
+          />
         </g>
         <defs>
-          <filter id="filter0_d" x=".6052" y="0" width="1119.39" height="974" filterUnits="userSpaceOnUse"
-                  color-interpolation-filters="sRGB">
-            <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-            <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
-            <feOffset dx="-4"/>
-            <feGaussianBlur stdDeviation="2"/>
-            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
-            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/>
-            <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+          <filter
+            id="filter0_d"
+            x=".6052"
+            y="0"
+            width="1119.39"
+            height="974"
+            filterUnits="userSpaceOnUse"
+            color-interpolation-filters="sRGB"
+          >
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
+            <feOffset dx="-4" />
+            <feGaussianBlur stdDeviation="2" />
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
           </filter>
         </defs>
       </svg>
@@ -36,76 +39,111 @@
   </div>
 </div>
 
-
 <!-- Login Area -->
 <div class="mask">
   <div class="login-wrapper">
     <div class="login-area">
-      <form *ngIf="registerForm" [formGroup]="registerForm" class="text-center">
+      <form *ngIf="!showAdditionalRegistration && registerForm" [formGroup]="registerForm" class="text-center">
         <h2 class="unselectable eerie login-title">{{"register" | translate}}</h2>
-        <div class="language-toggle">
+        <div style class="language-toggle" style="float: right;">
           <app-language-toggle></app-language-toggle>
         </div>
         <div class="form-group">
-          <input class="eerie" type="text" formControlName="name" placeholder='{{"name"| translate}}' autocomplete="on">
+          <input class="eerie" type="text" formControlName="name" placeholder="{{'name' | translate}}" autocomplete="on">
         </div>
         <div class="form-group">
-          <input (paste)="false" class="eerie" type="text" formControlName="email" placeholder='{{"email" | translate}}' autocomplete="on">
+          <input (paste)="false" class="eerie" type="text" formControlName="email" placeholder="{{'email' | translate}}" autocomplete="on">
         </div>
         <div class="form-group">
-          <input (paste)="false" class="eerie" type="text" formControlName="confirmEmail" placeholder='{{"confirmEmail" | translate}}' autocomplete="on">
+          <input (paste)="false" class="eerie" type="text" formControlName="confirmEmail" placeholder="{{'confirmEmail' | translate}}" autocomplete="on">
         </div>
         <div class="form-group visibility">
-          <input (paste)="false" class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="password"
-                 placeholder='{{"password" | translate}}' autocomplete="on">
+          <input
+            (paste)="false"
+            class="eerie"
+            [type]="pwVisible ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="{{'password' | translate}}"
+            autocomplete="on"
+          />
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>
         <div class="form-group visibility">
-          <input class="eerie" [type]="pwVisible ? 'text' : 'password'" formControlName="confirmPassword"
-                 placeholder='{{"confirmPassword" | translate}}' autocomplete="on">
+          <input
+            class="eerie"
+            [type]="pwVisible ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="{{'confirmPassword' | translate}}"
+            autocomplete="on"
+          />
           <mat-icon *ngIf="!pwVisible" (click)="toggleVisibility()">visibility_off</mat-icon>
           <mat-icon *ngIf="pwVisible" (click)="toggleVisibility()">visibility_on</mat-icon>
         </div>
-        <div class="form-group">
-          <mat-radio-group formControlName="userType" (change)="isConsumer()">
-            <mat-radio-button class="eerie" id="consumer"
-                              value="ListingConsumer">{{"consumer" | translate}}</mat-radio-button>
-            <mat-radio-button class="eerie" id="producer"
-                              value="ListingProvider">{{"provider" | translate}}</mat-radio-button>
-          </mat-radio-group>
-        </div>
-        <div class="form-group" *ngIf="this.isConsumerUser">
-          <app-tag [shallow]="true" (updateTag)="addTagToUser($event)"></app-tag>
-        </div>
-        <div class="form-group" *ngIf="this.isConsumerUser">
-          <mat-radio-group formControlName="qualification">
-            <mat-radio-button class="eerie" id="none"
-                              [value]="QualificationType.None">{{"None" | translate}}</mat-radio-button>
-            <mat-radio-button class="eerie" id="bachelors"
-                              [value]="QualificationType.Bachelors">{{"Bachelors" | translate}}</mat-radio-button>
-            <mat-radio-button class="eerie" id="masters"
-                              [value]="QualificationType.Masters">{{"Masters" | translate}}</mat-radio-button>
-            <mat-radio-button class="eerie" id="phd"
-                              [value]="QualificationType.PhD">{{"PhD" | translate}}</mat-radio-button>
-          </mat-radio-group>
-        </div>
-        <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
-        <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
-        <div class="text-center button-wrapper">
-          <button type="button" class="btn login-button" (click)="register()">{{"register" | translate}}</button>
-        </div>
+        <button *ngIf="!showAdditionalRegistration" type="button" class="btn login-button" (click)="showAdditionalRegistration = true">{{'continue' | translate}}</button>
       </form>
+
     </div>
   </div>
 </div>
 
+<!-- Additional Registration -->
+
+    <!-- Additional registration content here -->
+    <div class="mask"  *ngIf="showAdditionalRegistration">
+      <div class="login-wrapper">
+
+        <div class="login-area-additional">
+
+          <form *ngIf="registerForm" [formGroup]="registerForm" class="text-center">
+
+            <h2 class="unselectable eerie login-title">{{'yourProfile' | translate}}</h2>
+
+            <div class="language-toggle">
+              <button *ngIf="showAdditionalRegistration" type="button" class="btn back button" (click)="showAdditionalRegistration = false">
+                < {{'back' | translate}}
+              </button>
+              <app-language-toggle></app-language-toggle>
+            </div>
+
+            <div class="form-group checkboxes">
+
+              <mat-checkbox color = "primary" formControlName="userType" (change)="isConsumer()">
+                {{ "consumerInfo" | translate }}
+              </mat-checkbox>
+            </div>
+            <div class="form-group checkboxes">
+              <mat-checkbox color = "primary" formControlName="userType" (change)="isProvider()">
+                {{ "providerInfo" | translate }}
+              </mat-checkbox>
+            </div>
+
+            <div class="form-group" *ngIf="isConsumerUser">
+              <app-tag [selectedTags]="selectedTags" [shallow]="true" (updateTag)="addTagToUser($event)"></app-tag>
+            </div>
+
+            <div class="form-group" *ngIf="this.isConsumerUser">
+              <mat-radio-group formControlName="qualification">
+                <div class ="completed-academic">  {{ "completedAcademicCareer" | translate }}<br /></div>
+
+                <mat-radio-button color = "primary" class="eerie" id="none" [value]="QualificationType.None">{{"None" | translate}}</mat-radio-button>
+                <mat-radio-button color = "primary" class="eerie" id="bachelors" [value]="QualificationType.Bachelors">{{"Bachelors" | translate}}</mat-radio-button>
+                <mat-radio-button color = "primary" class="eerie" id="masters" [value]="QualificationType.Masters">{{"Masters" | translate}}</mat-radio-button>
+                <mat-radio-button color = "primary" class="eerie" id="phd" [value]="QualificationType.PhD">{{"PhD" | translate}}</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
+            <span class="thesito-green error-field" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
+
+            <div class="text-center button-wrapper">
+
+              <button type="button" class="btn login-button" (click)="register()">{{"register" | translate}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
 <div class="bottom-large d-none d-xl-block">
-  <p> {{"thesito" | translate}}</p>
+  <p>{{"thesito" | translate}}</p>
 </div>
-
-
-
-
-
-

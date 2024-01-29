@@ -42,7 +42,7 @@ export class AuthService {
       if (token != null) {
         token = this.decodeToken(token);
         // @ts-ignore
-        return token.userType === "ListingProvider"
+        return token.userType.includes("ListingProvider")
       }
       return false;
    }
@@ -52,10 +52,20 @@ export class AuthService {
       if (token != null) {
         token = this.decodeToken(token);
         // @ts-ignore
-        return token.userType === "ListingConsumer"
+        return token.userType.includes("ListingConsumer")
       }
       return false;
    }
+
+  public isAdministrator(): boolean {
+    let token = this.getToken();
+    if (token != null) {
+      token = this.decodeToken(token);
+      // @ts-ignore
+      return token.userType.includes("Administrator")
+    }
+    return false;
+  }
 
    private isTokenValid(token: string | null): boolean{
      try {
@@ -82,7 +92,8 @@ export class AuthService {
             this.isRefreshing = false;
           },
           (error) => {
-            this.isRefreshing = false;
+          this.isRefreshing = false;
+          this.logoutUser()
           }
         )
       }

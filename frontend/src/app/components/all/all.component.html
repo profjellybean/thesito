@@ -7,14 +7,14 @@
     <div class="simple-search-container">
       <input type="text" placeholder="{{'fullTextSearch' | translate}}" name="title" [(ngModel)]="fullTextSearchPattern" (ngModelChange)="performSearch()">
 
-     <!-- <button type="submit" class="submit-button" (click)="performSearch()">Search</button> -->
       <button type="button" class="small-button" (click)="clearSearch()">{{"clear"| translate}}</button>
 
       <div class="advanced-search-toggle">
         <label class="toggle-label" style="padding-left: 10px">{{'advanced' | translate}}</label>
         <label class="toggle-container">
-          <input type="checkbox" [(ngModel)]="isAdvancedSearch">
-          <span class="toggle-slider"></span>
+          <input type="checkbox" [(ngModel)]="isAdvancedSearch"
+          (ngModelChange)="updateQueryParams()" >
+          <span class="toggle-slider" ></span>
         </label>
       </div>
     </div>
@@ -40,7 +40,7 @@
         <div *ngIf="institutionType === 'university'">
           <mat-form-field class="example-full-width">
             <mat-label>{{ 'chooseUniversity' | translate }}</mat-label>
-            <input matInput [(ngModel)]="searchUniversity" [matAutocomplete]="auto">
+            <input matInput [formControl]="searchUniversityControl" [matAutocomplete]="auto">
             <mat-autocomplete (optionSelected)="onUniversitySelect($event)" #auto="matAutocomplete">
               <mat-option *ngFor="let university of allUniversities | async" [value]="university">
                 {{ university }}
@@ -51,7 +51,7 @@
         <div *ngIf="institutionType === 'company'">
           <mat-form-field class="example-full-width">
             <mat-label>{{ 'companyName' | translate }}</mat-label>
-            <input matInput [(ngModel)]="searchCompany" [matAutocomplete]="auto">
+            <input matInput [formControl]="searchCompanyControl" [matAutocomplete]="auto">
             <mat-autocomplete (optionSelected)="onCompanySelect($event)" #auto="matAutocomplete">
               <mat-option *ngFor="let company of allCompanies | async" [value]="company">
                 {{ company }}
@@ -69,12 +69,11 @@
     </div>
 
     <!-- listings -->
-    <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)" style="cursor: pointer">
+    <div class="row listing equal-height" *ngFor="let listing of listings" >
       <div class="col col-md-1 d-flex align-items-center justify-content-center">
-        <i class="bi bi-star"></i>
-        <mat-icon>star_border</mat-icon>
+        <app-user-favourites [listing_id]="listing.id"></app-user-favourites>
       </div>
-      <div class="col col-md-9 d-flex align-items-center justify-content-center">
+      <div class="col col-md-8 d-flex align-items-center justify-content-center" style="cursor: pointer" (click)="goToListing(listing.id)">
         <h3 class="my-auto text-center">{{listing.title}}</h3>
       </div>
       <div class="col col-md-2 d-flex align-items-center justify-content-center">
@@ -94,7 +93,7 @@
       <button (click)="loadPage(currentPage - 1)"
         [disabled]="currentPage === 1">{{'previous' | translate }}</button>
       <span *ngIf="totalPages > 0; else noResultsSpan" class="pagination-text">Page {{ currentPage }} of {{ totalPages }}</span>
-      <ng-template #noResultsSpan><span class="pagination-text">No Results</span></ng-template>
+      <ng-template #noResultsSpan><span class="pagination-text">{{ "noResults" | translate }}</span></ng-template>
       <button (click)="loadPage(currentPage + 1)"
         [disabled]="currentPage === totalPages || totalPages === 0">{{ 'next' | translate}}</button>
 

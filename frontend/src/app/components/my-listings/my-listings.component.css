@@ -1,0 +1,227 @@
+*:not(mat-icon) {
+  font-family: Montserrat, sans-serif;
+}
+
+/* General Styles */
+.background {
+  background-color: #EAE7DC;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+/* Header Styles */
+h2 {
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Search and Form Styles */
+.simple-search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background: #e9ecef;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.simple-search-container input[type="text"],
+.simple-search-container input[type="date"],
+.simple-search-container select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  /*margin-right: 10px;*/
+  flex-grow: 1;
+}
+
+.simple-search-container input[type="date"] {
+  border: 2px solid #007bff;
+  background-color: #f8f9fa;
+}
+
+/* Toggle Styles */
+.toggle-container {
+  display: inline-block;
+  position: relative;
+  padding-left: 25px; /* Adjusted for smaller toggle */
+  margin-bottom: 0;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+}
+
+.toggle-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+
+.tags-container {
+  /*flex-basis: 100%;*/
+}
+
+input:checked + .toggle-slider {
+  background-color: #007bff;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Button Styles */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: default;
+}
+
+/* Listing Styles */
+.listing {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.listing:hover {
+  transform: scale(1.03); /* Slightly scale up on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for "pop up" effect */
+}
+
+.listing h3, .listing h4, .listing h5 {
+  margin: 0;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination-text {
+  margin: auto 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .simple-search-container, .input-flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .simple-search-container input, .simple-search-container select {
+    margin-bottom: 10px;
+  }
+}
+
+.advanced-search-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the toggle and label */
+  margin-bottom: 15px;
+}
+
+.listing.equal-height {
+  height: 80px; /* Example height, adjust as needed */
+}
+
+.simple-search-container .input-flex {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+  gap: 10px; /* Adds space between items */
+  font-weight: bold;
+}
+
+.simple-search-container .input-flex label,
+.simple-search-container .input-flex .date-input,
+.simple-search-container .input-flex select {
+  margin: 5px; /* Adjust as needed */
+  min-width: 120px; /* Adjust as needed for better control over item widths */
+}
+.controls{
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.compact-listing-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.compact-listing-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.compact-listing-card .listing-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.compact-listing-card .listing-info {
+  font-size: 14px;
+  color: #666;
+}
+
+.compact-listing-card img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.see-all-link {
+  text-align: right; /* Align the link to the right */
+  margin-top: 10px; /* Add some space above the link */
+  font-size: 0.9rem; /* Slightly larger font size for the link */
+  color: #000000; /* Color for the link */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.see-all-link:hover {
+  text-decoration: underline; /* Underline on hover for better indication */
+}

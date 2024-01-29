@@ -1,0 +1,108 @@
+<div class="mat-elevation-z8 background">
+  <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
+  <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
+
+  <table mat-table [dataSource]="dataSource">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
+          <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
+        </mat-menu>
+        {{user.id}}
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> {{'name' |translate}} </th>
+      <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
+          <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
+        </mat-menu>
+        {{user.name}}
+        <mat-chip *ngIf="userIsCurrentUser(user)">{{ 'me' | translate }}</mat-chip>
+      </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> {{'email' |translate}} </th>
+      <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
+          <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
+        </mat-menu>
+        {{user.email}}
+      </td>
+    </ng-container>
+
+    <!-- UserType Column -->
+    <ng-container matColumnDef="userType">
+      <th mat-header-cell *matHeaderCellDef> {{'role' |translate}} </th>
+      <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="makeUserAdmin(user.id)">{{ 'makeAdmin' | translate }}</button>
+          <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{ 'viewListingsOfUser' | translate }}</button>
+        </mat-menu>
+        <div *ngFor="let type of user.userType">
+          {{ type }}
+        </div>
+
+      </td>
+
+    </ng-container>
+
+    <!-- Qualification Column -->
+    <ng-container matColumnDef="qualification">
+      <th mat-header-cell *matHeaderCellDef> {{'qualification' |translate}} </th>
+      <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
+          <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
+        </mat-menu>
+        {{user.qualification}}
+      </td>
+    </ng-container>
+
+    <!-- Receive Emails Column -->
+    <ng-container matColumnDef="receiveEmails">
+      <th mat-header-cell *matHeaderCellDef> {{'receiveEmails' |translate}} </th>
+      <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
+          <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
+        </mat-menu>
+        {{user.receiveEmails ? 'yes' : 'no' | translate}}
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> {{'actions' |translate}} </th>
+      <td mat-cell *matCellDef="let user">
+        <mat-icon (click)="editUser(user.id)">edit</mat-icon>
+        <mat-icon  *ngIf="!userIsCurrentUser(user)" (click)="deleteUser(user)">delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container *ngIf="isStandalone">
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </ng-container>
+
+    <ng-container *ngIf="!isStandalone">
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsNonStandalone"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsNonStandalone;"></tr>
+    </ng-container>
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+                 showFirstLastButtons
+                 aria-label="Select page of users">
+  </mat-paginator>
+</div>

@@ -14,7 +14,6 @@
 
 .background {
   background-color: #EAE7DC;
-  min-height: calc(100vh - var(--mat-toolbar-standard-height));
   overflow: hidden;
 }
 
@@ -52,4 +51,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .thesito-beige-warm {
   color: #F7F6F2;
+}
+
+.mat-typography{
+  background-color: #EAE7DC;
 }

@@ -1,1 +1,99 @@
-<p>home works!</p>
+<div class="role-selector" *ngIf="(authService.isProducer() && authService.isConsumer()) ||
+(authService.isProducer() && authService.isAdministrator()) ||
+(authService.isAdministrator() && authService.isConsumer()) ||
+(authService.isProducer() && authService.isConsumer() && authService.isAdministrator())">
+  <mat-button-toggle-group [(ngModel)]="selectedRole" (change)="onRoleChange($event.value)" class="role-radio-group">
+    <mat-button-toggle *ngIf="authService.isConsumer()" value="consumer" checked> {{"consumer" | translate}}</mat-button-toggle>
+    <mat-button-toggle *ngIf="authService.isProducer()" value="producer">{{"provider" | translate}}</mat-button-toggle>
+    <mat-button-toggle *ngIf="authService.isAdministrator()" value="administrator">{{"admin" | translate}}</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div *ngIf="authService.isConsumer() && selectedRole === 'consumer'" class="container">
+  <div class="left-section card">
+    <h2 class="clickable" (click)="this.router.navigate(['/trending'])">{{ 'trending' | translate }}</h2>
+    <app-trending [isStandalone]="false"></app-trending>
+  </div>
+
+  <div class="right-section">
+    <div *ngIf="notificationsLoaded" class="top-right-section card">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/notifications'])">{{ 'inbox' | translate }} <span class="notification-count">{{ notifications.length }}</span></h2>
+
+      <div *ngFor="let notification of notifications | slice:0:3" class="card zoom-card" (click)="this.router.navigate(['/listing', notification.connectedListing.id])">
+        <div class="notification-header">
+          <div class="icon-with-text">
+            <mat-icon>email</mat-icon>
+            <span *ngIf="notification.notificationType === 'Application'">{{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}</span>
+            <span *ngIf="notification.notificationType === 'InterestedTopic'">{{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}</span>
+          </div>
+          <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
+        </div>
+      </div>
+      <div *ngIf="notifications.length===0">
+        <h4>{{"noNotifications" | translate}}</h4>
+      </div>
+      <div *ngIf="notifications.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="favoritesLoaded" class="bottom-right-section card">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
+      <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item">
+        <!--        <app-user-favourites
+          [listing_id]="favourite.id"></app-user-favourites> -->
+        <span class="card zoom-card" (click)="this.router.navigate(['/listing', favourite.id])">{{ favourite.title }}</span>
+      </div>
+
+      <div *ngIf="favourites.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/favourites'])">{{ 'seeAll' | translate }}</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="authService.isProducer() && selectedRole === 'producer'" class="container">
+  <div class="left-section card">
+    <div class="header">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/listings'])">{{ 'myListings' | translate }}</h2>
+      <mat-chip highlighted *ngIf="authService.isLoggedIn() && (authService.isProducer() || authService.isAdministrator())" class="create-listing-btn" (click)="goToCreateListing()">
+      {{ 'createListing' | translate}} +
+      </mat-chip>
+    </div>
+
+    <app-my-listings [isStandalone]="false"></app-my-listings>
+  </div>
+
+
+  <div class="right-section">
+    <div *ngIf="notificationsLoaded" class="top-right-section card">
+      <h2 class="clickable" (click)="this.router.navigate(['/user/notifications'])">{{ 'inbox' | translate }} <span class="notification-count">{{ notifications.length }}</span></h2>
+
+      <div *ngFor="let notification of notifications | slice:0:3" class="card zoom-card" (click)="this.router.navigate(['/listing', notification.connectedListing.id])">
+        <div class="notification-header">
+          <div class="icon-with-text">
+            <mat-icon>email</mat-icon>
+            <span *ngIf="notification.notificationType === 'Application'">{{ 'newApplicationForListing' | translate }} {{ notification.connectedListing.title }}</span>
+            <span *ngIf="notification.notificationType === 'InterestedTopic'">{{ 'newMatchingListing' | translate }} {{ notification.connectedListing.title }}</span>
+          </div>
+          <span class="date-text">{{ formatDate(notification.createdAt) }}</span>
+        </div>
+      </div>
+      <div *ngIf="notifications.length===0">
+        <h4>{{"noNotifications" | translate}}</h4>
+      </div>
+      <div *ngIf="notifications.length > 3" class="see-all-link">
+        <span (click)="this.router.navigate(['/user/notifications'])">{{ 'seeAll' | translate }}</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="authService.isAdministrator() && selectedRole === 'administrator'" class="container">
+  <div class="left-section">
+    <h2 class="clickable" (click)="this.router.navigate(['/admin/users'])">{{ 'manageUsers' | translate }}</h2>
+    <app-admin-page [isStandalone]="false"></app-admin-page>
+  </div>
+</div>

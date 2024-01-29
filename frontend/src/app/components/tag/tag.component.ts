@@ -16,12 +16,12 @@ import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 })
 export class TagComponent implements OnInit {
   allTags: Tag[] = []; // Initialize to an empty array
-  selectedTags: Tag[] = [];
   tagCtrl = new FormControl();
   filteredTags: Observable<Tag[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
   @Input() shallow = false;
+  @Input() selectedTags: Tag[] = [];
   @Input() title: string = 'interests';
   @Input() selectedTagsFromParent: Tag[] = []
   @Output() updateTag = new EventEmitter<Tag[]>();
@@ -109,6 +109,10 @@ export class TagComponent implements OnInit {
       }
       this.selectedTags.push(tag);
       this.updateTag.emit(this.selectedTags);
+      this.filteredTags = this.tagCtrl.valueChanges.pipe(
+        startWith(null),
+        map((tag: string | null) => (tag !== null ? this._filter(tag) : this.allTags.slice())),
+      );
     }
     // Clear the input value
     this.tagInput!.nativeElement.value = '';

@@ -2,11 +2,18 @@ package service;
 
 import com.password4j.Hash;
 import com.password4j.Password;
+import entity.Listing;
 import entity.RefreshToken;
+import entity.Tag;
 import entity.User;
-import io.quarkus.logging.Log;
+import entity.Notification;
+import enums.UserType;
 import io.smallrye.jwt.auth.principal.JWTParser;
 import io.smallrye.jwt.auth.principal.ParseException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 import miscellaneous.Session;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,12 +23,17 @@ import miscellaneous.UserValidator;
 import miscellaneous.ValidationException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
+import org.jetbrains.annotations.TestOnly;
+import persistence.ListingRepository;
 import persistence.RefreshTokenRepository;
 import persistence.UserRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import io.smallrye.jwt.build.Jwt;
+
+import static enums.UserType.Administrator;
 
 @ApplicationScoped
 public class UserService {
@@ -33,6 +45,11 @@ public class UserService {
 
     @Inject
     RefreshTokenRepository refreshTokenRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
+    @Inject
+    ListingRepository listingRepository;
 
     private static final Logger LOG = Logger.getLogger(UserService.class.getName());
 
@@ -57,6 +74,32 @@ public class UserService {
         user.setPassword(hashedPassword.getResult());
         userRepository.persist(user);
         return user;
+    }
+
+    @Transactional
+    public Boolean makeAdmin(Long userId, Long userIdCurrent) throws ServiceException {
+        LOG.debug("makeAdmin");
+        User toBeAdmin = userRepository.findById(userId);
+        User userCurrent = userRepository.findById(userIdCurrent);
+        if (toBeAdmin == null) {
+            LOG.error("Error in makeAdmin: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (userCurrent == null) {
+            LOG.error("Error in makeAdmin: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (!userCurrent.getUserType().contains(Administrator)) {
+            LOG.error("Error in makeAdmin: User is not an administrator");
+            throw new ServiceException("User is not an administrator");
+        }
+        if (toBeAdmin.getUserType().contains(Administrator)) {
+            LOG.error("Error in makeAdmin: User is already an administrator");
+            throw new ServiceException("User is already an administrator");
+        }
+        toBeAdmin.addUserType(Administrator);
+        userRepository.persist(toBeAdmin);
+        return true;
     }
 
     @Transactional
@@ -112,7 +155,7 @@ public class UserService {
         LOG.debug("generateAccessToken");
         return Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+                .groups(user.getUserType().stream().map(m -> m.toString()).collect(Collectors.toSet()))
                 .expiresIn(900)
                 .claim("usage", "access_token")
                 .claim("userid", user.getId().toString())
@@ -126,9 +169,10 @@ public class UserService {
         refreshTokenRepository.deleteByUserId(user.getId());
         // generate new refresh token and store UUID in DB
         String uuid = UUID.randomUUID().toString();
+        System.out.println(user.getUserType().toString());
         String token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
-                .groups(new HashSet<>(Arrays.asList(user.getUserType().name())))
+                .groups(user.getUserType().stream().map(m -> m.toString()).collect(Collectors.toSet()))
                 .expiresIn(259200)
                 .claim("usage", "refresh_token")
                 .claim("uuid", uuid)
@@ -165,8 +209,19 @@ public class UserService {
 
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
-        existingUser.setUserTags(user.getUserTags());
-        existingUser.setQualification(user.getQualification());
+
+
+        existingUser.setUserType(user.getUserType());
+
+        if (user.getUserType().contains(UserType.ListingConsumer) || user.getUserType().contains(Administrator)){
+            existingUser.setUserTags(user.getUserTags());
+            existingUser.setQualification(user.getQualification());
+        }else{
+            existingUser.setUserTags(new ArrayList<Tag>());
+            existingUser.setQualification(null);
+        }
+
+        existingUser.setReceiveEmails(user.getReceiveEmails());
 
         userRepository.persist(existingUser);
         return existingUser;
@@ -194,4 +249,84 @@ public class UserService {
         userRepository.persist(dbUser);
         return dbUser;
     }
+
+    @Transactional
+    public List<User> getAllUsersByTags(List<Tag> tags) throws ServiceException {
+        LOG.debug("getAllUsersByTags");
+        try {
+            return entityManager.createQuery("SELECT DISTINCT u FROM User u JOIN u.userTags t WHERE t IN :userTags", User.class)
+                    .setParameter("userTags", tags)
+                    .getResultList();
+        } catch (NoResultException e) {
+            LOG.error("Error in getUsersByTags: " + e.getMessage());
+            throw new ServiceException("Error while fetching users");
+        }
+    }
+
+    @Transactional
+    public Collection<Listing> getFavouritesByUserId(Long userId) throws ServiceException {
+        LOG.debug("getFavouritesByUserId");
+
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            LOG.error("Error in getFavouritesByUserId: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+
+        return user.getFavourites();
+    }
+    @Transactional
+    public boolean toggleFavourite(Long userId, Long listingId) throws ServiceException {
+        LOG.debug("toggleFavourite");
+        User user = userRepository.findById(userId);
+        Listing listing = listingRepository.findById(listingId);
+        if (user == null) {
+            LOG.error("Error in toggleFavourite: User doesn't exist");
+            throw new ServiceException("User doesn't exist");
+        }
+        if (listing == null) {
+            LOG.error("Error in toggleFavourite: Listing doesn't exist");
+            throw new ServiceException("Listing doesn't exist");
+        }
+        if (user.getFavourites().contains(listing)) {
+            user.getFavourites().remove(listing);
+        } else {
+            user.getFavourites().add(listing);
+        }
+        userRepository.persist(user);
+        return true;
+
+    }
+
+    @Transactional
+    public void deleteUserById(long id) throws ServiceException {
+        LOG.debug("deleteUserById");
+        try {
+            User user = userRepository.findById(id);
+            if (user != null) {
+                if (user.getNotifications() != null) {
+                    for (Notification notification : user.getNotifications()) {
+                        notification.getConnectedUsers().remove(user);
+                    }
+                }
+                for (Listing listing : user.getOwner()) {
+                    for (User user_ : listing.getFavourites()) {
+                        user_.getFavourites().remove(listing);
+                    }
+
+                }
+
+                refreshTokenRepository.deleteByUserId(id);
+                userRepository.delete(user);
+            } else {
+                throw new ServiceException("User not found");
+            }
+        } catch (EntityNotFoundException | IllegalStateException e) {
+            LOG.error("Error in deleteUserById: " + e.getMessage());
+            throw new ServiceException("Error deleting user");
+        }
+    }
+
+
+
 }

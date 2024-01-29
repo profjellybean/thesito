@@ -1,15 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl} from "@angular/forms";
+import {Router} from "@angular/router";
 import {User} from "../../models/User";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
-import {LanguageService} from "../../services/language.service";
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {TagService} from "../../services/tag.service";
 import {Tag} from "../../models/Tag";
 
 import {QualificationType, UserType} from "../../models/Enums";
+import {LanguageService} from "../../services/language.service";
 
 @Component({
   selector: 'app-user-details',
@@ -19,8 +16,6 @@ import {QualificationType, UserType} from "../../models/Enums";
 export class UserDetailsComponent implements OnInit{
   owner: boolean = false;
   user: User;
-  info = false;
-  infoMessage = '';
   error = false;
   errorMessage = '';
   selectedTags: Tag[] = []
@@ -31,7 +26,8 @@ export class UserDetailsComponent implements OnInit{
 
   constructor(private router: Router,
               private userService: UserService,
-              private authService: AuthService
+              private authService: AuthService,
+              private languageService: LanguageService
               ) {
 
     this.user = {
@@ -39,9 +35,10 @@ export class UserDetailsComponent implements OnInit{
       email: "",
       name: "",
       password: "",
-      userType: UserType.ListingConsumer,
+      userType: [UserType.ListingConsumer],
       userTags: [],
-      qualification: QualificationType.None
+      qualification: QualificationType.None,
+      receiveEmails: true
     };
   }
 
@@ -75,6 +72,7 @@ export class UserDetailsComponent implements OnInit{
           password: ''
         };
         this.tagsLoaded = true;
+
       },
       error: error2 =>{
         this.error = true;
@@ -82,49 +80,14 @@ export class UserDetailsComponent implements OnInit{
       }
     });
   }
-
-  vanishInfo(): void {
-    this.info = false;
-    this.infoMessage = '';
-  }
-
-  vanishError(): void {
-    this.error = false;
-    this.errorMessage = '';
-  }
-
-  save():void{
-    if(this.selectedTags.length < 3){
-      this.error = true
-      this.errorMessage = 'notEnoughTagsError'
-      return;
-    }
-    this.vanishError()
-    this.vanishInfo()
-    this.user = {
-      ...this.user,  // Copy existing properties
-      userTags: [...this.selectedTags],  // Update userTags property
-      qualification: this.academicCareer, // Update qualification property
-    };
-    this.userService.updateUser(this.user).subscribe({
-      next: result => {
-        this.info = true;
-        this.infoMessage = 'userUpdateSuccess';
-      },
-      error: error => {
-        this.error = true;
-        this.errorMessage = error.message;
-      }
-    });
-  }
-
   goToEditProfile(){
     this.router.navigate(['/user/edit/']);
   }
 
-  addTagToUser(tags: Tag[]): void {
-    this.selectedTags = tags;
+  getLanguage(): string{
+    return this.languageService.getLanguage();
   }
+
 
   isLoggedIn(): boolean{
     return this.authService.isLoggedIn();

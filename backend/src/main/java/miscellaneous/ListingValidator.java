@@ -9,6 +9,8 @@ import enums.UserType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.*;
+import org.jboss.logging.Logger;
+import service.ListingService;
 import service.TagService;
 import service.UserService;
 
@@ -30,10 +32,14 @@ public class ListingValidator {
 
     private List<String> universitiesCache = new ArrayList<>();
 
+    private static final Logger LOG = Logger.getLogger(ListingService.class.getName());
+
     @Inject
     TagService tagService;
     @Inject
     UserService userService;
+    @Inject
+    ListingService listingService;
 
     private void validateTitle(String title) throws ValidationException {
         if (title == null || title.isBlank()) {
@@ -55,7 +61,7 @@ public class ListingValidator {
                 throw new ValidationException("Either Company or University must be set but not both");
             }
 
-            // Load universities from ROR API
+            // Load universities from ROR API or from database if ROR API is unavailable
             universitiesCache = fetchUniversities(university);
 
             // Check if the provided university is in the cached list
@@ -69,13 +75,20 @@ public class ListingValidator {
 
 
     private List<String> fetchUniversities(String university) throws ValidationException {
-        HttpResponse<String> response = sendHttpRequestToRorApi(university);
+        HttpResponse<String> response;
+        try {
+            response = sendHttpRequestToRorApi(university);
+        } catch (ValidationException e) {
+            LOG.warn("Unable to fetch universities from ROR API, using universities in database as fallback");
+            return listingService.getAllUniversities(university);
+        }
 
         if (response.statusCode() == 200) {
             String responseBody = response.body();
             return parseUniversitiesFromJson(responseBody);
         } else {
-            throw new ValidationException("Received non-OK status code from ROR API: " + response.statusCode());
+            LOG.warn("Unable to fetch universities from ROR API, using universities in database as fallback");
+            return listingService.getAllUniversities(university);
         }
     }
 
@@ -170,8 +183,8 @@ public class ListingValidator {
         }
         try{
             user = this.userService.getUserById(user.getId());
-            if (!user.getUserType().equals(UserType.ListingProvider)){
-                throw new ValidationException("User with ID ownerId is not a ListingProvider");
+            if (!user.getUserType().contains(UserType.ListingProvider) && !user.getUserType().contains(UserType.Administrator) ){
+                throw new ValidationException("User with ID ownerId is not a ListingProvider or Administrator");
             }
         }catch (ServiceException e){
             throw new ValidationException("User with ID ownerId does not exist");

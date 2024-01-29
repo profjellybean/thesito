@@ -15,6 +15,7 @@ import {QualificationType, UserType} from "../../models/Enums";
 })
 export class RegisterUserComponent {
   error = false;
+  showAdditionalRegistration: boolean = false;
   errorMessage = '';
   pwVisible = false;
   confirm_password: string;
@@ -25,7 +26,9 @@ export class RegisterUserComponent {
   success = false;
   successMessage = '';
   router: Router;
-  isConsumerUser = true;
+  isConsumerUser = false;
+  isProviderUser = false;
+  selectedTags: Tag[] = [];
 
   constructor(private translateService: TranslateService, userService: UserService, formBuilder: FormBuilder, router: Router) {
     this.registerForm = formBuilder.group({
@@ -36,14 +39,16 @@ export class RegisterUserComponent {
       confirmPassword: ['', Validators.required],
       userType: ['', Validators.required],
       qualification: [''],
+
     });
     this.userService = userService;
     this.user = {
       email: "",
       name: "",
       password: "",
-      userType: UserType.ListingConsumer,
-      userTags: []
+      userType: [],
+      userTags: [],
+      receiveEmails: true
     };
     this.confirm_email = "";
     this.confirm_password = "";
@@ -52,48 +57,66 @@ export class RegisterUserComponent {
 
 
   register() {
+    // Check if both main and additional forms are valid
     if (this.registerForm.valid) {
-      this.user.email = this.registerForm.get('email')?.value
-      this.user.name = this.registerForm.get('name')?.value
-      this.user.password = this.registerForm.get('password')?.value
-      this.user.userType = this.registerForm.get('userType')?.value
+      // Populate user data from registerForm
+      this.user.email = this.registerForm.get('email')?.value;
+      this.user.name = this.registerForm.get('name')?.value;
+      this.user.password = this.registerForm.get('password')?.value;
+
+      // Populate user type from additionalRegisterForm
+      if (this.isConsumerUser){
+        this.user.userType.push(UserType.ListingConsumer)
+      }
+      if (this.isProviderUser){
+        this.user.userType.push(UserType.ListingProvider)
+      }
       this.confirm_email = this.registerForm.get('confirmEmail')?.value
       this.confirm_password = this.registerForm.get('confirmPassword')?.value
       this.user.qualification = this.registerForm.get('qualification')?.value
-      if(this.user.userType.toString() === "ListingConsumer" && (this.user.userTags === undefined || this.user.userTags.length < 3)) {
+      if(this.isConsumerUser && (this.user.userTags === undefined || this.user.userTags.length < 3)) {
         this.error = true;
         this.formatErrorMessage('notEnoughTagsError');
         return;
       }
-      if(this.user.userType.toString() === "ListingConsumer" && (this.user.qualification === undefined || this.registerForm.get('qualification')?.value === "")) {
+      if(this.isConsumerUser && (this.user.qualification === undefined || this.registerForm.get('qualification')?.value === "")) {
         this.error = true;
         this.formatErrorMessage('qualificationError');
         return;
       }
-      if (this.user.userType.toString() === "ListingProvider") {
+      if (this.isProviderUser && !this.isConsumerUser) {
         this.user.qualification = undefined;
       }
+
+      // Validate user data
       if (this.authenticateUser()) {
+        // Call the user service to register the user
         this.userService.registerUser(this.user).subscribe(res => {
           if (res.data != null) {
+            // Registration successful
+            this.error = false;
             this.success = true;
+            this.errorMessage= '';
             this.successMessage = 'User registered successfully';
             setTimeout(() => {
               this.router.navigate(['/login']);
             }, 2000);
           }
         }, error => {
+          // Registration failed
           if (error != null) {
             this.error = true;
             this.formatErrorMessage(error.message);
           }
-        })
+        });
       }
     } else {
+      // Form validation failed
       this.error = true;
       this.formatErrorMessage('invalidInput');
     }
   }
+
 
   addTagToUser(tag: Tag[]): void {
     this.user.userTags = tag;
@@ -135,7 +158,10 @@ export class RegisterUserComponent {
     });
   }
   isConsumer() {
-    this.isConsumerUser = this.registerForm.value.userType === "ListingConsumer";
+    this.isConsumerUser = !this.isConsumerUser;
+  }
+  isProvider() {
+    this.isProviderUser = !this.isProviderUser;
   }
 
   protected readonly QualificationType = QualificationType;

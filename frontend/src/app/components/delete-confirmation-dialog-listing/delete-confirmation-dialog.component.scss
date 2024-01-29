@@ -1,0 +1,27 @@
+/* Add these styles to your component's styles section or global styles */
+
+.btn-cancel {
+  background-color: #DA3E52;
+  color: #F7F6F2;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background-color: #1A1A1D;
+}
+
+.btn-confirm {
+  background-color: #5AB779;
+  color: #F7F6F2;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-confirm:hover {
+  background-color: #1A1A1D;
+}

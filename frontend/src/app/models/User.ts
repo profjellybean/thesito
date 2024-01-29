@@ -2,23 +2,42 @@ import {gql} from "@apollo/client/core";
 import {Tag} from "./Tag";
 
 import {QualificationType, UserType} from "./Enums";
+import {Listing} from "./Listing";
 
 export interface User {
   id?: number
   email: string
   name: string
   password?: string
-  userType: UserType
+  userType: UserType[]
   userTags: Tag[]
   qualification?: QualificationType
+  receiveEmails: Boolean
+  favourites?: Listing[]
 }
 
-export interface GetAllUsers {
-  users: User[];
-}
+export const getAllUsers = gql`
+  query GetAllUsers {
+    getAllUsers {
+      id
+      name
+      userType
+      email
+      qualification
+      receiveEmails
+    }
+  }
+`;
+
+export const getUsernameByUserIdQuery = gql`
+  query GetUsernameByUserId($id: BigInteger!) {
+    getUsernameByUserId(id: $id)
+  }
+`;
+
 
 export const registerUserQuery = gql`
-    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: UserType!, $tags: [TagInput], $qualification: Qualification) {
+    mutation RegisterUser($email: String!, $name: String!, $password: String!, $userType: [UserType]!, $tags: [TagInput], $qualification: Qualification) {
         registerUser(
             user: {
                 email: $email
@@ -54,6 +73,16 @@ export const getUserByIdQuery = gql`
       userType
       qualification
       password
+      favourites {
+        active
+        company
+        createdAt
+        details
+        id
+        requirement
+        title
+        university
+      }
     }
   }
 `;
@@ -80,6 +109,30 @@ export const refreshSessionQuery = gql`
             }
     }
 `;
+export const getFavouritesByUserId = gql`
+  query GetFavouritesById($userId: BigInteger! = 2) {
+    getFavouritesByUserId(userId: $userId) {
+      id,
+      title
+      details
+      requirement
+      university
+      company
+      createdAt
+      active
+      owner {
+        id
+        name
+      }
+      tags {
+        id
+        title_en
+        title_de
+        layer
+      }
+    }
+  }
+`;
 
 export const updateUserQuery = gql`
     mutation UpdateUser(
@@ -87,9 +140,10 @@ export const updateUserQuery = gql`
     $email: String!,
     $name: String!,
     $password: String!,
-    $userType: UserType!,
+    $userType: [UserType]!,
     $userTags: [TagInput],
-    $qualification: Qualification!)
+    $qualification: Qualification!,
+    $receiveEmails: Boolean)
     {
         updateUser(
             user: {
@@ -100,6 +154,7 @@ export const updateUserQuery = gql`
                 userTags: $userTags
                 password: $password
                 qualification: $qualification
+                receiveEmails: $receiveEmails
             }
         )
         {
@@ -115,6 +170,7 @@ export const updateUserQuery = gql`
                 layer
               }
             qualification
+            receiveEmails
         }
     }
 `;

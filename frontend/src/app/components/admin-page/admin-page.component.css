@@ -1,0 +1,32 @@
+
+mat-card-header {
+  background-color: #93B7BE; /* Cyan header color */
+}
+
+mat-table {
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-icon {
+  transition: transform 0.3s ease-in-out;
+}
+
+.mat-icon:hover {
+  transform: translateY(-2px); /* Moves the icon slightly up */
+  color: #1976d2; /* Optional: Change color on hover */
+}

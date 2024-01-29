@@ -1,0 +1,19 @@
+
+.main-container{
+  padding: 20px;
+}
+/* Add padding to the bottom of the form to ensure it's not too close to the bottom edge of the dialog */
+form {
+  padding: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px; /* Adjust spacing between rows */
+}
+
+.mat-button-save {
+  background-color: blue;
+  color: white;
+}

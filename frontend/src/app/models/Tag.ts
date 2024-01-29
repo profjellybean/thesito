@@ -1,4 +1,3 @@
-import {query} from "@angular/animations";
 import {gql} from "@apollo/client/core";
 
 export interface Tag {
@@ -24,6 +23,16 @@ export const getAllTagsQuery = gql`
     getAllTags {
       id
       layer
+      title_de
+      title_en
+    }
+  }
+`
+
+export const getTrendingTagsQuery = gql`
+  query {
+    getTrendingTags {
+      id
       title_de
       title_en
     }

@@ -4,11 +4,11 @@ import {map, Observable} from "rxjs";
 import {QualificationType} from "../models/Enums";
 import {
   advancedSearchQuery, applyToListingQuery,
-  createListingQuery, fullTextSearchQuery,
+  createListingQuery,
   getAllListingsQuery,
-  getAllListingsQueryPaginated, getListingByIdQuery,
+  getListingByIdQuery, getTrendingListingsQuery,
   Listing,
-  simpleSearchTitleOnlyQuery, updateListingQuery
+  updateListingQuery
 } from "../models/Listing";
 import {gql} from "@apollo/client/core";
 
@@ -62,55 +62,9 @@ export class ListingService {
       )
   }
 
-  getAllListingsPaginated(offset: number, limit: number): Observable<Listing[]> {
-    return this.apollo
-      .query<{ getAllListingsPaginated: Listing[] }>({
-        query: getAllListingsQueryPaginated,
-        variables: {
-          offset: offset,
-          limit: limit
-        }
-      })
-      .pipe(
-        map((result) => result.data.getAllListingsPaginated)
-      );
-  }
-
-  simpleSearch(title: String, qualification: QualificationType | null, details: String, offset: number, limit: number): Observable<SearchResult> {
-    return this.apollo
-      .query<{ simpleSearch: SearchResult }>({
-        query: simpleSearchTitleOnlyQuery,
-        variables: {
-          title: title,
-          qualificationType: qualification,
-          details: details,
-          offset: offset,
-          limit: limit
-        }
-      })
-      .pipe(
-        map((result) => result.data.simpleSearch)
-      );
-  }
-
-  fullTextSearch(pattern: String, offset: number, limit: number): Observable<SearchResult> {
-    return this.apollo
-      .query<{ fullTextSearch: SearchResult }>({
-        query: fullTextSearchQuery,
-        variables: {
-          pattern: pattern,
-          offset: offset,
-          limit: limit,
-        }
-      })
-      .pipe(
-        map((result) => result.data.fullTextSearch)
-      );
-  }
-
   advancedSearch(textPattern: String | null, qualification: QualificationType | null, startDate: String | null,
                  endDate: String | null, university: String | null, company: String | null, tagIds: number[] | null,
-  offset: number | null, limit: number | null): Observable<SearchResult> {
+  offset: number | null, limit: number | null, owner_id: number | null, non_active: boolean | null): Observable<SearchResult> {
     return this.apollo
       .query<{ advancedSearch: SearchResult }>({
         query: advancedSearchQuery,
@@ -123,11 +77,29 @@ export class ListingService {
           company: company,
           tagIds: tagIds,
           offset: offset,
-          limit: limit
+          limit: limit,
+          owner_id: owner_id,
+          non_active: non_active
         }
       })
       .pipe(
         map((result) => result.data.advancedSearch)
+      );
+  }
+
+  getTrendingListings(university: string | null, company: string | null, pageIndex: number | null, pageSize: number | null) {
+    return this.apollo
+      .query<{ getTrendingListings: SearchResult }>({
+        query: getTrendingListingsQuery,
+        variables: {
+          university: university,
+          company: company,
+          pageIndex: pageIndex,
+          pageSize: pageSize
+        }
+      })
+      .pipe(
+        map((result) => result.data.getTrendingListings)
       );
   }
 
@@ -199,28 +171,30 @@ export class ListingService {
     });
   }
 
-  getAllListingUniversities(): Observable<string[]> {
-    return this.apollo
-      .query<{ getAllListingUniversities: string[] }>({
-        query: gql`
-          query getAllListingUniversities{
-            getAllListingUniversities
-          }
-        `,
-      })
-      .pipe(
-        map((result) => result.data.getAllListingUniversities)
-      );
+  deleteListingById(id: number): Observable<any> {
+    return this.apollo.mutate<any>({
+      mutation: gql`
+      mutation DeleteListing($id: BigInteger!) {
+        deleteListingById(id: $id)
+      }
+    `,
+      variables: {
+        id: id,
+      },
+    });
   }
 
-  getAllListingCompanies(): Observable<string[]> {
+  getAllListingCompanies(query: string | null = null): Observable<string[]> {
     return this.apollo
       .query<{ getAllListingCompanies: string[] }>({
         query: gql`
-          query getAllListingCompanies{
-            getAllListingCompanies
+          query getAllListingCompanies($query: String){
+            getAllListingCompanies(query: $query)
           }
         `,
+        variables: {
+          query: query
+        },
       })
       .pipe(
         map((result) => result.data.getAllListingCompanies)

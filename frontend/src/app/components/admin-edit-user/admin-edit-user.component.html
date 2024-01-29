@@ -1,0 +1,55 @@
+<div class="main-container">
+<h2>Edit User</h2>
+<form [formGroup]="editUserForm" (ngSubmit)="onSave()">
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="editUserForm.get('name')?.invalid">Name is required</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+      <mat-error *ngIf="editUserForm.get('email')?.invalid">Valid email is required</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="fill">
+      <mat-label>User Type</mat-label>
+      <mat-select formControlName="userType">
+        <mat-option value="ListingProvider">ListingProvider</mat-option>
+        <mat-option value="ListingConsumer">ListingConsumer</mat-option>
+        <mat-option value="Administrator">Administrator</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row" *ngIf="editUserForm.get('userType')?.value === 'ListingConsumer'">
+    <mat-form-field appearance="fill">
+      <mat-label>Qualification</mat-label>
+      <mat-select formControlName="qualification">
+        <mat-option value="None">None</mat-option>
+        <mat-option value="Bachelors">Bachelors</mat-option>
+        <mat-option value="Masters">Masters</mat-option>
+        <mat-option value="PhD">PhD</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-radio-group formControlName="receiveEmails" aria-label="Receive Emails">
+      <mat-label>Receive Emails</mat-label>
+      <mat-radio-button color="primary" value="yes">Yes</mat-radio-button>
+      <mat-radio-button color="primary" value="no">No</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div class="form-row">
+    <button mat-button class="mat-button-save" type="submit" [disabled]="!editUserForm.valid">Save</button>
+  </div>
+</form>
+</div>

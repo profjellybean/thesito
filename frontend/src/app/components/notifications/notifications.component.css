@@ -1,0 +1,54 @@
+.card{
+  width: calc(90vw / 3);
+  height: 200px;
+  max-width: 600px;
+
+}
+
+.notification-container{
+  display: flex;
+  cursor: pointer;
+  margin-top: 15px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.notification-container:hover{
+  transform: scale(1.01); /* Slightly scale up on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Deeper shadow for "pop up" effect */
+}
+
+.controls{
+  display: flex;
+  flex: 1;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.card-header{
+  display: flex;
+  align-items: center;
+}
+
+.wrapper {
+  margin-top: 8em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 2em;
+  padding-top: 5%;
+}
+
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.title-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 2vh;
+}

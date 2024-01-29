@@ -4,5 +4,5 @@ import {AuthService} from "../services/auth.service";
 
 export const producerGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService)
-  return authService.isProducer();
+  return authService.isProducer() || authService.isAdministrator();
 };

@@ -1,0 +1,98 @@
+<!--<div class="background">-->
+
+  <div class="container" *ngIf="isStandalone">
+    <h2>{{ "trendingTopics" | translate }}</h2>
+  </div>
+
+  <!-- Trending topics -->
+  <!-- display trending tags (as bubbles or something) -->
+
+  <!-- Listings of trending topics -->
+  <div [class.container]="isStandalone">
+  <h3 class="subtitle">{{ "selectTrendingTopic" | translate }}</h3>
+    <div class="row mb-3" *ngIf="currentLanguage==='en'">
+      <mat-chip-listbox>
+        <mat-chip type="button" *ngFor="let tag of trendingTopics | async"
+                  type="button"
+                  class="selected-chip"
+                  [ngClass]="{'selected-chip': isSelected(tag)}"
+                  (click)="isSelected(tag) ? unselectTag() : selectTag(tag)">
+          <span class="hot-topic">🔥</span>
+          {{ tag.title_en }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+    <div class="row mb-3" *ngIf="currentLanguage==='de'">
+      <!-- Angular Material Form Field for Tags -->
+      <mat-chip-listbox>
+        <mat-chip type="button" *ngFor="let tag of trendingTopics | async"
+                  type="button"
+                  class="selected-chip"
+                  [ngClass]="{'selected-chip': isSelected(tag)}"
+                  (click)="isSelected(tag) ? unselectTag() : selectTag(tag)">
+          <span class="hot-topic">🔥</span>
+          {{ tag.title_de }}
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+
+    <!-- listings -->
+    <h3 *ngIf="isStandalone" class="subtitle">{{ "orOther" | translate }} <button (click)=loadPage(1) class="subtitle-button"
+                  [ngClass]="{'selected': isNoTagSelected()}">{{ "viewPopularListings" | translate }}</button></h3>
+    <ng-container *ngIf="isStandalone">
+    <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)"
+         style="cursor: pointer">
+      <div class="col col-md-1 d-flex align-items-center justify-content-center">
+        <i class="bi bi-star"></i>
+        <mat-icon>star_border</mat-icon>
+      </div>
+      <div class="col col-md-9 d-flex align-items-center justify-content-center">
+        <h3 class="my-auto text-center">{{ listing.title }}</h3>
+      </div>
+      <div class="col col-md-2 d-flex align-items-center justify-content-center">
+        <div class="row-fluid">
+          <div><h4 class="my-auto text-center">{{ listing.requirement.toString() | translate }}</h4></div>
+          <div><h5 class="my-auto text-center">{{ listing.createdAt | date }}</h5></div>
+        </div>
+      </div>
+    </div>
+    </ng-container>
+
+    <ng-container *ngIf="!isStandalone">
+      <div *ngFor="let listing of listings | slice:0:5" (click)="goToListing(listing.id)" class="card zoom-card">
+        {{listing.title}}
+      </div>
+    </ng-container>
+
+    <!-- Pagination Controls -->
+    <ng-container *ngIf="isStandalone">
+    <div class="pagination-container d-flex justify-content-center">
+
+      <button (click)="loadPage(1)"
+              [disabled]="currentPage === (1)">{{ 'first' | translate }}
+      </button>
+
+      <!-- Previous and Next Buttons -->
+      <button (click)="loadPage(currentPage - 1)"
+              [disabled]="currentPage === 1">{{ 'previous' | translate }}
+      </button>
+      <span *ngIf="totalPages > 0; else noResultsSpan" class="pagination-text">Page {{ currentPage }}
+        of {{ totalPages }}</span>
+      <ng-template #noResultsSpan><span class="pagination-text">{{ "noResults" | translate }}</span></ng-template>
+      <button (click)="loadPage(currentPage + 1)"
+              [disabled]="currentPage === totalPages || totalPages === 0">{{ 'next' | translate }}
+      </button>
+
+      <button (click)="loadPage(this.totalPages)"
+              [disabled]="currentPage === (this.totalPages) || totalPages === 0">{{ 'last' | translate }}
+      </button>
+    </div>
+    </ng-container>
+    <ng-container *ngIf="!isStandalone">
+      <!-- Container for the button -->
+      <div class="button-container" *ngIf="listings.length > 5">
+        <button (click)="this.router.navigate(['/trending'])">See All</button>
+      </div>
+    </ng-container>
+  </div>
+

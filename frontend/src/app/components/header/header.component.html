@@ -1,49 +1,57 @@
-<!-- src/app/header/header.component.html -->
 <nav *ngIf="headerNeeded()">
-  <mat-toolbar class="mat-toolbar bg-dark text-light justify-content-between">
-    <div class="logo mr-3 d-flex justify-content-center">
-      <img src="../../../assets/logo.PNG" alt="Logo" class="mr-2" style="width: 60px;">
-      <app-language-toggle></app-language-toggle>
-    </div>
-    <div class="d-flex align-items-center">
-      <span class="h1">THESITO</span>
-    </div>
-    <div class="d-flex ">
-      <nav>
-        <ul class="list-unstyled d-flex">
-          <li class="mx-3" *ngIf="isLoggedIn()">
-            <a routerLink="/" class="text-decoration-none text-light">{{"home" | translate}}</a>
-          </li>
-          <li class="mx-3" *ngIf="!isLoggedIn()">
-            <a routerLink="/register" class="text-decoration-none text-light">{{"register" | translate}}</a>
-          </li>
-          <li class="mx-3" *ngIf="!isLoggedIn()">
-            <a routerLink="/login" class="text-decoration-none text-light">{{"login" | translate}}
-            </a>
-          </li>
-          <li class="mx-3" *ngIf="isLoggedIn() && isProducer()">
-            <a routerLink="/listing/create" class="text-decoration-none text-light">{{"createListing" | translate}}</a>
-          </li>
-          <li class="mx-3" *ngIf="isLoggedIn()">
-            <a routerLink="/all" class="text-decoration-none text-light">{{"listings" | translate}}</a>
-          </li>
-          <li class="mx-3" *ngIf="isLoggedIn()">
-            <div class="dropdown">
-              <a class="text-light" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer">
-                {{"profile" | translate}}
-              </a>
-              <div class="dropdown-menu bg-dark" aria-labelledby="profileDropdown">
-                <a class="text-light dropdown-item text-decoration-none" routerLink='/user/edit'>{{"edit" | translate}}</a>
-                <a class="text-light dropdown-item text-decoration-none" routerLink='/user/'>{{"details" | translate}}</a>
-                <a *ngIf="isProducer()" class="text-light dropdown-item text-decoration-none" routerLink='/user/listings'>{{"myListings" | translate}}</a>
-              </div>
-            </div>
-          </li>
-          <li class="mx-3" *ngIf="isLoggedIn()">
-            <a routerLink="*" (click)="logoutUser()" class="text-decoration-none text-light">{{"logout" | translate}}</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </mat-toolbar>
+    <mat-toolbar color="primary" class="custom-toolbar">
+        <app-language-toggle></app-language-toggle>
+        <!-- Logo Centered -->
+        <div class="logo">
+            <img src="../../../assets/logo.PNG" alt="Logo" style="width: 60px;" (click)="goToHome()" class="clickable">
+        </div>
+
+        <!-- Spacer to align logo in center -->
+        <span class="toolbar-spacer"></span>
+
+        <!-- Menu Items -->
+        <div class="menu-items">
+            <!-- Home -->
+            <button *ngIf="isLoggedIn()" mat-button routerLink="/home">{{ "home" | translate }}</button>
+
+
+            <button *ngIf="isLoggedIn() && isAdministartor()" mat-button
+                    routerLink="/admin/users">{{ "Administrator" | translate }}</button>
+
+            <!-- Listings Menu -->
+            <button *ngIf="isLoggedIn()" mat-button
+                    [matMenuTriggerFor]="listingsMenu">{{ "listings" | translate }}</button>
+            <mat-menu #listingsMenu="matMenu">
+                <button mat-menu-item routerLink="/all">{{ "allListings" | translate }}</button>
+                <button *ngIf="isProducer() || isAdministartor()" mat-menu-item
+                        routerLink="/user/listings">{{ "myListings" | translate }}</button>
+                <button *ngIf="isConsumer() || isAdministartor()" mat-menu-item
+                        routerLink="/user/favourites">{{ "favourites" | translate }}</button>
+                <button mat-menu-item routerLink="/trending">{{ "trending" | translate }}</button>
+            </mat-menu>
+
+            <!-- Notifications Button -->
+            <button *ngIf="isLoggedIn()" mat-button routerLink="/user/notifications" class="notifications-button">
+                {{ "notifications" | translate }}
+            </button>
+
+            <!-- Vertical Separator -->
+            <span class="vertical-separator"></span>
+
+            <!-- User Menu Button -->
+            <button *ngIf="isLoggedIn()" mat-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ loggedUserName }}</span>
+            </button>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item routerLink='/user/'>{{ "details" | translate }}</button>
+                <button mat-menu-item routerLink='/user/edit'>{{ "edit" | translate }}</button>
+                <button mat-menu-item (click)="logoutUser()">{{ "logout" | translate }}</button>
+            </mat-menu>
+
+            <!-- Register and Login for non-logged in users -->
+            <button *ngIf="!isLoggedIn()" mat-button routerLink="/register">{{ "register" | translate }}</button>
+            <button *ngIf="!isLoggedIn()" mat-button routerLink="/login">{{ "login" | translate }}</button>
+        </div>
+    </mat-toolbar>
 </nav>

@@ -1,0 +1,110 @@
+<div class="mat-elevation-z8 background">
+  <div [hidden]="dataSource.data.length <= 0 || !listingsLoaded">
+    <table mat-table [dataSource]="dataSource">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let listing" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
+            <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
+          </mat-menu>
+          {{listing.id}}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> {{'title' |translate}} </th>
+        <td mat-cell *matCellDef="let listing" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
+            <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
+          </mat-menu>
+          {{listing.title}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="requirement">
+        <th mat-header-cell *matHeaderCellDef> {{'preconditions' |translate}} </th>
+        <td mat-cell *matCellDef="let listing" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
+            <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
+          </mat-menu>
+          {{listing.requirement |translate}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef> Tags </th>
+        <td mat-cell *matCellDef="let listing" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
+            <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
+          </mat-menu>
+          <div *ngFor="let tag of listing.tags">
+            <div *ngIf="languageService.getLanguage() === 'en'">
+              {{ tag.title_en }}
+            </div>
+            <div *ngIf="languageService.getLanguage() === 'de'">
+              {{ tag.title_de }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef> {{'createdAt' |translate}} </th>
+        <td mat-cell *matCellDef="let listing" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
+            <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
+          </mat-menu>
+          {{listing.createdAt | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef> {{'active' |translate}} </th>
+        <td mat-cell *matCellDef="let listing" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openListingDetailsDialog(listing.id)">{{'listingDetails' | translate}}</button>
+            <button mat-menu-item (click)="openEditListingDialog(listing.id)">{{'editListing' | translate}}</button>
+            <button mat-menu-item (click)="deleteListing(listing)">{{'deleteListing' | translate}}</button>
+          </mat-menu>
+          {{listing.active}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+
+    <mat-paginator [hidden]="dataSource.data.length <= 0 || !listingsLoaded" [pageSizeOptions]="[5, 10, 15]"
+                   showFirstLastButtons
+                   aria-label="Select page of listings"
+                    >
+    </mat-paginator>
+  </div>
+
+  <div *ngIf="listings.length <= 0">
+    <div class="unselectable eerie background text-center">
+      <div class="wrapper">
+        <h3>{{'noListingsFound' | translate}}</h3>
+        <span>
+    </span>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="bottom-left-actions">
+    <button mat-button [mat-dialog-close]="">{{'close' | translate}}</button>
+  </div>
+</div>
