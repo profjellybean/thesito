@@ -144,5 +144,8 @@
   "confirmNewPassword": "Neues Passwort bestätigen",
   "passwordMismatch": "Passwörter stimmen nicht überein",
   "passwordChangeSuccess": "Passwort erfolgreich geändert",
-  "passwordChangeFailed": "Passwortänderung fehlgeschlagen"
+  "passwordChangeFailed": "Passwortänderung fehlgeschlagen",
+  "actions": "Aktionen",
+  "yes": "Ja",
+  "no": "Nein"
 }

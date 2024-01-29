@@ -17,19 +17,20 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <th mat-header-cell *matHeaderCellDef> {{'name' |translate}} </th>
       <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
           <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
         </mat-menu>
         {{user.name}}
+        <mat-chip *ngIf="userIsCurrentUser(user)">{{ 'me' | translate }}</mat-chip>
       </td>
     </ng-container>
 
     <!-- Email Column -->
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <th mat-header-cell *matHeaderCellDef> {{'email' |translate}} </th>
       <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
@@ -41,7 +42,7 @@
 
     <!-- UserType Column -->
     <ng-container matColumnDef="userType">
-      <th mat-header-cell *matHeaderCellDef> UserType </th>
+      <th mat-header-cell *matHeaderCellDef> {{'role' |translate}} </th>
       <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="makeUserAdmin(user.id)">{{ 'makeAdmin' | translate }}</button>
@@ -49,7 +50,6 @@
         </mat-menu>
         <div *ngFor="let type of user.userType">
           {{ type }}
-          <mat-chip *ngIf="userIsCurrentUser(user)">{{ 'me' | translate }}</mat-chip>
         </div>
 
       </td>
@@ -58,7 +58,7 @@
 
     <!-- Qualification Column -->
     <ng-container matColumnDef="qualification">
-      <th mat-header-cell *matHeaderCellDef> Qualification </th>
+      <th mat-header-cell *matHeaderCellDef> {{'qualification' |translate}} </th>
       <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
@@ -70,19 +70,19 @@
 
     <!-- Receive Emails Column -->
     <ng-container matColumnDef="receiveEmails">
-      <th mat-header-cell *matHeaderCellDef> Receive Emails </th>
+      <th mat-header-cell *matHeaderCellDef> {{'receiveEmails' |translate}} </th>
       <td mat-cell *matCellDef="let user" [matMenuTriggerFor]="menu">
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="makeUserAdmin(user.id)">{{'makeAdmin' |translate}}</button>
           <button mat-menu-item (click)="openUserListingsDialog(user.id)">{{'viewListingsOfUser' | translate}}</button>
         </mat-menu>
-        {{user.receiveEmails ? 'Yes' : 'No'}}
+        {{user.receiveEmails ? 'yes' : 'no' | translate}}
       </td>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <th mat-header-cell *matHeaderCellDef> {{'actions' |translate}} </th>
       <td mat-cell *matCellDef="let user">
         <mat-icon (click)="editUser(user.id)">edit</mat-icon>
         <mat-icon (click)="deleteUser(user)">delete</mat-icon>
