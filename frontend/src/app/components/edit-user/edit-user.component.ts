@@ -217,6 +217,11 @@ export class EditUserComponent implements OnInit {
 
       if (this.isConsumerUser){
         this.user.userType = [...this.user.userType, UserType.ListingConsumer];
+        if (this.selectedTags.length < 3){
+          this.error = true;
+          this.errorMessage = "tagError";
+          return;
+        }
       }
       if (this.isProviderUser){
         this.user.userType = [...this.user.userType, UserType.ListingProvider];
