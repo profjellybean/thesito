@@ -56,8 +56,6 @@ export class AdminPageComponent implements OnInit {
               return -1;
             }
           });
-
-          console.log(this.users)
           // Initialize the MatTableDataSource with the fetched users
           this.dataSource = new MatTableDataSource<User>(this.users);
           this.dataSource.paginator = this.paginator;
