@@ -15,8 +15,7 @@
 
     <div class="row mb-3">
       <div class="col-md-6">
-        <button mat-raised-button color="primary" type="submit" *ngIf="disableSubmit" [disabled]="true" >{{"apply" | translate}}</button>
-        <button mat-raised-button color="primary" type="submit" *ngIf="!disableSubmit" [disabled]="!applicationForm.valid" >{{"apply" | translate}}</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!applicationForm.valid || disableSubmit" >{{"apply" | translate}}</button>
       </div>
       <div class="col-md-6">
         <button mat-raised-button color="warn" type="button" (click)="cancel()">Cancel</button>
