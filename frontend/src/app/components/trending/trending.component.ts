@@ -130,6 +130,7 @@ export class TrendingComponent {
 
   selectTag(tag: any): void {
     this.selectedTag = tag.id;
+    this.currentPage = 1;
     this.filterTag(1)
   }
 
@@ -139,10 +140,8 @@ export class TrendingComponent {
   }
 
   isNoTagSelected(): boolean{
-    if(this.selectedTag == null){
-      return true
-    }
-    return false;
+    return this.selectedTag == null;
+
   }
 
   isSelected(tag: any): boolean {
