@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, of, BehaviorSubject, filter, take, switchMap, from} from "rxjs";
+import {Observable, of, BehaviorSubject, filter, take, switchMap, from, Subject} from "rxjs";
 import {Router} from "@angular/router";
 import {Apollo} from "apollo-angular";
 import {User, registerUserQuery, loginUserQuery, refreshSessionQuery} from "../models/User";
@@ -16,6 +16,9 @@ export class AuthService {
   private isRefreshing = false;
 
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+  private sessionUpdated = new Subject<void>();
+  sessionUpdated$ = this.sessionUpdated.asObservable();
 
   constructor(private router: Router, private apollo: Apollo) {
   }
@@ -124,6 +127,7 @@ export class AuthService {
         if (res.data != null) {
           this.setSessionToken(res.data.getSession.accessToken);
           this.setRefreshToken(res.data.getSession.refreshToken);
+          this.sessionUpdated.next(); // Emit event after session update
           return true;
         } else {
           return false;
