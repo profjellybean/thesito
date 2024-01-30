@@ -13,6 +13,7 @@ import {
 } from "../delete-confirmation-dialog-user/delete-confirmation-dialog-user.component";
 import {TranslateService} from "@ngx-translate/core";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-admin-page',
@@ -23,14 +24,6 @@ export class AdminPageComponent implements OnInit {
 
   users: User[];
   usersLoaded: boolean = false;
-
-  info = false;
-  infoMessage = '';
-  error = false;
-  errorMessage = '';
-
-  success = false;
-  successMessage = '';
 
   @Input() isStandalone: boolean = true;
   // Add 'email', 'qualification', and 'receiveEmails' to the displayedColumns array
@@ -47,7 +40,7 @@ export class AdminPageComponent implements OnInit {
 
 
   constructor(private router: Router, private userService: UserService, private authService: AuthService, private dialog: MatDialog, private translateService: TranslateService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -63,15 +56,13 @@ export class AdminPageComponent implements OnInit {
               return -1;
             }
           });
-
           // Initialize the MatTableDataSource with the fetched users
           this.dataSource = new MatTableDataSource<User>(this.users);
           this.dataSource.paginator = this.paginator;
           this.usersLoaded = true;
         },
         error: error => {
-          this.error = true;
-          this.errorMessage = error.message;
+          this.formatErrorMessage(error.message);
         }
       });
     } else {
@@ -96,28 +87,30 @@ export class AdminPageComponent implements OnInit {
     this.userService.makeUserAdmin(userId).subscribe({
       next: result => {
         this.ngOnInit();
-        this.success = true;
-        this.successMessage = 'User has been made admin';
+        this.formatSuccessMessage('userMadeAdmin');
       },
       error: err => {
-        this.error = true;
-        this.errorMessage = err.message;
+        this.formatErrorMessage(err.message)
       }
     });
   }
 
 
   editUser(userId: number): void {
-    const userToEdit = this.users.find(user => user.id === userId);
-    const dialogRef = this.dialog.open(AdminEditUserComponent, {
-      width: '500px',
-      data: {user: userToEdit}
-    });
+    this.userService.getUserById(userId).subscribe(userToEdit => {
+      const dialogRef = this.dialog.open(AdminEditUserComponent, {
+        width: '500px',
+        data: {user: userToEdit}
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.refreshTable(); // Create this method to refresh the table data
-      }
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.formatSuccessMessage('userUpdateSuccess');
+          this.refreshTable();
+        }
+      }, error => {
+        this.formatErrorMessage(error.error.message);
+      });
     });
   }
 
@@ -139,14 +132,13 @@ export class AdminPageComponent implements OnInit {
       if (result) {
         this.userService.deleteUserById(Number(user?.id)).subscribe({
           next: () => {
-            this.showSuccessMessage();
+            this.formatSuccessMessage('userDeletedSuccessfully')
             this.dataSource.data = this.dataSource.data.filter(u => u.id !== user.id);
 
             setTimeout(() => location.reload(), 2000);
           },
           error: (error) => {
-            this.error = true;
-            this.errorMessage = error.message;
+            this.formatErrorMessage(error.message);
           },
         });
       }
@@ -171,6 +163,21 @@ export class AdminPageComponent implements OnInit {
     return this.authService.getUserId() === user.id
   }
 
+  private formatErrorMessage(error: string): void {
+    this.translateService.get(error).subscribe((res: string) => {
+      this.toastr.error(res, 'Error');
+    }, e => {
+      this.toastr.error(error, 'Error');
+    });
+  }
+
+  private formatSuccessMessage(success: string): void {
+    this.translateService.get(success).subscribe((res: string) => {
+      this.toastr.success(res, 'Success');
+    }, e => {
+      this.toastr.success(e, 'Success');
+    });
+  }
 
 
 

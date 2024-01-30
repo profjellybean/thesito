@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
 import {Router} from '@angular/router';
+import {ToastrService} from "ngx-toastr";
+import {TranslateService} from "@ngx-translate/core";
 
 
 @Component({
@@ -16,18 +18,17 @@ export class LoginComponent {
   pwVisible = false;
   submitted = false;
   authService: AuthService;
-  clickCounter = 0;
   mail: "";
   password: "";
-  error = false;
-  success = false;
-  errorMessage = '';
-  successMessage = '';
+
+  translateService: TranslateService;
 
   constructor(
     authService: AuthService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    translateService: TranslateService
   ) {
     this.loginForm = this.fb.group({
       emailOrName: ['', [Validators.required]],
@@ -36,6 +37,7 @@ export class LoginComponent {
     this.password = "";
     this.mail = "";
     this.authService = authService;
+    this.translateService = translateService;
   }
 
   login() {
@@ -50,34 +52,22 @@ export class LoginComponent {
     this.authService.getSession(this.mail, this.password).subscribe(
       res => {
         if (res) {
-          this.success = true;
-          this.successMessage = 'User logged in';
           this.router.navigate(['/home']);
         } else {
-          this.error = true;
           this.formatErrorMessage('Bad credentials')
         }
       }, error => {
-        this.error = true;
         this.formatErrorMessage(error.message)
       })
   }
 
-  vanishError() {
-    this.error = false;
-  }
 
   private formatErrorMessage(error: string): void {
-    switch (error) {
-      case 'Invalid input':
-        this.errorMessage = 'Missing username or password.';
-        break;
-      case 'Bad credentials':
-        this.errorMessage = 'Login failed. Invalid username or password.';
-        break;
-      default:
-        this.errorMessage = 'Something went wrong, try again later.';
-    }
+    this.translateService.get(error).subscribe((res: string) => {
+      this.toastr.error(res, 'Error');
+    }, e => {
+      this.toastr.error(error, 'Error');
+    });
   }
 
   toggleVisibility(): void {

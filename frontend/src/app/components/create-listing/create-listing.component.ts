@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {debounceTime, distinctUntilChanged, Observable, startWith, switchMap} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import {map} from 'rxjs/operators';
 import {ListingService} from '../../services/listing.service';
 import {UniversityService} from '../../services/university.service';
@@ -32,12 +33,13 @@ export class CreateListingComponent implements OnInit {
   successMessage = '';
   filteredOptions: Observable<string[]> | undefined;
   user: User;
+  creationInProgress = false;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
 
   constructor(private userService: UserService, listingService: ListingService, private fb: FormBuilder, router: Router, translateService: TranslateService, universityService: UniversityService,
-              private authService: AuthService) {
+              private authService: AuthService, private toastr: ToastrService,) {
     this.createListingForm = this.fb.group({
       shortTitle: ['', Validators.required],
       details: ['', Validators.required],
@@ -110,6 +112,7 @@ export class CreateListingComponent implements OnInit {
 
   createListing() {
     if (this.createListingForm.valid && this.selectedTags.length > 0) {
+      this.creationInProgress = true;
       const shortTitle = this.createListingForm.get('shortTitle')?.value;
       const details = this.createListingForm.get('details')?.value;
       const requirement = this.createListingForm.get('requirement')?.value;
@@ -183,21 +186,21 @@ export class CreateListingComponent implements OnInit {
 
   private formatErrorMessageWithError(errorKey: string, errorMessage: string): void {
     const translatedErrorKey = this.translateService.instant(errorKey);
-    this.errorMessage = `${translatedErrorKey} ${errorMessage}`;
+    this.toastr.error(`${translatedErrorKey} ${errorMessage}`, 'Error');
   }
   private formatErrorMessage(error: string): void {
     this.translateService.get(error).subscribe((res: string) => {
-      this.errorMessage = res;
+      this.toastr.error(res, 'Error');
     }, e => {
-      this.errorMessage = error;
+      this.toastr.error(error, 'Error');
     });
   }
 
   private formatSuccessMessage(success: string): void {
     this.translateService.get(success).subscribe((res: string) => {
-      this.successMessage = res;
+      this.toastr.success(res, 'Success');
     }, e => {
-      this.successMessage = success;
+      this.toastr.success(e, 'Success');
     });
   }
 

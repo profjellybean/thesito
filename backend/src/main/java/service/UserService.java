@@ -169,7 +169,6 @@ public class UserService {
         refreshTokenRepository.deleteByUserId(user.getId());
         // generate new refresh token and store UUID in DB
         String uuid = UUID.randomUUID().toString();
-        System.out.println(user.getUserType().toString());
         String token = Jwt.issuer("https://thesito.org")
                 .upn(user.getId().toString())
                 .groups(user.getUserType().stream().map(m -> m.toString()).collect(Collectors.toSet()))

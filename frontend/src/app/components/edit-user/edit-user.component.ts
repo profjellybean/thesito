@@ -12,6 +12,7 @@ import {Tag} from "../../models/Tag";
 import {TranslateService} from "@ngx-translate/core";
 import {DeleteConfirmationDialogUserComponent} from "../delete-confirmation-dialog-user/delete-confirmation-dialog-user.component";
 import {ChangeUsertypeDialogComponent} from "../change-usertype-dialog/change-usertype-dialog.component";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-edit-user',
@@ -33,13 +34,6 @@ export class EditUserComponent implements OnInit {
   selectedTags: Tag[] = [];
 
   academicCareer: QualificationType | undefined = QualificationType.None;
-
-  info = false;
-  infoMessage = '';
-
-  error = false;
-  errorMessage = '';
-
   isConsumerUser = false;
   isProviderUser = false;
   isAdminUser = false;
@@ -57,7 +51,8 @@ export class EditUserComponent implements OnInit {
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private toastr: ToastrService
   ) {
     this.id = -1;
     this.userForm = this.fb.group({
@@ -69,10 +64,6 @@ export class EditUserComponent implements OnInit {
       qualification: [QualificationType.None],
       receiveEmails: [true]
     });
-    this.info = false;
-    this.infoMessage = '';
-    this.error = false;
-    this.errorMessage = '';
   }
 
 
@@ -85,13 +76,11 @@ export class EditUserComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'success') {
-        this.info = true;
-        this.errorMessage = this.translate.instant('passwordChangeSuccess')
+        this.formatSuccessMessage('passwordChangeSuccess');
       } else if(result === undefined){
       }
       else {
-        this.error = true;
-        this.errorMessage = this.translate.instant('passwordChangeFailed')
+        this.formatErrorMessage('passwordChangeFailed');
       }
     });
   }
@@ -142,8 +131,7 @@ export class EditUserComponent implements OnInit {
           this.tagsLoaded = true;
         },
         error: (error2) => {
-          this.error = true;
-          this.errorMessage = error2.message;
+          this.formatErrorMessage(error2.message);
         }
       });
       this.dataLoaded = true;
@@ -159,13 +147,12 @@ export class EditUserComponent implements OnInit {
       if (result) {
         this.userService.deleteUserById(Number(this.user?.id)).subscribe({
           next: () => {
-            this.showSuccessMessage();
+            this.formatSuccessMessage('userDeletedSuccessfully');
             // Navigate to the login page after successful deletion
             this.router.navigate(['/login']);
           },
           error: (error) => {
-            this.error = true;
-            this.errorMessage = error.message;
+            this.formatErrorMessage( error.message);
           },
         });
       }
@@ -185,18 +172,8 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  vanishInfo(): void {
-    this.info = false;
-    this.infoMessage = '';
-  }
-
   toggleVisibility(): void {
     this.pwVisible = !this.pwVisible;
-  }
-
-  vanishError(): void {
-    this.error = false;
-    this.errorMessage = '';
   }
 
   addTagToUser(tags: Tag[]): void {
@@ -218,8 +195,7 @@ export class EditUserComponent implements OnInit {
       if (this.isConsumerUser){
         this.user.userType = [...this.user.userType, UserType.ListingConsumer];
         if (this.selectedTags.length < 3){
-          this.error = true;
-          this.errorMessage = "tagError";
+          this.formatErrorMessage("tagError");
           return;
         }
       }
@@ -244,20 +220,15 @@ export class EditUserComponent implements OnInit {
       }
 
 
-      this.vanishError(); // Clear any previous errors
-      this.vanishInfo();  // Clear any previous info messages
-
       this.userService.updateUser(this.user).subscribe({
         next: result => {
-          this.info = true;
-          this.infoMessage = 'userUpdateSuccess';
+          this.formatSuccessMessage('userUpdateSuccess');
           if(this.mustBeLoggedOutConsumer || this.mustBeLoggedOutProvider){
             this.authService.removeTokens();
           }
         },
         error: error => {
-          this.error = true;
-          this.errorMessage = error.message;
+          this.formatErrorMessage(error.message);
         }
       });
 
@@ -298,6 +269,26 @@ export class EditUserComponent implements OnInit {
       if (confirmed) {
         this.submitForm()
       }
+    });
+  }
+
+  private formatErrorMessageWithError(errorKey: string, errorMessage: string): void {
+    const translatedErrorKey = this.translateService.instant(errorKey);
+    this.toastr.error(`${translatedErrorKey} ${errorMessage}`, 'Error');
+  }
+  private formatErrorMessage(error: string): void {
+    this.translateService.get(error).subscribe((res: string) => {
+      this.toastr.error(res, 'Error');
+    }, e => {
+      this.toastr.error(error, 'Error');
+    });
+  }
+
+  private formatSuccessMessage(success: string): void {
+    this.translateService.get(success).subscribe((res: string) => {
+      this.toastr.success(res, 'Success');
+    }, e => {
+      this.toastr.success(e, 'Success');
     });
   }
 

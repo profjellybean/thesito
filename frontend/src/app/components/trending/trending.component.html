@@ -37,7 +37,8 @@
     </div>
 
     <!-- listings -->
-    <h3 *ngIf="isStandalone" class="subtitle">{{ "orOther" | translate }} <button (click)=loadPage(1) class="subtitle-button"
+    <h3 *ngIf="isStandalone" class="subtitle">{{ "orOther" | translate }}
+      <button (click)=loadTrendingListings(1) class="subtitle-button"
                   [ngClass]="{'selected': isNoTagSelected()}">{{ "viewPopularListings" | translate }}</button></h3>
     <ng-container *ngIf="isStandalone">
     <div class="row listing equal-height" *ngFor="let listing of listings" (click)="goToListing(listing.id)"

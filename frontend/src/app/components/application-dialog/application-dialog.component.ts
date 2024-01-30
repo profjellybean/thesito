@@ -34,9 +34,9 @@ export class ApplicationDialogComponent {
 
 
   apply() {
-    this.disableSubmit = true;
     // @ts-ignore
     if (this.applicationForm.valid) {
+      this.disableSubmit = true;
       this.userService.getCurrentUser().subscribe((user: User) => {
         const text = this.applicationForm.get('text')?.value;
         if (this.listing?.id && user?.id) {

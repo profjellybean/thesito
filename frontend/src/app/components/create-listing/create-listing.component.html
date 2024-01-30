@@ -70,16 +70,15 @@
                 </mat-form-field>
               </div>
 
-              <div class="col-md-12 text-center">
+             <!-- <div class="col-md-12 text-center">
                 <span class="thesito-red" [ngClass]="{ 'error-field': error }">{{errorMessage}}</span>
               </div>
 
               <div class="col-md-12 text-center">
                 <span class="thesito-green" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
-              </div>
+              </div>-->
               <div class="col-md-12">
-                <button type="button" class="btn save-button"
-                        (click)="createListing()">{{ 'save' | translate }}</button>
+                <button type="button" [disabled]="creationInProgress" class="btn save-button" (click)="createListing()">{{ 'save' | translate }}</button>
               </div>
 
             </form>

@@ -1,5 +1,8 @@
 import csv
+import datetime
+import random
 import psycopg2
+
 
 params = {
     'dbname': 'ase_db',
@@ -7,6 +10,17 @@ params = {
     'password': 'ase',
     'host': 'localhost'
 }
+
+def generate_random_date():
+    year = random.randint(2010, 2024)
+    month = random.randint(1, 12)
+    day = random.randint(1, 28)  
+    date = datetime.date(year, month, day).isoformat()
+    current_date = datetime.date.today().isoformat()
+    if date > current_date:
+        year = 2023
+        date = datetime.date(year, month, day).isoformat()
+    return date
 
 def insert_user(row):
     user_id, email, name, password, qualification_type, usertype = row
@@ -21,6 +35,23 @@ def insert_user(row):
         cursor.execute("""INSERT INTO user_types(user_id, user_type)
             VALUES (%s, %s) RETURNING user_id;
         """, (user_id, usertype))
+
+        # add three tags to each user
+        tag_id = 101
+        cursor.execute("""INSERT INTO user_tags(tag_id, user_id)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (tag_id, user_id))
+
+        tag_id = 101003
+        cursor.execute("""INSERT INTO user_tags(tag_id, user_id)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (tag_id, user_id))
+
+        tag_id = 101015
+        cursor.execute("""INSERT INTO user_tags(tag_id, user_id)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (tag_id, user_id))
+
         conn.commit()
     except Exception as e:
         print("An error occurred:", e)
@@ -33,6 +64,7 @@ def insert_user(row):
 
 def insert_data(row, listing_id):
     title, details, qualification_type, date, university, advisor, tag_id, tag_name = row
+    date = generate_random_date();
     conn = psycopg2.connect(**params)
     cursor = conn.cursor()
     try:

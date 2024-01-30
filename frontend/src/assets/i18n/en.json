@@ -106,7 +106,7 @@
   "Any" : "Any",
   "applicationError": "Error applying to listing",
   "applicationSuccess": "Successfully applied to listing",
-  "newApplicationNotification": "There is a new application for your listing!",
+  "newApplicationNotification": "There is a new application for your listing! Check your Emails.",
   "notification": "Notification",
   "notifications": "Notifications",
   "deleteNotification": "Delete Notification",
@@ -147,5 +147,8 @@
   "passwordChangeFailed": "Password couldn't be changed",
   "actions": "Actions",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "userMadeAdmin": "User has been made admin",
+  "userLoggedIn": "User logged in",
+  "userRegistered": "User registered successfully"
 }

@@ -5,7 +5,7 @@ import {MatChipListbox, MatChipListboxChange} from "@angular/material/chips";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {Listing} from "../../models/Listing";
 import {QualificationType} from "../../models/Enums";
-import {Observable} from "rxjs";
+import {Observable, filter} from "rxjs";
 import {Router} from "@angular/router";
 import {TagService} from "../../services/tag.service";
 import {LanguageService} from "../../services/language.service";
@@ -69,10 +69,20 @@ export class TrendingComponent {
     });
   }
 
-  loadPage(page: number): void {
+  loadTrendingListings(page: number): void {
     this.selectedTag = null;
+    this.loadPage(page);
+  }
+
+  loadPage(page: number): void {
+    //this.selectedTag = null;
     this.trendingTopics = this.tagService.getTrendingTags()
     this.currentPage = page
+    if (this.selectedTag != null){
+      this.filterTag(page)
+      return;
+    }
+
     this.fullTextSearchPattern = this.fullTextSearchPattern === '' ? null : this.fullTextSearchPattern;
     let university = this.institutionType === 'university' && this.searchUniversity ? this.searchUniversity : null
     let company = this.institutionType === 'company' && this.searchCompany ? this.searchCompany : null
@@ -102,11 +112,13 @@ export class TrendingComponent {
     this.loadPage(1);
   }
 
-  filterTag(tag: Tag, page: number): void {
-    this.selectedTag = tag.id;
+  filterTag(page: number): void {
+    let tag = this.selectedTag;
+    //this.selectedTag = tag.id;
     const offset = (page - 1) * this.listingsPerPage;
     const limit = this.listingsPerPage;
-    let tagIds = [tag.id]
+    let tagIds = [tag]
+
     this.listingService.advancedSearch(null, null, null,
       null,  null, null, tagIds, offset, limit, null, null)
       .subscribe((searchResult) => {
@@ -117,8 +129,9 @@ export class TrendingComponent {
   }
 
   selectTag(tag: any): void {
-    this.selectedTag = tag;
-    this.filterTag(tag, 1)
+    this.selectedTag = tag.id;
+    this.currentPage = 1;
+    this.filterTag(1)
   }
 
   unselectTag(): void {
@@ -127,10 +140,8 @@ export class TrendingComponent {
   }
 
   isNoTagSelected(): boolean{
-    if(this.selectedTag == null){
-      return true
-    }
-    return false;
+    return this.selectedTag == null;
+
   }
 
   isSelected(tag: any): boolean {

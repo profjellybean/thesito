@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
+import { ToastrModule } from 'ngx-toastr';
 import {AppRoutingModule, routes} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
@@ -147,7 +147,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogTitle,
     MatCheckboxModule,
     GraphQLModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-center',
+      preventDuplicates: true,
+    })
   ],
   providers: [
     LanguageService,

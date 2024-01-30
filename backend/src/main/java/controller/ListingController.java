@@ -25,18 +25,19 @@ import org.hibernate.search.mapper.orm.scope.SearchScope;
 import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.jboss.logging.Logger;
 import service.ListingService;
+import service.TagService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @GraphQLApi
 public class ListingController {
     @Inject
     ListingService listingService;
+
+    @Inject
+    TagService tagService;
 
     @Inject
     JsonWebToken jwt;
@@ -234,18 +235,33 @@ public class ListingController {
                 predicateFactory.match().field("owner.id").matching(owner_id.get()) :
                 predicateFactory.matchAll();
 
+        // expand tag ids with subtags
+        if (tagIds == null) {
+            tagIds = new HashSet<>();
+        }
+        Set<Long> subtags = new HashSet<>();
+        try {
+            for (Long tagId : tagIds) {
+                subtags.addAll(tagService.getAllSubtags(tagId).stream().map(tag -> tag.id).toList());
+            }
+        } catch (ServiceException e) {
+            LOG.error("Error in advancedSearch: " + e.getMessage());
+        }
+        tagIds.addAll(subtags);
+        final Set<Long> finalTagIds = tagIds;
+
         // Match any tag (= don't match none of the tags)
         PredicateFinalStep tagPredicate =
-                (tagIds != null && !tagIds.isEmpty()) ?
+                !finalTagIds.isEmpty() ?
                         predicateFactory.nested("tags").add(
                                 nested -> predicateFactory.bool().with(
                                         b -> b.mustNot(
                                                 predicateFactory.bool().with(
-                                                        b2 -> tagIds.forEach(tagId ->
+                                                        b2 -> finalTagIds.forEach(tagId ->
                                                                 b2.mustNot(
                                                                         predicateFactory.match()
                                                                                 .field("tags.id")
-                                                                                .matching(tagIds.iterator().next())
+                                                                                .matching(tagId)
                                                                 ))))
                                 )
                         )
