@@ -1,150 +1,84 @@
-
-*:not(mat-icon) {
-  font-family: Montserrat, sans-serif;
+.listing-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 35px;
+  padding-bottom: 20px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-h2 {
-  color: #007bff;
-  margin-bottom: 20px;
+
+.form-container {
+  border-radius: 15px;
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+  padding: 30px;
+  margin: 20px auto;
+  width: 95%;
+  max-width: 600px;
 }
 
-.language-toggle{
-  z-index: 1;
-  display: flex;
-  justify-content: right;
-  padding-bottom: 10px;
-}
-
-.background {
-  background-color: #EAE7DC;
-  height: 100vh;
-}
-
-.error-field {
+.center-card {
   display: flex;
   justify-content: center;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-
-.thesito-blue {
-  color: #93B7BE;
-}
-
-.thesito-red {
-  color: #DA3E52;
-}
-
-.thesito-background-warm {
-  color: #EAE7DC;
-}
-
-.thesito-beige-warm {
-  color: #F7F6F2;
-}
-
-.user-details-container{
-  background-color: #EAE7DC;
-  height: 100vh;
-}
-
-.card {
-  margin-top: 5px;
-  border-radius: 10px;
-  width: 80%;
-  min-width: 700px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
-
-.h1{
-  font-size: 22px;
-  margin-bottom: -5px;
-}
-
-.form-label {
-  font-weight: bold;
-}
-
-.career-wrapper{
-  font-weight: bold;
-}
-
-.info-wrapper{
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-
-.save-button{
-  display: flex;
-  justify-content: right;
-}
-
-.btn-primary {
-  background-color: #5AB779;
-  color: #F7F6F2;
-}
-
-.btn-primary:hover {
-  background-color: #131314;
-}
-
-.button-blue {
-  background-color: #3250A8;
-  color: #F7F6F2;
-  border: 1px solid #3250A8;
-  cursor: pointer;
-  border-radius: 5px;
-  position: absolute;
-  right: 15px;
-}
-
-.button-blue:hover {
-  background-color: #1F3393;
-}
-
-.btn-primary2 {
-  background-color: cornflowerblue;
-  color: #F7F6F2;
-}
-
-.btn-primary2:hover {
-  background-color: #131314;
-}
-
-.example-chip-list {
-  width: 100%;
-}
-
-.interests-wrapper{
-}
-
-.tag-selector{
-  background-color: #93B7BE !important;
-}
-
-:host ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled){
-  background-color: white!important;
-}
-
-.form-check-input {
-  border-radius: 50%; /* Make the checkboxes round */
-  margin-right: 5px; /* Adjust the spacing between checkboxes as needed */
-}
-.card-align{
-  display: flex;
   align-items: center;
+  height: 100%;
+}
+
+.user-details-container {
+  padding: 20px;
+}
+
+
+
+.custom-chip-list {
+  display: flex;
+  flex-wrap: wrap; /* Allow tags to wrap to multiple lines */
+}
+
+.mat-chip {
+  margin-right: 8px; /* Add some space between chips */
+  margin-bottom: 8px; /* Add some space between rows of chips */
+  white-space: nowrap; /* Prevent chip text from wrapping */
+}
+
+
+
+
+.long-chip {
+  max-width: unset; /* Allow chip width to adjust based on text content */
+}
+
+.listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.details-grid {
+  display: grid; /* Change to grid layout */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+  gap: 20px; /* Add gap between grid items */
+}
+
+.details-grid-tags {
+  margin-top: 25px;
+  display: grid; /* Change to grid layout */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+  gap: 20px; /* Add gap between grid items */
+}
+
+.info-column {
+  display: flex;
   flex-direction: column;
 }
 
-.card-title{
-  align-self: start;
+.info-label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.center-card{
-  display: flex;
-  justify-content: center;
+
+
+.info-value {
+  font-size: 14px;
 }
 

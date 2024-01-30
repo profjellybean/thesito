@@ -1,71 +1,59 @@
-<div class="user-details-container background">
-  <div class="container">
-    <div class="center-card">
-      <div class="col-md-6 mt-5 card-align">
-        <div>
-          <div class="card-title">
-            <h2>{{ "yourProfile" | translate }}</h2>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="row d-flex justify-content-center">
-                <!-- Left column for user details -->
-                <div class="col-md-8">
-                  <div class="info-wrapper">
-                    <div class="d-flex justify-content-center">
-                      <h1 id="name">{{user.name}}</h1>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                      <label class="form-label" for="email">{{ 'email' | translate }}:</label>
-                      <h3 id="email">{{user.email}}</h3>
-                    </div>
-
-                    <div class="justify-content-between">
-                      <label class="form-label" for="role">{{ 'role' | translate }}:</label>
-                      <h3 *ngFor="let type of user.userType" id="role">
-                        {{type | translate}}
-                      </h3>
-                    </div>
-
-                    <div *ngIf="isConsumer()">
-                      <div class="d-flex justify-content-between">
-                        <label class="form-label" for="qualification">{{ 'qualification' | translate }}:</label>
-                        <h3 id="qualification">{{user.qualification}}</h3>
-                      </div>
-
-                      <div class="d-flex justify-content-between">
-                        <label class="form-label" for="tags">{{ 'tags' | translate }}:</label>
-                          <div *ngFor="let tag of user.userTags" id="tags" class="d-flex">
-                            <div *ngIf="getLanguage() === 'en'">
-                            <mat-chip-option [selectable]="false">
-                                <mat-icon>label</mat-icon>
-                              {{tag.title_en}}
-                            </mat-chip-option>
-                              </div>
-                              <div *ngIf="getLanguage() === 'de'">
-                              <mat-chip-option [selectable]="false">
-                                  <mat-icon>label</mat-icon>
-                                {{tag.title_de}}
-                              </mat-chip-option>
-                                </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-1 text-end">
-                  <div class="info-wrapper"></div>
-                  <button type="button" class="button-blue" (click)="goToEditProfile()">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </div>
-
-              </div>
-            </div>
-          </div>
+<div class="user-details-container">
+  <div class="center-card">
+    <mat-card class="form-container">
+      <div class="listing-header">
+        <div class="title-and-favourite">
+          <mat-card-title class="unselectable listing-title">
+            {{ "yourProfile" | translate }}
+          </mat-card-title>
+        </div>
+        <div class="action-buttons">
+          <button mat-icon-button (click)="goToEditProfile()" aria-label="Edit profile">
+            <mat-icon>edit</mat-icon>
+          </button>
         </div>
       </div>
-    </div>
+
+      <div class="details-grid">
+        <div class="info-column">
+          <span class="info-label"><b>{{ 'name' | translate }}</b></span>
+          <span class="info-value">{{ user.name }}</span>
+        </div>
+        <div class="info-column">
+          <span class="info-label"><b>{{ 'email' | translate }}</b></span>
+          <span class="info-value">{{ user.email }}</span>
+        </div>
+
+        <div class="info-column">
+          <span class="info-label"><b>{{ 'role' | translate }}</b></span>
+          <span class="info-value" *ngFor="let type of user.userType">{{ type | translate }}</span>
+        </div>
+
+        <div *ngIf="isConsumer()" class="info-column">
+          <span class="info-label"><b>{{ 'qualification' | translate }}</b></span>
+          <span class="info-value">{{ user.qualification }}</span>
+        </div>
+
+
+      </div>
+      <div class="details-grid-tags">
+        <div *ngIf="isConsumer()" >
+          <span class="info-label"><b>{{ 'tags' | translate }}</b></span>
+          <mat-chip-set class="custom-chip-list" *ngIf="getLanguage()==='en'">
+            <mat-chip *ngFor="let tag of user.userTags" [ngClass]="{'long-chip': tag.title_en.length > 20}">
+              {{ tag.title_en }}
+            </mat-chip>
+          </mat-chip-set>
+
+          <mat-chip-set class="custom-chip-list" *ngIf="getLanguage()==='de'">
+            <mat-chip *ngFor="let tag of user.userTags" [ngClass]="{'long-chip': tag.title_de.length > 20}">
+              {{ tag.title_de }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+      </div>
+
+
+    </mat-card>
   </div>
 </div>
