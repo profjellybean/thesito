@@ -52,7 +52,6 @@ export class LoginComponent {
     this.authService.getSession(this.mail, this.password).subscribe(
       res => {
         if (res) {
-          this.formatSuccessMessage('userLoggedIn');
           this.router.navigate(['/home']);
         } else {
           this.formatErrorMessage('Bad credentials')
@@ -77,15 +76,6 @@ export class LoginComponent {
 
   goToRegistration(): void {
     this.router.navigate(['./register']);
-  }
-
-
-  private formatSuccessMessage(success: string): void {
-    this.translateService.get(success).subscribe((res: string) => {
-      this.toastr.success(res, 'Success');
-    }, e => {
-      this.toastr.success(e, 'Success');
-    });
   }
 
 }
