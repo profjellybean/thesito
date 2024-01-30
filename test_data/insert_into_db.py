@@ -21,6 +21,23 @@ def insert_user(row):
         cursor.execute("""INSERT INTO user_types(user_id, user_type)
             VALUES (%s, %s) RETURNING user_id;
         """, (user_id, usertype))
+
+        # add three tags to each user
+        tag_id = 101
+        cursor.execute("""INSERT INTO user_tags(tag_id, user_id)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (tag_id, user_id))
+
+        tag_id = 101003
+        cursor.execute("""INSERT INTO user_tags(tag_id, user_id)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (tag_id, user_id))
+
+        tag_id = 101015
+        cursor.execute("""INSERT INTO user_tags(tag_id, user_id)
+            VALUES (%s, %s) RETURNING user_id;
+        """, (tag_id, user_id))
+
         conn.commit()
     except Exception as e:
         print("An error occurred:", e)
