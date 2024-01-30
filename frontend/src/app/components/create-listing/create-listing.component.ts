@@ -33,6 +33,7 @@ export class CreateListingComponent implements OnInit {
   successMessage = '';
   filteredOptions: Observable<string[]> | undefined;
   user: User;
+  creationInProgress = false;
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement> | undefined;
 
@@ -111,6 +112,7 @@ export class CreateListingComponent implements OnInit {
 
   createListing() {
     if (this.createListingForm.valid && this.selectedTags.length > 0) {
+      this.creationInProgress = true;
       const shortTitle = this.createListingForm.get('shortTitle')?.value;
       const details = this.createListingForm.get('details')?.value;
       const requirement = this.createListingForm.get('requirement')?.value;

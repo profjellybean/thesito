@@ -78,8 +78,8 @@
                 <span class="thesito-green" [ngClass]="{ 'error-field': success }">{{successMessage}}</span>
               </div>-->
               <div class="col-md-12">
-                <button type="button" class="btn save-button"
-                        (click)="createListing()">{{ 'save' | translate }}</button>
+                <button type="button" *ngIf="!creationInProgress" class="btn save-button" (click)="createListing()">{{ 'save' | translate }}</button>
+                <button type="button" *ngIf="creationInProgress" [disabled]="true" class="btn save-button" (click)="createListing()">{{ 'save' | translate }}</button>
               </div>
 
             </form>

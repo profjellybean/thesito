@@ -3,6 +3,7 @@ import {RegisterUserComponent} from "./components/register-user/register-user.co
 import {Router} from "@angular/router";
 import {TranslateService} from '@ngx-translate/core';
 import {LanguageService} from "./services/language.service";
+import {AuthService} from "./services/auth.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
