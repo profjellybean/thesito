@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from "../../models/User";
 import { UserService } from "../../services/user.service";
 import { QualificationType, UserType } from "../../models/Enums";
+import {Tag} from "../../models/Tag";
 
 @Component({
   selector: 'app-admin-edit-user',
@@ -46,6 +47,18 @@ export class AdminEditUserComponent implements OnInit {
       if (this.isProviderUser) userType.push(UserType.ListingProvider);
       if (this.isAdminUser) userType.push(UserType.Administrator);
 
+      let userTags: Tag[] = [];
+
+      this.data.user.userTags.forEach(tag =>{
+        let t = {
+          id: tag.id,
+          layer: tag.layer,
+          title_de: tag.title_de,
+          title_en: tag.title_en
+        }
+        userTags.push(t)
+      });
+
       let updatedUser: User = {
         ...this.data.user,
         name: formValue.name,
@@ -53,7 +66,8 @@ export class AdminEditUserComponent implements OnInit {
         userType: userType,
         qualification: this.isConsumerUser ? formValue.qualification : QualificationType.None,
         receiveEmails: formValue.receiveEmails === 'yes',
-        password: ''
+        password: '',
+        userTags: userTags
       };
 
       this.userService.updateUser(updatedUser).subscribe(() => {
