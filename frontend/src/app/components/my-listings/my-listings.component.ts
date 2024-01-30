@@ -10,6 +10,8 @@ import {FormControl} from "@angular/forms";
 import {QualificationType, UserType} from "../../models/Enums";
 import {User} from "../../models/User";
 import {AuthService} from "../../services/auth.service";
+import {ToastrService} from "ngx-toastr";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-my-listings',
@@ -45,16 +47,19 @@ export class MyListingsComponent implements OnInit {
   @ViewChild('institutionTypeListbox') institutionTypeListbox: MatChipListbox;
   @Input() isStandalone: boolean = true;
 
-  error = false;
-  errorMessage = '';
+
+  translateService: TranslateService;
 
   constructor(
     listingService: ListingService,
     private authService: AuthService,
-    public router: Router
+    public router: Router,
+    private toastr: ToastrService,
+    translateService: TranslateService
   ) {
     this.listingService = listingService;
     this.user_id = this.authService.getUserId();
+    this.translateService = translateService;
   }
 
   ngOnInit(): void {
@@ -158,8 +163,7 @@ export class MyListingsComponent implements OnInit {
 
       },
       error: error => {
-        this.error= true;
-        this.errorMessage = error.message;
+        this.formatErrorMessage(error.message);
       }
     });
   }
@@ -167,4 +171,13 @@ export class MyListingsComponent implements OnInit {
   goToCreateListing(){
     this.router.navigate(['/listing/create'])
   }
+
+  private formatErrorMessage(error: string): void {
+    this.translateService.get(error).subscribe((res: string) => {
+      this.toastr.error(res, 'Error');
+    }, e => {
+      this.toastr.error(error, 'Error');
+    });
+  }
+
 }
