@@ -17,18 +17,15 @@
     </mat-form-field>
   </div>
 
+  <!-- User Types with Checkboxes -->
   <div class="form-row">
-    <mat-form-field appearance="fill">
-      <mat-label>User Type</mat-label>
-      <mat-select formControlName="userType">
-        <mat-option value="ListingProvider">ListingProvider</mat-option>
-        <mat-option value="ListingConsumer">ListingConsumer</mat-option>
-        <mat-option value="Administrator">Administrator</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-checkbox [checked]="isConsumerUser" (change)="toggleUserType(UserType.ListingConsumer)">ListingConsumer</mat-checkbox>
+    <mat-checkbox [checked]="isProviderUser" (change)="toggleUserType(UserType.ListingProvider)">ListingProvider</mat-checkbox>
+    <mat-checkbox [checked]="isAdminUser" (change)="toggleUserType(UserType.Administrator)">Administrator</mat-checkbox>
   </div>
 
-  <div class="form-row" *ngIf="editUserForm.get('userType')?.value === 'ListingConsumer'">
+  <!-- Conditional Qualification Dropdown -->
+  <div class="form-row" *ngIf="isConsumerUser">
     <mat-form-field appearance="fill">
       <mat-label>Qualification</mat-label>
       <mat-select formControlName="qualification">
