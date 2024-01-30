@@ -192,10 +192,6 @@ class ListingServiceTest {
 
             List<Listing> list1 =this.listingService.getAllListingsFromUserWithId(provider3.getId());
             List<Listing> list2 =this.listingService.getAllListingsFromUserWithId(provider2.getId());
-
-            System.out.println(list1);
-            System.out.println(list2);
-
             assertEquals(2, list1.size());
             assertEquals(1, list2.size());
         });
