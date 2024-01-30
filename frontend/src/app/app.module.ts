@@ -148,7 +148,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatCheckboxModule,
     GraphQLModule,
     MatButtonToggleModule,
-    ToastrModule.forRoot()// ToastrModule added
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-center',
+      preventDuplicates: true,
+    })
   ],
   providers: [
     LanguageService,
