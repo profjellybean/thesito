@@ -7,6 +7,7 @@ import {Tag} from "../../models/Tag";
 import {TranslateService} from "@ngx-translate/core";
 
 import {QualificationType, UserType} from "../../models/Enums";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-register-user',
@@ -14,23 +15,19 @@ import {QualificationType, UserType} from "../../models/Enums";
   styleUrl: './register-user.component.css'
 })
 export class RegisterUserComponent {
-  error = false;
   showAdditionalRegistration: boolean = false;
-  errorMessage = '';
   pwVisible = false;
   confirm_password: string;
   confirm_email: string;
   userService: UserService;
   user: User;
   registerForm: FormGroup;
-  success = false;
-  successMessage = '';
   router: Router;
   isConsumerUser = false;
   isProviderUser = false;
   selectedTags: Tag[] = [];
 
-  constructor(private translateService: TranslateService, userService: UserService, formBuilder: FormBuilder, router: Router) {
+  constructor(private translateService: TranslateService, userService: UserService, formBuilder: FormBuilder, router: Router, private toastr: ToastrService) {
     this.registerForm = formBuilder.group({
       email: ['', Validators.required],
       confirmEmail: ['', Validators.required],
@@ -75,12 +72,10 @@ export class RegisterUserComponent {
       this.confirm_password = this.registerForm.get('confirmPassword')?.value
       this.user.qualification = this.registerForm.get('qualification')?.value
       if(this.isConsumerUser && (this.user.userTags === undefined || this.user.userTags.length < 3)) {
-        this.error = true;
         this.formatErrorMessage('notEnoughTagsError');
         return;
       }
       if(this.isConsumerUser && (this.user.qualification === undefined || this.registerForm.get('qualification')?.value === "")) {
-        this.error = true;
         this.formatErrorMessage('qualificationError');
         return;
       }
@@ -94,10 +89,7 @@ export class RegisterUserComponent {
         this.userService.registerUser(this.user).subscribe(res => {
           if (res.data != null) {
             // Registration successful
-            this.error = false;
-            this.success = true;
-            this.errorMessage= '';
-            this.successMessage = 'User registered successfully';
+            this.formatSuccessMessage('User registered successfully');
             setTimeout(() => {
               this.router.navigate(['/login']);
             }, 2000);
@@ -105,14 +97,12 @@ export class RegisterUserComponent {
         }, error => {
           // Registration failed
           if (error != null) {
-            this.error = true;
             this.formatErrorMessage(error.message);
           }
         });
       }
     } else {
       // Form validation failed
-      this.error = true;
       this.formatErrorMessage('invalidInput');
     }
   }
@@ -124,22 +114,18 @@ export class RegisterUserComponent {
 
   authenticateUser() {
     if (this.user.email !== this.confirm_email) {
-      this.error = true;
       this.formatErrorMessage('emailMatchError');
       return false;
     }
     if (this.user.password !== this.confirm_password) {
-      this.error = true;
       this.formatErrorMessage('pwMatchError');
       return false;
     }
     if (!/^(?=.*[A-Za-z])(?=.*\d)[\s\S]{8,}$/.exec(this.user.password)) {
-      this.error = true;
       this.formatErrorMessage('pwError');
       return false;
     }
     if(this.user.userType.toString() === "ListingConsumer" &&  (this.user.userTags === undefined || this.user.userTags.length === 0)) {
-      this.error = true;
       this.formatErrorMessage('tagError');
       return false;
     }
@@ -152,11 +138,20 @@ export class RegisterUserComponent {
 
   private formatErrorMessage(error: string): void {
     this.translateService.get(error).subscribe((res: string) => {
-      this.errorMessage = res;
+      this.toastr.error(res, 'Error');
     }, e => {
-      this.errorMessage = error;
+      this.toastr.error(error, 'Error');
     });
   }
+
+  private formatSuccessMessage(success: string): void {
+    this.translateService.get(success).subscribe((res: string) => {
+      this.toastr.success(res, 'Success');
+    }, e => {
+      this.toastr.success(e, 'Success');
+    });
+  }
+
   isConsumer() {
     this.isConsumerUser = !this.isConsumerUser;
   }

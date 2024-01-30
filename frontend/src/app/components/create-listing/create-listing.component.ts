@@ -153,16 +153,12 @@ export class CreateListingComponent implements OnInit {
               };
               this.create(listing)
             } else {
-
-              this.toastr.error('Invalid university selection', 'Error');
-              //this.formatErrorMessage('invalidUniversitySelection');
+              this.formatErrorMessage('invalidUniversitySelection');
             }
           },
         );
       }
     } else {
-      //this.toastr.error('invalidListingInput');
-      this.toastr.error('Invalid listing input', 'Error');
       this.formatErrorMessage('invalidListingInput');
     }
   }
@@ -174,38 +170,35 @@ export class CreateListingComponent implements OnInit {
           this.success = true;
           this.error = false;
           this.errorMessage = ''; // Reset error message
-          //this.formatSuccessMessage('successCreatingListing');
-          this.toastr.success('Listing created successfully!', 'Success');
+          this.formatSuccessMessage('successCreatingListing');
           setTimeout(() => {
             this.router.navigate([`/home`]);
           }, 1000);
         }
       },
       (error) => {
-        //this.toastr.error('errorCreatingListing', error.message);
-        this.toastr.error(error.message, 'Error');
-        //this.formatErrorMessageWithError('errorCreatingListing ', error.message);
+        this.formatErrorMessageWithError('errorCreatingListing ', error.message);
       }
     );
   }
 
   private formatErrorMessageWithError(errorKey: string, errorMessage: string): void {
     const translatedErrorKey = this.translateService.instant(errorKey);
-    this.errorMessage = `${translatedErrorKey} ${errorMessage}`;
+    this.toastr.error(`${translatedErrorKey} ${errorMessage}`, 'Error');
   }
   private formatErrorMessage(error: string): void {
     this.translateService.get(error).subscribe((res: string) => {
-      this.errorMessage = res;
+      this.toastr.error(res, 'Error');
     }, e => {
-      this.errorMessage = error;
+      this.toastr.error(error, 'Error');
     });
   }
 
   private formatSuccessMessage(success: string): void {
     this.translateService.get(success).subscribe((res: string) => {
-      this.successMessage = res;
+      this.toastr.success(res, 'Success');
     }, e => {
-      this.successMessage = success;
+      this.toastr.success(e, 'Success');
     });
   }
 

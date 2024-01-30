@@ -147,5 +147,8 @@
   "passwordChangeFailed": "Password couldn't be changed",
   "actions": "Actions",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "userMadeAdmin": "User has been made admin",
+  "userLoggedIn": "User logged in",
+  "userRegistered": "User registered successfully"
 }

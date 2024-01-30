@@ -14,6 +14,7 @@ import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
 import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-edit-listing',
@@ -48,6 +49,7 @@ export class EditListingComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: { listingId: number },
 
   ) {
@@ -255,24 +257,24 @@ export class EditListingComponent implements OnInit {
     );
   }
 
-  private formatErrorMessage(error: string): void {
-    this.translateService.get(error).subscribe((res: string) => {
-      this.errorMessage = res;
-    }, e => {
-      this.errorMessage = error;
-    });
-  }
-
   private formatErrorMessageWithError(errorKey: string, errorMessage: string): void {
     const translatedErrorKey = this.translateService.instant(errorKey);
-    this.errorMessage = `${translatedErrorKey} ${errorMessage}`;
+    this.toastr.error(`${translatedErrorKey} ${errorMessage}`, 'Error');
+  }
+  private formatErrorMessage(error: string): void {
+    this.translateService.get(error).subscribe((res: string) => {
+      this.toastr.error(res, 'Error');
+    }, e => {
+      this.toastr.error(error, 'Error');
+    });
   }
 
   private formatSuccessMessage(success: string): void {
     this.translateService.get(success).subscribe((res: string) => {
       this.successMessage = res;
+      this.toastr.success(res, 'Success');
     }, e => {
-      this.successMessage = success;
+      this.toastr.success(e, 'Success');
     });
   }
 

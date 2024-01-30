@@ -1,7 +1,4 @@
 <div class="mat-elevation-z8 background">
-  <span class="thesito-red error-field" [ngClass]="{ 'error-field': error }">{{ errorMessage | translate}}</span>
-  <span class="thesito-green error-field" [ngClass]="{ 'error-field': info }">{{infoMessage | translate}}</span>
-
   <table mat-table [dataSource]="dataSource">
     <!-- ID Column -->
     <ng-container matColumnDef="id">

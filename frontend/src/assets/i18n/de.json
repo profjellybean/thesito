@@ -147,5 +147,8 @@
   "passwordChangeFailed": "Passwortänderung fehlgeschlagen",
   "actions": "Aktionen",
   "yes": "Ja",
-  "no": "Nein"
+  "no": "Nein",
+  "userMadeAdmin": "Benutzer wurde zum Administrator gemacht",
+  "userLoggedIn": "Benutzer eingeloggt",
+  "userRegistered": "Benutzer erfolgreich registriert"
 }

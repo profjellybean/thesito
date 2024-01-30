@@ -12,6 +12,7 @@ import {UserType} from "../../models/Enums";
 import { LanguageService } from '../../services/language.service';
 import {DeleteConfirmationDialogComponent} from "../delete-confirmation-dialog-listing/delete-confirmation-dialog.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-detail',
@@ -41,6 +42,7 @@ export class DetailComponent implements OnInit{
       private userService: UserService,
       private authService: AuthService,
       private languageService: LanguageService,
+      private toastr: ToastrService,
       @Inject(MAT_DIALOG_DATA) public data: { listingId: number }
   ) {
     this.route.params.subscribe(params => {
@@ -61,10 +63,8 @@ export class DetailComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'success') {
-        this.success = true;
         this.formatSuccessMessage('applicationSuccess')
       } else {
-        this.error = true;
         this.formatErrorMessage('applicationError')
       }
     });
@@ -79,7 +79,7 @@ export class DetailComponent implements OnInit{
       if (result) {
         this.listingService.deleteListingById(Number(listing.id)).subscribe({
           next: () => {
-            this.showSuccessMessage();
+            this.formatSuccessMessage('listingDeletedSuccessfully');
             // Navigate to the home page after successful deletion
             this.router.navigate(['/home']);
           },
@@ -105,21 +105,6 @@ export class DetailComponent implements OnInit{
     });
   }
 
-  private formatErrorMessage(error: string): void {
-    this.translateService.get(error).subscribe((res: string) => {
-      this.errorMessage = res;
-    }, e => {
-      this.errorMessage = error;
-    });
-  }
-
-  private formatSuccessMessage(success: string): void {
-    this.translateService.get(success).subscribe((res: string) => {
-      this.successMessage = res;
-    }, e => {
-      this.successMessage = success;
-    });
-  }
 
   ngOnInit(): void {
     this.languageService.currentLanguage$.subscribe(language => {
@@ -155,4 +140,19 @@ export class DetailComponent implements OnInit{
     }
   }
 
+  private formatErrorMessage(error: string): void {
+    this.translateService.get(error).subscribe((res: string) => {
+      this.toastr.error(res, 'Error');
+    }, e => {
+      this.toastr.error(error, 'Error');
+    });
+  }
+
+  private formatSuccessMessage(success: string): void {
+    this.translateService.get(success).subscribe((res: string) => {
+      this.toastr.success(res, 'Success');
+    }, e => {
+      this.toastr.success(e, 'Success');
+    });
+  }
 }
