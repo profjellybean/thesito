@@ -1,0 +1,24 @@
+image: maven:3-openjdk-17
+   
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2"
+  GIT_STRATEGY: "clone"
+
+stages:
+  - build
+  - test
+
+build-backend:
+  stage: build
+  script:
+    - cd backend
+    # Build Quarkus backend application
+    - mvn -B clean -Dnative
+    - mvn io.quarkus.platform:quarkus-maven-plugin:3.6.7:build -Dquarkus.native.container-build=false
+
+test-frontend:
+  image: node:lts
+  stage: test
+  needs: [build-backend]
+  script:
+    - cd frontend && npm install && npx ng build
