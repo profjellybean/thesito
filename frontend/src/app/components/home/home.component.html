@@ -39,6 +39,10 @@
 
     <div *ngIf="favoritesLoaded" class="bottom-right-section card">
       <h2 class="clickable" (click)="this.router.navigate(['/user/favourites'])">{{ 'favourites' | translate }}</h2>
+      <div *ngIf="favourites.length===0">
+        <h4>{{"noFavourites" | translate}}</h4>
+      </div>
+
       <div *ngFor="let favourite of favourites | slice:0:3" class="favourite-item">
         <!--        <app-user-favourites
           [listing_id]="favourite.id"></app-user-favourites> -->
