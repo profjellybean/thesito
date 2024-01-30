@@ -1,5 +1,5 @@
 <div class="main-container">
-<h2>Edit User</h2>
+<h2>{{"editUser" | translate}}</h2>
 <form [formGroup]="editUserForm" (ngSubmit)="onSave()">
   <div class="form-row">
     <mat-form-field appearance="fill">
@@ -19,34 +19,34 @@
 
   <!-- User Types with Checkboxes -->
   <div class="form-row">
-    <mat-checkbox [checked]="isConsumerUser" (change)="toggleUserType(UserType.ListingConsumer)">ListingConsumer</mat-checkbox>
-    <mat-checkbox [checked]="isProviderUser" (change)="toggleUserType(UserType.ListingProvider)">ListingProvider</mat-checkbox>
-    <mat-checkbox [checked]="isAdminUser" (change)="toggleUserType(UserType.Administrator)">Administrator</mat-checkbox>
+    <mat-checkbox [checked]="isConsumerUser" (change)="toggleUserType(UserType.ListingConsumer)">{{"ListingConsumer" | translate}}</mat-checkbox>
+    <mat-checkbox [checked]="isProviderUser" (change)="toggleUserType(UserType.ListingProvider)">{{"ListingProvider" | translate}}</mat-checkbox>
+    <mat-checkbox [checked]="isAdminUser" (change)="toggleUserType(UserType.Administrator)">{{"admin" | translate}}</mat-checkbox>
   </div>
 
   <!-- Conditional Qualification Dropdown -->
   <div class="form-row" *ngIf="isConsumerUser">
     <mat-form-field appearance="fill">
-      <mat-label>Qualification</mat-label>
+      <mat-label>{{"qualification" | translate}}</mat-label>
       <mat-select formControlName="qualification">
-        <mat-option value="None">None</mat-option>
-        <mat-option value="Bachelors">Bachelors</mat-option>
-        <mat-option value="Masters">Masters</mat-option>
-        <mat-option value="PhD">PhD</mat-option>
+        <mat-option value="None">{{"None" | translate}}</mat-option>
+        <mat-option value="Bachelors">{{"Bachelors" | translate}}</mat-option>
+        <mat-option value="Masters">{{"Masters" | translate}}</mat-option>
+        <mat-option value="PhD">{{"PhD" | translate}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
   <div class="form-row">
     <mat-radio-group formControlName="receiveEmails" aria-label="Receive Emails">
-      <mat-label>Receive Emails</mat-label>
-      <mat-radio-button color="primary" value="yes">Yes</mat-radio-button>
-      <mat-radio-button color="primary" value="no">No</mat-radio-button>
+      <mat-label>{{"receiveEmails" | translate}}</mat-label>
+      <mat-radio-button color="primary" value="yes">{{"yes" | translate}}</mat-radio-button>
+      <mat-radio-button color="primary" value="no">{{"no" | translate}}</mat-radio-button>
     </mat-radio-group>
   </div>
 
   <div class="form-row">
-    <button mat-button class="mat-button-save" type="submit" [disabled]="!editUserForm.valid">Save</button>
+    <button mat-button class="mat-button-save" type="submit" [disabled]="!editUserForm.valid">{{"save" | translate}}</button>
   </div>
 </form>
 </div>
